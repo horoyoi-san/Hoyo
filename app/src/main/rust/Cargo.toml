@@ -1,0 +1,37 @@
+[package]
+name = "robinsr"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Android Bridging
+jni = "0.21.1"
+
+# Frameworks
+tokio = "1.43.0"
+
+# Logging
+android_logger = "0.15.0"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = [
+    "env-filter",
+    "registry",
+    "std",
+    "tracing",
+    "tracing-log",
+] }
+
+# Utilities
+time = { version = "0.3.39", features = ["parsing", "formatting"] }
+
+sdkserver = { git = "https://git.neonteam.dev/amizing/robinsr" }
+gameserver = { git = "https://git.neonteam.dev/amizing/robinsr" }
+
+[profile.release]
+strip = true      # Automatically strip symbols from the binary.
+opt-level = "z"   # Optimize for size.
+lto = true
+codegen-units = 1
