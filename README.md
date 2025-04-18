@@ -1,4 +1,4 @@
-# HSR Character IDs
+# API
 
 |  NAME  | API | 
 | :--: | :--------------------: |
