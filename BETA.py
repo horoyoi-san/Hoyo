@@ -7,7 +7,7 @@ from datetime import datetime
 # Webhook
 webhook_urls = {
     "Beta": 'https://discord.com/api/webhooks/1288821857469988965/zLuca-BLv_K1OwlSDh-zPhKw4W8yhI13uNHJkbVY-wG8I4aEG0wIF8m2RyGWPV5BT41M',
-    "Beta 2": 'https://discord.com/api/webhooks/1290276844213506098/GUgxJKlfomvt90B_kgaZmOunWiAQ6qHkOc8BuvQXHenMyeJpA6PsyTfshHslY_VjUoJp',
+    "Beta": 'https://discord.com/api/webhooks/1290276844213506098/GUgxJKlfomvt90B_kgaZmOunWiAQ6qHkOc8BuvQXHenMyeJpA6PsyTfshHslY_VjUoJp',
     "Teat": 'https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ'
 }
 
@@ -15,7 +15,12 @@ webhook_urls = {
 last_data = None
 
 # URL ที่จะตรวจสอบ
-url = "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.2.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1"
+urls = {
+    "CNBETAAndroid": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.2.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "OSBETAAndroid": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.2.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "CNBETAWin": "https://beta-release01-cn.bhsr.com/query_gateway?version=CNBETAWin3.2.51&platform_type=1&language_type=3&dispatch_seed=1&channel_id=1&sub_channel_id=1&is_need_url=1",
+    "OSBETAWin": "https://beta-release01-asia.starrails.com/query_gateway?version=OSBETAWin3.2.51&platform_type=1&language_type=3&dispatch_seed=1&channel_id=1&sub_channel_id=1&is_need_url=1"
+}
 
 def decode_data(raw_data):
     try:
@@ -41,7 +46,7 @@ def send_to_discord(content):
                     },
                     "footer": {
                         "text": "Honkai Star Rail Update Monitor",
-                        "icon_url": "https://cdn.discordapp.com/emojis/1163790931813249105.webp?size=96&quality=lossless"
+                        "icon_url": "https://cdn.discordapp.com/emojis/1065830078086393876.webp?size=96"
                     },
                     "timestamp": datetime.utcnow().isoformat()
                 }
@@ -54,23 +59,25 @@ def send_to_discord(content):
         else:
             print(f"❌ ล้มเหลว ({response.status_code}) สำหรับ {name}")
 
+last_data = {}
 def check_update():
     global last_data
-    try:
-        res = requests.get(url)
-        if res.status_code == 200:
-            raw = res.content
-            if raw != last_data:
-                last_data = raw
-                decoded = decode_data(raw)
-                print("🟢 ตรวจพบการเปลี่ยนแปลง ส่งไปยัง Discord")
-                send_to_discord(decoded)
+    for name, url in urls.items():
+        try:
+            res = requests.get(url)
+            if res.status_code == 200:
+                raw = res.content
+                if last_data.get(name) != raw:
+                    last_data[name] = raw
+                    decoded = decode_data(raw)
+                    print(f"🟢 [{name}] พบการเปลี่ยนแปลง ส่งไปยัง Discord")
+                    send_to_discord(f"[{name}]\n\n{decoded}")
+                else:
+                    print(f"🟡 [{name}] ไม่มีการเปลี่ยนแปลง")
             else:
-                print("🟡 ไม่มีการเปลี่ยนแปลง")
-        else:
-            print(f"🔴 ดึงข้อมูลล้มเหลว: {res.status_code}")
-    except Exception as e:
-        print(f"เกิดข้อผิดพลาด: {e}")
+                print(f"🔴 [{name}] ดึงข้อมูลล้มเหลว: {res.status_code}")
+        except Exception as e:
+            print(f"เกิดข้อผิดพลาดจาก [{name}]: {e}")
 
 # วนลูปทุก 60 วินาที
 while True:
