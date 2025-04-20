@@ -6,8 +6,8 @@ from datetime import datetime
 
 # Webhook
 webhook_urls = {
-    "PROD": 'https://discord.com/api/webhooks/1288821857469988965/zLuca-BLv_K1OwlSDh-zPhKw4W8yhI13uNHJkbVY-wG8I4aEG0wIF8m2RyGWPV5BT41M',
-    "PROD": 'https://discord.com/api/webhooks/1290276844213506098/GUgxJKlfomvt90B_kgaZmOunWiAQ6qHkOc8BuvQXHenMyeJpA6PsyTfshHslY_VjUoJp',
+    "PROD": 'https://discord.com/api/webhooks/1288840153682411571/eHfyeOIeZ8--ziIhBCejDli38LkvLVRuIQb0aRwtAjefyO4rCHPBWnteDw6FkwgC8gB4',
+    "PROD-2": 'https://discord.com/api/webhooks/1315273814132785273/KCEkUloeo75HpgwrEVhXDfRzLSuOB7LHf0Nm1zCme0I1s-bl_jkujpcVZC8KSKifEkNU',
     "Teat": 'https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ'
 }
 
@@ -18,8 +18,8 @@ last_data = None
 urls = {
     "CNPRODAndroid": "",
     "OSPRODAndroid": "",
-    "CNPRODWin": "https://prod-gf-cn-dp01.bhsr.com/query_gateway?version=CNPRODWin3.2.0&platform_type=1&language_type=3&dispatch_seed=1&channel_id=1&sub_channel_id=1&is_need_url=1",
-    "OSPRODWin": "https://prod-official-asia-dp01.starrails.com/query_gateway?version=OSPRODWin3.2.0&platform_type=1&language_type=3&dispatch_seed=1&channel_id=1&sub_channel_id=1&is_need_url=1"
+    "CNPRODWin": "https://prod-gf-cn-dp01.bhsr.com/query_gateway?version=CNPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1",
+    "OSPRODWin": "https://prod-official-asia-dp01.starrails.com/query_gateway?version=OSPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1"
 }
 
 def decode_data(raw_data):
