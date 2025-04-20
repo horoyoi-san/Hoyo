@@ -11,4 +11,4 @@
 | prod-apk-cn | HSR |  |
 | prod-apk-os | HSR |  |
 | prod-win-cn | HSR | https://prod-gf-cn-dp01.bhsr.com/query_gateway?version=CNPRODWin3.2.0&platform_type=1&language_type=3&dispatch_seed=1&channel_id=1&sub_channel_id=1&is_need_url=1 |
-| prod-win-os | HSR | https://prod-official-asia-dp01.starrails.com/query_gateway?version=OSPRODWin3.2.0&platform_type=1&language_type=3&dispatch_seed=1&channel_id=1&sub_channel_id=1&is_need_url=1 |
+| prod-win-os | HSR | https://prod-official-asia-dp01.starrails.com/query_gateway?version=OSPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1 |
