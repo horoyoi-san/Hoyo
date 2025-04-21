@@ -17,6 +17,11 @@
 
 | Version | File name | Download link|
 | :--- | :--- | :--- |
+| OSPRODWin | HOYOPLAY | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&game_ids[]=5TIVvvcwtM&game_ids[]=g0mMIvshDb&game_ids[]=uxB4MC7nzC&game_ids[]=bxPTXSET5t&game_ids[]=gopR6Cufr3&game_ids[]=4ziysqXOQ8&game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
+
+
+| Version | File name | Download link|
+| :--- | :--- | :--- |
 | OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8 |
 | OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=5TIVvvcwtM&launcher_id=VYTpXlbWo8 |
 | OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=g0mMIvshDb&launcher_id=VYTpXlbWo8 |
