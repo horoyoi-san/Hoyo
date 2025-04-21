@@ -25,4 +25,12 @@
 
 | Version | File name | Download link|
 | :--- | :--- | :--- |
-| OSPRODWin | HI3 |  |
+| OSPRODWin | GI | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8 |
+
+| Version | File name | Download link|
+| :--- | :--- | :--- |
+| OSPRODWin | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8 |
+
+| Version | File name | Download link|
+| :--- | :--- | :--- |
+| OSPRODWin | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
