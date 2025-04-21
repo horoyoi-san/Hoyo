@@ -12,3 +12,17 @@
 | prod-apk-os | HSR |  |
 | prod-win-cn | HSR | https://prod-gf-cn-dp01.bhsr.com/query_gateway?version=CNPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1 |
 | prod-win-os | HSR | https://prod-official-asia-dp01.starrails.com/query_gateway?version=OSPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1 |
+
+# API HoYo
+
+| Version | File name | Download link|
+| :--- | :--- | :--- |
+| OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8 |
+| OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=5TIVvvcwtM&launcher_id=VYTpXlbWo8 |
+| OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=g0mMIvshDb&launcher_id=VYTpXlbWo8 |
+| OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8 |
+| OSPRODWin | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8 |
+
+| Version | File name | Download link|
+| :--- | :--- | :--- |
+| OSPRODWin | HI3 |  |
