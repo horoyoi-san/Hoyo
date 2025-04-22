@@ -114,9 +114,7 @@ async fn send_discord_notifications(api_response: &ApiResponse) {
     // URLs ของ Discord Webhook
     let discord_webhook_urls = vec![
         "https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ",
-        "https://discord.com/api/webhooks/1313090257628954644/Hk00YkdPJUxqEjjXJLIOJjg6zNnxYFeyNd7J0nYE_JXf1Nh1rHUbxbjBIJP6CYRZA07o",
-        "https://discord.com/api/webhooks/1315273814132785273/KCEkUloeo75HpgwrEVhXDfRzLSuOB7LHf0Nm1zCme0I1s-bl_jkujpcVZC8KSKifEkNU",
-        "https://discord.com/api/webhooks/1313874393532989532/0mN1RuiIcN9zDC4HmE4PIOcAPN7B73tgX2TUHMpQH3EkmRTiy5LizlR1PZsnf-J0RSQs",
+
     ];
 
     let discord_message = create_discord_message(api_response);
@@ -175,7 +173,7 @@ fn create_discord_message(api_response: &ApiResponse) -> serde_json::Value {
     let mut audio_fields = vec![];
     for audio in &game_package.main.major.audio_pkgs {
         audio_fields.push(json!( {
-            "name": format!("Audio Package"), // Removed language info
+            "name": format!("Audio language: {}", audio.language), // Removed language info
             "value": format!("URL: {}", audio.url),
             "inline": false
         }));
@@ -216,7 +214,7 @@ fn create_discord_message(api_response: &ApiResponse) -> serde_json::Value {
         let mut pre_audio_fields = vec![];
         for audio in &pre.major.audio_pkgs {
             pre_audio_fields.push(json!( {
-                "name": format!("Pre-Download Audio Package"), // Removed language info
+                "name": format!("Pre-Download Audio {}", audio.language), // Removed language info
                 "value": format!("URL: {}", audio.url),
                 "inline": false
             }));
