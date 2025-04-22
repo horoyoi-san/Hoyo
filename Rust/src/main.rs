@@ -85,8 +85,8 @@ pub struct PatchPkg {
     pub md5: String,
     pub size: String,
     pub decompressed_size: String,
-    pub game_packages: Vec<Package>, // This is what you have, not game_pkgs
-    pub audio_pkgs: Vec<AudioPackage>, // Add audio_pkgs here
+    pub game_packages: Vec<Package>,
+    pub audio_pkgs: Vec<AudioPackage>,
 }
 
 #[tokio::main]
@@ -106,22 +106,42 @@ async fn main() {
     // Deserialize the JSON data into ApiResponse
     let api_response: ApiResponse = res.json().await.unwrap();
 
-    // Create a Discord message
-    let discord_webhook_url = "https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ";
-    let discord_message = create_discord_message(&api_response);
+    // Send Discord notifications
+    send_discord_notifications(&api_response).await;
+}
 
-    // Send the data to Discord
-    let res = client
-        .post(discord_webhook_url)
-        .json(&discord_message)
-        .send()
-        .await
-        .unwrap();
+async fn send_discord_notifications(api_response: &ApiResponse) {
+    // URLs ของ Discord Webhook
+    let discord_webhook_urls = vec![
+        "https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ",
+        "https://discord.com/api/webhooks/1313090257628954644/Hk00YkdPJUxqEjjXJLIOJjg6zNnxYFeyNd7J0nYE_JXf1Nh1rHUbxbjBIJP6CYRZA07o",
+        "https://discord.com/api/webhooks/1315273814132785273/KCEkUloeo75HpgwrEVhXDfRzLSuOB7LHf0Nm1zCme0I1s-bl_jkujpcVZC8KSKifEkNU",
+        "https://discord.com/api/webhooks/1313874393532989532/0mN1RuiIcN9zDC4HmE4PIOcAPN7B73tgX2TUHMpQH3EkmRTiy5LizlR1PZsnf-J0RSQs",
+    ];
 
-    if res.status().is_success() {
-        println!("Successfully sent message to Discord!");
-    } else {
-        println!("Failed to send message to Discord.");
+    let discord_message = create_discord_message(api_response);
+
+    // ส่งข้อมูลไปยังแต่ละ webhook URL
+    for url in discord_webhook_urls {
+        let client = reqwest::Client::new();
+        let response = client
+            .post(url)
+            .json(&discord_message)
+            .send()
+            .await;
+
+        match response {
+            Ok(resp) => {
+                if resp.status().is_success() {
+                    println!("ส่งข้อความไปยัง Discord สำเร็จที่ URL: {}", url);
+                } else {
+                    println!("ส่งข้อความไปยัง Discord ล้มเหลวที่ URL: {}. สถานะ: {}", url, resp.status());
+                }
+            }
+            Err(e) => {
+                println!("เกิดข้อผิดพลาดขณะส่งข้อความไปยัง Discord ที่ URL: {}. ข้อผิดพลาด: {}", url, e);
+            }
+        }
     }
 }
 
@@ -169,11 +189,11 @@ fn create_discord_message(api_response: &ApiResponse) -> serde_json::Value {
     // Resource list URL
     embeds.push(json!( {
         "title": "Resource List",
-        "fields": [{
+        "fields": [json!( {
             "name": "res_list_url",
             "value": game_package.main.major.res_list_url,
             "inline": false
-        }]
+        })]
     }));
 
     // Pre-download (if exists)
@@ -230,8 +250,8 @@ fn create_discord_message(api_response: &ApiResponse) -> serde_json::Value {
     if let Some(patches) = &game_package.main.major.patches {
         for patch in patches {
             // Iterate over game packages
-            for pkg in &patch.game_packages { // Use game_packages instead of game_pkgs
-                patches_fields.push(json!({
+            for pkg in &patch.game_packages {
+                patches_fields.push(json!( {
                     "name": "Game Package",
                     "value": format!("URL: {}", pkg.url),
                     "inline": false
@@ -239,8 +259,8 @@ fn create_discord_message(api_response: &ApiResponse) -> serde_json::Value {
             }
             
             // Iterate over audio packages
-            for audio_pkg in &patch.audio_pkgs { // Ensure audio_pkgs exists in PatchPkg, or adjust accordingly
-                patches_fields.push(json!({
+            for audio_pkg in &patch.audio_pkgs {
+                patches_fields.push(json!( {
                     "name": format!("Audio Package - {}", audio_pkg.language),
                     "value": format!("URL: {}", audio_pkg.url),
                     "inline": false
@@ -255,9 +275,8 @@ fn create_discord_message(api_response: &ApiResponse) -> serde_json::Value {
         }));
     }
 
-    // Return the final JSON structure
     json!( {
-        "content": "**อัปเดตข้อมูลเกม Zenless Zone Zero 1.6.0**",
+        "content": "**Zenless Zone Zero Update **",
         "embeds": embeds
     })
 }
