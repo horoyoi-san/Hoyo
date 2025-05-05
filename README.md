@@ -37,10 +37,10 @@
 | CNPRODWin | HI3 |  |
 | OSPRODWin | GI | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8 |
 | CNPRODWin | GI | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=jGHBHlcOq1&game_ids[]=1Z8W5NHUQb |
-| OSPRODWin | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=4ziysqXOQ8&launcher_id=VYTpXlbWo8 |
-| CNPRODWin | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
-| OSPRODWin | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
-| CNPRODWin | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
+| OSPRODWin | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8 |
+| CNPRODWin | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_id=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
+| OSPRODWin | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
+| CNPRODWin | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_id=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
 
 # API Bilibili
 
