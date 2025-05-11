@@ -1,3 +1,4 @@
+1
 # HSR Character IDs
 
 |  ID  | NAME | 
