@@ -55,7 +55,7 @@ for ver, dates in version_dates.items():
     release_str = format_date_th(dates["Release"])
     beta_ts = int(dates["Beta"].timestamp())
     release_ts = int(dates["Release"].timestamp())
-    markdown_lines.append(f"Genshin Impact {ver}")
+    markdown_lines.append(f"Honkai Impact 3rd {ver}")
     markdown_lines.append(f"Version {ver} Beta: <t:{beta_ts}:R> | <t:{beta_ts}:F> | {beta_str}")
     markdown_lines.append(f"Version {ver}: <t:{release_ts}:R> | <t:{release_ts}:F> | {release_str}")
     markdown_lines.append("")  # ว่างบรรทัดเว้นบรรทัด
