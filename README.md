@@ -6,15 +6,7 @@
 | beta-win-cn | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.2.51&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
 | beta-win-os | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.2.51&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
 
-| Version | File name | Download link|
-| :--- | :--- | :--- |
-| prod-apk-cn | HSR |  |
-| prod-apk-os | HSR |  |
-| prod-win-cn | HSR | https://prod-gf-cn-dp01.bhsr.com/query_gateway?version=CNPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1 |
-| prod-win-os | HSR | https://prod-official-asia-dp01.starrails.com/query_gateway?version=OSPRODWin3.2.0&platform_type=3&language_type=1&dispatch_seed=e6ef99162e&channel_id=1&sub_channel_id=1&is_need_url=1 |
-
 # API HoYoPlay
-
 | Version | File name | Download link|
 | :--- | :--- | :--- |
 | OSPRODWin | HOYOPLAY | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&game_ids[]=5TIVvvcwtM&game_ids[]=g0mMIvshDb&game_ids[]=uxB4MC7nzC&game_ids[]=bxPTXSET5t&game_ids[]=gopR6Cufr3&game_ids[]=4ziysqXOQ8&game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
@@ -28,7 +20,6 @@
 | OSPRODWin | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
 
 # API miHoYo
-
 | Version | File name | Download link|
 | :--- | :--- | :--- |
 | OSPRODWin | miHoYo | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?launcher_id=VYTpXlbWo8 |
@@ -43,10 +34,15 @@
 | CNPRODWin | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_id=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
 
 # API Bilibili
-
 | Version | File name | Download link|
 | :--- | :--- | :--- |
 | CNPRODWin | HI3 |  |
 | CNPRODWin | GI | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=umfgRO5gh5 |
 | CNPRODWin | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=6P5gHMNyK3 |
 | CNPRODWin | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=xV0f4r1GT0 |
+
+# API APK
+| Version | File name | Download link|
+| :--- | :--- | :--- |
+| CNPRODAndroid | GI | https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_default |
+| Cloud CNPRODAndroid | GI | https://api-takumi.mihoyo.com/event/download_porter/link/clgm_cn/official/default |
