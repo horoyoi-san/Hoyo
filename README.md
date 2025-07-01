@@ -14,6 +14,8 @@
 | 1010 | Female Destruction MC (Old) |
 | 1011 | ??? |
 | 1013 | Herta |
+| 1014 | Saber (Artoria) | 
+| 1015 | Archer (Emiya) |
 | 1101 | Bronya |
 | 1102 | Seele |
 | 1103 | Serval |
@@ -76,6 +78,9 @@
 | 1407 | Castorice |
 | 1408 | Phainon |
 | 1409 | Hyacine |
+| 1410 | Hysilens |
+| 1412 | Cerydra |
+| 1413 | Evernight |
 | 8001 | Destruction Male MC |
 | 8002 | Destruction Female MC |
 | 8003 | Preservation Male MC |
