@@ -2,17 +2,17 @@ from datetime import datetime, timedelta
 
 # กำหนดวันเริ่มต้น Beta และ Release (ตัวอย่าง)
 start_dates = {
-    "Beta": datetime(2025, 6, 6, 10, 0),     # 28 ส.ค. 2024 10:00
-    "Release": datetime(2025, 6, 6, 10, 0)   # 9 ต.ค. 2024 10:00
+    "Beta": datetime(2025, 6, 27, 14, 0),     # 28 ส.ค. 2024 10:00
+    "Release": datetime(2025, 4, 24, 10, 0)   # 9 ต.ค. 2024 10:00
 }
 
-start_version = 8.3
-end_version = 10.0
+start_version = 8.4
+end_version = 15.0
 
 # ปรับระยะห่างวันของแต่ละช่วง (กำหนดได้ตามต้องการ)
-beta_interval_days = 42          # ระยะห่าง Beta-to-Beta
-release_interval_days = 42       # ระยะห่าง Release-to-Release
-release_after_beta_days = 42     # ระยะห่าง Release หลัง Beta (ถ้าต่างจาก beta_interval_days)
+beta_interval_days = 64          # ระยะห่าง Beta-to-Beta
+release_interval_days = 64       # ระยะห่าง Release-to-Release
+release_after_beta_days = 64     # ระยะห่าง Release หลัง Beta (ถ้าต่างจาก beta_interval_days)
 
 # ฟังก์ชันแปลงวันที่เป็นรูปแบบภาษาไทย (ตัวอย่าง)
 def format_date_th(dt):
