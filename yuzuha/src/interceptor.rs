@@ -48,3 +48,4 @@ unsafe extern "win64" fn attach_callback(reg: *mut Registers, actual_callback: u
     let callback = unsafe { std::mem::transmute::<usize, AttachCallback>(actual_callback) };
     callback(&mut Context { registers: reg });
 }
+

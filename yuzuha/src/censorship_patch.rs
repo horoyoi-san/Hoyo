@@ -31,5 +31,5 @@ pub fn init(interceptor: &mut Interceptor) {
         let scene_type = unsafe { *((scene_data + SCENE_TYPE_FIELD) as *const u32) };
 
         LAST_ENTER_SCENE_TYPE.store(scene_type, Ordering::SeqCst);
-    })
+    });
 }
