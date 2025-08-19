@@ -1,20 +1,20 @@
-# README - วิธีใช้ HappyGenyuanImsactUpdate (v3.2.4) สำหรับเกม ZZZ (Zenless Zone Zero)
+# README - วิธีใช้ HappyGenyuanImsactUpdate (v3.2.4) สำหรับเกม HoYo 
 
 ## ขั้นตอนการใช้งาน
 
 1. **เตรียมไฟล์และโฟลเดอร์**
 
 - โฟลเดอร์เกม (ตัวอย่าง):  
-  `C:\Pro Player\PS\ZZZ PS\ZZZ_2.2.x`
+  `C:\hoyogame_1.0.0`
 
 - ไฟล์อัปเดต `.zip` (ตัวอย่าง):  
-  `C:\Pro Player\PS\ZZZ PS\game_2.2.1_2.2.2_hdiff_blrGl9k8w8VRJdHq.zip`
+  `C:\game_1.1.0_1.1.2_hdiff_XXXXXXXXXXX.zip`
 
 2. **เปิด Command Prompt ในโฟลเดอร์โปรแกรม Updater**  
    เช่น:  
-   `C:\Pro Player\PS\ZZZ PS\Release-windows7-x64\Updater`
+   `C:\Release-windows7-x64\Updater`
 
 3. **รันคำสั่งอัปเดต**
 
 ```bash
-HappyGenyuanImsactUpdate.exe -patchAt "C:\Pro Player\PS\ZZZ PS\ZZZ_2.2.x" -checkmode 0 -zip_count 1 "C:\Pro Player\PS\ZZZ PS\game_2.2.1_2.2.2_hdiff_blrGl9k8w8VRJdHq.zip" --config_change_guidance false
+HappyGenyuanImsactUpdate.exe -patchAt "C:\hoyogame_1.0.0" -checkmode 0 -zip_count 1 "C:\game_1.1.0_1.1.2_hdiff_XXXXXXXXXXX.zip" --config_change_guidance false
