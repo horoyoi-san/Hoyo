@@ -3,7 +3,7 @@ from datetime import datetime
 
 # ✅ ใส่ API URLs ทั้ง 5 อัน
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=gopR6Cufr3&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8",
 
 ]
 
@@ -26,7 +26,7 @@ def send_embed_message(webhook_url, title, description):
                 "url": "https://pm1.aminoapps.com/7907/e8d49beedb38994b17921bc9418089a65f1cd250r1-512-512v2_uhq.jpg"
             },
             "image": {
-                "url": "https://static1.thegamerimages.com/wordpress/wp-content/uploads/2022/06/traveler-aether-and-lumine-de-genshin-impact_3840x2160_xtrafondoscom.jpg"
+                "url": "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbG95NHBod3ozcDVkdWRnd2VsMDN4bnp2ZTVtbHM0ajloeTI5MTVrZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BTkUjxUFJckFGJEPIK/giphy.gif"
             },
             "footer": {
                 "text": "Genshin Impact Update Monitor",

@@ -3,11 +3,11 @@ from datetime import datetime
 
 # ✅ ใส่ API URLs ทั้ง 5 อัน
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=wkE5P5WsIf&launcher_id=VYTpXlbWo8",
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=5TIVvvcwtM&launcher_id=VYTpXlbWo8",
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=g0mMIvshDb&launcher_id=VYTpXlbWo8",
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=uxB4MC7nzC&launcher_id=VYTpXlbWo8",
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=bxPTXSET5t&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=5TIVvvcwtM&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=g0mMIvshDb&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8",
 ]
 
 
@@ -29,7 +29,7 @@ def send_embed_message(webhook_url, title, description):
                 "url": "https://static.wikitide.net/hoyodexwiki/0/0d/Honkai_Impact_3rd.png"
             },
             "image": {
-                "url": "https://fastcdn.hoyoverse.com/static-resource-v2/2024/02/26/38fb67a9535b8fc8665dbbfb416c07ad_1746331783350114280.png"
+                "url": "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWR6cXBscmNoNWI0dHk4bGI5ZTc2NnNobG92Yzk2bnpsYzVibTY1dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Fl5sry3Qr7FJea2TR5/giphy.gif"
             },
             "footer": {
                 "text": "Honkai Impact 3rd Update Monitor",

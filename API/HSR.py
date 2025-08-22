@@ -3,7 +3,7 @@ from datetime import datetime
 
 # ✅ ใส่ API URLs ทั้ง 5 อัน
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=4ziysqXOQ8&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8",
 
 ]
 
@@ -26,7 +26,7 @@ def send_embed_message(webhook_url, title, description):
                 "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjrW-mmUV0hEgI-5KN7jDZtrqweYaPssBIEw&s"
             },
             "image": {
-                "url": "https://sirusgaming.com/wp-content/uploads/2022/10/honkai-star-trail-01.jpg"
+                "url": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGVuNWQwZG91a200dnFkenp3eWg2NXR5N255OWF6Zmx5c24xNGk3dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/v0sHKtV91El8zcWYe2/giphy.gif"
             },
             "footer": {
                 "text": "Honkai Star Rail Update Monitor",
