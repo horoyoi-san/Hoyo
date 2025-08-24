@@ -36,6 +36,12 @@
 | CNPRODWin | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=6P5gHMNyK3 |
 | CNPRODWin | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=xV0f4r1GT0 |
 
+# API APK
+| Version | File name | Download link|
+| :--- | :--- | :--- |
+| CNPRODAndroid | GI | https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_default |
+| Cloud CNPRODAndroid | GI | https://api-takumi.mihoyo.com/event/download_porter/link/clgm_cn/official/default |
+
 ```
 payload:
 # Behavior: classical
