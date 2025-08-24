@@ -7,7 +7,7 @@
 
 | Version | File name | Download link|
 | :--- | :--- | :--- |
-| OSPRODWin | HOYOPLAY | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=VYTpXlbWo8 |
+| OSPRODWin | Launcher | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=VYTpXlbWo8 |
 | bh3_global | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8 |
 | bh3_global | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8 |
 | bh3_global | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8 |
@@ -21,7 +21,7 @@
 
 | Version | File name | Download link|
 | :--- | :--- | :--- |
-| OSPRODWin | HOYOPLAY | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=jGHBHlcOq1 |
+| OSPRODWin | Launcher | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=jGHBHlcOq1 |
 | bh3_cn | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=osvnlOc0S8&launcher_id=VYTpXlbWo8 |
 | hk4e_cn | GI | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=1Z8W5NHUQb&launcher_id=VYTpXlbWo8 |
 | hkrpg_cn | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=VYTpXlbWo8 |
