@@ -21,11 +21,11 @@
 
 | Version | File name | Download link|
 | :--- | :--- | :--- |
-| OSPRODWin | Launcher | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=jGHBHlcOq1 |
-| bh3_cn | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=osvnlOc0S8&launcher_id=VYTpXlbWo8 |
-| hk4e_cn | GI | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=1Z8W5NHUQb&launcher_id=VYTpXlbWo8 |
-| hkrpg_cn | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=VYTpXlbWo8 |
-| nap_cn | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=x6znKlJ0xK&launcher_id=VYTpXlbWo8 |
+| OSPRODWin | Launcher | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=jGHBHlcOq1 |
+| bh3_cn | HI3 | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=osvnlOc0S8&launcher_id=jGHBHlcOq1 |
+| hk4e_cn | GI | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1 |
+| hkrpg_cn | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
+| nap_cn | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
 
 # API Bilibili
 
