@@ -28,7 +28,7 @@ fn on_attach() {
 
     println!("2.3.0 BETA");
     println!(
-        "2.3.0 BETA"
+        "โปรดระวัง"
     );
 
     let base = loop {
