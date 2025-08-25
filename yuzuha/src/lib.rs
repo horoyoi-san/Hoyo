@@ -26,9 +26,9 @@ fn on_attach() {
         let _ = Console::AllocConsole();
     }
 
-    println!("yuzuha-patch (2.2.4 BETA) is initializing");
+    println!("2.3.0 BETA");
     println!(
-        "to work with orphie-zs: https://git.xeondev.com/orphie-zs/orphie-zs/"
+        "2.3.0 BETA"
     );
 
     let base = loop {
