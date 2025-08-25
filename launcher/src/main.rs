@@ -16,7 +16,7 @@ use windows::Win32::System::Threading::{
 use windows::core::{PCSTR, s};
 
 const EXECUTABLES: &[&str] = &["ZenlessZoneZero.exe", "ZenlessZoneZeroBeta.exe"];
-const INJECT_DLL: &str = "yuzuha.dll";
+const INJECT_DLL: &str = "patch.dll";
 
 fn main() -> ExitCode {
     let current_dir = std::env::current_dir().unwrap();

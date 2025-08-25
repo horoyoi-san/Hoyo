@@ -1,6 +1,6 @@
 use std::sync::atomic::{AtomicU32, Ordering};
 
-use yuzuha_codegen::use_offsets;
+use patch_codegen::use_offsets;
 
 use crate::interceptor::Interceptor;
 

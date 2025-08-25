@@ -64,7 +64,7 @@ pub fn use_offsets(attr: TokenStream, input: TokenStream) -> TokenStream {
 
 // Compile-time asset
 fn read_offsets_file() -> HashMap<String, usize> {
-    let file = std::fs::read_to_string("./yuzuha/offsets").expect("failed to read 'offsets' file");
+    let file = std::fs::read_to_string("./patch/offsets").expect("failed to read 'offsets' file");
 
     file.lines()
         .filter(|line| !line.starts_with('#') && !line.trim().is_empty())

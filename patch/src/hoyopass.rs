@@ -1,4 +1,4 @@
-use yuzuha_codegen::use_offsets;
+use patch_codegen::use_offsets;
 
 use crate::{BASE, interceptor::Interceptor};
 
