@@ -36,6 +36,13 @@ pub fn patch_encryption(interceptor: &mut Interceptor) {
             .collect::<Vec<_>>()
             .as_ptr(),
         ) as usize;
+
+//        *(BASE.get().unwrap().wrapping_add(CRYPTO_STR_2) as *mut usize) = ptr_to_string_ansi(
+//            CString::new("<color=#ff0000></color> | <color=#00ff00></color>")
+//                .unwrap()
+//                .to_bytes_with_nul()
+//                .as_ptr(),
+//        ) as usize;
     }
 
     interceptor.attach(NETWORK_STATE_CHANGE, |ctx| {
