@@ -23,7 +23,7 @@ def send_embed_message(webhook_url, title, description):
             "description": description,
             "color": 16777215,
             "thumbnail": {
-                "url": "https://pm1.aminoapps.com/7907/e8d49beedb38994b17921bc9418089a65f1cd250r1-512-512v2_uhq.jpg"
+                "url": "https://fastcdn.hoyoverse.com/static-resource-v2/2023/11/08/9db76fb146f82c045bc276956f86e047_6878380451593228482.png"
             },
             "image": {
                 "url": "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbG95NHBod3ozcDVkdWRnd2VsMDN4bnp2ZTVtbHM0ajloeTI5MTVrZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BTkUjxUFJckFGJEPIK/giphy.gif"

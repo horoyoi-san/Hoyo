@@ -23,7 +23,7 @@ def send_embed_message(webhook_url, title, description):
             "description": description,
             "color": 5814783,
             "thumbnail": {
-                "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjrW-mmUV0hEgI-5KN7jDZtrqweYaPssBIEw&s"
+                "url": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/starrail_hoyoverse.png"
             },
             "image": {
                 "url": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGVuNWQwZG91a200dnFkenp3eWg2NXR5N255OWF6Zmx5c24xNGk3dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/v0sHKtV91El8zcWYe2/giphy.gif"

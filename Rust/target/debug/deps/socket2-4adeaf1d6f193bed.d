@@ -1,9 +1,0 @@
-C:\Users\korrawit compara\OneDrive\Tài liệu\GitHub\Hoyo\Hoyo\Rust\target\debug\deps\socket2-4adeaf1d6f193bed.d: C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\lib.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sockaddr.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\socket.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sockref.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sys\windows.rs
-
-C:\Users\korrawit compara\OneDrive\Tài liệu\GitHub\Hoyo\Hoyo\Rust\target\debug\deps\libsocket2-4adeaf1d6f193bed.rmeta: C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\lib.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sockaddr.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\socket.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sockref.rs C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sys\windows.rs
-
-C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\lib.rs:
-C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sockaddr.rs:
-C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\socket.rs:
-C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sockref.rs:
-C:\Users\korrawit\ compara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\socket2-0.5.9\src\sys\windows.rs:

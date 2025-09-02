@@ -3,7 +3,7 @@ from datetime import datetime
 
 # ✅ ใส่ API URLs ทั้ง 5 อัน
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=U5hbdsT9W7&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8",
 
 
 ]
@@ -24,7 +24,7 @@ def send_embed_message(webhook_url, title, description):
             "description": description,
             "color": 16753920,
             "thumbnail": {
-                "url": "https://play-lh.googleusercontent.com/DEkjrvPufl6TG4Gxq4m8goCSLYiE1bLNOTnlKrJbHDOAWZT40qG3oyALMZJ2BPHJoe8"
+                "url": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nap.png"
             },
             "image": {
                 "url": "https://i0.wp.com/www.consolecreatures.com/wp-content/uploads/2024/05/zenless-zone-zero-july.webp"

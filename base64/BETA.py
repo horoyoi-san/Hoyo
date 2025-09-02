@@ -6,8 +6,8 @@ from datetime import datetime
 
 # Webhook
 webhook_urls = {
-    "Beta": 'https://discord.com/api/webhooks/1288821857469988965/zLuca-BLv_K1OwlSDh-zPhKw4W8yhI13uNHJkbVY-wG8I4aEG0wIF8m2RyGWPV5BT41M',
-    "Beta-2": 'https://discord.com/api/webhooks/1290276844213506098/GUgxJKlfomvt90B_kgaZmOunWiAQ6qHkOc8BuvQXHenMyeJpA6PsyTfshHslY_VjUoJp',
+    "Wuthering Waves Beta": 'https://discord.com/api/webhooks/1403329828253601822/PyzXAXfK3n0-N3Eqxk12oQRaopJGSkCqph1B_xQT1VHcVnJU4tPNyNTY_GNKp2S1iQv6',
+    "Wuthering Waves Beta 2": 'https://discord.com/api/webhooks/1403331007087640597/NvAF8of51-aYnmjwaymhs-fC1C_hnxs1iYCOiNASGOIyFqS5VEbYiO4K35LSqLfo8qan',
     "Teat": 'https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ'
 }
 
@@ -16,10 +16,10 @@ last_data = None
 
 # URL ที่จะตรวจสอบ
 urls = {
-    "CNBETAAndroid": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.3.52&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
-    "OSBETAAndroid": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.3.52&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
-    "CNBETAWin": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.3.53&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
-    "OSBETAWin": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.3.53&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1"
+    "CNBETAAndroid": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.5.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "OSBETAAndroid": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.5.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "CNBETAWin": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.5.50&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "OSBETAWin": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.5.50&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1"
 }
 
 def decode_data(raw_data):

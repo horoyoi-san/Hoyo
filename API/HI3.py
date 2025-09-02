@@ -26,7 +26,7 @@ def send_embed_message(webhook_url, title, description):
             "description": description,
             "color": 16776960,
             "thumbnail": {
-                "url": "https://static.wikitide.net/hoyodexwiki/0/0d/Honkai_Impact_3rd.png"
+                "url": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/04/24/a27d6bb13beafb7fbb42709512e83cf8_4035830369456005808.png"
             },
             "image": {
                 "url": "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWR6cXBscmNoNWI0dHk4bGI5ZTc2NnNobG92Yzk2bnpsYzVibTY1dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Fl5sry3Qr7FJea2TR5/giphy.gif"

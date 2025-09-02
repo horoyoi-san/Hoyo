@@ -16,7 +16,7 @@ API_BASE_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePack
 # These game_ids are already present in your original URL.
 # We'll parse them from the full URL or define them here for clarity.
 # For simplicity, we'll use the full URL as the base for fetching all data first.
-FULL_HOYO_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids%5B%5D=wkE5P5WsIf&game_ids%5B%5D=5TIVvvcwtM&game_ids%5B%5D=g0mMIvshDb&game_ids%5B%5D=uxB4MC7nzC&game_ids%5B%5D=bxPTXSET5t&game_ids%5B%5D=gopR6Cufr3&game_ids%5B%5D=4ziysqXOQ8&game_ids%5B%5D=U5hbdsT9W7&launcher_id=VYTpXlbWo8"
+FULL_HOYO_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=VYTpXlbWo8"
 
 DOWNLOAD_TIMEOUT = 30 # seconds for each request
 CHUNK_SIZE = 8192 # bytes for file chunks
@@ -229,19 +229,19 @@ class HoyoAPIViewerApp:
 
 
     def _display_single_game_packages(self, gp):
-        """Displays extracted Hoyoverse package data for a single game and creates download buttons."""
+        """แสดงข้อมูลแพ็คเกจเกมและสร้างปุ่มดาวน์โหลด"""
         self.output_text.delete(1.0, tk.END)
-        self.packages_to_download.clear() # Clear previous packages for new selection
+        self.packages_to_download.clear()  # เคลียร์รายการดาวน์โหลดเดิม
 
-        # Clear dynamic buttons
+        # เคลียร์ปุ่มดาวน์โหลดเดิม
         for widget in self.dynamic_buttons_scrollframe.winfo_children():
             widget.destroy()
 
-        self.output_text.tag_configure("title", font=("Consolas", 14, "bold"), foreground="#007acc")
-        self.output_text.tag_configure("subtitle", font=("Consolas", 12, "bold"), foreground="#005a9e")
-        self.output_text.tag_configure("section", font=("Consolas", 11, "bold"), foreground="#003f6b")
-        self.output_text.tag_configure("normal", font=("Consolas", 11), foreground="#000000")
-        self.output_text.tag_configure("url", font=("Consolas", 10, "underline"), foreground="blue")
+        # กำหนด style ของข้อความ
+        self.output_text.tag_configure("subtitle", font=("Arial", 14, "bold"))
+        self.output_text.tag_configure("section", font=("Arial", 12, "bold"))
+        self.output_text.tag_configure("normal", font=("Arial", 10))
+        self.output_text.tag_configure("url", foreground="blue", underline=True)
 
         game_id = gp.get("game", {}).get("id", "N/A")
         biz = gp.get("game", {}).get("biz", "N/A")
@@ -252,6 +252,7 @@ class HoyoAPIViewerApp:
         version = major.get("version", "N/A")
         self.output_text.insert(tk.END, f"🔖 เวอร์ชันหลัก: {version}\n\n", "section")
 
+        # แสดงแพ็คเกจหลัก (major)
         game_pkgs = major.get("game_pkgs", [])
         audio_pkgs = major.get("audio_pkgs", [])
 
@@ -280,16 +281,52 @@ class HoyoAPIViewerApp:
                 self.packages_to_download.append(("AudioPkg", f"{biz} v{version} audio {lang}", url, md5))
             self.output_text.insert(tk.END, "\n")
 
+        main = gp.get("main", {})
+        print("DEBUG main keys:", main.keys())  # ดูว่ามี pre_download หรือไม่
+        pre_download = main.get("pre_download", None)
+        print("DEBUG pre_download:", pre_download)
+
+        # แสดงแพ็คเกจ pre_download
+        pre_download = main.get("pre_download", {})
+        if pre_download:
+            self.output_text.insert(tk.END, "📦 แพ็คเกจดาวน์โหลดล่วงหน้า:\n", "section")
+            pre_download_game_pkgs = pre_download.get("game_pkgs", [])
+            pre_download_audio_pkgs = pre_download.get("audio_pkgs", [])
+
+            if pre_download_game_pkgs:
+                self.output_text.insert(tk.END, "  - แพ็คเกจเกมหลัก (Pre-download):\n", "section")
+                for i, pkg in enumerate(pre_download_game_pkgs, 1):
+                    size_gb = int(pkg.get("size", "0")) / (1024**3)
+                    md5 = pkg.get("md5", "N/A")
+                    url = pkg.get("url", "")
+                    self.output_text.insert(tk.END, f"    {i}. ขนาด: {size_gb:.2f} GB | MD5: {md5}\n", "normal")
+                    self.output_text.insert(tk.END, "       URL: ", "normal")
+                    self.output_text.insert(tk.END, f"{url}\n", "url")
+                    self.packages_to_download.append(("PreGamePkg", f"{biz} v{version} pre-download part {i}", url, md5))
+                self.output_text.insert(tk.END, "\n")
+
+            if pre_download_audio_pkgs:
+                self.output_text.insert(tk.END, "  - แพ็คเกจเสียง (Pre-download):\n", "section")
+                for i, pkg in enumerate(pre_download_audio_pkgs, 1):
+                    lang = pkg.get("language", "N/A")
+                    size_gb = int(pkg.get("size", "0")) / (1024**3)
+                    md5 = pkg.get("md5", "N/A")
+                    url = pkg.get("url", "")
+                    self.output_text.insert(tk.END, f"    {i}. ภาษา: {lang} | ขนาด: {size_gb:.2f} GB | MD5: {md5}\n", "normal")
+                    self.output_text.insert(tk.END, "       URL: ", "normal")
+                    self.output_text.insert(tk.END, f"{url}\n", "url")
+                    self.packages_to_download.append(("PreAudioPkg", f"{biz} v{version} pre-download audio {lang}", url, md5))
+                self.output_text.insert(tk.END, "\n")
+
         self.output_text.insert(tk.END, "🔽 คลิกปุ่มด้านล่างเพื่อดาวน์โหลดไฟล์แต่ละแพ็คเกจ\n\n", "section")
 
-        # Create dynamic download buttons
+        # สร้างปุ่มดาวน์โหลดแบบไดนามิก
         for ptype, pname, url, md5 in self.packages_to_download:
             btn = ttk.Button(self.dynamic_buttons_scrollframe, text=f"⬇️ ดาวน์โหลด {ptype}: {pname}",
                              command=lambda u=url, m=md5, n=pname: self._start_single_download(u, m, n))
             btn.pack(pady=2, anchor='w', fill=tk.X)
 
         self._update_status(f"ข้อมูลแพ็คเกจสำหรับ {biz} พร้อมใช้งาน", logging.INFO)
-
 
     def _start_single_download(self, url, md5_checksum, package_name):
         """Initiates a single file download process."""
