@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RollForward>Major</RollForward>
+		<LangVersion>Latest</LangVersion>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
+		<Version>2.0.0</Version>
+		<ApplicationIcon>image.ico</ApplicationIcon>
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+		<PublishAot>false</PublishAot>
+	</PropertyGroup>
+
+	<!-- Disable AOT for win-x86 -->
+	<PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x86'">
+		<PublishAot>false</PublishAot>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Guardian\**" />
+		<EmbeddedResource Remove="Guardian\**" />
+		<None Remove="Guardian\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="image.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Unobtanium.Web.Proxy" Version="0.1.5" />
+	</ItemGroup>
+
+	<!-- Build or publish Guardian before main project depending on RID -->
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(OS)' == 'Windows_NT'">
+		<Exec Condition="'$(RuntimeIdentifier)' == ''"
+			  Command="echo Building Guardian (no RID)...&#xD;&#xA;dotnet build &quot;$(ProjectDir)Guardian&quot; --configuration $(Configuration) --output &quot;$(OutDir)tool&quot;" />
+		<Exec Condition="'$(RuntimeIdentifier)' != ''"
+			  Command="echo Publishing Guardian with RID=$(RuntimeIdentifier)...&#xD;&#xA;dotnet publish &quot;$(ProjectDir)Guardian&quot; --configuration $(Configuration) --output &quot;$(OutDir)publish\tool&quot; -r $(RuntimeIdentifier)" />
+	</Target>
+
+</Project>

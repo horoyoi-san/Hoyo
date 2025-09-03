@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<RootNamespace>SR.Tool.Proxy.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<AssemblyName>SR.Tool.Proxy.$(MSBuildProjectName)</AssemblyName>
+	</PropertyGroup>
+
+	<!-- Optional: Only enable AOT when building explicitly for win-x64 -->
+	<PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+		<PublishAot></PublishAot>
+	</PropertyGroup>
+
+	<!-- Disable AOT when targeting win-x86 to avoid build error -->
+	<PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x86'">
+		<PublishAot>false</PublishAot>
+	</PropertyGroup>
+
+</Project>
