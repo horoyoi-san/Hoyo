@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SR Tools TH",
-  description: "Tools  ",
+  description: "เครื่องมือ SR Tools สำหรับผู้เล่นภาษาไทย",
   icons: {
     icon: "/sr-tool.png",
     shortcut: "/ff-srtool.ico",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "SR Tools TH",
-    description: "Tools  ",
+    description: "เครื่องมือ SR Tools สำหรับผู้เล่นภาษาไทย",
     url: "https://srtools.th",
     siteName: "SR Tools TH",
     images: [
@@ -50,10 +50,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "SR Tools TH",
-    description: "Tools  ",
+    description: "เครื่องมือ SR Tools สำหรับผู้เล่นภาษาไทย",
     images: ["https://srtools.th/sr-tool.png"],
   },
 };
+
 
 export default async function RootLayout({
   children,
