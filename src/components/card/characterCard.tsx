@@ -18,7 +18,7 @@ export default function CharacterCard({ data }: CharacterCardProps) {
     className="z-10 flex flex-col items-center rounded-xl shadow-xl 
                bg-gradient-to-br from-base-300 via-base-100 to-warning/70
                transform transition-transform duration-300 ease-in-out 
-               hover:scale-105 cursor-pointer min-h-[170px] sm:min-h-[180px] md:min-h-[210px] lg:min-h-[220px] xl:min-h-[240px] 2xl:min-h-[340px]"
+               hover:scale-105 cursor-pointer min-h-[110px] sm:min-h-[120px] md:min-h-[150px] lg:min-h-[160px] xl:min-h-[180px] 2xl:min-h-[280px]"
     >
       <div
         className={`w-full rounded-md bg-gradient-to-br ${data.rank === "CombatPowerAvatarRarityType5"
