@@ -4,6 +4,7 @@ export interface RelicBasicRawEffect {
     kr: string;
     cn: string;
     jp: string;
+    th: string;
 }
 
 export interface RelicBasicRaw {
@@ -12,6 +13,7 @@ export interface RelicBasicRaw {
     kr: string;
     cn: string;
     jp: string;
+    th: string;
     set: Map<string, RelicBasicRawEffect>;
 }
 

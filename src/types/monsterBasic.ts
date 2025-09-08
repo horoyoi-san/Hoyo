@@ -9,6 +9,7 @@ export interface MonsterBasicRaw {
     kr: string;
     cn: string;
     jp: string;
+    th: string;
 }
 
 export interface MonsterBasic {

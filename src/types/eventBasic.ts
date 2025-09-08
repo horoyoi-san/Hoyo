@@ -9,6 +9,7 @@ export interface EventBasicRaw {
     kr: string;
     cn: string;
     jp: string;
+    th: string;
 }
 
 export interface EventBasic {

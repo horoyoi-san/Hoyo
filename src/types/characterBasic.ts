@@ -9,6 +9,7 @@ export interface CharacterBasicRaw  {
     kr: string;
     cn: string;
     jp: string;
+    th: string;
 }
 
 export interface CharacterBasic {

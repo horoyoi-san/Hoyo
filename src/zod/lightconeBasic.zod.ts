@@ -9,4 +9,5 @@ export const lightConeBasicRawSchema = z.object({
   kr: z.string(),
   cn: z.string(),
   jp: z.string(),
+  th: z.string()
 });

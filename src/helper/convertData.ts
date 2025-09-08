@@ -5,7 +5,8 @@ export function convertRelicSet(id: string, item: RelicBasicRaw): RelicBasic {
         ['en', item.en],
         ['kr', item.kr],
         ['cn', item.cn],
-        ['jp', item.jp]
+        ['jp', item.jp],
+        ['th', item.th]
     ]);
 
     const setRelic = new Map<string, RelicBasicEffect>();
@@ -17,7 +18,8 @@ export function convertRelicSet(id: string, item: RelicBasicRaw): RelicBasic {
                 ['en', value.en],
                 ['kr', value.kr],
                 ['cn', value.cn],
-                ['jp', value.jp]
+                ['jp', value.jp],
+                ['th', value.th]
             ])
         });
     });
@@ -37,7 +39,8 @@ export function convertLightcone(id: string, item: LightConeBasicRaw): LightCone
         ['en', item.en],
         ['kr', item.kr],
         ['cn', item.cn],
-        ['jp', item.jp]
+        ['jp', item.jp],
+        ['th', item.th]
     ]);
     const result: LightConeBasic = {
         rank: item.rank,
@@ -56,7 +59,8 @@ export function convertAvatar(id: string, item: CharacterBasicRaw): CharacterBas
         ['en', item.en],
         ['kr', item.kr],
         ['cn', item.cn],
-        ['jp', item.jp]
+        ['jp', item.jp],
+        ['th', item.th]
     ]);
     let text = ""
     if (Number(id) % 2 === 0 && Number(id) > 8000) {
@@ -69,6 +73,7 @@ export function convertAvatar(id: string, item: CharacterBasicRaw): CharacterBas
         lang.set("kr", text)
         lang.set("cn", text)
         lang.set("jp", text)
+        lang.set("th", text)
     }
     const result: CharacterBasic = {
         release: item.release,
@@ -89,7 +94,8 @@ export function convertEvent(id: string, item: EventBasicRaw): EventBasic {
         ['en', item.en],
         ['kr', item.kr],
         ['cn', item.cn],
-        ['jp', item.jp]
+        ['jp', item.jp],
+        ['th', item.th]
     ]);
     const result: EventBasic = {
         lang: lang,
@@ -109,7 +115,8 @@ export function convertMonster(id: string, item: MonsterBasicRaw): MonsterBasic 
         ['en', item.en],
         ['kr', item.kr],
         ['cn', item.cn],
-        ['jp', item.jp]
+        ['jp', item.jp],
+        ['th', item.th]
     ]);
     const result: MonsterBasic = {
         id: id,

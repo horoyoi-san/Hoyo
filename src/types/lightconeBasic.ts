@@ -6,6 +6,7 @@ export interface LightConeBasicRaw  {
     kr: string;
     cn: string;
     jp: string;
+    th: string;
 }
 
 export interface LightConeBasic {
