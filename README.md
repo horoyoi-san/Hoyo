@@ -2,6 +2,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+ติดตั้ง
+```
+npm install
+
+# อัปเกรดเป็นเวอร์ชันล่าสุด
+npm install daisyui@latest
+
+# หรือดาวน์เกรดเป็นเวอร์ชันก่อนหน้า (ที่เสถียรกว่า)
+npm install daisyui@5.0.27
+```
 First, run the development server:
 
 ```bash

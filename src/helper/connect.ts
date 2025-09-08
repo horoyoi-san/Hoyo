@@ -60,7 +60,7 @@ export const syncDataToPS = async (): Promise<{ success: boolean, message: strin
     if (!urlQuery.startsWith("http://") && !urlQuery.startsWith("https://")) {
         urlQuery = `http://${urlQuery}`
     }   
-    if (connectionType === "FireflyGo") {
+    if (connectionType === "SRGo") {
         urlQuery = "http://localhost:21000/sync"
     } else if (connectionType === "Other" && privateType === "Server") {
         const response = await SendDataThroughProxy({data: {username, password, serverUrl, data, method: "POST"}})

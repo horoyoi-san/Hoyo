@@ -24,34 +24,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Firefly SrTools",
-  description: "SrTools by Kain",
+  title: "SR Tools TH",
+  description: "Tools  ",
   icons: {
-    icon: "/ff-srtool.png",
+    icon: "/sr-tool.png",
     shortcut: "/ff-srtool.ico",
-    apple: "/ff-srtool.png",
+    apple: "/sr-tool.png",
   },
   openGraph: {
-    title: "Firefly SrTools",
-    description: "SrTools by Kain",
-    url: "https://srtools.kain.id.vn",
-    siteName: "Firefly SrTools",
+    title: "SR Tools TH",
+    description: "Tools  ",
+    url: "https://srtools.th",
+    siteName: "SR Tools TH",
     images: [
       {
-        url: "https://srtools.kain.id.vn/ff-srtool.png",
+        url: "https://srtools.th/sr-tool.png",
         width: 630,
         height: 630,
-        alt: "Firefly SrTools Logo",
+        alt: "SR Tools TH Logo",
       },
     ],
-    locale: "en_US",
+    locale: "th_TH",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Firefly SrTools",
-    description: "SrTools by Kain",
-    images: ["https://srtools.kain.id.vn/ff-srtool.png"],
+    title: "SR Tools TH",
+    description: "Tools  ",
+    images: ["https://srtools.th/sr-tool.png"],
   },
 };
 

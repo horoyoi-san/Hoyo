@@ -286,15 +286,15 @@ export default function Header() {
 
                 <a className="hidden sm:grid sm:grid-cols-1 items-start justify-items-center text-left gap-0 hover:scale-105 px-2">
                     <div className="flex items-center justify-center gap-2">
-                        <Image src="/ff-srtool.png" alt="Logo" width={50} height={50} />
+                        <Image src="/sr-tool.png" alt="Logo" width={50} height={50} />
                         <div className="flex flex-col justify-center items-start">
                             <h1 className="text-xl font-bold">
-                                <span className="text-emerald-500">Firefly Sr</span>
+                                <span className="text-emerald-500">SR</span>
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-orange-500 to-red-500">
                                     Tools
                                 </span>
                             </h1>
-                            <p className="text-sm text-gray-500">By Kain</p>
+                            <p className="text-sm text-gray-500">By Horoyoi-san</p>
                         </div>
                     </div>
                 </a>
@@ -485,7 +485,7 @@ export default function Header() {
                 {/* GitHub Link */}
                 <Link
                     className='hidden sm:flex btn btn-ghost btn-sm btn-circle bg-white/20 hover:bg-white/100 transition-all duration-200 items-center justify-center'
-                    href={"https://github.com/AzenKain/Firefly-Srtools"}
+                    href={"https://github.com/horoyoi-san/Hoyo/tree/SR-tools"}
                     target="_blank"
                     rel="noopener noreferrer"
                 >

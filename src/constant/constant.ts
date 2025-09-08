@@ -3,7 +3,8 @@ export const listCurrentLanguage = {
     ko: "KR",
     en: "US",
     vi: "VN",
-    zh: "CN"
+    zh: "CN",
+    th: "TH"
 };
 
 export const listCurrentLanguageApi : Record<string, string> = {
@@ -11,7 +12,8 @@ export const listCurrentLanguageApi : Record<string, string> = {
     ko: "kr",
     en: "en",
     vi: "en",
-    zh: "cn"
+    zh: "cn",
+    th: "th"
 };
 
 export const mappingStats = <Record<string, {name: string, icon: string, unit: string, baseStat: string}> > {
