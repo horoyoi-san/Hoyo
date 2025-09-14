@@ -1,13 +1,18 @@
 # API HSR
-| Version | File name | Download link|
+| Version | Name Game | Download link|
 | :--- | :--- | :--- |
-| beta-apk-cn | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| CNBETAAndroid | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| OSBETAAndroid | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| CNBETAWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.5.55&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| OSBETAWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| CNCECREATIONWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNCECREATIONWin3.5.55&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| OSCECREATIONWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSCECREATIONWin3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
 
 # API global
 
-| Version | File name | Download link|
+| Version | Name Game | Download link|
 | :--- | :--- | :--- |
-| OSPRODWin | Launcher | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=VYTpXlbWo8 |
+| OSWin | Launcher | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?&launcher_id=VYTpXlbWo8 |
 | bh3_global | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8 |
 | bh3_global | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8 |
 | bh3_global | HI3 | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8 |
@@ -19,9 +24,9 @@
 
 # API cn
 
-| Version | File name | Download link|
+| Version | Name Game | Download link|
 | :--- | :--- | :--- |
-| OSPRODWin | Launcher | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=jGHBHlcOq1 |
+| CNWin | Launcher | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=jGHBHlcOq1 |
 | bh3_cn | HI3 | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=osvnlOc0S8&launcher_id=jGHBHlcOq1 |
 | hk4e_cn | GI | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1 |
 | hkrpg_cn | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
@@ -29,7 +34,7 @@
 
 # API Bilibili
 
-| Version | File name | Download link|
+| Version | Name Game | Download link|
 | :--- | :--- | :--- |
 | CNPRODWin | HI3 |  |
 | CNPRODWin | GI | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=umfgRO5gh5 |
@@ -37,7 +42,7 @@
 | CNPRODWin | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?launcher_id=xV0f4r1GT0 |
 
 # API APK
-| Version | File name | Download link|
+| Version | Name Game | Download link|
 | :--- | :--- | :--- |
 | CNPRODAndroid | GI | https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_default |
 | Cloud CNPRODAndroid | GI | https://api-takumi.mihoyo.com/event/download_porter/link/clgm_cn/official/default |
