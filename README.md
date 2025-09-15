@@ -8,6 +8,15 @@
 | CNCECREATIONWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNCECREATIONWin3.5.55&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
 | OSCECREATIONWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSCECREATIONWin3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
 
+# API HSR
+| Version | Name Game | Download link|
+| :--- | :--- | :--- |
+| CNBETAAndroid | HNA |  |
+| OSBETAAndroid | HNA |  |
+| CNBETAWin | HNA |  |
+| OSBETAWin | HNA | https://prod-global-os-dispatch01-outer.hknexusanima.com/query_dispatch?version=OSCBWindows0.3.0&platform_type=3&key_id=1&language_type=1&channel_id=1&sub_channel_id=1 |
+
+
 # API global
 
 | Version | Name Game | Download link|
@@ -21,6 +30,8 @@
 | hk4e_global | GI | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8 |
 | hkrpg_global | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8 |
 | nap_global | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
+| abc_global | HNA |  |
+
 
 # API cn
 
@@ -31,6 +42,7 @@
 | hk4e_cn | GI | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1 |
 | hkrpg_cn | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
 | nap_cn | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
+| abc_cn | HNA |  |
 
 # API Bilibili
 
