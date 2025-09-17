@@ -137,3 +137,34 @@
 | 1421 | Pan Yinhu | PanYinhu |
 | 2011 | Wise | Wise |
 | 2021 | Belle | Belle |
+
+-----
+
+# HNA character ids!!
+
+|  ID  | NAME |
+| :--: | :--: |
+| 002 | Breadhead |
+| 010 | Nanafey |
+| 011 | Hua |
+| 012 | Kiana Kaslana |
+| 013 | ??? |
+| 014 | Maple Manybell |
+| 015 | Cassio Rolex |
+| 101 | Victus |
+| 102 | Kumyo Kyo |
+| 105 | Amstradath |
+| 110 | Darsea |
+| 114 | ??? |
+| 214 | Amorphirion |
+| 216 | Prabhas |
+| 217 | Armand |
+| 222 | Blade |
+| 229 | Parayaya |
+| 234 | Sir Champion |
+| 268 | ??? |
+
+theoretically 001 - 015, 101 - 114, and 201 - 268 should all exist as well
+
+i currently have no idea what 0xx, 1xx, 2xx mean for ids in data, may relate to regions or something like hsr? and no apeiron id yet
+- donut
