@@ -13,8 +13,9 @@
 | :--- | :--- | :--- |
 | CNBETAAndroid | HNA |  |
 | OSBETAAndroid | HNA |  |
-| CNBETAWin | HNA | https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC |
-| OSBETAWin | HNA | https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s |
+| CNBETAWin | HNA | https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s |
+| OSBETAWin | HNA | https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC |
+
 
 
 # API global
