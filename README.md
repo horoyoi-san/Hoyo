@@ -13,8 +13,8 @@
 | :--- | :--- | :--- |
 | CNBETAAndroid | HNA |  |
 | OSBETAAndroid | HNA |  |
-| CNBETAWin | HNA |  |
-| OSBETAWin | HNA | https://prod-global-os-dispatch01-outer.hknexusanima.com/query_dispatch?version=OSCBWindows0.3.0&platform_type=3&key_id=1&language_type=1&channel_id=1&sub_channel_id=1 |
+| CNBETAWin | HNA | https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC |
+| OSBETAWin | HNA | https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s |
 
 
 # API global
