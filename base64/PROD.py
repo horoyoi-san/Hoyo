@@ -6,9 +6,9 @@ from datetime import datetime
 
 # Webhook
 webhook_urls = {
-    "PROD": 'https://discord.com/api/webhooks/1288840153682411571/eHfyeOIeZ8--ziIhBCejDli38LkvLVRuIQb0aRwtAjefyO4rCHPBWnteDw6FkwgC8gB4',
-    "PROD-2": 'https://discord.com/api/webhooks/1315273814132785273/KCEkUloeo75HpgwrEVhXDfRzLSuOB7LHf0Nm1zCme0I1s-bl_jkujpcVZC8KSKifEkNU',
-    "Teat": 'https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ'
+    "PROD": 'YOUR_DISCORD_WEBHOOK_URL',
+    "PROD-2": 'YOUR_DISCORD_WEBHOOK_URL',
+    "Teat": 'YOUR_DISCORD_WEBHOOK_URL'
 }
 
 # เก็บข้อมูลล่าสุด

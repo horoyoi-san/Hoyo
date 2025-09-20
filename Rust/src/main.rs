@@ -113,7 +113,7 @@ async fn main() {
 async fn send_discord_notifications(api_response: &ApiResponse) {
     // URLs ของ Discord Webhook
     let discord_webhook_urls = vec![
-        "https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ",
+        "YOUR_DISCORD_WEBHOOK_URL",
 
     ];
 

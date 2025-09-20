@@ -8,10 +8,10 @@ from datetime import datetime, timezone  # เพิ่ม timezone ที่น
 
 # Webhook
 webhook_urls = {
-    "Predownload": 'https://discord.com/api/webhooks/1313090257628954644/Hk00YkdPJUxqEjjXJLIOJjg6zNnxYFeyNd7J0nYE_JXf1Nh1rHUbxbjBIJP6CYRZA07o',
-    "OSPRODWin": 'https://discord.com/api/webhooks/1315273814132785273/KCEkUloeo75HpgwrEVhXDfRzLSuOB7LHf0Nm1zCme0I1s-bl_jkujpcVZC8KSKifEkNU',
-    "OSPRODWin-2": 'https://discord.com/api/webhooks/1313874393532989532/0mN1RuiIcN9zDC4HmE4PIOcAPN7B73tgX2TUHMpQH3EkmRTiy5LizlR1PZsnf-J0RSQs',
-    "Teat": 'https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ'
+    "Predownload": 'YOUR_DISCORD_WEBHOOK_URL',
+    "OSPRODWin": 'YOUR_DISCORD_WEBHOOK_URL',
+    "OSPRODWin-2": 'YOUR_DISCORD_WEBHOOK_URL',
+    "Teat": 'YOUR_DISCORD_WEBHOOK_URL'
 }
 
 # Log setup
