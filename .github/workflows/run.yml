@@ -22,11 +22,15 @@ jobs:
         run: pip install requests
 
       - name: Run all game monitors
+
+      # กำหนดค่า environment variables สำหรับ webhook URLs
         env:
           WEBHOOK1: ${{ secrets.WEBHOOK1 }}
           WEBHOOK2: ${{ secrets.WEBHOOK2 }}
           WEBHOOK3: ${{ secrets.WEBHOOK3 }}
           WEBHOOK4: ${{ secrets.WEBHOOK4 }}
+          
+        #รันสคริปต์ Python สำหรับแต่ละเกม 
         run: |
           python GI.py
           python HI3.py
