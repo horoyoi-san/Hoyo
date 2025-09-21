@@ -80,7 +80,7 @@ for index, api_url in enumerate(api_urls, start=1):
         # ดึงข้อมูล display
         game_info_url = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGames?&launcher_id=95ODRGH3xC"
         resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == "gopR6Cufr3")
+        game_data = next(g for g in resp["data"]["games"] if g["id"] == "4qvmDrMwKS")
         game_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]
