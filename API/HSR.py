@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime, timezone
+import os
 
 # ✅ API URLs
 api_urls = [
@@ -8,11 +9,10 @@ api_urls = [
 
 # ✅ Discord Webhooks
 webhook_urls = [
-    "YOUR_DISCORD_WEBHOOK_URL",
-    "YOUR_DISCORD_WEBHOOK_URL",
-    "YOUR_DISCORD_WEBHOOK_URL",
-    "YOUR_DISCORD_WEBHOOK_URL",
-
+    os.environ.get("WEBHOOK1"),
+    os.environ.get("WEBHOOK2"),
+    os.environ.get("WEBHOOK3"),
+    os.environ.get("WEBHOOK4"),
 ]
 
 # ✅ ดึงข้อมูลเกม gopR6Cufr3 จาก getGames
