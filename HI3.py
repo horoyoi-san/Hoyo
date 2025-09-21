@@ -27,7 +27,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_n
         "embeds": [{
             "title": title,
             "description": description,
-            "color": 16777215,
+            "color": 16776960,
             "thumbnail": {"url": icon_url},
             "image": {"url": bg_url},
             "footer": {
