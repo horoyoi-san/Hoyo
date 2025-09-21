@@ -57,7 +57,11 @@ GAME_COLORS = {
     "gopR6Cufr3": 0xF3F3F3,   # Genshin ขาว
     "4ziysqXOQ8": 0xE800FF,   # Star Rail ชมพู
     "4qvmDrMwKS": 0x00FFFF,   # Honkai Nexus Anima ฟ้า
-    "5TIVvvcwtM": 0xE4FF00,   # HI3 มเหลือง
+    "5TIVvvcwtM": 0xE4FF00,   # HI3 glb เหลือง
+    "g0mMIvshDb": 0xE4FF00,   # HI3 jp เหลือง
+    "uxB4MC7nzC": 0xE4FF00,   # HI3 kr เหลือง
+    "bxPTXSET5t": 0xE4FF00,   # HI3 overseas เหลือง
+    "wkE5P5WsIf": 0xE4FF00,   # HI3 tw เหลือง
 }
 
 # ฟังก์ชันส่ง embed message
