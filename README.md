@@ -3,7 +3,7 @@
 2. ด้านซ้ายหาเมนู Secrets and variables > Actions
 3. กดปุ่ม New repository secret เพื่อเพิ่มทีละตัว
 
-![alt text](image\image.png)
+![alt text](image/image.png)
 
 # สิ่งที่ต้องเพิ่ม
 ## 1. ชื่อ
@@ -20,7 +20,7 @@ Secret *
 
 เพราะชื่อเราได้ตั้งไว้ในไฟล์ run.yml แล้ว
 
-![alt text](image\image-3.png)
+![alt text](image/image-3.png)
 
 ## 2. Webhook
 
@@ -35,14 +35,14 @@ Secret *
 
 เพิ่มเสร็จกด Add secret
 
-![alt text](image\image-1.png)
+![alt text](image/image-1.png)
 ## คุณก็จะได้
-![alt text](image\image-2.png)
+![alt text](image/image-2.png)
 
 พอเพิ่มครบแล้ว เวลา GitHub Actions มันรัน มันจะใช้ค่าเหล่านี้ในการดึงประกาศเกมไปโพสต์ที่ Discord ของคุณ
 
 ตั้งค่าไฟล์ run.yml ให้เรียบร้อย
-![alt text](image\image-4.png)
+![alt text](image/image-4.png)
 
 # ขั้นต่อไป
 
@@ -58,7 +58,7 @@ Secret *
 
 ถ้า Secrets ถูกต้อง → workflow จะดึงประกาศจากเกมมาโพสต์ใน Discord channel ของคุณอัตโนมัติ
 
-![alt text](image\image-5.png)
+![alt text](image/image-5.png)
 
 ## ขั้นที่ 1: ตั้ง Permissions ของ Workflow
     - เข้าไปที่รีโปของคุณ → Settings → Actions → General
@@ -78,4 +78,4 @@ Secret *
     - ถ้ามี error → GitHub Actions จะแสดง log ให้ดู
 
 
-![alt text](image\image-7.png)
+![alt text](image/image-7.png)
