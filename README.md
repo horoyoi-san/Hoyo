@@ -1,4 +1,5 @@
 # HSR Character IDs
+   <details><summary>IDs</summary>
 
 |  ID  | NAME | 
 | :--: | :--: |
@@ -92,8 +93,12 @@
 | 8007 | Remembrance Male MC |
 | 8008 | Remembrance Female MC |
 | 9982 | Aether Divide MC |
-----
+
+   <details>
+
 # ZZZ Character IDs
+
+   <details><summary>IDs</summary>
 
 |  ID  | NAME | CODENAME |
 | :--: | :--: | :--: |
@@ -138,9 +143,12 @@
 | 2011 | Wise | Wise |
 | 2021 | Belle | Belle |
 
------
+   <details>
 
 # HNA character ids!!
+
+   <details>
+   <summary>IDs</summary>
 
 |  ID  | NAME |
 | :--: | :--: |
@@ -168,3 +176,4 @@ theoretically 001 - 015, 101 - 114, and 201 - 268 should all exist as well
 
 i currently have no idea what 0xx, 1xx, 2xx mean for ids in data, may relate to regions or something like hsr? and no apeiron id yet
 - donut
+   <details>
