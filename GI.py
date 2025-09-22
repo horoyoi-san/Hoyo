@@ -13,9 +13,10 @@ webhook_urls = [
 ]
 
 # API URL + Game name
-api_targets = [
-    ("GI", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8"),
+api_urls = [
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8",
 ]
+
 
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
@@ -82,7 +83,7 @@ def has_changed(api_url, game_name):
 
 # Main loop สำหรับทุก API
 for api_url in api_urls:
-    game_name = "HSR"
+    game_name = "GI"
     try:
         if not has_changed(api_url, game_name):
             print(f"[{game_name}] No change, skipping webhook")

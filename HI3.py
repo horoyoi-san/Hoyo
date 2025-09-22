@@ -85,9 +85,10 @@ def has_changed(api_url, game_name):
     return False
 
 # Main loop สำหรับทุก API
-for api_url in api_urls:
-    game_name = "HSR"
+# Main loop สำหรับทุก API
+for game_name, api_url in api_targets:
     try:
+        # ตรวจสอบการเปลี่ยนแปลงก่อน
         if not has_changed(api_url, game_name):
             print(f"[{game_name}] No change, skipping webhook")
             continue
@@ -98,7 +99,7 @@ for api_url in api_urls:
         # ดึงข้อมูล display
         game_info_url = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
         resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == "5TIVvvcwtM")
+        game_data = next(g for g in resp["data"]["games"] if g["id"] in api_url)  # map id ให้ตรง
         display_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]
