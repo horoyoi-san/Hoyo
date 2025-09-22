@@ -82,7 +82,7 @@ def has_changed(api_url, game_name):
 
 # Main loop สำหรับทุก API
 for api_url in api_urls:
-    game_name = "HSR"
+    game_name = "HNA"
     try:
         if not has_changed(api_url, game_name):
             print(f"[{game_name}] No change, skipping webhook")
