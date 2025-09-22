@@ -1,8 +1,9 @@
 name: Hoyo Game Monitor
 
+# รันทุก 1 นาที สำหรับทดสอบ
 on:
   schedule:
-    - cron: "*/5 * * * *"  # ทุก 1 นาที
+    - cron: "*/1 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -36,10 +37,15 @@ jobs:
           python ZZZ.py
           python HNA.py
 
-      - name: Commit & Push logs
+      - name: Commit & Push logs if changed
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add -A
-          git commit -m "Update logs [skip ci]" || echo "No changes to commit"
-          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
+          git add Hoyo/log
+          # commit เฉพาะถ้ามีไฟล์เปลี่ยนแปลง
+          if ! git diff --cached --quiet; then
+            git commit -m "Update logs [skip ci]"
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
+          else
+            echo "No changes to commit"
+          fi

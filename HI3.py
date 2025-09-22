@@ -4,7 +4,7 @@ import os
 import hashlib
 import json
 
-# Discord Webhooks จาก GitHub Secrets
+# Discord Webhooks
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
     os.environ.get("WEBHOOK2"),
@@ -21,8 +21,6 @@ api_targets = [
     ("overseas", "bxPTXSET5t", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8"),
 ]
 
-
-# ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
     embed = {
         "embeds": [{
@@ -51,13 +49,11 @@ def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
     if message.strip():
         send_embed_message(webhook_url, title, message, icon_url, bg_url, game_name)
 
-# ฟังก์ชันแยก Game และ Audio
 def extract_game_audio(pkg):
     game_links = [p["url"] for p in pkg.get("game_pkgs", [])]
     audio_links = [f"{a['language']}: {a['url']}" for a in pkg.get("audio_pkgs", [])]
     return game_links, audio_links
 
-# ตรวจสอบการเปลี่ยนแปลง (เก็บไฟล์ตามโฟลเดอร์ log/{game_name}/last_hash.txt)
 def has_changed(api_url, game_name):
     data_text = requests.get(api_url, timeout=10).text
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
@@ -65,9 +61,9 @@ def has_changed(api_url, game_name):
     log_dir = f"log/{game_name}"
     os.makedirs(log_dir, exist_ok=True)
     hash_file = os.path.join(log_dir, "last_hash.txt")
-    raw_file = os.path.join(log_dir, "raw_log.jsonl")  # append แบบ JSON lines
+    raw_file = os.path.join(log_dir, "raw_log.jsonl")
 
-    # บันทึก JSON ดิบทุกครั้ง (append)
+    # append JSON lines
     with open(raw_file, "a", encoding="utf-8") as f:
         f.write(json.dumps({
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -85,8 +81,6 @@ def has_changed(api_url, game_name):
         return True
     return False
 
-# Main loop สำหรับทุก API
-# Main loop สำหรับทุก API
 for region, game_id, api_url in api_targets:
     game_name = region
     try:
@@ -136,7 +130,7 @@ for region, game_id, api_url in api_targets:
             combined_pre_patch = [f"Pre-Patch version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
             game_data_list.append((f"{display_name} Pre-Download {patch_version} - Hdiff", combined_pre_patch))
 
-        # ส่ง webhook
+        # ส่ง webhook เฉพาะเมื่อมีการเปลี่ยน
         for webhook_url in webhook_urls:
             if webhook_url:
                 for title, lines in game_data_list:
