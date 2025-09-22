@@ -1,3 +1,17 @@
+# API
+
+   <details><summary>API</summary>
+
+    Ggz, // Houkai Gakuen 2
+    Bh3, // Honkai Impact 3rd
+    Nxx, // Tears of Themis
+    Hk4e, // Genshin Impact
+    Hkrpg, // Honkai: Star Rail
+    Nap, // Zenless Zone Zero
+    Abc, // Honkai: Nexus Anima
+    Hyg, // Astaweave Haven
+
+
 # API HSR
 | Version | Name Game | Download link|
 | :--- | :--- | :--- |
@@ -32,6 +46,7 @@
 | hkrpg_global | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8 |
 | nap_global | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
 | abc_global | HNA |  |
+| hyg_global | AH |  |
 
 
 # API cn
@@ -44,6 +59,7 @@
 | hkrpg_cn | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
 | nap_cn | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
 | abc_cn | HNA |  |
+| hyg_cn | AH |  |
 
 # API Bilibili
 
@@ -327,3 +343,5 @@ payload:
   - DOMAIN-SUFFIX,notice.mihoyo.com
   - DOMAIN-SUFFIX,notice.hoyoverse.com
 ```
+
+<details>
