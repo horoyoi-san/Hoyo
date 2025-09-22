@@ -2,7 +2,7 @@ name: Hoyo Game Monitor
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/5 * * * *"  # ทุก 5 นาที
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          persist-credentials: true   # ให้ push กลับได้
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -30,17 +30,16 @@ jobs:
           WEBHOOK3: ${{ secrets.WEBHOOK3 }}
           WEBHOOK4: ${{ secrets.WEBHOOK4 }}
         run: |
-          mkdir -p Hoyo/log
-          python GI.py  >> Hoyo/log/GI.log 2>&1
-          python HI3.py >> Hoyo/log/HI3.log 2>&1
-          python HSR.py >> Hoyo/log/HSR.log 2>&1
-          python ZZZ.py >> Hoyo/log/ZZZ.log 2>&1
-          python HNA.py >> Hoyo/log/HNA.log 2>&1
+          python GI.py
+          python HI3.py
+          python HSR.py
+          python ZZZ.py
+          python HNA.py
 
-      - name: Commit logs
+      - name: Commit & Push logs
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Hoyo/log/*.log
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add Hoyo/log
           git commit -m "Update logs [skip ci]" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}

@@ -1,4 +1,3 @@
-# ฟังก์ชันส่ง embed message
 import requests
 from datetime import datetime, timezone
 import os
@@ -21,7 +20,6 @@ api_targets = [
     ("kr", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8"),
     ("overseas", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8"),
 ]
-
 
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
@@ -66,11 +64,14 @@ def has_changed(api_url, game_name):
     log_dir = f"log/{game_name}"
     os.makedirs(log_dir, exist_ok=True)
     hash_file = os.path.join(log_dir, "last_hash.txt")
-    raw_file = os.path.join(log_dir, "raw.json")
+    raw_file = os.path.join(log_dir, "raw_log.jsonl")  # append แบบ JSON lines
 
-    # 📝 บันทึก JSON ดิบทุกครั้ง
-    with open(raw_file, "w", encoding="utf-8") as f:
-        f.write(data_text)
+    # บันทึก JSON ดิบทุกครั้ง (append)
+    with open(raw_file, "a", encoding="utf-8") as f:
+        f.write(json.dumps({
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "data": json.loads(data_text)
+        }, ensure_ascii=False) + "\n")
 
     last_hash = ""
     if os.path.exists(hash_file):
@@ -83,11 +84,10 @@ def has_changed(api_url, game_name):
         return True
     return False
 
-
 # Main loop สำหรับทุก API
-for index, (game_name, api_url) in enumerate(api_targets, start=5):
+for api_url in api_urls:
+    game_name = "HSR"
     try:
-        # ตรวจสอบการเปลี่ยนแปลงก่อน
         if not has_changed(api_url, game_name):
             print(f"[{game_name}] No change, skipping webhook")
             continue
