@@ -17,7 +17,6 @@ api_urls = [
     "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8",
 ]
 
-
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
     embed = {
@@ -53,7 +52,7 @@ def extract_game_audio(pkg):
     audio_links = [f"{a['language']}: {a['url']}" for a in pkg.get("audio_pkgs", [])]
     return game_links, audio_links
 
-# ตรวจสอบการเปลี่ยนแปลง (เก็บไฟล์ตามโฟลเดอร์ log/{game_name}/last_hash.txt)
+# ตรวจสอบการเปลี่ยนแปลง
 def has_changed(api_url, game_name):
     data_text = requests.get(api_url, timeout=10).text
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
@@ -61,7 +60,7 @@ def has_changed(api_url, game_name):
     log_dir = f"log/{game_name}"
     os.makedirs(log_dir, exist_ok=True)
     hash_file = os.path.join(log_dir, "last_hash.txt")
-    raw_file = os.path.join(log_dir, "raw_log.jsonl")  # append แบบ JSON lines
+    raw_file = os.path.join(log_dir, "raw_log.jsonl")
 
     # บันทึก JSON ดิบทุกครั้ง (append)
     with open(raw_file, "a", encoding="utf-8") as f:
