@@ -14,12 +14,13 @@ webhook_urls = [
 
 # API URL + Game name
 api_targets = [
-    ("tw", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8"),
-    ("glb", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=5TIVvvcwtM&launcher_id=VYTpXlbWo8"),
-    ("jp",  "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=g0mMIvshDb&launcher_id=VYTpXlbWo8"),
-    ("kr", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8"),
-    ("overseas", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8"),
+    ("tw", "wkE5P5WsIf", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8"),
+    ("glb", "5TIVvvcwtM", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=5TIVvvcwtM&launcher_id=VYTpXlbWo8"),
+    ("jp",  "g0mMIvshDb", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=g0mMIvshDb&launcher_id=VYTpXlbWo8"),
+    ("kr", "uxB4MC7nzC", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8"),
+    ("overseas", "bxPTXSET5t", "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=bxPTXSET5t&launcher_id=VYTpXlbWo8"),
 ]
+
 
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
