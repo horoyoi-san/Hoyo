@@ -2,7 +2,7 @@ name: Hoyo Game Monitor
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # ทุก 5 นาที
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true   # ให้ push กลับได้
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -22,18 +24,23 @@ jobs:
         run: pip install requests
 
       - name: Run all game monitors
-
-      # กำหนดค่า environment variables สำหรับ webhook URLs
         env:
           WEBHOOK1: ${{ secrets.WEBHOOK1 }}
           WEBHOOK2: ${{ secrets.WEBHOOK2 }}
           WEBHOOK3: ${{ secrets.WEBHOOK3 }}
           WEBHOOK4: ${{ secrets.WEBHOOK4 }}
-          
-        #รันสคริปต์ Python สำหรับแต่ละเกม 
         run: |
-          python GI.py
-          python HI3.py
-          python HSR.py
-          python ZZZ.py
-          python HNA.py
+          mkdir -p /log
+          python GI.py  >> log/GI.log 2>&1
+          python HI3.py >> log/HI3.log 2>&1
+          python HSR.py >> log/HSR.log 2>&1
+          python ZZZ.py >> log/ZZZ.log 2>&1
+          python HNA.py >> log/HNA.log 2>&1
+
+      - name: Commit logs
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Hoyo/log/*.log
+          git commit -m "Update logs [skip ci]" || echo "No changes to commit"
+          git push
