@@ -9,7 +9,7 @@
     Hkrpg, // Honkai: Star Rail
     Nap, // Zenless Zone Zero
     Abc, // Honkai: Nexus Anima
-    Hyg, // Astaweave Haven
+    Hyg, // Petit Planet 
 
 
 # API HSR
@@ -46,7 +46,7 @@
 | hkrpg_global | HSR | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8 |
 | nap_global | ZZZ | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8 |
 | abc_global | HNA |  |
-| hyg_global | AH |  |
+| hyg_global | PP |  |
 
 
 # API cn
@@ -59,7 +59,7 @@
 | hkrpg_cn | HSR | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=64kMb5iAWu&launcher_id=jGHBHlcOq1 |
 | nap_cn | ZZZ | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=x6znKlJ0xK&launcher_id=jGHBHlcOq1 |
 | abc_cn | HNA |  |
-| hyg_cn | AH |  |
+| hyg_cn | PP |  |
 
 # API Bilibili
 
