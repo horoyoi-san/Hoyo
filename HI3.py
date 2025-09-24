@@ -55,20 +55,32 @@ def extract_game_audio(pkg):
     return game_links, audio_links
 
 def has_changed(api_url, game_name):
-    data_text = requests.get(api_url, timeout=10).text
+    try:
+        data_text = requests.get(api_url, timeout=10).text
+    except Exception as e:
+        print(f"❌ Error fetching API: {e}")
+        return False
+
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
-    log_dir = f"Hoyo/log/{game_name}"
+    # ใช้ absolute path จาก cwd ของ workflow
+    log_dir = os.path.join(os.getcwd(), "Hoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
+    print(f"📂 Creating log directory: {log_dir}")
+
     hash_file = os.path.join(log_dir, "last_hash.txt")
     raw_file = os.path.join(log_dir, "raw_log.jsonl")
 
-    # append JSON lines
-    with open(raw_file, "a", encoding="utf-8") as f:
-        f.write(json.dumps({
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "data": json.loads(data_text)
-        }, ensure_ascii=False) + "\n")
+    # บันทึก JSON ดิบทุกครั้ง (append)
+    try:
+        with open(raw_file, "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "data": json.loads(data_text)
+            }, ensure_ascii=False) + "\n")
+        print(f"✅ Wrote raw log: {raw_file}")
+    except Exception as e:
+        print(f"❌ Error writing log file: {e}")
 
     last_hash = ""
     if os.path.exists(hash_file):
@@ -130,13 +142,14 @@ for region, game_id, api_url in api_targets:
             combined_pre_patch = [f"Pre-Patch version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
             game_data_list.append((f"{display_name} Pre-Download {patch_version} - Hdiff", combined_pre_patch))
 
-        # ส่ง webhook เฉพาะเมื่อมีการเปลี่ยน
+        # ส่ง webhook
         for webhook_url in webhook_urls:
             if webhook_url:
                 for title, lines in game_data_list:
                     split_and_send(webhook_url, title, lines, icon_url, bg_url, display_name)
 
     except Exception as e:
+        print(f"❌ Exception: {e}")
         for webhook_url in webhook_urls:
             if webhook_url:
                 split_and_send(webhook_url, "❌ Error", [f"[{game_name}] error: {e}"], "", "", "")

@@ -46,28 +46,38 @@ def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
     if message.strip():
         send_embed_message(webhook_url, title, message, icon_url, bg_url, game_name)
 
-# ฟังก์ชันแยก Game และ Audio
 def extract_game_audio(pkg):
     game_links = [p["url"] for p in pkg.get("game_pkgs", [])]
     audio_links = [f"{a['language']}: {a['url']}" for a in pkg.get("audio_pkgs", [])]
     return game_links, audio_links
 
-# ตรวจสอบการเปลี่ยนแปลง (เก็บไฟล์ตามโฟลเดอร์ log/{game_name}/last_hash.txt)
 def has_changed(api_url, game_name):
-    data_text = requests.get(api_url, timeout=10).text
+    try:
+        data_text = requests.get(api_url, timeout=10).text
+    except Exception as e:
+        print(f"❌ Error fetching API: {e}")
+        return False
+
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
-    log_dir = f"Hoyo/log/{game_name}"
+    # ใช้ absolute path จาก cwd ของ workflow
+    log_dir = os.path.join(os.getcwd(), "Hoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
+    print(f"📂 Creating log directory: {log_dir}")
+
     hash_file = os.path.join(log_dir, "last_hash.txt")
-    raw_file = os.path.join(log_dir, "raw_log.jsonl")  # append แบบ JSON lines
+    raw_file = os.path.join(log_dir, "raw_log.jsonl")
 
     # บันทึก JSON ดิบทุกครั้ง (append)
-    with open(raw_file, "a", encoding="utf-8") as f:
-        f.write(json.dumps({
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "data": json.loads(data_text)
-        }, ensure_ascii=False) + "\n")
+    try:
+        with open(raw_file, "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "data": json.loads(data_text)
+            }, ensure_ascii=False) + "\n")
+        print(f"✅ Wrote raw log: {raw_file}")
+    except Exception as e:
+        print(f"❌ Error writing log file: {e}")
 
     last_hash = ""
     if os.path.exists(hash_file):
@@ -137,8 +147,10 @@ for api_url in api_urls:
                     split_and_send(webhook_url, title, lines, icon_url, bg_url, display_name)
 
     except Exception as e:
+        print(f"❌ Exception: {e}")
         for webhook_url in webhook_urls:
             if webhook_url:
                 split_and_send(webhook_url, "❌ Error", [f"[{game_name}] error: {e}"], "", "", "")
 
 print("✅ Checked all APIs and sent updates if changed")
+
