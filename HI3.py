@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import os
 import hashlib
 import json
+import time
 
 # Discord Webhooks
 webhook_urls = [
@@ -36,7 +37,10 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_n
             "timestamp": datetime.now(timezone.utc).isoformat()
         }]
     }
-    requests.post(webhook_url, json=embed)
+    try:
+        requests.post(webhook_url, json=embed, timeout=15)
+    except Exception as e:
+        print(f"❌ Failed to send webhook for {game_name}: {e}")
 
 def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
     max_length = 1900
@@ -54,19 +58,22 @@ def extract_game_audio(pkg):
     audio_links = [f"{a['language']}: {a['url']}" for a in pkg.get("audio_pkgs", [])]
     return game_links, audio_links
 
-def has_changed(api_url, game_name):
+def fetch_api_data(api_url, game_name):
     try:
-        data_text = requests.get(api_url, timeout=10).text
+        data_text = requests.get(api_url, timeout=30).text
+        return data_text
     except Exception as e:
-        print(f"❌ Error fetching API: {e}")
+        print(f"❌ Error fetching API for {game_name}: {e}")
+        return None
+
+def has_changed(data_text, game_name):
+    if not data_text:
         return False
 
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
-    # ใช้ absolute path จาก cwd ของ workflow
     log_dir = os.path.join(os.getcwd(), "Hoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
-    print(f"📂 Creating log directory: {log_dir}")
 
     hash_file = os.path.join(log_dir, "last_hash.txt")
     raw_file = os.path.join(log_dir, "raw_log.jsonl")
@@ -78,9 +85,8 @@ def has_changed(api_url, game_name):
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "data": json.loads(data_text)
             }, ensure_ascii=False) + "\n")
-        print(f"✅ Wrote raw log: {raw_file}")
     except Exception as e:
-        print(f"❌ Error writing log file: {e}")
+        print(f"❌ Error writing log file for {game_name}: {e}")
 
     last_hash = ""
     if os.path.exists(hash_file):
@@ -93,20 +99,33 @@ def has_changed(api_url, game_name):
         return True
     return False
 
+# ---- Main loop for all APIs ----
 for region, game_id, api_url in api_targets:
     game_name = region
+    print(f"🔹 Processing {region} ({game_id}) → {api_url}")
+
+    data_text = fetch_api_data(api_url, game_name)
+    if not data_text:
+        continue  # ข้ามถ้า fetch fail
+
+    changed = has_changed(data_text, game_name)
+
     try:
-        if not has_changed(api_url, game_name):
-            print(f"[{game_name}] No change, skipping webhook")
+        data = json.loads(data_text)
+        if not data.get("data") or not data["data"].get("game_packages"):
+            print(f"[{game_name}] No game_packages returned")
             continue
 
-        data = requests.get(api_url, timeout=10).json()
         game_package = data["data"]["game_packages"][0]
 
         # ดึงข้อมูล display
         game_info_url = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
-        resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == game_id)
+        resp = requests.get(game_info_url, timeout=30).json()
+        game_data = next((g for g in resp["data"]["games"] if g["id"] == game_id), None)
+        if not game_data:
+            print(f"[{game_name}] display info not found")
+            continue
+
         display_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]
@@ -142,14 +161,20 @@ for region, game_id, api_url in api_targets:
             combined_pre_patch = [f"Pre-Patch version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
             game_data_list.append((f"{display_name} Pre-Download {patch_version} - Hdiff", combined_pre_patch))
 
-        # ส่ง webhook
-        for webhook_url in webhook_urls:
-            if webhook_url:
-                for title, lines in game_data_list:
-                    split_and_send(webhook_url, title, lines, icon_url, bg_url, display_name)
+        # ส่ง webhook เฉพาะถ้า changed
+        if changed:
+            for webhook_url in webhook_urls:
+                if webhook_url:
+                    for title, lines in game_data_list:
+                        split_and_send(webhook_url, title, lines, icon_url, bg_url, display_name)
+        else:
+            print(f"[{game_name}] No change detected, webhook skipped")
+
+        # delay นิดหน่อยกัน rate-limit
+        time.sleep(1)
 
     except Exception as e:
-        print(f"❌ Exception: {e}")
+        print(f"❌ Exception for {game_name}: {e}")
         for webhook_url in webhook_urls:
             if webhook_url:
                 split_and_send(webhook_url, "❌ Error", [f"[{game_name}] error: {e}"], "", "", "")
