@@ -114,7 +114,7 @@ for region, game_id, api_url in api_targets:
         try:
             game_info_url = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
             resp = requests.get(game_info_url, timeout=10).json()
-            game_data = next(g for g in resp["data"]["games"] if g["id"] == game_id)
+            game_data = next(g for g in resp["data"]["games"] if g["id"] == "5TIVvvcwtM")
             display_name = game_data["display"]["name"]
             icon_url = game_data["display"]["icon"]["url"]
             bg_url = game_data["display"]["background"]["url"]
