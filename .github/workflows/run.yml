@@ -1,46 +1,45 @@
-name: Hoyo Game Monitor
+name: Log Updater
 
 on:
   schedule:
-    - cron: "*/6 * * * *"
-  workflow_dispatch:
+    - cron: "0 * * * *"   # รันทุกชั่วโมง (แก้ได้ตามต้องการ)
+  workflow_dispatch:       # กดรันเองได้ด้วย
 
 jobs:
-  monitor:
+  update-logs:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install requests
-
-      - name: Run all game monitors
-        env:
-          WEBHOOK1: ${{ secrets.WEBHOOK1 }}
-          WEBHOOK2: ${{ secrets.WEBHOOK2 }}
-          WEBHOOK3: ${{ secrets.WEBHOOK3 }}
-          WEBHOOK4: ${{ secrets.WEBHOOK4 }}
         run: |
+          pip install -r requirements.txt
+
+      - name: Run scripts
+        run: |
+          mkdir -p Hoyo/log
           python GI.py
-          python HI3.py
           python HSR.py
           python ZZZ.py
           python HNA.py
+          python HI3.py
+
+      - name: Setup GitHub token
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
       - name: Commit and Push logs
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          mkdir -p Hoyo/log
           git add Hoyo/log
           if ! git diff --cached --quiet; then
             git commit -m "Update logs [skip ci]"
