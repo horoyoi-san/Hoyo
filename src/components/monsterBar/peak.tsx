@@ -106,9 +106,6 @@ export default function PeakBar() {
             {/* Title Card */}
             <div className="rounded-xl p-4 mb-2 border border-warning">
                 <div className="mb-4 w-full">
-                    {PEAKEvent.map((peak) => (
-                        <div key={peak.id}>{peak.id}</div>
-                    ))}
                     <SelectCustomText
                         customSet={PEAKEvent.map((peak) => ({
                             id: peak.id,
