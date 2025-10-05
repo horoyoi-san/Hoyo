@@ -80,6 +80,7 @@ namespace Proxy
             Console.Title = Title;
 
             // ✅ เพิ่ม ASCII LOGO ของ Horoyoi-san
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(@"
 ██╗  ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗ ██████╗ ██╗      ███████╗ █████╗ ███╗   ██╗
 ██║  ██║██╔═══██╗██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔═══██╗██║      ██╔════╝██╔══██╗████╗  ██║
@@ -88,7 +89,8 @@ namespace Proxy
 ██║  ██║╚██████╔╝██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║      ███████║██║  ██║██║ ╚████║
 ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
 ");
-
+            Console.ResetColor();
+            
             Console.WriteLine("Proxy for private servers provided by Horoyoi-san");
 
             _ = Task.Run(WatchGuardianAsync);
