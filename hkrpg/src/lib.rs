@@ -1,7 +1,6 @@
 #![feature(str_from_utf16_endian, once_cell_get_mut)]
 
 use std::{thread, time::Duration};
-
 use modules::{
     HkrpgModuleManager, censorship_patch::CensorshipPatch, crypto::Crypto, hk_check::HkCheck,
     misc::Misc, network::Network,
@@ -10,18 +9,55 @@ use windows::{
     Win32::System::{Console, LibraryLoader::GetModuleHandleA},
     core::s,
 };
-
 mod addr;
 mod il2cpp_string;
 mod interceptor;
 mod modules;
 mod util;
 
+use crossterm::{execute, style::{Color, Print, ResetColor, SetForegroundColor}};
+use std::io::{stdout, Write};
+
+fn print_color_logo() {
+    let logo = r#"
+██╗  ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗ ██████╗ ██╗      ███████╗ █████╗ ███╗   ██╗
+██║  ██║██╔═══██╗██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔═══██╗██║      ██╔════╝██╔══██╗████╗  ██║
+███████║██║   ██║██████╔╝██║   ██║ ╚████╔╝ ██║   ██║██║█████╗███████╗███████║██╔██╗ ██║
+██╔══██║██║   ██║██╔══██╗██║   ██║  ╚██╔╝  ██║   ██║██║╚════╝╚════██║██╔══██║██║╚██╗██║
+██║  ██║╚██████╔╝██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║      ███████║██║  ██║██║ ╚████║
+╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+"#;
+
+    let colors = [
+        Color::DarkBlue, Color::DarkGreen, Color::DarkCyan, Color::DarkRed,
+        Color::DarkMagenta, Color::DarkYellow, Color::Grey,
+        Color::DarkGrey, Color::Blue, Color::Green, Color::Cyan,
+        Color::Red, Color::Magenta, Color::Yellow, Color::White,
+    ];
+
+    thread::spawn(move || {
+        let mut i = 0;
+        loop {
+            print!("\x1B[2J\x1B[1;1H"); // ล้างหน้าจอ
+            execute!(
+                stdout(),
+                SetForegroundColor(colors[i % colors.len()]),
+                Print(logo),
+                ResetColor
+            ).unwrap();
+
+            i += 1;
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+}
+
 pub fn main() {
     unsafe {
         let _ = Console::AllocConsole();
 
-        println!("[hkrpg::main] init");
+        print_color_logo(); // เรียกตรงนี้ก่อน println!
+        println!("[hkrpg::main] provided by Horoyoi-san");
 
         while GetModuleHandleA(s!("GameAssembly.dll")).is_err() {
             thread::sleep(Duration::from_millis(200));
