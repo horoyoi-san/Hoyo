@@ -6,9 +6,7 @@ namespace Proxy
 {
     internal static class Program
     {
-        private const string Title = "FreeSR Proxy (Alter)";
-
-
+        private const string Title = "Horoyoi-san | FreeSR Proxy";
         private const string GuardianPath = "tool/SR.Tool.Proxy.Guardian.exe";
 
         private static ProxyService s_proxyService = null!;
@@ -76,10 +74,22 @@ namespace Proxy
                 "query_cur_region"
             }
         };
+
         private static async Task Main(string[] args)
         {
             Console.Title = Title;
-            Console.WriteLine("Proxy for private servers");
+
+            // ✅ เพิ่ม ASCII LOGO ของ Horoyoi-san
+            Console.WriteLine(@"
+██╗  ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗ ██████╗ ██╗      ███████╗ █████╗ ███╗   ██╗
+██║  ██║██╔═══██╗██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔═══██╗██║      ██╔════╝██╔══██╗████╗  ██║
+███████║██║   ██║██████╔╝██║   ██║ ╚████╔╝ ██║   ██║██║█████╗███████╗███████║██╔██╗ ██║
+██╔══██║██║   ██║██╔══██╗██║   ██║  ╚██╔╝  ██║   ██║██║╚════╝╚════██║██╔══██║██║╚██╗██║
+██║  ██║╚██████╔╝██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║      ███████║██║  ██║██║ ╚████║
+╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+");
+
+            Console.WriteLine("Proxy for private servers provided by Horoyoi-san");
 
             _ = Task.Run(WatchGuardianAsync);
             CheckProxy();
@@ -103,10 +113,6 @@ namespace Proxy
                 return;
             }
 
-            // Notice that on some PTY, closing it may lead
-            // to Guardian be killed, not the Proxy itself.
-            // Therefore, Proxy should also watch Guardian
-            // and exit when Guardian dies.
             while (!proc.HasExited)
             {
                 await Task.Delay(1000);
