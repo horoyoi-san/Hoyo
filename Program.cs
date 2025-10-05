@@ -80,17 +80,68 @@ namespace Proxy
             Console.Title = Title;
 
             // ✅ เพิ่ม ASCII LOGO ของ Horoyoi-san
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(@"
+                string logo = @"
 ██╗  ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗ ██████╗ ██╗      ███████╗ █████╗ ███╗   ██╗
 ██║  ██║██╔═══██╗██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔═══██╗██║      ██╔════╝██╔══██╗████╗  ██║
 ███████║██║   ██║██████╔╝██║   ██║ ╚████╔╝ ██║   ██║██║█████╗███████╗███████║██╔██╗ ██║
 ██╔══██║██║   ██║██╔══██╗██║   ██║  ╚██╔╝  ██║   ██║██║╚════╝╚════██║██╔══██║██║╚██╗██║
 ██║  ██║╚██████╔╝██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║      ███████║██║  ██║██║ ╚████║
 ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
-");
+";
+
+    // ✅ ดึงสีทั้งหมดจาก Enum
+    ConsoleColor[] colors = Enum.GetValues(typeof(ConsoleColor))
+        .Cast<ConsoleColor>()
+        .Where(c => c != ConsoleColor.Black) // ตัดสีดำออกเพราะมองไม่เห็น
+        .ToArray();
+
+    _ = Task.Run(async () =>
+    {
+        int i = 0;
+        while (true)
+        {
+            Console.Clear();
+            Console.ForegroundColor = colors[i % colors.Length];
+            Console.WriteLine(logo);
             Console.ResetColor();
-            
+            await Task.Delay(1000); // เปลี่ยนสีทุก 1 วิ
+            i++;
+        }
+    });
+
+//    string logo = @"
+            //██╗  ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗ ██████╗ ██╗      ███████╗ █████╗ ███╗   ██╗
+            //██║  ██║██╔═══██╗██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔═══██╗██║      ██╔════╝██╔══██╗████╗  ██║
+            //███████║██║   ██║██████╔╝██║   ██║ ╚████╔╝ ██║   ██║██║█████╗███████╗███████║██╔██╗ ██║
+            //██╔══██║██║   ██║██╔══██╗██║   ██║  ╚██╔╝  ██║   ██║██║╚════╝╚════██║██╔══██║██║╚██╗██║
+            //██║  ██║╚██████╔╝██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║      ███████║██║  ██║██║ ╚████║
+            //╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+            //";
+
+            //    ConsoleColor[] colors = new[]
+            //    {
+            //        ConsoleColor.Red,
+            //        ConsoleColor.Yellow,
+            //        ConsoleColor.Green,
+            //        ConsoleColor.Cyan,
+            //        ConsoleColor.Blue,
+            //        ConsoleColor.Magenta
+            //    };
+
+            //    _ = Task.Run(async () =>
+            //    {
+            //        int i = 0;
+            //        while (true)
+            //        {
+            //            Console.Clear();
+            //            Console.ForegroundColor = colors[i % colors.Length];
+            //            Console.WriteLine(logo);
+            //            Console.ResetColor();
+            //            await Task.Delay(1000); // 👈 เปลี่ยนสีทุก 1 วินาที
+            //            i++;
+            //        }
+            //    });
+
             Console.WriteLine("Proxy for private servers provided by Horoyoi-san");
 
             _ = Task.Run(WatchGuardianAsync);
