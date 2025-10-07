@@ -58,7 +58,8 @@ pub fn main() {
         let _ = Console::AllocConsole();
 
         print_color_logo();
-        println!("[hkrpg::main] provided by Horoyoi-san");
+        println!("provided by Horoyoi-san");
+        println!("[hkrpg::main] init");
 
         while GetModuleHandleA(s!("GameAssembly.dll")).is_err() {
             thread::sleep(Duration::from_millis(200));
