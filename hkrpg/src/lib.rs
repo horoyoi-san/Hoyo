@@ -15,8 +15,13 @@ mod interceptor;
 mod modules;
 mod util;
 
-use crossterm::{execute, style::{Color, Print, ResetColor, SetForegroundColor}};
-use std::io::{stdout, Write};
+use crossterm::{
+    execute,
+    style::{Color, Print, ResetColor, SetForegroundColor},
+};
+use std::io::stdout;
+use rand::seq::SliceRandom;
+
 
 fn print_color_logo() {
     let logo = r#"
@@ -35,28 +40,24 @@ fn print_color_logo() {
         Color::Red, Color::Magenta, Color::Yellow, Color::White,
     ];
 
-    thread::spawn(move || {
-        let mut i = 0;
-        loop {
-            print!("\x1B[2J\x1B[1;1H"); // ล้างหน้าจอ
-            execute!(
-                stdout(),
-                SetForegroundColor(colors[i % colors.len()]),
-                Print(logo),
-                ResetColor
-            ).unwrap();
+    // ✅ สุ่มสีตอนเริ่ม
+    let mut rng = rand::thread_rng();
+    let color = *colors.choose(&mut rng).unwrap();
 
-            i += 1;
-            thread::sleep(Duration::from_secs(1));
-        }
-    });
+    execute!(
+        stdout(),
+        SetForegroundColor(color),
+        Print(logo),
+        ResetColor
+    )
+    .unwrap();
 }
 
 pub fn main() {
     unsafe {
         let _ = Console::AllocConsole();
 
-        print_color_logo(); // เรียกตรงนี้ก่อน println!
+        print_color_logo();
         println!("[hkrpg::main] provided by Horoyoi-san");
 
         while GetModuleHandleA(s!("GameAssembly.dll")).is_err() {
