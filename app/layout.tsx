@@ -5,7 +5,7 @@ import GlobalWarning from "@/components/global-warning";
 
 export const metadata: Metadata = {
 	title: "Hoyo game CN",
-	description: "Utility to get update packages from hoyo games",
+	description: "Utility สำหรับรับแพ็คเกจอัปเดตจากเกม Hoyo CN",
 };
 
 export default function RootLayout({
