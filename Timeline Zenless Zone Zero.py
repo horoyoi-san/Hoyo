@@ -2,11 +2,11 @@ from datetime import datetime, timedelta
 
 # กำหนดวันเริ่มต้น Beta และ Release (ตัวอย่าง)
 start_dates = {
-    "Beta": datetime(2025, 4, 28, 10, 0),     # 28 ส.ค. 2024 10:00
-    "Release": datetime(2025, 4, 6, 10, 0)   # 9 ต.ค. 2024 10:00
+    "Beta": datetime(2025, 10, 13, 10, 0),     # 28 ส.ค. 2024 10:00
+    "Release": datetime(2025, 10, 14, 10, 0)   # 9 ต.ค. 2024 10:00
 }
 
-start_version = 2.0
+start_version = 2.4
 end_version = 8.0
 
 # ปรับระยะห่างวันของแต่ละช่วง (กำหนดได้ตามต้องการ)
