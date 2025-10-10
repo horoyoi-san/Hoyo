@@ -23,7 +23,7 @@ export function Header() {
         <>
             <div className="flex items-center mb-2">
                 <h1 className="bold text-2xl">Hoyo Game CN •</h1>
-                <a className="ml-1 mr-1 transition opacity-[45%] hover:opacity-[90%]" target="_blank" href="https://github.com/Escartem/HoyoUpdates"><Github /></a>
+                <a className="ml-1 mr-1 transition opacity-[45%] hover:opacity-[90%]" target="_blank" href="https://github.com/horoyoi-san/Hoyo/tree/Hoyo-game-cn"><Github /></a>
                 <span className="bold text-2xl">•</span>
                 <span className="ml-2 text-white/30">v{process.env.NEXT_PUBLIC_APP_VERSION}</span>
             </div>
