@@ -11,7 +11,7 @@ export default function Home() {
 	const [launcherId, setLauncherId] = useState("jGHBHlcOq1");
 	const [games, setGames] = useState([]);
 	const [selectedGame, setSelectedGame] = useState("");
-	const [background, setBackground] = useState("/backgrounds/waves.mp4"); // 👈 เปลี่ยนเป็นวิดีโอพื้นหลัง
+	const [background, setBackground] = useState("/backgrounds.mp4"); // 👈 เปลี่ยนเป็นวิดีโอพื้นหลัง
 
 	return (
 		<div className="w-full h-full overflow-hidden bg-[#1a1a1a] flex items-center justify-center flex-col p-2">
