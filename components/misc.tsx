@@ -22,16 +22,44 @@ export function Header() {
     return (
         <>
             <div className="flex items-center mb-2">
-                <h1 className="bold text-2xl">Hoyo Game CN •</h1>
-                <a className="ml-1 mr-1 transition opacity-[45%] hover:opacity-[90%]" target="_blank" href="https://github.com/horoyoi-san/Hoyo/tree/Hoyo-game-cn"><Github /></a>
+                {/* ชื่อพร้อม Gradient */}
+                <h1 className="bold text-2xl bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_6px_rgba(0,0,0,0.4)]">
+                    Hoyo Game CN
+                </h1>
                 <span className="bold text-2xl">•</span>
-                <span className="ml-2 text-white/30">v{process.env.NEXT_PUBLIC_APP_VERSION}</span>
+            {/* Discord จากลิงก์ภาพ */}
+            <a
+                className="ml-2 mr-1 transition opacity-[45%] hover:opacity-[90%]"
+                target="_blank"
+                href="https://discord.gg/gwCwxTB9Du"
+            >
+                <img
+                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg"
+                    alt="Discord"
+                    className="w-6 h-6"
+                />
+            </a>
+                <span className="bold text-2xl">•</span>
+                {/* GitHub */}
+                <a
+                    className="mr-1 transition opacity-[45%] hover:opacity-[90%]"
+                    target="_blank"
+                    href="https://github.com/horoyoi-san/Hoyo/tree/Hoyo-game-cn"
+                >
+                    <Github />
+                </a>
+
+                <span className="bold text-2xl">•</span>
+                <span className="ml-2 text-white/30">
+                    v{process.env.NEXT_PUBLIC_APP_VERSION}
+                </span>
             </div>
-            
+
             <Line />
         </>
-    )
+    );
 }
+
 
 export function Container({children}: {children: React.ReactNode}) {
     return (
