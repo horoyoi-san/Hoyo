@@ -15,7 +15,7 @@ export default function StartPage({setLauncherId, appState, setState}: {setLaunc
 	
 	return (
 		<Container>
-			<span className="text-white/60">กรุณาใส่รหัสตัวเรียกใช้งาน รหัสเริ่มต้นคือ &quot;<span className="text-white/95 select-all">jGHBHlcOq1</span>&quot; but you can use another one if you want.</span>
+			<span className="text-white/60">กรุณาใส่รหัสตัวเรียกใช้งาน รหัสเริ่มต้นคือ &quot;<span className="text-white/95 select-all">jGHBHlcOq1</span>&quot; แต่คุณสามารถใช้ตัวอื่นได้ถ้าคุณต้องการ</span>
 			
 			{appState === -1 && (
 				<span className="text-red-400 block mb-[-10px]"><br/>Invalid launcher id</span>
