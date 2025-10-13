@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{ .default_target = .{ .os_tag = .windows } });
 
     const launcher = b.addExecutable(.{
-        .name = "yidhari",
+        .name = "juequling",
         .root_module = b.createModule(.{
             .root_source_file = b.path("injector.zig"),
             .target = target,
