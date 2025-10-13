@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态背景效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: 0 0% 98%;
+            --primary-foreground: 0 0% 9%;
+            --background: 0 0% 100%;
+            --foreground: 0 0% 98%;
+            --border: 0 0% 98%;
+            --radius: 0.5rem;
+            --inset: min(2vw, 1.5rem);
+            --sides: 1rem;
+            --footer-safe-area: calc(var(--inset) * 2 + 1.5rem + 2.25rem);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* 视频背景 */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 42px;
+        }
+
+        @media (min-width: 768px) {
+            .video-background video {
+                border-radius: 72px;
+            }
+        }
+
+        /* 噪点背景纹理 */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('data:image/png;base64,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');
+            background-repeat: repeat;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            padding: var(--inset);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 2rem;
+            padding-bottom: var(--footer-safe-area);
+        }
+
+        /* 标题 */
+        .title {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: clamp(3rem, 8vw, 9rem);
+            color: hsl(var(--foreground));
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* 内容区域 */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* 输入框样式 */
+        .email-input {
+            width: 100%;
+            max-width: 400px;
+            height: 3rem;
+            padding: 0 1rem;
+            border: 1px solid hsla(var(--border), 0.5);
+            border-radius: 50px;
+            background: hsla(var(--primary), 0.2);
+            backdrop-filter: blur(12px);
+            color: hsl(var(--foreground));
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .email-input::placeholder {
+            color: hsla(var(--foreground), 0.6);
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: hsla(var(--border), 0.8);
+            box-shadow: 0 0 0 4px hsla(var(--primary), 0.1);
+        }
+
+        /* 按钮样式 */
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border: 1px solid hsla(var(--border), 0.5);
+            border-radius: 50px;
+            background: hsla(var(--primary), 0.2);
+            backdrop-filter: blur(12px);
+            color: hsl(var(--primary));
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            box-shadow: 
+                inset 0 0 1px 1px rgba(255, 255, 255, 0.05),
+                inset 0 0 2px 1px rgba(255, 255, 255, 0.2),
+                0 0 10px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn:hover {
+            border-color: hsla(var(--border), 0.8);
+            background: hsla(var(--primary), 0.3);
+            box-shadow: 
+                inset 0 0 5px 1px rgba(255, 255, 255, 0.2),
+                inset 0.5px 0.5px 1px 0.5px rgba(255, 255, 255, 0.5),
+                0 0 12px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Shine 动画效果 */
+        .btn.shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shine 2s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(200%);
+                opacity: 0;
+            }
+        }
+
+        /* 描述文本 */
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: hsl(var(--foreground));
+            text-align: center;
+            max-width: 500px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: hsla(var(--primary), 0.2);
+            backdrop-filter: blur(24px);
+            border: 2px solid hsla(var(--border), 0.5);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 600px;
+            max-height: 70vh;
+            overflow-y: auto;
+            margin: 1rem;
+            box-shadow: 
+                inset 0 0 1px 1px rgba(255, 255, 255, 0.05),
+                inset 0 0 2px 1px rgba(255, 255, 255, 0.2),
+                0 0 10px 0 rgba(255, 255, 255, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: hsl(var(--foreground));
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: hsla(var(--primary), 0.2);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* 浮动动画 */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* 粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: particleFloat 8s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: clamp(2.5rem, 10vw, 5rem);
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 视频背景 -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/alt-g7Cv2QzqL3k6ey3igjNYkM32d8Fld7.mp4" type="video/mp4">
+            <!-- 如果视频无法加载，显示渐变背景 -->
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+        </video>
+    </div>
+
+    <!-- 噪点叠加层 -->
+    <div class="noise-overlay"></div>
+
+    <!-- 粒子效果 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 主内容 -->
+    <main class="main-container">
+        <h1 class="title floating">Synecdoche®</h1>
+        
+        <div class="content-area">
+            <form class="email-form" style="display: flex; gap: 1rem; align-items: center; width: 100%; max-width: 500px;">
+                <input type="email" class="email-input" placeholder="输入您的邮箱" required>
+                <button type="submit" class="btn shine" style="padding: 0.75rem; border-radius: 50%; width: 3rem; height: 3rem;">
+                    →
+                </button>
+            </form>
+            
+            <button class="btn shine" id="manifestoBtn">
+                宣言
+            </button>
+            
+            <p class="description">
+                与我们一起在创新的前沿，让创意与技术相遇，重新定义可能性的边界。
+                订阅我们的新闻简报，永远不要错过激动人心的更新。
+            </p>
+        </div>
+    </main>
+
+    <!-- 模态框 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>我们的宣言</h2>
+                <button class="close-btn" id="closeBtn">×</button>
+            </div>
+            <article style="font-style: italic; line-height: 1.6;">
+                <p style="margin-bottom: 1rem;">
+                    "我们站在新时代的最前沿，在这里创造力与技术相遇，重新定义可能性。我们的使命是为个人和企业提供突破性的解决方案，激发变革并推动进步。"
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    "我们相信持续创新，突破界限，创造不仅仅是工具，更是变革催化剂的产品。我们重视简洁性，设计直观的体验，让复杂的任务变得轻松愉快。"
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    "我们对可持续发展的承诺驱使我们在提供卓越价值的同时保护地球。我们促进协作，建立一个由思想家、创造者和实干家组成的社区，他们都怀着对美好明天的共同愿景。"
+                </p>
+                <p>
+                    "加入我们的旅程，一起创新、启发，并在全球每一个角落点燃创造力的火花。"
+                </p>
+            </article>
+        </div>
+    </div>
+
+    <script>
+        // 粒子效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 模态框控制
+        const manifestoBtn = document.getElementById('manifestoBtn');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.getElementById('closeBtn');
+
+        manifestoBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // ESC键关闭模态框
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.classList.remove('active');
+            }
+        });
+
+        // 表单提交处理
+        const emailForm = document.querySelector('.email-form');
+        emailForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('.email-input').value;
+            if (email) {
+                alert('感谢您的订阅！邮箱：' + email);
+                e.target.querySelector('.email-input').value = '';
+            }
+        });
+
+        // 鼠标跟随效果
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.cursor');
+            if (!cursor) {
+                const newCursor = document.createElement('div');
+                newCursor.className = 'cursor';
+                newCursor.style.cssText = `
+                    position: fixed;
+                    width: 20px;
+                    height: 20px;
+                    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    transition: transform 0.1s ease;
+                `;
+                document.body.appendChild(newCursor);
+            }
+            
+            const cursor_element = document.querySelector('.cursor');
+            cursor_element.style.left = e.clientX - 10 + 'px';
+            cursor_element.style.top = e.clientY - 10 + 'px';
+        });
+
+        // 平滑滚动到元素
+        function smoothScrollTo(element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // 添加页面加载动画
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 1s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // 视频加载失败时的备用方案
+        const video = document.querySelector('video');
+        video.addEventListener('error', () => {
+            const videoContainer = document.querySelector('.video-background');
+            videoContainer.innerHTML = `
+                <div style="
+                    width: 100%; 
+                    height: 100%; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: inherit;
+                "></div>
+            `;
+        });
+    </script>
+</body>
+</html> 
