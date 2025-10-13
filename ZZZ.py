@@ -6,9 +6,9 @@ import json
 
 # Discord Webhooks จาก GitHub Secrets
 webhook_urls = [
- #   os.environ.get("WEBHOOK1"),
- #   os.environ.get("WEBHOOK2"),
- #   os.environ.get("WEBHOOK3"),
+    os.environ.get("WEBHOOK1"),
+    os.environ.get("WEBHOOK2"),
+    os.environ.get("WEBHOOK3"),
     os.environ.get("WEBHOOK4"),
 ]
 
