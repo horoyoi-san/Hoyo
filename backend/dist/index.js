@@ -107814,7 +107814,7 @@ function generateVerificationCode() {
 function getEmailTemplate(code, email) {
   return `
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="th-TH">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110563,7 +110563,7 @@ async function sendTestEmail(email, code, config4) {
     logger3.info("SMTP \u8FDE\u63A5\u9A8C\u8BC1\u6210\u529F");
     const template = config4.emailTemplate || `
       <!DOCTYPE html>
-      <html lang="zh-CN">
+      <html lang="th-TH">
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">

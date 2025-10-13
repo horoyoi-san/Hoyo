@@ -218,7 +218,7 @@ export function FileManagement({ onFileDeleted }: FileManagementProps) {
   }
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("zh-CN", {
+    return new Date(timestamp).toLocaleDateString("th-TH", {
       year: "numeric",
       month: "long",
       day: "numeric",

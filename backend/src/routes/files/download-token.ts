@@ -12,7 +12,7 @@ export const downloadTokenRoutes = new Elysia()
 		const { params, set, headers } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`请求下载令牌: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`ขอโทเค็นการดาวน์โหลด: ${params.id} - ผู้ใช้: ${user.userId}`)
 			const file = await db
 				.select()
 				.from(files)
@@ -20,7 +20,7 @@ export const downloadTokenRoutes = new Elysia()
 				.get()
 			if (!file) {
 				// 本地未找到文件，尝试作为 OneDrive itemId 直接下载
-				logger.warn(`文件未找到: ${params.id} - 用户: ${user.userId}，尝试按 OneDrive itemId 处理`)
+				logger.warn(`ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}，ลองประมวลผลโดยใช้ OneDrive itemId`)
 
 				// 读取存储配置，确认已配置 OneDrive OAuth
 				const config = await db.select().from(storageConfig).get()
@@ -29,7 +29,7 @@ export const downloadTokenRoutes = new Elysia()
 					return { error: "File not found" }
 				}
 
-				// 获取用户 OneDrive 认证信息
+				// 获取ผู้ใช้ OneDrive 认证信息
 				const auth = await db
 					.select()
 					.from(oneDriveAuth)
@@ -56,10 +56,10 @@ export const downloadTokenRoutes = new Elysia()
 
 					// 直接获取 Graph 下载 URL（无需生成本地下载令牌）
 					const downloadUrl = await oneDrive.getDownloadUrl(params.id)
-					logger.info(`OneDrive直连下载URL生成成功: ${params.id}`)
+					logger.info(`สร้าง URL ดาวน์โหลดโดยตรงของ OneDrive สำเร็จแล้ว: ${params.id}`)
 					return { downloadUrl }
 				} catch (err) {
-					logger.error("获取OneDrive直连下载URL失败:", err)
+					logger.error("ไม่สามารถรับ URL ดาวน์โหลด OneDrive โดยตรงได้:", err)
 					set.status = 404
 					return { error: "File not found" }
 				}
@@ -78,12 +78,12 @@ export const downloadTokenRoutes = new Elysia()
 				expiresAt,
 				createdAt: Date.now(),
 			})
-			logger.info(`生成下载令牌: ${file.originalName} - 用户: ${user.userId} - 令牌: ${tokenId}`)
+			logger.info(`สร้างโทเค็นการดาวน์โหลด: ${file.originalName} - ผู้ใช้: ${user.userId} - โทเค็น: ${tokenId}`)
 			const baseUrl = getBaseUrl(headers)
 			const downloadUrl = `${baseUrl}/files/download/${downloadToken}`
 			return { downloadUrl }
 		} catch (error) {
-			logger.error("生成下载令牌失败:", error)
+			logger.error("ไม่สามารถสร้างโทเค็นการดาวน์โหลดได้:", error)
 			set.status = 500
 			return { error: "Download token generation failed" }
 		}

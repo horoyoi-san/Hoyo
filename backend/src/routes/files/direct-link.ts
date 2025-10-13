@@ -18,13 +18,13 @@ export const directLinkRoutes = new Elysia()
 		const { params, set, headers } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`获取文件直链: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`รับลิงค์โดยตรงไปยังไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 			
 			// 检查是否为OneDrive文件ID
 			if (isOneDriveFileId(params.id)) {
-				logger.info(`检测到OneDrive文件ID，使用Graph API获取文件信息: ${params.id}`)
+				logger.info(`ตรวจจับ ID ไฟล์ OneDrive และใช้ Graph API เพื่อรับข้อมูลไฟล์: ${params.id}`)
 				
-				// 获取用户的OneDrive认证信息
+				// 获取ผู้ใช้的OneDrive认证信息
 				const auth = await db
 					.select()
 					.from(oneDriveAuth)
@@ -32,7 +32,7 @@ export const directLinkRoutes = new Elysia()
 					.get()
 				
 				if (!auth) {
-					logger.warn(`OneDrive认证信息未找到 - 用户: ${user.userId}`)
+					logger.warn(`ไม่พบข้อมูลการรับรองความถูกต้องของ OneDrive - ผู้ใช้: ${user.userId}`)
 					set.status = 400
 					return { error: "OneDrive not authenticated" }
 				}
@@ -40,7 +40,7 @@ export const directLinkRoutes = new Elysia()
 				// 获取存储配置
 				const config = await db.select().from(storageConfig).get()
 				if (!config) {
-					logger.error("存储配置未找到")
+					logger.error("ไม่พบการกำหนดค่าการจัดเก็บข้อมูล")
 					set.status = 500
 					return { error: "Storage not configured" }
 				}
@@ -71,9 +71,9 @@ export const directLinkRoutes = new Elysia()
 							updatedAt: Date.now(),
 						}).where(eq(oneDriveAuth.id, auth.id))
 
-						logger.info(`OneDrive访问令牌刷新成功 - 用户: ${user.userId}`)
+						logger.info(`โทเค็นการเข้าถึง OneDrive รีเฟรชสำเร็จแล้ว - ผู้ใช้: ${user.userId}`)
 					} catch (e) {
-						logger.error(`OneDrive访问令牌刷新失败 - 用户: ${user.userId}`, e)
+						logger.error(`การรีเฟรชโทเค็นการเข้าถึง OneDrive ล้มเหลว - ผู้ใช้: ${user.userId}`, e)
 						set.status = 401
 						return { error: "OneDrive access token expired, please re-authenticate" }
 					}
@@ -91,7 +91,7 @@ export const directLinkRoutes = new Elysia()
 					// 获取OneDrive文件信息
 					const fileInfo = await oneDriveService.getItemById(params.id)
 					if (!fileInfo || !fileInfo.name) {
-						logger.warn(`OneDrive文件信息无效: ${params.id}`)
+						logger.warn(`ข้อมูลไฟล์ OneDrive ไม่ถูกต้อง: ${params.id}`)
 						set.status = 404
 						return { error: "OneDrive file not found" }
 					}
@@ -159,7 +159,7 @@ export const directLinkRoutes = new Elysia()
 							updatedAt: now
 						}
 
-						logger.info(`为OneDrive文件创建直链: ${fileInfo.name} -> ${directName} - 用户: ${user.userId}`)
+						logger.info(`สร้างลิงก์โดยตรงไปยังไฟล์ OneDrive: ${fileInfo.name} -> ${directName} - ผู้ใช้: ${user.userId}`)
 					}
 
 					// 确保directLink不为null
@@ -177,7 +177,7 @@ export const directLinkRoutes = new Elysia()
 						createdAt: directLink.createdAt
 					}
 				} catch (error) {
-					logger.error(`获取OneDrive文件直链失败: ${params.id}`, error)
+					logger.error(`ไม่สามารถรับลิงก์โดยตรงไปยังไฟล์ OneDrive ได้: ${params.id}`, error)
 					set.status = 500
 					return { error: "Failed to get OneDrive file direct link" }
 				}
@@ -186,7 +186,7 @@ export const directLinkRoutes = new Elysia()
 			// 原有的本地文件直链逻辑
 			const file = await db.select().from(files).where(and(eq(files.id, params.id), eq(files.userId, user.userId))).get()
 			if (!file) {
-				logger.warn(`文件未找到: ${params.id} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "File not found" }
 			}
@@ -223,13 +223,13 @@ export const directLinkRoutes = new Elysia()
 					updatedAt: now,
 				})
 				directLink = { id: linkId, fileId: file.id, userId: user.userId, directName, token, enabled: true, adminDisabled: false, accessCount: 0, createdAt: now, updatedAt: now } as any
-				logger.info(`创建文件直链: ${file.originalName} -> ${directName} - 用户: ${user.userId}`)
+				logger.info(`สร้างลิงก์โดยตรงไปยังไฟล์: ${file.originalName} -> ${directName} - ผู้ใช้: ${user.userId}`)
 			}
 			const baseUrl = getBaseUrl(headers)
 			const directUrl = `${baseUrl}/dl/${(directLink as any).directName}?token=${(directLink as any).token}`
 			return { directUrl, enabled: (directLink as any).enabled, accessCount: (directLink as any).accessCount, createdAt: (directLink as any).createdAt }
 		} catch (error) {
-			logger.error("获取文件直链失败:", error)
+			logger.error("ไม่สามารถรับลิงก์ไฟล์โดยตรงได้:", error)
 			set.status = 500
 			return { error: "Get direct link failed" }
 		}
@@ -238,7 +238,7 @@ export const directLinkRoutes = new Elysia()
 		const { params, set, body } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`更新文件直链状态: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`อัปเดตสถานะลิงก์ไฟล์โดยตรง: ${params.id} - ผู้ใช้: ${user.userId}`)
 			
 			// 检查是否为OneDrive文件ID
 			if (isOneDriveFileId(params.id)) {
@@ -251,23 +251,23 @@ export const directLinkRoutes = new Elysia()
 						eq(fileDirectLinks.userId, user.userId)
 					))
 				
-				logger.info(`更新OneDrive文件直链状态: ${params.id} - 启用: ${enabled} - 用户: ${user.userId}`)
+				logger.info(`อัปเดตสถานะลิงก์โดยตรงของไฟล์ OneDrive: ${params.id} - เปิดใช้งาน: ${enabled} - ผู้ใช้: ${user.userId}`)
 				return { success: true, enabled }
 			}
 
 			// 原有的本地文件直链状态更新逻辑
 			const file = await db.select().from(files).where(and(eq(files.id, params.id), eq(files.userId, user.userId))).get()
 			if (!file) {
-				logger.warn(`文件未找到: ${params.id} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "File not found" }
 			}
 			const { enabled } = body as { enabled: boolean }
 			await db.update(fileDirectLinks).set({ enabled, updatedAt: Date.now() }).where(and(eq(fileDirectLinks.fileId, file.id), eq(fileDirectLinks.userId, user.userId)))
-			logger.info(`更新文件直链状态: ${file.originalName} - 启用: ${enabled} - 用户: ${user.userId}`)
+			logger.info(`อัปเดตสถานะลิงก์ไฟล์โดยตรง: ${file.originalName} - เปิดใช้งาน: ${enabled} - ผู้ใช้: ${user.userId}`)
 			return { success: true, enabled }
 		} catch (error) {
-			logger.error("更新文件直链状态失败:", error)
+			logger.error("ไม่สามารถอัปเดตสถานะลิงก์โดยตรงของไฟล์ได้:", error)
 			set.status = 500
 			return { error: "Update direct link failed" }
 		}

@@ -75,11 +75,11 @@ export default function SharePage() {
         setShareInfo(data.share)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        setError(errorData.error || "分享不存在或已失效")
+        setError(errorData.error || "แชร์ไม่มีอยู่หรือหมดอายุแล้ว")
       }
     } catch (error) {
       console.error("Failed to fetch share info:", error)
-      setError("网络错误，请稍后重试")
+      setError("ข้อผิดพลาดของเครือข่าย โปรดลองอีกครั้งในภายหลัง")
     } finally {
       setLoading(false)
     }
@@ -110,26 +110,26 @@ export default function SharePage() {
         await downloadFile(data.downloadUrl, fileInfo?.originalName)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        alert(`下载失败: ${errorData.error || '未知错误'}`)
+        alert(`การดาวน์โหลดล้มเหลว: ${errorData.error || 'ข้อผิดพลาดที่ไม่รู้จัก'}`)
       }
     } catch (error) {
       console.error("Download failed:", error)
-      alert("下载失败: 网络错误")
+      alert("การดาวน์โหลดล้มเหลว: ข้อผิดพลาดเครือข่าย")
     } finally {
       setDownloading(false)
     }
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 字节"
+    if (bytes === 0) return "0 B"
     const k = 1024
-    const sizes = ["字节", "KB", "MB", "GB"]
+    const sizes = ["B", "KB", "MB", "GB"]
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
   }
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("zh-CN", {
+    return new Date(timestamp).toLocaleDateString("th-TH", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -154,7 +154,7 @@ export default function SharePage() {
         <Card className="w-full max-w-md">
           <CardContent className="p-6 text-center">
             <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">分享不可用</h3>
+            <h3 className="text-lg font-medium mb-2">การแบ่งปันไม่สามารถทำได้</h3>
             <p className="text-muted-foreground">{error}</p>
           </CardContent>
         </Card>
@@ -183,14 +183,14 @@ export default function SharePage() {
                 onClick={() => router.push("/login")}
                 className="text-xs md:text-sm"
               >
-                登录
+                เข้าสู่ระบบ
               </Button>
               <Button
                 size="sm"
                 onClick={() => router.push("/register")}
                 className="text-xs md:text-sm"
               >
-                注册
+                ลงทะเบียน
               </Button>
             </div>
           )}
@@ -199,7 +199,7 @@ export default function SharePage() {
           {user && (
             <div className="flex items-center space-x-1 md:space-x-2">
               <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">
-                欢迎，{user.email}
+                ยินดีต้อนรับ,{user.email}
               </span>
               <Button
                 variant="outline"
@@ -207,8 +207,8 @@ export default function SharePage() {
                 onClick={() => router.push("/dashboard")}
                 className="text-xs md:text-sm"
               >
-                <span className="hidden sm:inline">进入仪表板</span>
-                <span className="sm:hidden">仪表板</span>
+                <span className="hidden sm:inline">เข้าสู่แดชบอร์ด</span>
+                <span className="sm:hidden">แดชบอร์ด</span>
               </Button>
             </div>
           )}
@@ -232,10 +232,10 @@ export default function SharePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileIcon className="h-5 w-5" />
-                文件分享
+                การแบ่งปันไฟล์
               </CardTitle>
               <CardDescription>
-                有人向你分享了一个文件
+                มีคนแชร์ไฟล์กับคุณ
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -256,19 +256,19 @@ export default function SharePage() {
 
               {/* 分享信息 */}
               <div className="space-y-3">
-                <h4 className="font-medium">分享信息</h4>
+                <h4 className="font-medium">แบ่งปันข้อมูล</h4>
                 <div className="flex flex-wrap gap-2">
                   {shareInfo!.requireLogin && (
                     <Badge variant="outline" className="flex items-center gap-1">
                       <Shield className="h-3 w-3" />
-                      需要登录
+                      จำเป็นต้องเข้าสู่ระบบ
                     </Badge>
                   )}
 
                   {shareInfo!.gatekeeper && (
                     <Badge variant="outline" className="flex items-center gap-1">
                       <Eye className="h-3 w-3" />
-                      守门模式
+                      โหมดผู้รักษาประตู
                     </Badge>
                   )}
 
@@ -278,7 +278,7 @@ export default function SharePage() {
                   {shareInfo!.expiresAt && (
                     <Badge variant="outline" className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
-                      {Date.now() > shareInfo!.expiresAt ? "已过期" : `${formatDate(shareInfo!.expiresAt)} 过期`}
+                      {Date.now() > shareInfo!.expiresAt ? "หมดอายุแล้ว" : `${formatDate(shareInfo!.expiresAt)} หมดอายุแล้ว`}
                     </Badge>
                   )}
                 </div>
@@ -292,10 +292,10 @@ export default function SharePage() {
                   <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-2 text-muted-foreground">
                       <Eye className="h-4 w-4" />
-                      <span className="text-sm">此分享启用了守门模式</span>
+                      <span className="text-sm">การแชร์นี้ได้เปิดใช้งานโหมดเกตแล้ว</span>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      只允许查看文件信息，禁止下载文件内容
+                      อนุญาตให้ดูข้อมูลไฟล์เท่านั้น ห้ามดาวน์โหลดเนื้อหาไฟล์
                     </p>
                   </div>
                 ) : (
@@ -306,7 +306,7 @@ export default function SharePage() {
                     className="flex items-center gap-2"
                   >
                     <Download className="h-4 w-4" />
-                    {downloading ? "下载中..." : "下载文件"}
+                    {downloading ? "กำลังดาวน์โหลด..." : "ดาวน์โหลดไฟล์"}
                   </Button>
                 )}
               </div>

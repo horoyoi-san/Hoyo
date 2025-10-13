@@ -8,7 +8,7 @@ export const sharesMgmtRoutes = new Elysia()
 	.get("/shares", async (ctx) => {
 		const { user, set } = ctx as any
 		try {
-			logger.debug(`获取用户分享列表: ${user.userId}`)
+			logger.debug(`รับรายชื่อการแชร์ของผู้ใช้: ${user.userId}`)
 			const userShares = await db
 				.select({
 					id: fileShares.id,
@@ -36,7 +36,7 @@ export const sharesMgmtRoutes = new Elysia()
 				.orderBy(fileShares.createdAt)
 			return { shares: userShares }
 		} catch (error) {
-			logger.error("获取用户分享列表失败:", error)
+			logger.error("ไม่สามารถรับรายชื่อการแชร์ของผู้ใช้ได้:", error)
 			set.status = 500
 			return { error: "Get shares failed" }
 		}
@@ -44,24 +44,24 @@ export const sharesMgmtRoutes = new Elysia()
 	.put("/shares/:shareId/status", async (ctx) => {
 		const { params, user, set, body } = ctx as any
 		try {
-			logger.debug(`更新分享状态: ${params.shareId} - 用户: ${user.userId}`)
+			logger.debug(`更新分享状态: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 			const { enabled } = body as { enabled: boolean }
 			const shareRecord = await db.select().from(fileShares).where(and(eq(fileShares.id, params.shareId), eq(fileShares.userId, user.userId))).get()
 			if (!shareRecord) {
-				logger.warn(`分享记录未找到: ${params.shareId} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบบันทึกการแชร์: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "Share not found" }
 			}
-			// 管理员禁用时，用户不能启用
+			// 管理员禁用时，ผู้ใช้不能启用
 			if (shareRecord.adminDisabled && enabled) {
 				set.status = 403
-				return { error: "该分享因违规已被管理员禁用，无法启用" }
+				return { error: "การแชร์นี้ถูกปิดใช้งานโดยผู้ดูแลระบบเนื่องจากมีการละเมิดและไม่สามารถเปิดใช้งานได้" }
 			}
 			await db.update(fileShares).set({ enabled, updatedAt: Date.now() }).where(eq(fileShares.id, params.shareId))
-			logger.info(`更新分享状态: ${params.shareId} - 启用: ${enabled} - 用户: ${user.userId}`)
+			logger.info(`อัปเดตสถานะการแชร์: ${params.shareId} - เปิดใช้งาน: ${enabled} - ผู้ใช้: ${user.userId}`)
 			return { success: true, enabled }
 		} catch (error) {
-			logger.error("更新分享状态失败:", error)
+			logger.error("ไม่สามารถอัปเดตสถานะการแชร์ได้:", error)
 			set.status = 500
 			return { error: "Update share status failed" }
 		}
@@ -69,19 +69,19 @@ export const sharesMgmtRoutes = new Elysia()
 	.put("/shares/:shareId/expiry", async (ctx) => {
 		const { params, user, set, body } = ctx as any
 		try {
-			logger.debug(`更新分享有效期: ${params.shareId} - 用户: ${user.userId}`)
+			logger.debug(`อัปเดตระยะเวลาการแชร์ที่ถูกต้อง: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 			const { expiresAt } = body as { expiresAt: number | null }
 			const shareRecord = await db.select().from(fileShares).where(and(eq(fileShares.id, params.shareId), eq(fileShares.userId, user.userId))).get()
 			if (!shareRecord) {
-				logger.warn(`分享记录未找到: ${params.shareId} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบบันทึกการแชร์: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "Share not found" }
 			}
 			await db.update(fileShares).set({ expiresAt, updatedAt: Date.now() }).where(eq(fileShares.id, params.shareId))
-			logger.info(`更新分享有效期: ${params.shareId} - 有效期: ${expiresAt} - 用户: ${user.userId}`)
+			logger.info(`อัปเดตระยะเวลาการแชร์ที่ถูกต้อง: ${params.shareId} - ระยะเวลาใช้งาน: ${expiresAt} - ผู้ใช้: ${user.userId}`)
 			return { success: true, expiresAt }
 		} catch (error) {
-			logger.error("更新分享有效期失败:", error)
+			logger.error("ไม่สามารถอัปเดตระยะเวลาการแชร์ที่ถูกต้องได้:", error)
 			set.status = 500
 			return { error: "Update share expiry failed" }
 		}
@@ -89,18 +89,18 @@ export const sharesMgmtRoutes = new Elysia()
 	.delete("/shares/:shareId", async (ctx) => {
 		const { params, user, set } = ctx as any
 		try {
-			logger.debug(`删除分享: ${params.shareId} - 用户: ${user.userId}`)
+			logger.debug(`ลบ แชร์: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 			const shareRecord = await db.select().from(fileShares).where(and(eq(fileShares.id, params.shareId), eq(fileShares.userId, user.userId))).get()
 			if (!shareRecord) {
-				logger.warn(`分享记录未找到: ${params.shareId} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบบันทึกการแชร์: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "Share not found" }
 			}
 			await db.delete(fileShares).where(eq(fileShares.id, params.shareId))
-			logger.info(`删除分享: ${params.shareId} - 用户: ${user.userId}`)
+			logger.info(`ลบ แชร์: ${params.shareId} - ผู้ใช้: ${user.userId}`)
 			return { success: true }
 		} catch (error) {
-			logger.error("删除分享失败:", error)
+			logger.error("ไม่สามารถลบการแชร์ได้:", error)
 			set.status = 500
 			return { error: "Delete share failed" }
 		}

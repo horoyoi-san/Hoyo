@@ -64,7 +64,7 @@ export function useAdminDataCache<T>(
       setData(result)
       return result
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "获取数据失败"
+      const errorMessage = err instanceof Error ? err.message : "ไม่สามารถรับข้อมูลได้"
       setError(errorMessage)
       
       // 移除加载状态

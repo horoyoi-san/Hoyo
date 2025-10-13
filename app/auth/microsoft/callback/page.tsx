@@ -37,7 +37,7 @@ function MicrosoftCallbackContent() {
         <CardHeader className="text-center">
           <CardTitle className="flex items-center justify-center gap-2">
             <Loader2 className="h-5 w-5 animate-spin" />
-            处理Microsoft登录
+            การจัดการการเข้าสู่ระบบ Microsoft
           </CardTitle>
           <CardDescription>
             正在处理您的Microsoft账户登录...
@@ -45,7 +45,7 @@ function MicrosoftCallbackContent() {
         </CardHeader>
         <CardContent>
           <div className="text-center text-sm text-muted-foreground">
-            请稍候，我们正在验证您的Microsoft账户信息
+            โปรดรอสักครู่ในขณะที่เราตรวจสอบข้อมูลบัญชี Microsoft ของคุณ
           </div>
         </CardContent>
       </Card>

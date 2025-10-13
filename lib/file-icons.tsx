@@ -106,35 +106,35 @@ export function getFileTypeDescription(mimeType: string, fileName: string = ""):
   const extension = fileName.toLowerCase().split('.').pop() || ""
   
   if (mimeType.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "ico"].includes(extension)) {
-    return "图片文件"
+    return "ไฟล์รูปภาพ"
   }
   
   if (mimeType.startsWith("video/") || ["mp4", "avi", "mkv", "mov", "wmv", "flv", "webm", "m4v"].includes(extension)) {
-    return "视频文件"
+    return "ไฟล์วิดีโอ"
   }
   
   if (mimeType.startsWith("audio/") || ["mp3", "wav", "flac", "aac", "ogg", "wma", "m4a"].includes(extension)) {
-    return "音频文件"
+    return "ไฟล์เสียง"
   }
   
   if (["zip", "rar", "7z", "tar", "gz", "bz2", "xz", "tar.gz", "tar.bz2"].includes(extension)) {
-    return "压缩包"
+    return "แพ็คเกจบีบอัด"
   }
   
   if (["exe", "msi", "dmg", "pkg", "deb", "rpm", "appimage"].includes(extension)) {
-    return "安装程序"
+    return "ผู้ติดตั้ง"
   }
   
   if (extension === "apk") {
-    return "Android 应用"
+    return "แอป Android"
   }
   
   if (["js", "ts", "jsx", "tsx", "html", "css", "scss", "sass", "less", "php", "py", "java", "cpp", "c", "h", "cs", "go", "rs", "rb", "swift", "kt", "dart", "vue", "svelte"].includes(extension)) {
-    return "代码文件"
+    return "ไฟล์โค้ด"
   }
   
   if (["txt", "md", "rtf", "log", "ini", "cfg", "conf", "yaml", "yml", "toml", "json", "xml"].includes(extension)) {
-    return "文本文件"
+    return "ไฟล์ข้อความ"
   }
   
   if (extension === "pdf") {
@@ -142,16 +142,16 @@ export function getFileTypeDescription(mimeType: string, fileName: string = ""):
   }
   
   if (["xls", "xlsx", "csv", "ods"].includes(extension)) {
-    return "电子表格"
+    return "สเปรดชีต"
   }
   
   if (["ppt", "pptx", "odp"].includes(extension)) {
-    return "演示文稿"
+    return "การนำเสนอ"
   }
   
   if (["doc", "docx", "odt"].includes(extension)) {
-    return "Word 文档"
+    return "เอกสาร Word"
   }
   
-  return "文件"
+  return "เอกสาร"
 }

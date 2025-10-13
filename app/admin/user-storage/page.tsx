@@ -17,21 +17,21 @@ export default function AdminUserStoragePage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <Cloud className="h-4 w-4" />
-                  用户存储策略
+                  นโยบายการจัดเก็บข้อมูลของผู้ใช้
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">用户存储策略</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">为用户分配存储策略</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">นโยบายการจัดเก็บข้อมูลของผู้ใช้</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">การกำหนดนโยบายการจัดเก็บข้อมูลให้กับผู้ใช้</p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>策略分配</CardTitle>
-              <CardDescription>为指定用户分配或调整存储策略</CardDescription>
+              <CardTitle>การมอบหมายกลยุทธ์</CardTitle>
+              <CardDescription>กำหนดหรือปรับนโยบายการจัดเก็บข้อมูลสำหรับผู้ใช้ที่ระบุ</CardDescription>
             </CardHeader>
             <CardContent>
               <UserStorageManagement />

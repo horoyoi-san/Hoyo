@@ -43,7 +43,7 @@ function LoginContent() {
           setGoogleEnabled(data.enabled && data.configured)
         }
       } catch (error) {
-        console.error("检查谷歌OAuth状态失败:", error)
+        console.error("การตรวจสอบสถานะ Google OAuth ล้มเหลว:", error)
       }
     }
     checkGoogleOAuth()
@@ -59,7 +59,7 @@ function LoginContent() {
           setGithubEnabled(data.enabled && data.configured)
         }
       } catch (error) {
-        console.error("检查GitHub OAuth状态失败:", error)
+        console.error("การตรวจสอบสถานะ GitHub OAuth ล้มเหลว:", error)
       }
     }
     checkGitHubOAuth()
@@ -75,7 +75,7 @@ function LoginContent() {
           setMicrosoftEnabled(data.enabled && data.configured)
         }
       } catch (error) {
-        console.error("检查Microsoft OAuth状态失败:", error)
+        console.error("การตรวจสอบสถานะ Microsoft OAuth ล้มเหลว:", error)
       }
     }
     checkMicrosoftOAuth()
@@ -89,13 +89,13 @@ function LoginContent() {
     
     if (error) {
       if (oauthType === 'google') {
-        setError('谷歌登录被取消或失败')
+        setError('การลงชื่อเข้าใช้ Google ถูกยกเลิกหรือล้มเหลว')
       } else if (oauthType === 'github') {
-        setError('GitHub登录被取消或失败')
+        setError('การเข้าสู่ระบบ GitHub ถูกยกเลิกหรือล้มเหลว')
       } else if (oauthType === 'microsoft') {
-        setError('Microsoft登录被取消或失败')
+        setError('การลงชื่อเข้าใช้ Microsoft ถูกยกเลิกหรือล้มเหลว')
       } else {
-        setError('OAuth登录失败')
+        setError('การเข้าสู่ระบบ OAuth ล้มเหลว')
       }
       return
     }
@@ -122,7 +122,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("谷歌登录失败，请稍后重试")
+        setError("การเข้าสู่ระบบ Google ล้มเหลว โปรดลองอีกครั้งในภายหลัง")
       }
     } finally {
       setGoogleLoading(false)
@@ -140,7 +140,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("GitHub登录失败，请稍后重试")
+        setError("การเข้าสู่ระบบ GitHub ล้มเหลว โปรดลองอีกครั้งในภายหลัง")
       }
     } finally {
       setGithubLoading(false)
@@ -158,7 +158,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("Microsoft登录失败，请稍后重试")
+        setError("การเข้าสู่ระบบ Microsoft ล้มเหลว โปรดลองอีกครั้งในภายหลัง")
       }
     } finally {
       setMicrosoftLoading(false)
@@ -176,7 +176,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("获取谷歌授权链接失败")
+        setError("ไม่สามารถรับลิงก์การอนุญาตจาก Google ได้")
       }
       setGoogleLoading(false)
     }
@@ -193,7 +193,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("获取GitHub授权链接失败")
+        setError("ไม่สามารถรับลิงก์การอนุญาต GitHub ได้")
       }
       setGithubLoading(false)
     }
@@ -210,7 +210,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("获取Microsoft授权链接失败")
+        setError("ไม่สามารถรับลิงก์การอนุญาตของ Microsoft ได้")
       }
       setMicrosoftLoading(false)
     }
@@ -223,13 +223,13 @@ function LoginContent() {
 
     // 基本验证
     if (!email.trim()) {
-      setError("请输入邮箱地址")
+      setError("กรุณากรอกที่อยู่อีเมลของคุณ")
       setLoading(false)
       return
     }
 
     if (!password.trim()) {
-      setError("请输入密码")
+      setError("กรุณากรอกรหัสผ่านของคุณ")
       setLoading(false)
       return
     }
@@ -241,7 +241,7 @@ function LoginContent() {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("登录失败，请检查您的网络连接")
+        setError("การเข้าสู่ระบบล้มเหลว กรุณาตรวจสอบการเชื่อมต่อเครือข่ายของคุณ")
       }
     } finally {
       setLoading(false)
@@ -263,9 +263,9 @@ function LoginContent() {
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">
-              登录账户
+              เข้าสู่ระบบบัญชีของคุณ
             </CardTitle>
-            <CardDescription>输入您的凭据以访问 FireflyCloud</CardDescription>
+            <CardDescription>กรอกข้อมูลประจำตัวของคุณเพื่อเข้าถึง FireflyCloud</CardDescription>
           </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -282,7 +282,7 @@ function LoginContent() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="请输入您的邮箱地址"
+                placeholder="กรุณากรอกที่อยู่อีเมลของคุณ"
                 required
                 disabled={loading || googleLoading || githubLoading || microsoftLoading}
                 className={error && !email.trim() ? "border-red-500 focus:border-red-500" : ""}
@@ -297,7 +297,7 @@ function LoginContent() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="请输入您的密码"
+                  placeholder="กรุณากรอกรหัสผ่านของคุณ"
                   required
                   disabled={loading || googleLoading || githubLoading || microsoftLoading}
                   className={error && !password.trim() ? "border-red-500 focus:border-red-500" : ""}
@@ -316,7 +316,7 @@ function LoginContent() {
             </div>
 
             <Button type="submit" className="w-full" disabled={loading || googleLoading || githubLoading || microsoftLoading}>
-              {loading ? "登录中..." : "เข้าสู่ระบบ"}
+              {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
             </Button>
           </form>
 
@@ -328,7 +328,7 @@ function LoginContent() {
                   <Separator className="w-full" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">或使用第三方账号登录</span>
+                  <span className="bg-background px-2 text-muted-foreground">หรือเข้าสู่ระบบโดยใช้บัญชีบุคคลที่สาม</span>
                 </div>
               </div>
 
@@ -417,9 +417,9 @@ function LoginContent() {
 
           <div className="mt-6 text-center text-sm">
             <p className="text-muted-foreground">
-              还没有账户？{" "}
+              ยังไม่มีบัญชีใช่ไหม?{" "}
               <Link href="/register" className="text-primary hover:underline">
-                立即注册
+                ลงทะเบียนตอนนี้
               </Link>
             </p>
           </div>

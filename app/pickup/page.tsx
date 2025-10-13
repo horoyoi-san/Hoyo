@@ -52,12 +52,12 @@ export default function PickupPage() {
 
   const handleSearch = async () => {
     if (!pickupCode.trim()) {
-      setError("请输入取件码")
+      setError("กรุณากรอกรหัสรับสินค้า")
       return
     }
 
     if (pickupCode.length !== 6 || !/^\d{6}$/.test(pickupCode)) {
-      setError("取件码必须是6位数字")
+      setError("รหัสการรับสินค้าจะต้องมี 6 หลัก")
       return
     }
 
@@ -76,11 +76,11 @@ export default function PickupPage() {
         setShareToken(data.shareToken)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        setError(errorData.error || "取件码无效或已失效")
+        setError(errorData.error || "รหัสรับสินค้าไม่ถูกต้องหรือหมดอายุแล้ว")
       }
     } catch (error) {
       console.error("Failed to fetch pickup info:", error)
-      setError("网络错误，请稍后重试")
+      setError("ข้อผิดพลาดของเครือข่าย โปรดลองอีกครั้งในภายหลัง")
     } finally {
       setLoading(false)
     }
@@ -108,26 +108,26 @@ export default function PickupPage() {
         await downloadFile(data.downloadUrl, fileInfo.originalName)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        setError(`下载失败: ${errorData.error || '未知错误'}`)
+        setError(`การดาวน์โหลดล้มเหลว: ${errorData.error || 'ข้อผิดพลาดที่ไม่รู้จัก'}`)
       }
     } catch (error) {
       console.error("Download failed:", error)
-      setError("下载失败: 网络错误")
+      setError("การดาวน์โหลดล้มเหลว: ข้อผิดพลาดเครือข่าย")
     } finally {
       setDownloading(false)
     }
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 字节"
+    if (bytes === 0) return "0 B"
     const k = 1024
-    const sizes = ["字节", "KB", "MB", "GB"]
+    const sizes = ["B", "KB", "MB", "GB"]
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
   }
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("zh-CN", {
+    return new Date(timestamp).toLocaleDateString("th-TH", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -160,16 +160,16 @@ export default function PickupPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
-                文件取件
+                การรับเอกสาร
               </CardTitle>
               <CardDescription>
-                输入取件码来获取文件
+                กรอกรหัสรับเอกสารเพื่อรับเอกสาร
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Input
-                  placeholder="请输入6位数字取件码"
+                  placeholder="กรุณากรอกรหัสรับสินค้า 6 หลัก"
                   value={pickupCode}
                   onChange={(e) => {
                     const value = e.target.value.replace(/\D/g, '').slice(0, 6)
@@ -190,7 +190,7 @@ export default function PickupPage() {
                   ) : (
                     <Search className="h-4 w-4" />
                   )}
-                  {loading ? "查询中..." : "查询"}
+                  {loading ? "กำลังสอบถาม..." : "สอบถาม"}
                 </Button>
               </div>
 
@@ -209,10 +209,10 @@ export default function PickupPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   {getFileIcon(fileInfo.mimeType, fileInfo.originalName)}
-                  文件信息
+                  ข้อมูลไฟล์
                 </CardTitle>
                 <CardDescription>
-                  找到了对应的文件，您可以下载它
+                  พบไฟล์ที่เกี่ยวข้องแล้วและคุณสามารถดาวน์โหลดได้
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -234,31 +234,31 @@ export default function PickupPage() {
 
                 {/* 分享信息 */}
                 <div className="space-y-3">
-                  <h4 className="font-medium">分享信息</h4>
+                  <h4 className="font-medium">แบ่งปันข้อมูล</h4>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="flex items-center gap-1">
                       <Hash className="h-3 w-3" />
-                      需要取件码
+                      จำเป็นต้องมีรหัสรับสินค้า
                     </Badge>
                     {shareInfo.requireLogin && (
                       <Badge variant="outline" className="flex items-center gap-1">
                         <Shield className="h-3 w-3" />
-                        需要登录
+                        จำเป็นต้องเข้าสู่ระบบ
                       </Badge>
                     )}
                     {shareInfo.gatekeeper && (
                       <Badge variant="outline" className="flex items-center gap-1">
                         <Eye className="h-3 w-3" />
-                        守门模式
+                        โหมดผู้รักษาประตู
                       </Badge>
                     )}
                     <Badge variant="outline">
-                      已下载 {shareInfo.accessCount} 次
+                      ดาวน์โหลดแล้ว {shareInfo.accessCount} ชั้นสอง
                     </Badge>
                     {shareInfo.expiresAt && (
                       <Badge variant="outline" className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {Date.now() > shareInfo.expiresAt ? "已过期" : `${formatDate(shareInfo.expiresAt)} 过期`}
+                        {Date.now() > shareInfo.expiresAt ? "หมดอายุแล้ว" : `${formatDate(shareInfo.expiresAt)} หมดอายุแล้ว`}
                       </Badge>
                     )}
                   </div>
@@ -272,10 +272,10 @@ export default function PickupPage() {
                     <div className="text-center space-y-2">
                       <div className="flex items-center justify-center gap-2 text-muted-foreground">
                         <Eye className="h-4 w-4" />
-                        <span className="text-sm">此分享启用了守门模式</span>
+                        <span className="text-sm">การแชร์นี้ได้เปิดใช้งานโหมดเกตแล้ว</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        只允许查看文件信息，禁止下载文件内容
+                        อนุญาตให้ดูข้อมูลไฟล์เท่านั้น ห้ามดาวน์โหลดเนื้อหาไฟล์
                       </p>
                     </div>
                   ) : (
@@ -286,7 +286,7 @@ export default function PickupPage() {
                       className="flex items-center gap-2"
                     >
                       <Download className="h-4 w-4" />
-                      {downloading ? "下载中..." : "下载文件"}
+                      {downloading ? "กำลังดาวน์โหลด..." : "ดาวน์โหลดไฟล์"}
                     </Button>
                   )}
                 </div>
@@ -297,12 +297,12 @@ export default function PickupPage() {
           {/* 使用说明 */}
           <Card className="bg-muted/50">
             <CardContent className="p-6">
-              <h4 className="font-medium mb-3">使用说明</h4>
+              <h4 className="font-medium mb-3">คำแนะนำ</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• 取件码是6位数字，由文件分享者提供</li>
-                <li>• 每个取件码对应一个特定的文件</li>
-                <li>• 取件码可以多次使用下载同一文件</li>
-                <li>• 如果取件码无效，请联系分享者确认</li>
+                <li>• รหัสการรับข้อมูลเป็นตัวเลข 6 หลักที่ผู้แบ่งปันไฟล์ให้มา</li>
+                <li>• รหัสการรับสินค้าแต่ละรหัสจะสอดคล้องกับเอกสารเฉพาะ</li>
+                <li>• รหัสรับสินค้าสามารถใช้หลายครั้งเพื่อดาวน์โหลดไฟล์เดียวกันได้</li>
+                <li>• หากรหัสรับไม่ถูกต้อง โปรดติดต่อผู้แบ่งปันเพื่อยืนยัน</li>
               </ul>
             </CardContent>
           </Card>

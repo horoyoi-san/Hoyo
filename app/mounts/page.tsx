@@ -22,15 +22,15 @@ export default function MountsPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <HardDrive className="h-4 w-4" />
-                  挂载管理
+                  การจัดการการเมานต์
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">挂载管理</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">管理 R2 和 OneDrive 存储挂载点</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">การจัดการการเมานต์</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">การจัดการจุดเชื่อมต่อที่เก็บข้อมูล R2 และ OneDrive</p>
           </div>
           <MountManagement />
         </div>

@@ -13,10 +13,10 @@ export const contentRoutes = new Elysia()
 		const { params, set } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`获取文件内容: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`รับเนื้อหาไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 			const file = await db.select().from(files).where(and(eq(files.id, params.id), eq(files.userId, user.userId))).get()
 			if (!file) {
-				logger.warn(`文件未找到: ${params.id} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "File not found" }
 			}
@@ -29,7 +29,7 @@ export const contentRoutes = new Elysia()
 			}
 			const config = await db.select().from(storageConfig).get()
 			if (!config) {
-				logger.error("存储配置未找到")
+				logger.error("ไม่พบการกำหนดค่าการจัดเก็บข้อมูล")
 				set.status = 500
 				return { error: "Storage not configured" }
 			}
@@ -38,29 +38,29 @@ export const contentRoutes = new Elysia()
 				let content = ""
 				if (config.storageType === "local") {
 					const filePath = path.isAbsolute(file.storagePath) ? file.storagePath : path.join(process.cwd(), "uploads", file.storagePath)
-					logger.debug(`尝试读取本地文件: ${filePath}`)
+					logger.debug(`ลองอ่านไฟล์ท้องถิ่น: ${filePath}`)
 					if (fs.existsSync(filePath)) {
 						content = fs.readFileSync(filePath, "utf8")
 					} else {
-						logger.error(`本地文件不存在: ${filePath}`)
+						logger.error(`ไฟล์ท้องถิ่นไม่มีอยู่: ${filePath}`)
 						set.status = 404
 						return { error: "File not found on storage" }
 					}
 				} else {
-					logger.debug(`尝试从云存储下载文件: ${file.storagePath}`)
+					logger.debug(`ลองดาวน์โหลดไฟล์จากที่เก็บข้อมูลบนคลาวด์: ${file.storagePath}`)
 					const fileBuffer = await storageService.downloadFile(file.storagePath)
 					content = fileBuffer.toString("utf8")
 				}
-				logger.info(`获取文件内容成功: ${file.originalName} - 用户: ${user.userId}, 内容长度: ${content.length}`)
+				logger.info(`ได้รับเนื้อหาไฟล์เรียบร้อยแล้ว: ${file.originalName} - ผู้ใช้: ${user.userId}, ความยาวของเนื้อหา: ${content.length}`)
 				set.headers["Content-Type"] = "text/plain; charset=utf-8"
 				return content
 			} catch (error) {
-				logger.error("读取文件内容失败:", error)
+				logger.error("ไม่สามารถอ่านเนื้อหาไฟล์ได้:", error)
 				set.status = 500
 				return { error: "Failed to read file content" }
 			}
 		} catch (error) {
-			logger.error("获取文件内容失败:", error)
+			logger.error("ไม่สามารถรับเนื้อหาไฟล์ได้:", error)
 			set.status = 500
 			return { error: "Get file content failed" }
 		}
@@ -69,10 +69,10 @@ export const contentRoutes = new Elysia()
 		const { params, set, body } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`保存文件内容: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`บันทึกเนื้อหาไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 			const file = await db.select().from(files).where(and(eq(files.id, params.id), eq(files.userId, user.userId))).get()
 			if (!file) {
-				logger.warn(`文件未找到: ${params.id} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "File not found" }
 			}
@@ -85,7 +85,7 @@ export const contentRoutes = new Elysia()
 			}
 			const config = await db.select().from(storageConfig).get()
 			if (!config) {
-				logger.error("存储配置未找到")
+				logger.error("ไม่พบการกำหนดค่าการจัดเก็บข้อมูล")
 				set.status = 500
 				return { error: "Storage not configured" }
 			}
@@ -101,10 +101,10 @@ export const contentRoutes = new Elysia()
 				if (sizeChange > 0) {
 					const quotaCheck = await QuotaService.checkUserQuota(user.userId, sizeChange)
 					if (!quotaCheck.allowed) {
-						logger.warn(`用户 ${user.userId} 编辑文件配额不足: 需要额外 ${sizeChange} 字节, 可用 ${quotaCheck.availableSpace} 字节`)
+						logger.warn(`用户 ${user.userId} โควต้าไม่เพียงพอสำหรับการแก้ไขไฟล์: เพิ่มเติม ${sizeChange} ไบต์ พร้อมใช้งาน ${quotaCheck.availableSpace} ไบต์`)
 						set.status = 413
 						return { 
-							error: "当前已超出配额限制，请删除文件或者联系管理员以获得更多的配额。",
+							error: "เกินขีดจำกัดโควต้าแล้ว กรุณาลบไฟล์หรือติดต่อผู้ดูแลระบบเพื่อขอโควต้าเพิ่ม",
 							details: {
 								sizeChange: sizeChange,
 								currentUsed: quotaCheck.currentUsed,
@@ -137,16 +137,16 @@ export const contentRoutes = new Elysia()
 				await db.update(files).set({ size: newSize, createdAt: Date.now() }).where(eq(files.id, params.id))
 				if (sizeChange !== 0) {
 					await QuotaService.updateUserStorage(user.userId, sizeChange)
-					logger.info(`文件大小变化，更新配额: ${user.userId} - 变化: ${sizeChange} 字节`)
+					logger.info(`การเปลี่ยนแปลงขนาดไฟล์, อัปเดตโควตา: ${user.userId} - เปลี่ยน: ${sizeChange} ไบต์`)
 				}
 				return { success: true, size: newSize, message: "File content saved successfully" }
 			} catch (error) {
-				logger.error("保存文件内容失败:", error)
+				logger.error("ไม่สามารถบันทึกเนื้อหาไฟล์ได้:", error)
 				set.status = 500
 				return { error: "Failed to save file content" }
 			}
 		} catch (error) {
-			logger.error("保存文件内容失败:", error)
+			logger.error("ไม่สามารถบันทึกเนื้อหาไฟล์ได้:", error)
 			set.status = 500
 			return { error: "Save file content failed" }
 		}

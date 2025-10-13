@@ -54,7 +54,7 @@ export function SmtpConfiguration() {
   // 默认邮件模板 - shadcn UI 风格
   const defaultTemplate = [
     '<!DOCTYPE html>',
-    '<html lang="zh-CN">',
+    '<html lang="th-TH">',
     '<head>',
     '    <meta charset="UTF-8">',
     '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',

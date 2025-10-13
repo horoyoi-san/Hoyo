@@ -2,7 +2,7 @@
 
 ## 🎯 概述
 
-本项目已成功集成 Microsoft OAuth 2.0 认证，基于[微软身份平台OAuth 2.0授权代码流文档](https://docs.azure.cn/zh-cn/entra/identity-platform/v2-oauth2-auth-code-flow)实现，采用与 GitHub OAuth 和 Google OAuth 相同的配置方式。
+本项目已成功集成 Microsoft OAuth 2.0 认证，基于[微软身份平台OAuth 2.0授权代码流文档](https://docs.azure.cn/th-TH/entra/identity-platform/v2-oauth2-auth-code-flow)实现，采用与 GitHub OAuth 和 Google OAuth 相同的配置方式。
 
 ## 🚀 特色功能
 
@@ -101,7 +101,7 @@ openid profile email User.Read
 
 - [Azure Portal (中国区)](https://portal.azure.cn)
 - [Microsoft Graph Explorer](https://developer.microsoft.com/graph/graph-explorer)
-- [微软身份平台文档](https://docs.azure.cn/zh-cn/entra/identity-platform/)
+- [微软身份平台文档](https://docs.azure.cn/th-TH/entra/identity-platform/)
 
 ## 📝 注意事项
 

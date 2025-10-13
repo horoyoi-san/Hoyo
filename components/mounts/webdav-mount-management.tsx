@@ -124,7 +124,7 @@ export function WebDAVMountManagement() {
 	const handleCreateMount = async () => {
 		setError("")
 		if (!selectedFolderId || !mountName.trim()) {
-			setError("请填写必填字段：目标文件夹与挂载名称")
+			setError("กรุณากรอกข้อมูลในช่องที่จำเป็น: โฟลเดอร์เป้าหมายและชื่อการติดตั้ง")
 			return
 		}
 		try {
@@ -141,7 +141,7 @@ export function WebDAVMountManagement() {
 				}),
 			})
 			if (res.ok) {
-				setSuccess("WebDAV 挂载点创建成功")
+				setSuccess("สร้างจุดเชื่อมต่อ WebDAV สำเร็จแล้ว")
 				setCreateDialogOpen(false)
 				setSelectedFolderId("")
 				setWebdavPath("")
@@ -149,22 +149,22 @@ export function WebDAVMountManagement() {
 				await fetchMounts()
 			} else {
 				const data = await res.json()
-				setError(data.error || "创建挂载点失败")
+				setError(data.error || "ไม่สามารถสร้างจุดเชื่อมต่อได้")
 			}
 		} catch (e) {
-			setError("网络错误")
+			setError("ข้อผิดพลาดของเครือข่าย")
 		}
 	}
 
 	const handleDeleteMount = async (id: string) => {
-		if (!confirm("确定要删除此挂载点吗？")) return
+		if (!confirm("คุณแน่ใจว่าต้องการลบจุดเชื่อมต่อนี้หรือไม่?")) return
 		try {
 			const res = await fetch(`${API_URL}/storage/webdav/mounts/${id}`, {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			})
 			if (res.ok) {
-				toast.success("挂载点删除成功")
+				toast.success("จุดเชื่อมต่อถูกลบสำเร็จแล้ว")
 				await fetchMounts()
 			} else {
 				const data = await res.json()

@@ -17,21 +17,21 @@ export default function AdminFilesPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <FilesIcon className="h-4 w-4" />
-                  文件管理
+                  การจัดการไฟล์
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">文件</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">查看和管理系统中的所有文件</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">เอกสาร</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">ดูและจัดการไฟล์ทั้งหมดในระบบ</p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>文件管理</CardTitle>
-              <CardDescription>支持筛选、查看详情和删除文件</CardDescription>
+              <CardTitle>การจัดการไฟล์</CardTitle>
+              <CardDescription>รองรับการกรอง ดูรายละเอียด และลบไฟล์</CardDescription>
             </CardHeader>
             <CardContent>
               <FileManagement onFileDeleted={() => {}} />

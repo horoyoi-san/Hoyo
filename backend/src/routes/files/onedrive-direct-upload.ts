@@ -25,14 +25,14 @@ async function getAdminAccessToken(cfg: any): Promise<string> {
 		.innerJoin(users, eq(oneDriveAuth.userId, users.id))
 		.where(eq(users.role, 'admin'))
 		.get()
-	if (!admin) throw new Error("管理员OneDrive认证信息未找到")
+	if (!admin) throw new Error("ไม่พบข้อมูลการรับรองความถูกต้องของผู้ดูแลระบบ OneDrive")
 	let accessToken = admin.accessToken
 	if (admin.expiresAt <= Date.now()) {
-		logger.warn(`管理员OneDrive访问令牌已过期，开始自动刷新`)
+		logger.warn(`โทเค็นการเข้าถึง OneDrive ของผู้ดูแลระบบหมดอายุแล้วและจะรีเฟรชโดยอัตโนมัติ`)
 		const refreshed = await service.refreshToken(admin.refreshToken)
 		await db.update(oneDriveAuth).set({ accessToken: refreshed.accessToken, refreshToken: refreshed.refreshToken, expiresAt: refreshed.expiresAt, updatedAt: Date.now() }).where(eq(oneDriveAuth.id, admin.id))
 		accessToken = refreshed.accessToken
-		logger.info(`管理员OneDrive访问令牌刷新成功`)
+		logger.info(`โทเค็นการเข้าถึง OneDrive ของผู้ดูแลระบบได้รับการรีเฟรชสำเร็จแล้ว`)
 	}
 	return accessToken
 }
@@ -58,10 +58,10 @@ export const onedriveDirectUploadRoutes = new Elysia()
 				// 检查用户配额
 				const quotaCheck = await QuotaService.checkUserQuota(user.userId, fileSize)
 				if (!quotaCheck.allowed) {
-					logger.warn(`用户 ${user.userId} OneDrive上传配额不足: 需要 ${fileSize} 字节, 可用 ${quotaCheck.availableSpace} 字节`)
+					logger.warn(`ผู้ใช้ ${user.userId} โควตาการอัปโหลด OneDrive ไม่เพียงพอ: ความต้องการ ${fileSize} ไบต์, มีอยู่ ${quotaCheck.availableSpace} ไบต์`)
 					set.status = 413
 					return { 
-						error: "当前已超出配额限制，请删除文件或者联系管理员以获得更多的配额。",
+						error: "เกินขีดจำกัดโควต้าแล้ว กรุณาลบไฟล์หรือติดต่อผู้ดูแลระบบเพื่อขอโควต้าเพิ่ม",
 						details: {
 							fileSize: fileSize,
 							currentUsed: quotaCheck.currentUsed,
@@ -108,7 +108,7 @@ export const onedriveDirectUploadRoutes = new Elysia()
 
 				return { useDirect: true, uploadUrl: session.uploadUrl, targetFolder }
 			} catch (error) {
-				logger.error("创建 OneDrive 直传会话失败:", error)
+				logger.error("ไม่สามารถสร้างเซสชัน OneDrive Direct ได้:", error)
 				set.status = 500
 				return { error: "Failed to create OneDrive upload session" }
 			}
@@ -137,10 +137,10 @@ export const onedriveDirectUploadRoutes = new Elysia()
 				// 二次配额验证 - 防止恶意绕过或客户端数据不一致
 				const quotaCheck = await QuotaService.checkUserQuota(user.userId, size)
 				if (!quotaCheck.allowed) {
-					logger.warn(`用户 ${user.userId} OneDrive上传完成时配额验证失败: 需要 ${size} 字节, 可用 ${quotaCheck.availableSpace} 字节`)
+					logger.warn(`ผู้ใช้ ${user.userId} การอัปโหลด OneDrive เสร็จสมบูรณ์ด้วยความล้มเหลวในการตรวจสอบโควตา: ความต้องการ ${size} ไบต์, มีอยู่ ${quotaCheck.availableSpace} ไบต์`)
 					set.status = 413
 					return { 
-						error: "当前已超出配额限制，请删除文件或者联系管理员以获得更多的配额。",
+						error: "เกินขีดจำกัดโควต้าแล้ว กรุณาลบไฟล์หรือติดต่อผู้ดูแลระบบเพื่อขอโควต้าเพิ่ม",
 						details: {
 							fileSize: size,
 							currentUsed: quotaCheck.currentUsed,
@@ -178,7 +178,7 @@ export const onedriveDirectUploadRoutes = new Elysia()
 				logger.file('UPLOAD', filename, size, true)
 				return { success: true, file: { id, filename, originalName: filename, size, mimeType, folderId: folderId || null } }
 			} catch (error) {
-				logger.error("OneDrive 直传登记失败:", error)
+				logger.error("การลงทะเบียนโอนย้าย OneDrive โดยตรงล้มเหลว:", error)
 				set.status = 500
 				return { error: "Failed to finalize OneDrive upload" }
 			}

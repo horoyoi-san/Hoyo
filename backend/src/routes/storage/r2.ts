@@ -9,7 +9,7 @@ export const r2Routes = new Elysia()
 		const { query, set } = ctx as any
 		try {
 			const { prefix = "" } = query
-			logger.debug(`浏览 R2 目录: ${prefix}`)
+			logger.debug(`เรียกดูแคตตาล็อก R2: ${prefix}`)
 			const config = await db.select().from(storageConfig).get()
 			if (!config || (!config.enableMixedMode && config.storageType !== "r2")) {
 				set.status = 400
@@ -17,10 +17,10 @@ export const r2Routes = new Elysia()
 			}
 			const storageService = new StorageService(config)
 			const result = await storageService.listR2Objects(prefix)
-			logger.info(`R2 目录浏览完成: ${prefix}`)
+			logger.info(`การเรียกดูไดเรกทอรี R2 เสร็จสมบูรณ์: ${prefix}`)
 			return result
 		} catch (error) {
-			logger.error("R2 目录浏览失败:", error)
+			logger.error("การเรียกดูไดเรกทอรี R2 ล้มเหลว:", error)
 			set.status = 500
 			return { error: "Failed to browse R2 directory" }
 		}

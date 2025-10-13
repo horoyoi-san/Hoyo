@@ -17,21 +17,21 @@ export default function AdminSmtpPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <Mail className="h-4 w-4" />
-                  邮件配置
+                  การกำหนดค่าอีเมล
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">邮件配置</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">配置 SMTP 邮件服务</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">การกำหนดค่าอีเมล</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">การกำหนดค่าบริการอีเมล SMTP</p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>SMTP 设置</CardTitle>
-              <CardDescription>配置发信服务器、凭据、模板并可测试发送</CardDescription>
+              <CardTitle>การตั้งค่า SMTP</CardTitle>
+              <CardDescription>กำหนดค่าเซิร์ฟเวอร์การส่ง ข้อมูลประจำตัว เทมเพลต และการทดสอบการส่ง</CardDescription>
             </CardHeader>
             <CardContent>
               <SmtpConfiguration />

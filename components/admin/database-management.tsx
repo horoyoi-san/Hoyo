@@ -151,7 +151,7 @@ export function DatabaseManagement() {
       if (value > 1000000000000) {
         // 只在客户端使用toLocaleString
         if (typeof window !== 'undefined') {
-          return new Date(value).toLocaleString("zh-CN")
+          return new Date(value).toLocaleString("th-TH")
         }
         // 服务器端回退方案
         return new Date(value).toISOString()

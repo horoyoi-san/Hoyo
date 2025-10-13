@@ -79,12 +79,12 @@ export default function RegisterPage() {
   // 发送验证码
   const handleSendCode = async () => {
     if (!smtpEnabled) {
-      setError("邮件服务未启用")
+      setError("บริการเมลไม่ได้เปิดใช้งาน")
       return
     }
 
     if (!email) {
-      setError("请先输入邮箱地址")
+      setError("กรุณากรอกที่อยู่อีเมลของคุณก่อน")
       return
     }
 
@@ -107,10 +107,10 @@ export default function RegisterPage() {
         setCountdown(60) // 60秒倒计时
         setError("")
       } else {
-        setError(data.error || "发送验证码失败")
+        setError(data.error || "ไม่สามารถส่งรหัสยืนยันได้")
       }
     } catch (err) {
-      setError("网络错误，请稍后重试")
+      setError("ข้อผิดพลาดของเครือข่าย โปรดลองอีกครั้งในภายหลัง")
     } finally {
       setSendingCode(false)
     }
@@ -122,33 +122,33 @@ export default function RegisterPage() {
 
     // 基本验证
     if (!email.trim()) {
-      setError("请输入邮箱地址")
+      setError("กรุณากรอกที่อยู่อีเมลของคุณ")
       return
     }
 
     if (!password.trim()) {
-      setError("请输入密码")
+      setError("กรุณากรอกรหัสผ่านของคุณ")
       return
     }
 
     if (!confirmPassword.trim()) {
-      setError("请确认密码")
+      setError("กรุณายืนยันรหัสผ่านของคุณ")
       return
     }
 
     if (password !== confirmPassword) {
-      setError("两次输入的密码不一致")
+      setError("รหัสผ่านที่ป้อนสองครั้งไม่ตรงกัน")
       return
     }
 
     if (password.length < 6) {
-      setError("密码长度至少需要6个字符")
+      setError("รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร")
       return
     }
 
     // 如果启用了 SMTP，则需要验证码
     if (smtpEnabled && !verificationCode.trim()) {
-      setError("请输入邮箱验证码")
+      setError("กรุณากรอกรหัสยืนยันอีเมล์")
       return
     }
 
@@ -180,13 +180,13 @@ export default function RegisterPage() {
         localStorage.setItem("token", data.token)
         router.push("/dashboard")
       } else {
-        setError(data.error || "注册失败，请稍后重试")
+        setError(data.error || "การลงทะเบียนล้มเหลว กรุณาลองใหม่อีกครั้งในภายหลัง")
       }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError("注册失败，请检查您的网络连接")
+        setError("การลงทะเบียนล้มเหลว กรุณาตรวจสอบการเชื่อมต่อเครือข่ายของคุณ")
       }
     } finally {
       setLoading(false)
@@ -203,7 +203,7 @@ export default function RegisterPage() {
               <Cloud className="h-6 w-6 text-primary-foreground" />
             </div>
             <h1 className="text-2xl font-bold">FireflyCloud</h1>
-            <p className="text-muted-foreground text-sm">检查系统状态中...</p>
+            <p className="text-muted-foreground text-sm">กำลังตรวจสอบสถานะระบบ...</p>
           </div>
           <Card className="w-full">
             <CardContent className="p-6">
@@ -232,22 +232,22 @@ export default function RegisterPage() {
           <Card className="w-full">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold">
-                注册已关闭
+                ปิดรับลงทะเบียนแล้ว
               </CardTitle>
               <CardDescription>
-                系统管理员已关闭新用户注册功能
+                ผู้ดูแลระบบได้ปิดใช้งานฟังก์ชันการลงทะเบียนผู้ใช้ใหม่
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Alert>
                 <AlertDescription>
-                  目前不接受新用户注册。如果您需要账户，请联系系统管理员。
+                  ขณะนี้การลงทะเบียนผู้ใช้ใหม่ยังไม่สามารถทำได้ หากต้องการบัญชี โปรดติดต่อผู้ดูแลระบบของคุณ
                 </AlertDescription>
               </Alert>
               <div className="flex justify-center">
                 <Link href="/login">
                   <Button variant="outline" className="w-full">
-                    返回登录页面
+                    กลับสู่หน้าเข้าสู่ระบบ
                   </Button>
                 </Link>
               </div>
@@ -277,8 +277,8 @@ export default function RegisterPage() {
             </CardTitle>
             <CardDescription>
               สร้างบัญชี FireflyCloud ของคุณเพื่อเริ่มต้น
-              {checkingSmtp && <span className="block text-xs text-muted-foreground mt-1">正在检查邮件配置...</span>}
-              {!checkingSmtp && smtpEnabled && <span className="block text-xs text-muted-foreground mt-1">需要邮箱验证</span>}
+              {checkingSmtp && <span className="block text-xs text-muted-foreground mt-1">การตรวจสอบการกำหนดค่าอีเมล...</span>}
+              {!checkingSmtp && smtpEnabled && <span className="block text-xs text-muted-foreground mt-1">จำเป็นต้องมีการยืนยันอีเมล</span>}
               {!checkingSmtp && !smtpEnabled && <span className="block text-xs text-muted-foreground mt-1">ไม่จำเป็นต้องมีการยืนยันอีเมล</span>}
             </CardDescription>
           </CardHeader>
@@ -310,7 +310,7 @@ export default function RegisterPage() {
                     disabled={sendingCode || countdown > 0 || !email}
                     className="whitespace-nowrap"
                   >
-                    {sendingCode ? "发送中..." : countdown > 0 ? `${countdown}s` : "发送验证码"}
+                    {sendingCode ? "การส่ง..." : countdown > 0 ? `${countdown}s` : "ส่งรหัสยืนยัน"}
                   </Button>
                 </div>
               ) : (
@@ -325,20 +325,20 @@ export default function RegisterPage() {
               )}
               {smtpEnabled && codeSent && (
                 <p className="text-sm text-muted-foreground">
-                  验证码已发送到您的邮箱，请查收
+                  รหัสยืนยันได้ถูกส่งไปยังอีเมลของคุณแล้ว โปรดตรวจสอบ
                 </p>
               )}
             </div>
 
             {smtpEnabled && (
               <div className="space-y-2">
-                <Label htmlFor="verificationCode">邮箱验证码</Label>
+                <Label htmlFor="verificationCode">รหัสยืนยันอีเมล</Label>
                 <Input
                   id="verificationCode"
                   type="text"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
-                  placeholder="请输入6位验证码"
+                  placeholder="กรุณากรอกรหัสยืนยัน 6 หลัก"
                   maxLength={6}
                   required
                 />
@@ -353,7 +353,7 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="创建密码"
+                  placeholder="สร้างรหัสผ่าน"
                   required
                 />
                 <Button

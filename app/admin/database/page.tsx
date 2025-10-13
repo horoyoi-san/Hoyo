@@ -27,7 +27,7 @@ export default function DatabasePage() {
               <BreadcrumbLink asChild>
                 <Link href="/admin" className="flex items-center gap-1">
                   <Settings className="h-4 w-4" />
-                  系统管理
+                  การจัดการระบบ
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -35,7 +35,7 @@ export default function DatabasePage() {
             <BreadcrumbItem>
               <BreadcrumbPage className="flex items-center gap-1">
                 <Database className="h-4 w-4" />
-                数据库管理
+                การจัดการฐานข้อมูล
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -47,9 +47,9 @@ export default function DatabasePage() {
             <Database className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">数据库管理</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">การจัดการฐานข้อมูล</h1>
             <p className="text-sm sm:text-base text-muted-foreground">
-              查看和管理数据库中的所有表和数据
+              ดูและจัดการตารางและข้อมูลทั้งหมดในฐานข้อมูล
             </p>
           </div>
         </div>

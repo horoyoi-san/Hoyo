@@ -162,7 +162,7 @@ export function FileList({ files, onDeleteSuccess, onFolderNavigate }: FileListP
   }
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("zh-CN", {
+    return new Date(timestamp).toLocaleDateString("th-TH", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -511,8 +511,8 @@ export function FileList({ files, onDeleteSuccess, onFolderNavigate }: FileListP
                       </span>
                       <span className="sm:hidden truncate max-w-[80px]">
                         {file.isR2File && file.lastModified
-                          ? new Date(file.lastModified).toLocaleDateString("zh-CN")
-                          : new Date(file.createdAt).toLocaleDateString("zh-CN")
+                          ? new Date(file.lastModified).toLocaleDateString("th-TH")
+                          : new Date(file.createdAt).toLocaleDateString("th-TH")
                         }
                       </span>
                     </div>
@@ -983,7 +983,7 @@ export function FileList({ files, onDeleteSuccess, onFolderNavigate }: FileListP
                     </label>
                     <div className="p-3 bg-muted rounded-lg">
                       <span className="text-sm">
-                        {shareDialog.expiresAt.toLocaleDateString("zh-CN", {
+                        {shareDialog.expiresAt.toLocaleDateString("th-TH", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",

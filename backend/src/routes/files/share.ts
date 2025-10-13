@@ -11,14 +11,14 @@ export const shareCreateRoutes = new Elysia()
 		const { params, set, headers, body } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`创建文件分享: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`สร้างการแบ่งปันไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 			const file = await db
 				.select()
 				.from(files)
 				.where(and(eq(files.id, params.id), eq(files.userId, user.userId)))
 				.get()
 			if (!file) {
-				logger.warn(`文件未找到: ${params.id} - 用户: ${user.userId}`)
+				logger.warn(`ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "File not found" }
 			}
@@ -44,7 +44,7 @@ export const shareCreateRoutes = new Elysia()
 					customFileExtension: gatekeeper ? customFileExtension : null,
 					customFileSize: gatekeeper ? customFileSize : null,
 				})
-				logger.info(`创建文件取件码: ${file.originalName} - 用户: ${user.userId} - 取件码: ${pickupCode}`)
+				logger.info(`สร้างรหัสรับเอกสาร: ${file.originalName} - ผู้ใช้: ${user.userId} - รหัสรับสินค้า: ${pickupCode}`)
 				return { pickupCode, requireLogin, expiresAt, createdAt: now, usePickupCode: true }
 			} else {
 				const shareToken = nanoid(32)
@@ -67,11 +67,11 @@ export const shareCreateRoutes = new Elysia()
 				})
 				const frontendUrl = getFrontendUrl(headers)
 				const shareUrl = `${frontendUrl}/share/${shareToken}`
-				logger.info(`创建文件分享链接: ${file.originalName} - 用户: ${user.userId} - 分享ID: ${shareId}`)
+				logger.info(`สร้างลิงก์การแชร์ไฟล์: ${file.originalName} - ผู้ใช้: ${user.userId} - รหัสหุ้น: ${shareId}`)
 				return { shareUrl, shareToken, requireLogin, expiresAt, createdAt: now, usePickupCode: false }
 			}
 		} catch (error) {
-			logger.error("创建文件分享失败:", error)
+			logger.error("ไม่สามารถสร้างการแชร์ไฟล์ได้:", error)
 			set.status = 500
 			return { error: "Create share failed" }
 		}

@@ -14,7 +14,7 @@ export const onedriveAuthRoutes = new Elysia()
 				set.status = 400
 				return { error: "Missing redirectUri parameter" }
 			}
-			logger.debug(`获取OneDrive认证URL: ${redirectUri}`)
+			logger.debug(`รับ URL การตรวจสอบสิทธิ์ OneDrive: ${redirectUri}`)
 			const config = await db.select().from(storageConfig).get()
 			if (!config || !config.oneDriveClientId || !config.oneDriveTenantId) {
 				set.status = 400
@@ -26,10 +26,10 @@ export const onedriveAuthRoutes = new Elysia()
 				tenantId: config.oneDriveTenantId,
 			})
 			const authUrl = oneDriveService.getAuthUrl(redirectUri)
-			logger.info(`OneDrive认证URL生成成功`)
+			logger.info(`สร้าง URL การตรวจสอบสิทธิ์ OneDrive สำเร็จแล้ว`)
 			return { authUrl }
 		} catch (error) {
-			logger.error("获取OneDrive认证URL失败:", error)
+			logger.error("ไม่สามารถรับ URL การตรวจสอบสิทธิ์ OneDrive ได้:", error)
 			set.status = 500
 			return { error: "Failed to get OneDrive auth URL" }
 		}
@@ -38,7 +38,7 @@ export const onedriveAuthRoutes = new Elysia()
 		const { body, user, set } = ctx as any
 		try {
 			const { code, redirectUri } = body
-			logger.info(`处理OneDrive认证回调: 用户 ${user.userId}`)
+			logger.info(`การจัดการการโทรกลับการตรวจสอบสิทธิ์ OneDrive: ผู้ใช้ ${user.userId}`)
 			const config = await db.select().from(storageConfig).get()
 			if (!config || !config.oneDriveClientId || !config.oneDriveTenantId) {
 				set.status = 400
@@ -81,10 +81,10 @@ export const onedriveAuthRoutes = new Elysia()
 				})
 			}
 			logger.database('UPSERT', 'onedrive_auth')
-			logger.info(`OneDrive认证成功: 用户 ${user.userId}`)
+			logger.info(`การตรวจสอบสิทธิ์ OneDrive สำเร็จ: ผู้ใช้ ${user.userId}`)
 			return { message: "OneDrive authentication successful" }
 		} catch (error) {
-			logger.error("OneDrive认证回调处理失败:", error)
+			logger.error("การประมวลผลการเรียกกลับการตรวจสอบสิทธิ์ OneDrive ล้มเหลว:", error)
 			set.status = 500
 			return { error: "OneDrive authentication failed" }
 		}
@@ -92,7 +92,7 @@ export const onedriveAuthRoutes = new Elysia()
 	.get("/onedrive/status", async (ctx) => {
 		const { user } = ctx as any
 		try {
-			logger.debug(`检查OneDrive认证状态: 用户 ${user.userId}`)
+			logger.debug(`ตรวจสอบสถานะการรับรองความถูกต้องของ OneDrive: ผู้ใช้ ${user.userId}`)
 			let auth = await db
 				.select()
 				.from(oneDriveAuth)
@@ -128,10 +128,10 @@ export const onedriveAuthRoutes = new Elysia()
 					// 更新内存中的 auth 以供后续使用
 					auth = { ...auth, accessToken: newTokens.accessToken, refreshToken: newTokens.refreshToken, expiresAt: newTokens.expiresAt, updatedAt: now }
 					refreshed = true
-					logger.info(`OneDrive 访问令牌已自动刷新: 用户 ${user.userId}`)
+					logger.info(`โทเค็นการเข้าถึง OneDrive รีเฟรชโดยอัตโนมัติ: ผู้ใช้ ${user.userId}`)
 				}
 			} catch (e) {
-				logger.warn("自动刷新OneDrive令牌失败:", e)
+				logger.warn("การรีเฟรชโทเค็น OneDrive อัตโนมัติล้มเหลว:", e)
 			}
 
 			// 如果仍然过期则视为未连接
@@ -157,15 +157,15 @@ export const onedriveAuthRoutes = new Elysia()
 					const used = Number(quota.used || 0)
 					const available = typeof quota.remaining === 'number' ? Number(quota.remaining) : Math.max(total - used, 0)
 					storageInfo = { total, used, available }
-					logger.info(`OneDrive 存储信息: total=${total}, used=${used}, available=${available}`)
+					logger.info(`ข้อมูลพื้นที่เก็บข้อมูล OneDrive: total=${total}, used=${used}, available=${available}`)
 				}
 			} catch (e) {
-				logger.warn("获取OneDrive存储信息失败:", e)
+				logger.warn("ไม่สามารถรับข้อมูลพื้นที่เก็บข้อมูล OneDrive ได้:", e)
 			}
 
 			return { connected: true, authenticated: true, expiresAt: auth.expiresAt, scope: auth.scope, lastUpdated: auth.updatedAt, refreshed, storageInfo }
 		} catch (error) {
-			logger.error("检查OneDrive认证状态失败:", error)
+			logger.error("การตรวจสอบสถานะการรับรองความถูกต้องของ OneDrive ล้มเหลว:", error)
 			return { authenticated: false }
 		}
 	}) 

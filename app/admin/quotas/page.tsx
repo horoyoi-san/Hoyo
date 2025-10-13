@@ -17,21 +17,21 @@ export default function AdminQuotasPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <HardDrive className="h-4 w-4" />
-                  配额管理
+                  การจัดการโควต้า
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">配额管理</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">管理用户存储配额</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">การจัดการโควต้า</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">การจัดการโควตาการจัดเก็บข้อมูลของผู้ใช้</p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>用户配额</CardTitle>
-              <CardDescription>查看和调整用户的最大存储、已用存储与默认配额</CardDescription>
+              <CardTitle>โควตาผู้ใช้</CardTitle>
+              <CardDescription>ดูและปรับพื้นที่เก็บข้อมูลสูงสุด พื้นที่เก็บข้อมูลที่ใช้ และโควตาเริ่มต้นของผู้ใช้</CardDescription>
             </CardHeader>
             <CardContent>
               <QuotaManagement />

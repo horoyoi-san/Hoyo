@@ -563,7 +563,7 @@ export default function HomePage() {
                 <CardContent>
                   <div className="flex items-center justify-center space-x-2 text-sm">
                     <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
-                    <span className="text-white/90">支持热切换</span>
+                    <span className="text-white/90">สามารถเปลี่ยนหรืออัปเดตระบบ/โมดูล/การตั้งค่าโดยไม่ต้องปิดระบบหรือรีสตาร์ท.</span>
                   </div>
                 </CardContent>
               </Card>
@@ -576,18 +576,18 @@ export default function HomePage() {
                   <CardTitle 
                     className="text-xl sm:text-2xl text-white"
                     style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)' }}
-                  >安全访问</CardTitle>
+                  >การเข้าถึงที่ปลอดภัย</CardTitle>
                   <CardDescription 
                     className="text-white/70 text-sm sm:text-base mobile-text"
                     style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}
                   >
-                    基于角色的访问控制，支持管理员和用户权限管理，采用行业标准加密技术保护数据
+                    การควบคุมการเข้าถึงตามบทบาทรองรับการจัดการสิทธิ์ของผู้ดูแลระบบและผู้ใช้และใช้เทคโนโลยีการเข้ารหัสมาตรฐานอุตสาหกรรมเพื่อปกป้องข้อมูล
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-center space-x-2 text-sm">
                     <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
-                    <span className="text-white/90">企业级安全</span>
+                    <span className="text-white/90">ความปลอดภัยระดับองค์กร</span>
                   </div>
                 </CardContent>
               </Card>
@@ -600,18 +600,18 @@ export default function HomePage() {
                   <CardTitle 
                     className="text-xl sm:text-2xl text-white"
                     style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)' }}
-                  >快速可靠</CardTitle>
+                  >รวดเร็วและเชื่อถือได้</CardTitle>
                   <CardDescription 
                     className="text-white/70 text-sm sm:text-base mobile-text"
                     style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}
                   >
-                    采用现代化技术架构，提供高性能文件传输，支持大文件上传下载，稳定可靠
+                    ด้วยการนำสถาปัตยกรรมเทคโนโลยีที่ทันสมัยมาใช้ ทำให้สามารถถ่ายโอนไฟล์ได้อย่างมีประสิทธิภาพสูง รองรับการอัปโหลดและดาวน์โหลดไฟล์ขนาดใหญ่ และมีเสถียรภาพและเชื่อถือได้
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-center space-x-2 text-sm">
                     <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
-                    <span className="text-white/90">高速传输</span>
+                    <span className="text-white/90">การส่งข้อมูลความเร็วสูง</span>
                   </div>
                 </CardContent>
               </Card>
@@ -630,11 +630,11 @@ export default function HomePage() {
                 <h3 
                   className="font-semibold text-lg sm:text-xl text-white"
                   style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)' }}
-                >快速上传</h3>
+                >อัพโหลดรวดเร็ว</h3>
                 <p 
                   className="text-white/70 text-sm sm:text-base mobile-text"
                   style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}
-                >支持拖拽上传，批量处理</p>
+                >รองรับการอัพโหลดแบบลากและวางและการประมวลผลแบบแบตช์</p>
               </div>
               <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center feature-card">
                 <div className="flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-2xl glass-effect">
@@ -643,11 +643,11 @@ export default function HomePage() {
                 <h3 
                   className="font-semibold text-lg sm:text-xl text-white"
                   style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)' }}
-                >便捷下载</h3>
+                >ดาวน์โหลดสะดวก</h3>
                 <p 
                   className="text-white/70 text-sm sm:text-base mobile-text"
                   style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}
-                >一键下载，支持断点续传</p>
+                >ดาวน์โหลดเพียงคลิกเดียว รองรับการดาวน์โหลดต่อ</p>
               </div>
               <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center feature-card">
                 <div className="flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-2xl glass-effect">
@@ -656,11 +656,11 @@ export default function HomePage() {
                 <h3 
                   className="font-semibold text-lg sm:text-xl text-white"
                   style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)' }}
-                >团队协作</h3>
+                >การทำงานเป็นทีม</h3>
                 <p 
                   className="text-white/70 text-sm sm:text-base mobile-text"
                   style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}
-                >多用户管理，权限控制</p>
+                >การจัดการผู้ใช้หลายราย, การควบคุมการอนุญาต</p>
               </div>
               <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center feature-card">
                 <div className="flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-2xl glass-effect">
@@ -669,11 +669,11 @@ export default function HomePage() {
                 <h3 
                   className="font-semibold text-lg sm:text-xl text-white"
                   style={{ textShadow: '0 1px 3px rgba(0, 0, 0, 0.5)' }}
-                >全球访问</h3>
+                >การเข้าถึงทั่วโลก</h3>
                 <p 
                   className="text-white/70 text-sm sm:text-base mobile-text"
                   style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}
-                >CDN 加速，全球可达</p>
+                >การเร่งความเร็ว CDN การเข้าถึงทั่วโลก</p>
               </div>
             </div>
           </div>
@@ -687,13 +687,13 @@ export default function HomePage() {
                 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 sm:mb-6 mobile-text"
                 style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.3)' }}
               >
-                准备开始使用了吗？
+                พร้อมที่จะเริ่มต้นหรือยัง?
               </h2>
               <p 
                 className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto mb-8 sm:mb-12 mobile-text px-4"
                 style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.4)' }}
               >
-                立即注册，享受专业的云存储服务，让文件管理变得简单高效
+                ลงทะเบียนตอนนี้เพื่อสำรวจคุณสมบัติที่ทรงพลังของ FireflyCloud และสัมผัสกับการจัดการไฟล์บนคลาวด์ที่ปลอดภัย รวดเร็ว และเชื่อถือได้
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-4">
                 <Button 
@@ -701,7 +701,7 @@ export default function HomePage() {
                   className="w-full sm:w-auto bg-white/20 text-white border-white/30 hover:bg-white/30 hover:text-white shine relative overflow-hidden glass-effect px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full mobile-btn"
                   onClick={() => router.push("/register")}
                 >
-                  免费开始使用
+                  เริ่มต้นใช้งานฟรี
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
                 <Button 
@@ -710,7 +710,7 @@ export default function HomePage() {
                   className="w-full sm:w-auto text-white border-white/40 hover:bg-white/10 hover:text-white glass-effect px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full mobile-btn"
                   onClick={() => router.push("/login")}
                 >
-                  登录现有账户
+                  เข้าสู่ระบบบัญชีที่มีอยู่
                 </Button>
               </div>
             </div>
@@ -735,14 +735,14 @@ export default function HomePage() {
                 <div className="flex items-center justify-center md:justify-start space-x-2">
                   <Badge variant="outline" className="text-white border-white/30 glass-effect text-xs">
                     <Star className="mr-1 h-3 w-3" />
-                    企业级
+                    องค์กร
                   </Badge>
                 </div>
               </div>
 
               {/* 快速链接 */}
               <div className="space-y-4 text-center md:text-left">
-                <h3 className="font-semibold text-white text-lg">快速链接</h3>
+                <h3 className="font-semibold text-white text-lg">ลิงค์ด่วน</h3>
                 <div className="space-y-2 sm:space-y-3">
                   <Button
                     variant="ghost"
@@ -750,7 +750,7 @@ export default function HomePage() {
                     onClick={openGitHub}
                   >
                     <Github className="mr-2 h-4 w-4 flex-shrink-0" />
-                    <span className="mobile-text">GitHub 仓库</span>
+                    <span className="mobile-text">GitHub ที่เก็บข้อมูล</span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -758,7 +758,7 @@ export default function HomePage() {
                     onClick={openDocs}
                   >
                     <FileText className="mr-2 h-4 w-4 flex-shrink-0" />
-                    <span className="mobile-text">部署文档</span>
+                    <span className="mobile-text">เอกสารประกอบการใช้งาน</span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -766,7 +766,7 @@ export default function HomePage() {
                     onClick={openQQGroup}
                   >
                     <MessageSquare className="mr-2 h-4 w-4 flex-shrink-0" />
-                    <span className="mobile-text">QQ 交流群</span>
+                    <span className="mobile-text">กลุ่มแชท QQ</span>
                   </Button>
                 </div>
               </div>
@@ -779,12 +779,12 @@ export default function HomePage() {
             <div className="border-t border-white/10 pt-6">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="text-white/60 text-sm text-center md:text-left mobile-text">
-                  © 2025 ChuxinNeko · Made with ❤️ by Morax
+                  © 2025 ChuxinNeko · สร้างด้วย ❤️ โดย Horoyoi-san
                 </div>
                 <div className="flex items-center space-x-4 text-sm text-white/60">
-                  <span>开源软件</span>
+                  <span>ซอฟต์แวร์โอเพ่นซอร์ส</span>
                   <span>·</span>
-                  <span>MIT 许可证</span>
+                  <span>ใบอนุญาต MIT</span>
                 </div>
               </div>
             </div>
@@ -796,7 +796,7 @@ export default function HomePage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md px-4">
             <div className="glass-effect rounded-3xl p-6 sm:p-8 max-w-2xl max-h-[80vh] overflow-y-auto m-4 relative w-full">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-white mobile-text">我们的愿景</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white mobile-text">วิสัยทัศน์ของเรา</h2>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -808,16 +808,16 @@ export default function HomePage() {
               </div>
               <article className="text-white/90 space-y-4 text-sm sm:text-base leading-relaxed mobile-text" style={{fontStyle: 'italic'}}>
                 <p>
-                  "我们站在新时代的最前沿，在这里创造力与技术相遇，重新定义可能性。我们的使命是为个人和企业提供突破性的云存储解决方案，激发变革并推动进步。"
+                  "เราเป็นผู้นำในยุคใหม่ที่ความคิดสร้างสรรค์ผสานรวมเทคโนโลยีเข้าด้วยกัน เพื่อนิยามความเป็นไปได้ใหม่ พันธกิจของเราคือการนำเสนอโซลูชันการจัดเก็บข้อมูลบนคลาวด์ที่ล้ำสมัยสำหรับบุคคลทั่วไปและธุรกิจ เพื่อสร้างแรงบันดาลใจให้เกิดการเปลี่ยนแปลงและขับเคลื่อนความก้าวหน้า"
                 </p>
                 <p>
-                  "我们相信持续创新，突破界限，创造不仅仅是工具，更是变革催化剂的产品。我们重视简洁性，设计直观的体验，让复杂的数据管理变得轻松愉快。"
+                  "เราเชื่อมั่นในนวัตกรรมอย่างต่อเนื่อง การก้าวข้ามขีดจำกัด และการสร้างสรรค์ผลิตภัณฑ์ที่ไม่ใช่แค่เครื่องมือ แต่เป็นตัวเร่งการเปลี่ยนแปลง เราให้ความสำคัญกับความเรียบง่ายและออกแบบประสบการณ์ที่ใช้งานง่าย เพื่อให้การจัดการข้อมูลที่ซับซ้อนเป็นเรื่องง่ายและเพลิดเพลิน"
                 </p>
                 <p>
-                  "我们对可持续发展的承诺驱使我们在提供卓越价值的同时保护数据安全。我们促进协作，建立一个由思想家、创造者和实干家组成的社区，他们都怀着对美好数字未来的共同愿景。"
+                  "ความมุ่งมั่นของเราต่อความยั่งยืนผลักดันให้เราส่งมอบคุณค่าอันเหนือชั้นควบคู่ไปกับการปกป้องข้อมูล เราส่งเสริมความร่วมมือและสร้างชุมชนของนักคิด นักสร้างสรรค์ และนักปฏิบัติ ที่มีวิสัยทัศน์ร่วมกันเพื่ออนาคตดิจิทัลที่ดีกว่า"
                 </p>
                 <p>
-                  "加入我们的旅程，一起创新、启发，并在全球每一个角落点燃数据管理的新火花。"
+                  "เข้าร่วมกับเราในการเดินทางเพื่อสร้างสรรค์ สร้างแรงบันดาลใจ และจุดประกายใหม่ๆ ในการจัดการข้อมูลในทุกมุมโลก"
                 </p>
               </article>
             </div>

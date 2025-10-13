@@ -18,21 +18,21 @@ export default function AdminUsersPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  用户管理
+                  การจัดการผู้ใช้
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">用户管理</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">管理系统用户、权限，以及存储策略分配</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">การจัดการผู้ใช้</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">จัดการผู้ใช้ระบบ สิทธิ์อนุญาต และการกำหนดนโยบายการจัดเก็บข้อมูล</p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>用户列表</CardTitle>
-              <CardDescription>添加、删除用户，调整角色权限</CardDescription>
+              <CardTitle>รายชื่อผู้ใช้</CardTitle>
+              <CardDescription>เพิ่มและลบผู้ใช้ และปรับเปลี่ยนสิทธิ์บทบาท</CardDescription>
             </CardHeader>
             <CardContent>
               <UserManagement onUserDeleted={() => {}} />
@@ -43,9 +43,9 @@ export default function AdminUsersPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Cloud className="h-4 w-4" />
-                用户存储策略
+                นโยบายการจัดเก็บข้อมูลของผู้ใช้
               </CardTitle>
-              <CardDescription>为用户分配或调整存储策略（本地 / R2 / OneDrive 等）</CardDescription>
+              <CardDescription>กำหนดหรือปรับนโยบายการจัดเก็บข้อมูล (ภายในเครื่อง/R2/OneDrive เป็นต้น) ให้กับผู้ใช้</CardDescription>
             </CardHeader>
             <CardContent>
               <UserStorageManagement />

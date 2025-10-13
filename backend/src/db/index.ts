@@ -902,30 +902,30 @@ async function initializeAdminAccount() {
       `)
 
       logger.database('INSERT', 'users')
-      logger.dbInfo('✅ 管理员账户创建成功')
+      logger.dbInfo('✅ สร้างบัญชีผู้ดูแลระบบสำเร็จแล้ว')
 
       // 在控制台显示登录信息
       console.log('\n' + '='.repeat(80))
-      console.log('🔐 管理员账户信息')
+      console.log('🔐 ข้อมูลบัญชีผู้ดูแลระบบ')
       console.log('='.repeat(80))
-      console.log(`📧 登录邮箱: admin@cialloo.site`)
-      console.log(`🔑 登录密码: ${plainPassword}`)
+      console.log(`📧 เข้าสู่ระบบอีเมล์ของคุณ: admin@cialloo.site`)
+      console.log(`🔑 รหัสผ่านในการเข้าสู่ระบบ: ${plainPassword}`)
       console.log('='.repeat(80))
-      console.log('⚠️  请妥善保存上述密码，首次登录后建议在管理面板中修改密码')
+      console.log('⚠️  โปรดเก็บรักษารหัสผ่านข้างต้นให้ปลอดภัย ขอแนะนำให้เปลี่ยนรหัสผ่านในแผงควบคุมการจัดการหลังจากเข้าสู่ระบบครั้งแรก')
       console.log('='.repeat(80) + '\n')
 
     } else {
-      logger.dbInfo('管理员账户已存在，跳过创建')
+      logger.dbInfo('บัญชีผู้ดูแลระบบมีอยู่แล้ว ข้ามการสร้างได้เลย')
     }
   } catch (error) {
-    logger.error('管理员账户初始化失败:', error)
+    logger.error('การเริ่มต้นบัญชีผู้ดูแลระบบล้มเหลว:', error)
     throw error
   }
 }
 
 // 执行初始化
 initializeDatabase().catch(error => {
-  logger.error('数据库初始化失败:', error)
+  logger.error('การเริ่มต้นฐานข้อมูลล้มเหลว:', error)
   process.exit(1)
 })
 

@@ -18,11 +18,11 @@ export const deleteFileRoutes = new Elysia()
 		const { params, set } = ctx as any
 		const { user } = ctx as any
 		try {
-			logger.debug(`请求删除文件: ${params.id} - 用户: ${user.userId}`)
+			logger.debug(`คำขอให้ลบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 			
 			// 检查是否为OneDrive文件ID
 			if (isOneDriveFileId(params.id)) {
-				logger.info(`检测到OneDrive文件ID，使用Graph API删除: ${params.id}`)
+				logger.info(`ตรวจจับ ID ไฟล์ OneDrive และลบโดยใช้ Graph API: ${params.id}`)
 				
 				// 获取用户的OneDrive认证信息
 				const auth = await db
@@ -32,7 +32,7 @@ export const deleteFileRoutes = new Elysia()
 					.get()
 				
 				if (!auth) {
-					logger.warn(`OneDrive认证信息未找到 - 用户: ${user.userId}`)
+					logger.warn(`ไม่พบข้อมูลการรับรองความถูกต้องของ OneDrive - ผู้ใช้: ${user.userId}`)
 					set.status = 400
 					return { error: "OneDrive not authenticated" }
 				}
@@ -40,7 +40,7 @@ export const deleteFileRoutes = new Elysia()
 				// 获取存储配置
 				const config = await db.select().from(storageConfig).get()
 				if (!config) {
-					logger.error("存储配置未找到")
+					logger.error("ไม่พบการกำหนดค่าการจัดเก็บข้อมูล")
 					set.status = 500
 					return { error: "Storage not configured" }
 				}
@@ -71,9 +71,9 @@ export const deleteFileRoutes = new Elysia()
 							updatedAt: Date.now(),
 						}).where(eq(oneDriveAuth.id, auth.id))
 
-						logger.info(`OneDrive访问令牌刷新成功 - 用户: ${user.userId}`)
+						logger.info(`การรีเฟรชโทเค็นการเข้าถึง OneDrive สำเร็จ - ผู้ใช้: ${user.userId}`)
 					} catch (e) {
-						logger.error(`OneDrive访问令牌刷新失败 - 用户: ${user.userId}`, e)
+						logger.error(`การรีเฟรชโทเค็นการเข้าถึง OneDrive ล้มเหลว - ผู้ใช้: ${user.userId}`, e)
 						set.status = 401
 						return { error: "OneDrive access token expired, please re-authenticate" }
 					}
@@ -96,18 +96,18 @@ export const deleteFileRoutes = new Elysia()
 						fileName = fileInfo.name || "unknown"
 						fileSize = fileInfo.size || 0
 					} catch (e) {
-						logger.warn(`无法获取OneDrive文件信息: ${params.id}`)
+						logger.warn(`ไม่สามารถรับข้อมูลไฟล์ OneDrive ได้: ${params.id}`)
 					}
 
 					// 删除OneDrive文件
 					await oneDriveService.deleteItem(params.id)
 					
 					logger.file('DELETE', fileName, fileSize, true)
-					logger.info(`OneDrive文件删除成功: ${fileName} (${params.id}) - 用户: ${user.userId}`)
+					logger.info(`ลบไฟล์ OneDrive สำเร็จแล้ว: ${fileName} (${params.id}) - ผู้ใช้: ${user.userId}`)
 					
 					return { message: "OneDrive file deleted successfully" }
 				} catch (error) {
-					logger.error(`OneDrive文件删除失败: ${params.id}`, error)
+					logger.error(`การลบไฟล์ OneDrive ล้มเหลว: ${params.id}`, error)
 					logger.file('DELETE', 'unknown', 0, false, error instanceof Error ? error : undefined)
 					set.status = 500
 					return { error: "Failed to delete OneDrive file" }
@@ -117,13 +117,13 @@ export const deleteFileRoutes = new Elysia()
 			// 原有的本地文件删除逻辑
 			const file = await db.select().from(files).where(and(eq(files.id, params.id), eq(files.userId, user.userId))).get()
 			if (!file) {
-				logger.warn(`删除失败，文件未找到: ${params.id} - 用户: ${user.userId}`)
+				logger.warn(`การลบล้มเหลว ไม่พบไฟล์: ${params.id} - ผู้ใช้: ${user.userId}`)
 				set.status = 404
 				return { error: "File not found" }
 			}
 			const config = await db.select().from(storageConfig).get()
 			if (!config) {
-				logger.error("存储配置未找到")
+				logger.error("ไม่พบการกำหนดค่าการจัดเก็บข้อมูล")
 				set.status = 500
 				return { error: "Storage not configured" }
 			}
@@ -133,10 +133,10 @@ export const deleteFileRoutes = new Elysia()
 			await QuotaService.updateUserStorage(user.userId, -file.size)
 			await db.delete(files).where(eq(files.id, params.id))
 			logger.database('DELETE', 'files')
-			logger.info(`文件删除成功: ${file.originalName} - 用户: ${user.userId}`)
+			logger.info(`ลบไฟล์สำเร็จแล้ว: ${file.originalName} - ผู้ใช้: ${user.userId}`)
 			return { message: "File deleted successfully" }
 		} catch (error) {
-			logger.error("文件删除失败:", error)
+			logger.error("การลบไฟล์ผู้ใช้ล้มเหลว:", error)
 			logger.file('DELETE', 'unknown', 0, false, error instanceof Error ? error : undefined)
 			set.status = 500
 			return { error: "Delete failed" }

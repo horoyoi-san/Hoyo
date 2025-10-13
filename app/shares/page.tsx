@@ -114,11 +114,11 @@ export default function SharesPage() {
         setShares(data.shares)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        setError(errorData.error || "获取分享列表失败")
+        setError(errorData.error || "ไม่สามารถรับรายการที่แชร์ได้")
       }
     } catch (error) {
       console.error("Failed to fetch shares:", error)
-      setError("网络错误，请稍后重试")
+      setError("ข้อผิดพลาดของเครือข่าย โปรดลองอีกครั้งในภายหลัง")
     } finally {
       setLoading(false)
     }
@@ -143,7 +143,7 @@ export default function SharesPage() {
       }
     } catch (error) {
       console.error("Copy failed:", error)
-      alert("复制失败")
+      alert("การจำลองล้มเหลว")
     }
   }
 
@@ -151,7 +151,7 @@ export default function SharesPage() {
     try {
       const target = shares.find(s => s.id === shareId)
       if (target?.adminDisabled && enabled) {
-        alert("该分享因违规已被管理员禁用，无法启用")
+        alert("การแชร์นี้ถูกปิดใช้งานโดยผู้ดูแลระบบเนื่องจากมีการละเมิดและไม่สามารถเปิดใช้งานได้")
         return
       }
       const response = await fetch(`${API_URL}/files/shares/${shareId}/status`, {
@@ -167,11 +167,11 @@ export default function SharesPage() {
         await fetchShares() // 刷新列表
       } else {
         const errorData = await response.json().catch(() => ({}))
-        alert(`操作失败: ${errorData.error || "未知错误"}`)
+        alert(`การดำเนินการล้มเหลว: ${errorData.error || "ข้อผิดพลาดที่ไม่รู้จัก"}`)
       }
     } catch (error) {
       console.error("Toggle status failed:", error)
-      alert("操作失败: 网络错误")
+      alert("การดำเนินการล้มเหลว: ข้อผิดพลาดเครือข่าย")
     }
   }
 
@@ -193,16 +193,16 @@ export default function SharesPage() {
         await fetchShares() // 刷新列表
       } else {
         const errorData = await response.json().catch(() => ({}))
-        alert(`更新失败: ${errorData.error || "未知错误"}`)
+        alert(`การอัปเดตล้มเหลว: ${errorData.error || "ข้อผิดพลาดที่ไม่รู้จัก"}`)
       }
     } catch (error) {
       console.error("Update expiry failed:", error)
-      alert("更新失败: 网络错误")
+      alert("การอัปเดตล้มเหลว: ข้อผิดพลาดเครือข่าย")
     }
   }
 
   const handleDeleteShare = async (shareId: string) => {
-    if (!confirm("确定要删除这个分享吗？此操作不可撤销。")) {
+    if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการลบการแชร์นี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้")) {
       return
     }
 
@@ -218,11 +218,11 @@ export default function SharesPage() {
         await fetchShares() // 刷新列表
       } else {
         const errorData = await response.json().catch(() => ({}))
-        alert(`删除失败: ${errorData.error || "未知错误"}`)
+        alert(`การลบล้มเหลว: ${errorData.error || "ข้อผิดพลาดที่ไม่รู้จัก"}`)
       }
     } catch (error) {
       console.error("Delete share failed:", error)
-      alert("删除失败: 网络错误")
+      alert("การลบล้มเหลว: ข้อผิดพลาดเครือข่าย")
     }
   }
 
@@ -237,7 +237,7 @@ export default function SharesPage() {
   const formatDate = (timestamp: number) => {
     // 只在客户端使用toLocaleString
     if (typeof window !== 'undefined') {
-      return new Date(timestamp).toLocaleString("zh-CN")
+      return new Date(timestamp).toLocaleString("th-TH")
     }
     // 服务器端回退方案
     return new Date(timestamp).toISOString()
@@ -272,10 +272,10 @@ export default function SharesPage() {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-2">
               <Share2 className="h-6 w-6 md:h-8 md:w-8" />
-              我的分享
+              การแบ่งปันของฉัน
             </h1>
             <p className="text-sm md:text-base text-muted-foreground mt-1">
-              管理您的分享文件，查看下载统计和控制访问权限
+              จัดการไฟล์ที่แชร์ของคุณ ดูสถิติการดาวน์โหลด และควบคุมสิทธิ์การเข้าถึง
             </p>
           </div>
           <Button
@@ -284,7 +284,7 @@ export default function SharesPage() {
             className="flex items-center gap-2 w-full md:w-auto"
           >
             <RefreshCw className="h-4 w-4" />
-            刷新
+            รีเฟรช
           </Button>
         </div>
 
@@ -292,7 +292,7 @@ export default function SharesPage() {
         <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">总分享数</CardTitle>
+              <CardTitle className="text-xs md:text-sm font-medium">จำนวนหุ้นทั้งหมด</CardTitle>
               <Share2 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -301,7 +301,7 @@ export default function SharesPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">活跃分享</CardTitle>
+              <CardTitle className="text-xs md:text-sm font-medium">การแบ่งปันอย่างกระตือรือร้น</CardTitle>
               <Eye className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -312,7 +312,7 @@ export default function SharesPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">总下载次数</CardTitle>
+              <CardTitle className="text-xs md:text-sm font-medium">ยอดดาวน์โหลดทั้งหมด</CardTitle>
               <Download className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -323,7 +323,7 @@ export default function SharesPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium">取件码分享</CardTitle>
+              <CardTitle className="text-xs md:text-sm font-medium">การแชร์รหัสรับสินค้า</CardTitle>
               <Hash className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -337,16 +337,16 @@ export default function SharesPage() {
         {/* 分享列表 */}
         <Card>
           <CardHeader>
-            <CardTitle>分享列表</CardTitle>
+            <CardTitle>รายการแบ่งปัน</CardTitle>
             <CardDescription>
-              您创建的所有分享文件，包括分享链接和取件码
+              ไฟล์ที่แชร์ทั้งหมดที่คุณสร้าง รวมถึงลิงก์การแชร์และรหัสรับ
             </CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <RefreshCw className="h-6 w-6 animate-spin" />
-                <span className="ml-2">加载中...</span>
+                <span className="ml-2">กำลังโหลด...</span>
               </div>
             ) : error ? (
               <div className="flex items-center justify-center py-8 text-red-500">
@@ -356,8 +356,8 @@ export default function SharesPage() {
             ) : shares.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
                 <Share2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>还没有创建任何分享</p>
-                <p className="text-sm">去文件管理页面创建您的第一个分享吧</p>
+                <p>ยังไม่มีการสร้างหุ้น</p>
+                <p className="text-sm">ไปที่หน้าการจัดการไฟล์เพื่อสร้างการแชร์ครั้งแรกของคุณ</p>
               </div>
             ) : (
               <>
@@ -366,14 +366,14 @@ export default function SharesPage() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>文件名</TableHead>
-                        <TableHead>大小</TableHead>
-                        <TableHead>分享方式</TableHead>
-                        <TableHead>状态</TableHead>
-                        <TableHead>下载次数</TableHead>
-                        <TableHead>有效期</TableHead>
-                        <TableHead>创建时间</TableHead>
-                        <TableHead className="w-[100px]">操作</TableHead>
+                        <TableHead>ชื่อไฟล์</TableHead>
+                        <TableHead>ขนาด</TableHead>
+                        <TableHead>วิธีการแบ่งปัน</TableHead>
+                        <TableHead>สถานะ</TableHead>
+                        <TableHead>ดาวน์โหลด</TableHead>
+                        <TableHead>ระยะเวลาใช้งาน</TableHead>
+                        <TableHead>เวลาสร้าง</TableHead>
+                        <TableHead className="w-[100px]">ดำเนินงาน</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -397,17 +397,17 @@ export default function SharesPage() {
                               {share.shareToken ? (
                                 <Badge variant="default" className="flex items-center gap-1">
                                   <Link className="h-3 w-3" />
-                                  分享链接
+                                  แชร์ลิงค์
                                 </Badge>
                               ) : (
                                 <Badge variant="secondary" className="flex items-center gap-1">
                                   <Hash className="h-3 w-3" />
-                                  取件码
+                                  รหัสรับสินค้า
                                 </Badge>
                               )}
                               {share.requireLogin && (
                                 <Badge variant="outline" className="text-xs">
-                                  需登录
+                                  จำเป็นต้องเข้าสู่ระบบ
                                 </Badge>
                               )}
                             </div>
@@ -415,14 +415,14 @@ export default function SharesPage() {
                           <TableCell>
                             <div className="flex items-center gap-2">
                               {isExpired(share.expiresAt) ? (
-                                <Badge variant="destructive">已过期</Badge>
+                                <Badge variant="destructive">หมดอายุแล้ว</Badge>
                               ) : share.enabled ? (
-                                <Badge variant="default">活跃</Badge>
+                                <Badge variant="default">คล่องแคล่ว</Badge>
                               ) : (
-                                <Badge variant="secondary">已禁用</Badge>
+                                <Badge variant="secondary">พิการ</Badge>
                               )}
                               {share.adminDisabled && (
-                                <span className="text-xs text-red-600">管理员禁用</span>
+                                <span className="text-xs text-red-600">ผู้ดูแลระบบถูกปิดใช้งาน</span>
                               )}
                             </div>
                           </TableCell>
@@ -436,7 +436,7 @@ export default function SharesPage() {
                                 {formatDate(share.expiresAt)}
                               </div>
                             ) : (
-                              <Badge variant="outline">永久</Badge>
+                              <Badge variant="outline">ถาวร</Badge>
                             )}
                           </TableCell>
                           <TableCell className="text-sm text-muted-foreground">
@@ -460,7 +460,7 @@ export default function SharesPage() {
                                     ) : (
                                       <Copy className="h-4 w-4" />
                                     )}
-                                    复制链接
+                                    คัดลอกลิงค์
                                   </DropdownMenuItem>
                                 )}
                                 {share.pickupCode && (
@@ -473,7 +473,7 @@ export default function SharesPage() {
                                     ) : (
                                       <Copy className="h-4 w-4" />
                                     )}
-                                    复制取件码
+                                    คัดลอกรหัสรับสินค้า
                                   </DropdownMenuItem>
                                 )}
                                 <DropdownMenuSeparator />
@@ -485,12 +485,12 @@ export default function SharesPage() {
                                   {share.enabled ? (
                                     <>
                                       <EyeOff className="h-4 w-4" />
-                                      禁用分享
+                                      ปิดการใช้งานการแชร์
                                     </>
                                   ) : (
                                     <>
                                       <Eye className="h-4 w-4" />
-                                      启用分享
+                                      เปิดใช้งานการแชร์
                                     </>
                                   )}
                                 </DropdownMenuItem>
@@ -504,7 +504,7 @@ export default function SharesPage() {
                                   className="flex items-center gap-2"
                                 >
                                   <Clock className="h-4 w-4" />
-                                  修改有效期
+                                  ปรับเปลี่ยนระยะเวลาการใช้งาน
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
@@ -512,7 +512,7 @@ export default function SharesPage() {
                                   className="flex items-center gap-2 text-red-600"
                                 >
                                   <Trash2 className="h-4 w-4" />
-                                  删除分享
+                                  ลบ แชร์
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -562,7 +562,7 @@ export default function SharesPage() {
                                   ) : (
                                     <Copy className="h-4 w-4" />
                                   )}
-                                  复制链接
+                                  คัดลอกลิงค์
                                 </DropdownMenuItem>
                               )}
                               {share.pickupCode && (
@@ -575,7 +575,7 @@ export default function SharesPage() {
                                   ) : (
                                     <Copy className="h-4 w-4" />
                                   )}
-                                  复制取件码
+                                  คัดลอกรหัสรับสินค้า
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuSeparator />
@@ -587,12 +587,12 @@ export default function SharesPage() {
                                 {share.enabled ? (
                                   <>
                                     <EyeOff className="h-4 w-4" />
-                                    禁用分享
+                                    ปิดการใช้งานการแชร์
                                   </>
                                 ) : (
                                   <>
                                     <Eye className="h-4 w-4" />
-                                    启用分享
+                                    เปิดใช้งานการแชร์
                                   </>
                                 )}
                               </DropdownMenuItem>
@@ -606,7 +606,7 @@ export default function SharesPage() {
                                 className="flex items-center gap-2"
                               >
                                 <Clock className="h-4 w-4" />
-                                修改有效期
+                                ปรับเปลี่ยนระยะเวลาการใช้งาน
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
@@ -614,7 +614,7 @@ export default function SharesPage() {
                                 className="flex items-center gap-2 text-red-600"
                               >
                                 <Trash2 className="h-4 w-4" />
-                                删除分享
+                                ลบ แชร์
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -625,46 +625,46 @@ export default function SharesPage() {
                           {share.shareToken ? (
                             <Badge variant="default" className="flex items-center gap-1">
                               <Link className="h-3 w-3" />
-                              分享链接
+                              แชร์ลิงค์
                             </Badge>
                           ) : (
                             <Badge variant="secondary" className="flex items-center gap-1">
                               <Hash className="h-3 w-3" />
-                              取件码
+                              รหัสรับสินค้า
                             </Badge>
                           )}
                           {share.requireLogin && (
                             <Badge variant="outline" className="text-xs">
-                              需登录
+                              จำเป็นต้องเข้าสู่ระบบ
                             </Badge>
                           )}
                           {isExpired(share.expiresAt) ? (
-                            <Badge variant="destructive">已过期</Badge>
+                            <Badge variant="destructive">หมดอายุแล้ว</Badge>
                           ) : share.enabled ? (
-                            <Badge variant="default">活跃</Badge>
+                            <Badge variant="default">คล่องแคล่ว</Badge>
                           ) : (
-                            <Badge variant="secondary">已禁用</Badge>
+                            <Badge variant="secondary">พิการ</Badge>
                           )}
                         </div>
 
                         {/* 统计信息 */}
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <span className="text-muted-foreground">下载次数</span>
+                            <span className="text-muted-foreground">ดาวน์โหลด</span>
                             <div className="font-mono font-medium">{share.accessCount}</div>
                           </div>
                           <div>
-                            <span className="text-muted-foreground">有效期</span>
+                            <span className="text-muted-foreground">ระยะเวลาใช้งาน</span>
                             <div className="font-medium">
                               {share.expiresAt ? (
                                 <div className="flex items-center gap-1">
                                   <Calendar className="h-3 w-3" />
                                   <span className="text-xs">
-                                    {new Date(share.expiresAt).toLocaleDateString("zh-CN")}
+                                    {new Date(share.expiresAt).toLocaleDateString("th-TH")}
                                   </span>
                                 </div>
                               ) : (
-                                <Badge variant="outline" className="text-xs">永久</Badge>
+                                <Badge variant="outline" className="text-xs">ถาวร</Badge>
                               )}
                             </div>
                           </div>
@@ -672,7 +672,7 @@ export default function SharesPage() {
 
                         {/* 创建时间 */}
                         <div className="text-xs text-muted-foreground border-t pt-2">
-                          创建于 {formatDate(share.createdAt)}
+                          สร้าง {formatDate(share.createdAt)}
                         </div>
                       </div>
                     </Card>
@@ -689,14 +689,14 @@ export default function SharesPage() {
         }>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>修改分享有效期</DialogTitle>
+              <DialogTitle>ปรับเปลี่ยนระยะเวลาการแชร์</DialogTitle>
               <DialogDescription>
-                设置新的过期时间，留空表示永久有效
+                กำหนดเวลาหมดอายุใหม่ หากเว้นว่างไว้ หมายความว่าจะมีผลถาวร
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>当前有效期</Label>
+                <Label>ระยะเวลาใช้งานปัจจุบัน</Label>
                 <div className="text-sm text-muted-foreground">
                   {editExpiryDialog.currentExpiry 
                     ? formatDate(editExpiryDialog.currentExpiry.getTime())
@@ -705,14 +705,14 @@ export default function SharesPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>新有效期</Label>
+                <Label>ระยะเวลามีผลบังคับใช้ใหม่</Label>
                 <DatePicker
                   date={editExpiryDialog.newExpiry}
                   onDateChange={(date) => setEditExpiryDialog(prev => ({
                     ...prev,
                     newExpiry: date
                   }))}
-                  placeholder="留空表示永久有效"
+                  placeholder="เว้นว่างไว้เพื่อความถูกต้องถาวร"
                 />
               </div>
             </div>
@@ -721,10 +721,10 @@ export default function SharesPage() {
                 variant="outline"
                 onClick={() => setEditExpiryDialog({ open: false, shareId: "", currentExpiry: undefined, newExpiry: undefined })}
               >
-                取消
+                ยกเลิก
               </Button>
               <Button onClick={handleUpdateExpiry}>
-                确认修改
+                ยืนยันการเปลี่ยนแปลง
               </Button>
             </DialogFooter>
           </DialogContent>

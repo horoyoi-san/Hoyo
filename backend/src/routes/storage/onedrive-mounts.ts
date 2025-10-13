@@ -8,12 +8,12 @@ export const onedriveMountRoutes = new Elysia()
 	.get("/onedrive/mounts", async (ctx) => {
 		const { user } = ctx as any
 		try {
-			logger.debug(`获取OneDrive挂载点: 用户 ${user.userId}`)
+			logger.debug(`รับจุดเชื่อมต่อ OneDrive: ผู้ใช้ ${user.userId}`)
 			const mounts = await db.select().from(oneDriveMountPoints).where(eq(oneDriveMountPoints.userId, user.userId)).all()
-			logger.info(`返回 ${mounts.length} 个OneDrive挂载点`)
+			logger.info(`กลับ ${mounts.length} จุดเชื่อมต่อ OneDrive`)
 			return { mounts }
 		} catch (error) {
-			logger.error("获取OneDrive挂载点失败:", error)
+			logger.error("ไม่สามารถรับจุดเชื่อมต่อ OneDrive ได้:", error)
 			return { mounts: [] }
 		}
 	})
@@ -21,10 +21,10 @@ export const onedriveMountRoutes = new Elysia()
 		const { body, user, set } = ctx as any
 		try {
 			const { folderId, oneDrivePath, oneDriveItemId, mountName } = body
-			logger.info(`创建OneDrive挂载点: ${mountName}`)
+			logger.info(`สร้างจุดเชื่อมต่อ OneDrive: ${mountName}`)
 			if (!folderId || !mountName?.trim()) {
 				set.status = 400
-				return { error: "缺少必填字段" }
+				return { error: "ขาดข้อมูลที่จำเป็น" }
 			}
 			const existingMount = await db
 				.select()
@@ -33,7 +33,7 @@ export const onedriveMountRoutes = new Elysia()
 				.get()
 			if (existingMount) {
 				set.status = 400
-				return { error: "挂载点名称已存在" }
+				return { error: "ชื่อจุดเชื่อมต่อมีอยู่แล้ว" }
 			}
 			const mountId = crypto.randomUUID?.() || `${Date.now()}`
 			const now = Date.now()
@@ -49,12 +49,12 @@ export const onedriveMountRoutes = new Elysia()
 				updatedAt: now,
 			})
 			logger.database('INSERT', 'onedrive_mount_points')
-			logger.info(`OneDrive挂载点创建成功: ${mountName}`)
-			return { message: "OneDrive挂载点创建成功", mountId }
+			logger.info(`สร้างจุดเชื่อมต่อ OneDrive สำเร็จแล้ว: ${mountName}`)
+			return { message: "สร้างจุดเชื่อมต่อ OneDrive สำเร็จแล้ว", mountId }
 		} catch (error) {
-			logger.error("创建OneDrive挂载点失败:", error)
+			logger.error("ไม่สามารถสร้างจุดเชื่อมต่อ OneDrive ได้:", error)
 			set.status = 500
-			return { error: "创建挂载点失败" }
+			return { error: "ไม่สามารถสร้างจุดเชื่อมต่อได้" }
 		}
 	}, {
 		body: t.Object({
@@ -68,7 +68,7 @@ export const onedriveMountRoutes = new Elysia()
 		const { params, user, set } = ctx as any
 		try {
 			const { id } = params
-			logger.info(`删除OneDrive挂载点: ${id}`)
+			logger.info(`ลบจุดเชื่อมต่อ OneDrive: ${id}`)
 			const mount = await db
 				.select()
 				.from(oneDriveMountPoints)
@@ -76,15 +76,15 @@ export const onedriveMountRoutes = new Elysia()
 				.get()
 			if (!mount) {
 				set.status = 404
-				return { error: "挂载点不存在" }
+				return { error: "จุดเชื่อมต่อไม่มีอยู่" }
 			}
 			await db.delete(oneDriveMountPoints).where(eq(oneDriveMountPoints.id, id))
 			logger.database('DELETE', 'onedrive_mount_points')
-			logger.info(`OneDrive挂载点删除成功: ${id}`)
-			return { message: "挂载点删除成功" }
+			logger.info(`ลบจุดเชื่อมต่อ OneDrive สำเร็จแล้ว: ${id}`)
+			return { message: "จุดเชื่อมต่อถูกลบสำเร็จแล้ว" }
 		} catch (error) {
-			logger.error("删除OneDrive挂载点失败:", error)
+			logger.error("ไม่สามารถลบจุดเชื่อมต่อ OneDrive ได้:", error)
 			set.status = 500
-			return { error: "删除挂载点失败" }
+			return { error: "การลบจุดเชื่อมต่อล้มเหลว" }
 		}
 	}) 

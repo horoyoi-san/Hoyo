@@ -22,15 +22,15 @@ export default function AdminPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <Settings className="h-4 w-4" />
-                  系统管理
+                  การจัดการระบบ
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">管理面板</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">管理用户、文件和系统设置</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">แผงผู้ดูแลระบบ</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">จัดการผู้ใช้ ไฟล์ และการตั้งค่าระบบ</p>
           </div>
           <AdminDashboard />
         </div>

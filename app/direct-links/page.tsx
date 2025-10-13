@@ -234,7 +234,7 @@ export default function DirectLinksPage() {
   const handleToggleLink = async (link: DirectLink) => {
     try {
       if (link.adminDisabled && !link.enabled) {
-        alert("该直链因违规已被管理员禁用，无法启用")
+        alert("ลิงก์โดยตรงนี้ถูกปิดใช้งานโดยผู้ดูแลระบบเนื่องจากมีการละเมิดและไม่สามารถเปิดใช้งานได้")
         return
       }
       const response = await fetch(`${API_URL}/direct-links/${link.id}/toggle`, {
@@ -250,11 +250,11 @@ export default function DirectLinksPage() {
         await fetchDirectLinks()
       } else {
         const err = await response.json().catch(() => ({}))
-        alert(err.error || "操作失败")
+        alert(err.error || "การดำเนินการล้มเหลว")
       }
     } catch (error) {
       console.error("Error toggling link:", error)
-      alert("操作失败")
+      alert("การดำเนินการล้มเหลว")
     }
   }
 
@@ -282,11 +282,11 @@ export default function DirectLinksPage() {
         setSelectedIPFromLog(null)
       } else {
         const error = await response.json()
-        alert(error.error || "封禁失败")
+        alert(error.error || "การแบนล้มเหลว")
       }
     } catch (error) {
       console.error("Error banning IP:", error)
-      alert("封禁失败")
+      alert("การแบนล้มเหลว")
     }
   }
 
@@ -304,11 +304,11 @@ export default function DirectLinksPage() {
       if (response.ok) {
         await fetchBannedIPs(selectedLink.id)
       } else {
-        alert("解封失败")
+        alert("การปลดบล็อคล้มเหลว")
       }
     } catch (error) {
       console.error("Error unbanning IP:", error)
-      alert("解封失败")
+      alert("การปลดบล็อคล้มเหลว")
     }
   }
 
@@ -334,11 +334,11 @@ export default function DirectLinksPage() {
         setDeleteDialogOpen(false)
         setLinkToDelete(null)
       } else {
-        alert("删除失败")
+        alert("การลบล้มเหลว")
       }
     } catch (error) {
       console.error("Error deleting link:", error)
-      alert("删除失败")
+      alert("การลบล้มเหลว")
     }
   }
 
@@ -354,20 +354,20 @@ export default function DirectLinksPage() {
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
       console.error("Copy failed:", error)
-      alert("复制失败")
+      alert("การจำลองล้มเหลว")
     }
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 字节"
+    if (bytes === 0) return "0 B"
     const k = 1024
-    const sizes = ["字节", "KB", "MB", "GB"]
+    const sizes = ["B", "KB", "MB", "GB"]
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
   }
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleString("zh-CN")
+    return new Date(timestamp).toLocaleString("th-TH")
   }
 
   const getDeviceIcon = (userAgent: string) => {
@@ -379,7 +379,7 @@ export default function DirectLinksPage() {
 
   const getLocationDisplay = (location: AccessLog['location']) => {
     const parts = [location.country, location.province, location.city].filter(Boolean)
-    return parts.length > 0 ? parts.join(' ') : '未知'
+    return parts.length > 0 ? parts.join(' ') : 'ไม่ทราบ'
   }
 
   return (
@@ -388,12 +388,12 @@ export default function DirectLinksPage() {
         <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">直链管理</h1>
-          <p className="text-muted-foreground">管理您创建的所有文件直链</p>
+          <h1 className="text-3xl font-bold">การจัดการลิงค์โดยตรง</h1>
+          <p className="text-muted-foreground">จัดการลิงก์ไฟล์ทั้งหมดที่คุณสร้าง</p>
         </div>
         <Button onClick={fetchDirectLinks} variant="outline" size="sm">
           <RefreshCw className="h-4 w-4 mr-2" />
-          刷新
+          รีเฟรช
         </Button>
       </div>
 
@@ -405,28 +405,28 @@ export default function DirectLinksPage() {
         <Card>
           <CardContent className="py-12 text-center">
             <Link className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">暂无直链</h3>
-            <p className="text-muted-foreground">您还没有创建任何文件直链</p>
+            <h3 className="text-lg font-semibold mb-2">ยังไม่มีลิงค์โดยตรง</h3>
+            <p className="text-muted-foreground">คุณยังไม่ได้สร้างลิงก์โดยตรง</p>
           </CardContent>
         </Card>
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>直链列表</CardTitle>
+            <CardTitle>รายการลิงค์โดยตรง</CardTitle>
             <CardDescription>
-              共 {directLinks.length} 个直链
+              ทั่วไป {directLinks.length} ลิงค์โดยตรง
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>文件名</TableHead>
-                  <TableHead>直链名称</TableHead>
-                  <TableHead>状态</TableHead>
-                  <TableHead>访问次数</TableHead>
-                  <TableHead>创建时间</TableHead>
-                  <TableHead>操作</TableHead>
+                  <TableHead>ชื่อไฟล์</TableHead>
+                  <TableHead>ชื่อลิงค์โดยตรง</TableHead>
+                  <TableHead>สถานะ</TableHead>
+                  <TableHead>จำนวนครั้งเข้าชม</TableHead>
+                  <TableHead>เวลาสร้าง</TableHead>
+                  <TableHead>ดำเนินงาน</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -447,10 +447,10 @@ export default function DirectLinksPage() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={link.enabled ? "default" : "secondary"}>
-                        {link.enabled ? "启用" : "禁用"}
+                        {link.enabled ? "เปิดใช้งาน" : "ปิดการใช้งาน"}
                       </Badge>
                       {link.adminDisabled && (
-                        <span className="ml-2 text-xs text-red-600">管理员禁用</span>
+                        <span className="ml-2 text-xs text-red-600">ผู้ดูแลระบบถูกปิดใช้งาน</span>
                       )}
                     </TableCell>
                     <TableCell>{link.accessCount}</TableCell>
@@ -476,7 +476,7 @@ export default function DirectLinksPage() {
                           size="sm"
                           onClick={() => handleToggleLink(link)}
                           disabled={!!link.adminDisabled && !link.enabled}
-                          title={link.adminDisabled && !link.enabled ? "该直链因违规已被管理员禁用，无法启用" : undefined}
+                          title={link.adminDisabled && !link.enabled ? "ลิงก์โดยตรงนี้ถูกปิดใช้งานโดยผู้ดูแลระบบเนื่องจากมีการละเมิดและไม่สามารถเปิดใช้งานได้" : undefined}
                         >
                           {link.enabled ? (
                             <ToggleRight className="h-4 w-4" />
@@ -508,18 +508,18 @@ export default function DirectLinksPage() {
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>直链详情</DialogTitle>
+            <DialogTitle>รายละเอียดลิงค์โดยตรง</DialogTitle>
             <DialogDescription>
-              {selectedLink?.file.name} 的访问统计和日志
+              {selectedLink?.file.name} สถิติการเข้าถึงและบันทึก
             </DialogDescription>
           </DialogHeader>
           
           {selectedLink && (
             <Tabs defaultValue="stats" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="stats">统计信息</TabsTrigger>
-                <TabsTrigger value="logs">访问日志</TabsTrigger>
-                <TabsTrigger value="bans">IP封禁</TabsTrigger>
+                <TabsTrigger value="stats">สถิติ</TabsTrigger>
+                <TabsTrigger value="logs">บันทึกการเข้าถึง</TabsTrigger>
+                <TabsTrigger value="bans">การบล็อค IP</TabsTrigger>
               </TabsList>
               
               <TabsContent value="stats" className="space-y-4">
@@ -534,7 +534,7 @@ export default function DirectLinksPage() {
                         <div className="flex items-center space-x-2">
                           <Activity className="h-4 w-4 text-blue-500" />
                           <div>
-                            <p className="text-sm text-muted-foreground">总访问量</p>
+                            <p className="text-sm text-muted-foreground">จำนวนการเข้าชมทั้งหมด</p>
                             <p className="text-2xl font-bold">{stats.totalAccess}</p>
                           </div>
                         </div>
@@ -546,7 +546,7 @@ export default function DirectLinksPage() {
                         <div className="flex items-center space-x-2">
                           <Clock className="h-4 w-4 text-green-500" />
                           <div>
-                            <p className="text-sm text-muted-foreground">今日访问</p>
+                            <p className="text-sm text-muted-foreground">การเยี่ยมชมวันนี้</p>
                             <p className="text-2xl font-bold">{stats.todayAccess}</p>
                           </div>
                         </div>
@@ -558,7 +558,7 @@ export default function DirectLinksPage() {
                         <div className="flex items-center space-x-2">
                           <Users className="h-4 w-4 text-purple-500" />
                           <div>
-                            <p className="text-sm text-muted-foreground">独立IP</p>
+                            <p className="text-sm text-muted-foreground">IP เฉพาะ</p>
                             <p className="text-2xl font-bold">{stats.uniqueIPs}</p>
                           </div>
                         </div>
@@ -570,7 +570,7 @@ export default function DirectLinksPage() {
                         <div className="flex items-center space-x-2">
                           <Globe className="h-4 w-4 text-orange-500" />
                           <div>
-                            <p className="text-sm text-muted-foreground">最后访问</p>
+                            <p className="text-sm text-muted-foreground">การเยี่ยมชมครั้งสุดท้าย</p>
                             <p className="text-sm font-medium">
                               {stats.lastAccess ? formatDate(stats.lastAccess) : '从未'}
                             </p>
@@ -591,11 +591,11 @@ export default function DirectLinksPage() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>IP地址</TableHead>
-                        <TableHead>归属地</TableHead>
-                        <TableHead>设备</TableHead>
-                        <TableHead>访问时间</TableHead>
-                        <TableHead>操作</TableHead>
+                        <TableHead>ที่อยู่ IP</TableHead>
+                        <TableHead>สถานที่กำเนิด</TableHead>
+                        <TableHead>อุปกรณ์</TableHead>
+                        <TableHead>เวลาเข้าถึง</TableHead>
+                        <TableHead>ดำเนินงาน</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -618,7 +618,7 @@ export default function DirectLinksPage() {
                           <TableCell>
                             <div className="flex items-center space-x-2">
                               {getDeviceIcon(log.userAgent)}
-                              <span className="text-sm">{log.userAgent || '未知'}</span>
+                              <span className="text-sm">{log.userAgent || 'ไม่ทราบ'}</span>
                             </div>
                           </TableCell>
                           <TableCell>{formatDate(log.accessedAt)}</TableCell>
@@ -641,13 +641,13 @@ export default function DirectLinksPage() {
 
               <TabsContent value="bans" className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">IP封禁管理</h3>
+                  <h3 className="text-lg font-semibold">การจัดการแบน IP</h3>
                   <Button
                     onClick={() => setBanDialogOpen(true)}
                     size="sm"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    封禁IP
+                    แบน IP
                   </Button>
                 </div>
 
@@ -655,19 +655,19 @@ export default function DirectLinksPage() {
                   <Card>
                     <CardContent className="py-8 text-center">
                       <Shield className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <h3 className="text-lg font-semibold mb-2">暂无封禁IP</h3>
-                      <p className="text-muted-foreground">您还没有封禁任何IP地址</p>
+                      <h3 className="text-lg font-semibold mb-2">ยังไม่มีการแบน IP</h3>
+                      <p className="text-muted-foreground">คุณไม่ได้บล็อคที่อยู่ IP ใดๆ</p>
                     </CardContent>
                   </Card>
                 ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>IP地址</TableHead>
-                        <TableHead>封禁原因</TableHead>
-                        <TableHead>状态</TableHead>
-                        <TableHead>封禁时间</TableHead>
-                        <TableHead>操作</TableHead>
+                        <TableHead>ที่อยู่ IP</TableHead>
+                        <TableHead>เหตุผลในการแบน</TableHead>
+                        <TableHead>สถานะ</TableHead>
+                        <TableHead>เวลาแบน</TableHead>
+                        <TableHead>ดำเนินงาน</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -683,7 +683,7 @@ export default function DirectLinksPage() {
                           </TableCell>
                           <TableCell>
                             <Badge variant={ban.enabled ? "destructive" : "secondary"}>
-                              {ban.enabled ? "已封禁" : "已解封"}
+                              {ban.enabled ? "ถูกแบน" : "ปลดบล็อค"}
                             </Badge>
                           </TableCell>
                           <TableCell>{formatDate(ban.createdAt)}</TableCell>
@@ -714,15 +714,15 @@ export default function DirectLinksPage() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>确认删除直链</AlertDialogTitle>
+            <AlertDialogTitle>ยืนยันการลบลิงค์โดยตรง</AlertDialogTitle>
             <AlertDialogDescription>
-              您确定要删除直链 "{linkToDelete?.directName}" 吗？此操作不可撤销，所有访问日志也将被删除。
+              คุณแน่ใจว่าต้องการลบลิงค์โดยตรงหรือไม่? "{linkToDelete?.directName}" การดำเนินการนี้ไม่สามารถย้อนกลับได้และบันทึกการเข้าถึงทั้งหมดจะถูกลบออก
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteLink}>
-              删除
+              ลบ
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -732,36 +732,36 @@ export default function DirectLinksPage() {
       <Dialog open={banDialogOpen} onOpenChange={setBanDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>封禁IP地址</DialogTitle>
+            <DialogTitle>บล็อกที่อยู่ IP</DialogTitle>
             <DialogDescription>
-              封禁指定的IP地址，阻止其访问此直链
+              บล็อกที่อยู่ IP ที่ระบุและป้องกันไม่ให้เข้าถึงลิงก์โดยตรงนี้
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             <div>
-              <Label htmlFor="ip-address">IP地址</Label>
+              <Label htmlFor="ip-address">ที่อยู่ IP</Label>
               <Input
                 id="ip-address"
                 value={ipToBan}
                 onChange={(e) => setIpToBan(e.target.value)}
-                placeholder="请输入要封禁的IP地址"
+                placeholder="กรุณากรอกที่อยู่ IP ที่ต้องการบล็อค"
                 className="mt-1"
               />
               {selectedIPFromLog && (
                 <p className="text-sm text-muted-foreground mt-1">
-                  来自访问日志的IP地址
+                  ที่อยู่ IP จากบันทึกการเข้าถึง
                 </p>
               )}
             </div>
 
             <div>
-              <Label htmlFor="ban-reason">封禁原因（可选）</Label>
+              <Label htmlFor="ban-reason">เหตุผลในการแบน (ไม่บังคับ)</Label>
               <Input
                 id="ban-reason"
                 value={banReason}
                 onChange={(e) => setBanReason(e.target.value)}
-                placeholder="请输入封禁原因"
+                placeholder="กรุณาระบุเหตุผลการแบน"
                 className="mt-1"
               />
             </div>
@@ -777,7 +777,7 @@ export default function DirectLinksPage() {
                 setSelectedIPFromLog(null)
               }}
             >
-              取消
+              ยกเลิก
             </Button>
             <Button
               onClick={handleBanIP}
@@ -785,7 +785,7 @@ export default function DirectLinksPage() {
               className="bg-red-600 hover:bg-red-700"
             >
               <Ban className="h-4 w-4 mr-2" />
-              封禁
+              ห้าม
             </Button>
           </div>
         </DialogContent>
@@ -793,7 +793,7 @@ export default function DirectLinksPage() {
 
       {copied && (
         <div className="fixed bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-md shadow-lg">
-          直链已复制到剪贴板
+          คัดลอกลิงก์โดยตรงไปยังคลิปบอร์ดแล้ว
         </div>
       )}
         </div>

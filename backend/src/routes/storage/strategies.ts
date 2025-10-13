@@ -9,7 +9,7 @@ export const strategiesRoutes = new Elysia()
 	.get("/strategies", async (ctx) => {
 		const { user } = ctx as any
 		try {
-			logger.debug(`获取用户存储策略: ${user.userId}`)
+			logger.debug(`รับนโยบายการจัดเก็บข้อมูลของผู้ใช้: ${user.userId}`)
 			const strategies = await db.select().from(storageStrategies).all()
 			const safeStrategies = strategies
 				.map((strategy) => ({
@@ -27,10 +27,10 @@ export const strategiesRoutes = new Elysia()
 						oneDriveClientSecret: strategy.config.oneDriveClientSecret ? "***" : undefined,
 					},
 				}))
-			logger.info(`返回 ${safeStrategies.length} 个存储策略`)
+			logger.info(`กลับ ${safeStrategies.length} นโยบายการจัดเก็บข้อมูล`)
 			return { strategies: safeStrategies }
 		} catch (error) {
-			logger.error("获取存储策略失败:", error)
+			logger.error("ไม่สามารถรับนโยบายการจัดเก็บข้อมูลได้:", error)
 			return { strategies: [] }
 		}
 	})
@@ -41,7 +41,7 @@ export const strategiesRoutes = new Elysia()
 			const { body, set } = ctx as any
 			try {
 				const { name, type, config, clientSecret } = body
-				logger.info(`创建存储策略: ${name} (${type})`)
+				logger.info(`การสร้างนโยบายการจัดเก็บข้อมูล: ${name} (${type})`)
 				const existingStrategy = await db
 					.select()
 					.from(storageStrategies)
@@ -49,22 +49,22 @@ export const strategiesRoutes = new Elysia()
 					.get()
 				if (existingStrategy) {
 					set.status = 400
-					return { error: "策略名称已存在" }
+					return { error: "ชื่อนโยบายมีอยู่แล้ว" }
 				}
 				if (type === "r2") {
 					if (!config.r2Endpoint || !config.r2Bucket || !config.r2AccessKey || !config.r2SecretKey) {
 						set.status = 400
-						return { error: "R2 配置信息不完整" }
+						return { error: "ข้อมูลการกำหนดค่า R2 ไม่สมบูรณ์" }
 					}
 				} else if (type === "onedrive") {
 					if (!config.oneDriveClientId || !config.oneDriveTenantId || !clientSecret) {
 						set.status = 400
-						return { error: "OneDrive 配置信息不完整" }
+						return { error: "ข้อมูลการกำหนดค่า OneDrive ไม่สมบูรณ์" }
 					}
 				} else if (type === "webdav") {
 					if (!config.webDavUrl || !config.webDavUser || !config.webDavPass) {
 						set.status = 400
-						return { error: "WebDAV 配置信息不完整" }
+						return { error: "ข้อมูลการกำหนดค่า WebDAV ไม่สมบูรณ์" }
 					}
 				}
 				const strategyId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}`
@@ -83,12 +83,12 @@ export const strategiesRoutes = new Elysia()
 					updatedAt: now,
 				})
 				logger.database("INSERT", "storage_strategies")
-				logger.info(`存储策略创建成功: ${name}`)
-				return { message: "存储策略创建成功", strategyId }
+				logger.info(`สร้างนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว: ${name}`)
+				return { message: "สร้างนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว", strategyId }
 			} catch (error) {
-				logger.error("创建存储策略失败:", error)
+				logger.error("ไม่สามารถสร้างนโยบายการจัดเก็บข้อมูลได้:", error)
 				set.status = 500
-				return { error: "创建存储策略失败" }
+				return { error: "ไม่สามารถสร้างนโยบายการจัดเก็บข้อมูลได้" }
 			}
 		},
 		{
@@ -118,7 +118,7 @@ export const strategiesRoutes = new Elysia()
 			try {
 				const { id } = params
 				const { name, type, config, clientSecret } = body
-				logger.info(`更新存储策略: ${id}`)
+				logger.info(`อัปเดตนโยบายการจัดเก็บข้อมูล: ${id}`)
 				const existingStrategy = await db
 					.select()
 					.from(storageStrategies)
@@ -126,7 +126,7 @@ export const strategiesRoutes = new Elysia()
 					.get()
 				if (!existingStrategy) {
 					set.status = 404
-					return { error: "存储策略不存在" }
+					return { error: "นโยบายการจัดเก็บข้อมูลไม่มีอยู่" }
 				}
 				const duplicateStrategy = await db
 					.select()
@@ -135,22 +135,22 @@ export const strategiesRoutes = new Elysia()
 					.get()
 				if (duplicateStrategy && duplicateStrategy.id !== id) {
 					set.status = 400
-					return { error: "策略名称已存在" }
+					return { error: "ชื่อนโยบายมีอยู่แล้ว" }
 				}
 				if (type === "r2") {
 					if (!config.r2Endpoint || !config.r2Bucket || !config.r2AccessKey || !config.r2SecretKey) {
 						set.status = 400
-						return { error: "R2 配置信息不完整" }
+						return { error: "ข้อมูลการกำหนดค่า R2 ไม่สมบูรณ์" }
 					}
 				} else if (type === "onedrive") {
 					if (!config.oneDriveClientId || !config.oneDriveTenantId || !clientSecret) {
 						set.status = 400
-						return { error: "OneDrive 配置信息不完整" }
+						return { error: "ข้อมูลการกำหนดค่า OneDrive ไม่สมบูรณ์" }
 					}
 				} else if (type === "webdav") {
 					if (!config.webDavUrl || !config.webDavUser || !config.webDavPass) {
 						set.status = 400
-						return { error: "WebDAV 配置信息不完整" }
+						return { error: "ข้อมูลการกำหนดค่า WebDAV ไม่สมบูรณ์" }
 					}
 				}
 				const strategyConfig = {
@@ -167,12 +167,12 @@ export const strategiesRoutes = new Elysia()
 					})
 					.where(eq(storageStrategies.id, id))
 				logger.database("UPDATE", "storage_strategies")
-				logger.info(`存储策略更新成功: ${id}`)
-				return { message: "存储策略更新成功" }
+				logger.info(`อัปเดตนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว: ${id}`)
+				return { message: "อัปเดตนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว" }
 			} catch (error) {
-				logger.error("更新存储策略失败:", error)
+				logger.error("ไม่สามารถอัปเดตนโยบายการจัดเก็บข้อมูลได้:", error)
 				set.status = 500
-				return { error: "更新存储策略失败" }
+				return { error: "ไม่สามารถอัปเดตนโยบายการจัดเก็บข้อมูลได้" }
 			}
 		},
 		{
@@ -199,7 +199,7 @@ export const strategiesRoutes = new Elysia()
 		const { params, set } = ctx as any
 		try {
 			const { id } = params
-			logger.info(`删除存储策略: ${id}`)
+			logger.info(`การลบนโยบายการจัดเก็บข้อมูล: ${id}`)
 			const strategy = await db
 				.select()
 				.from(storageStrategies)
@@ -207,20 +207,20 @@ export const strategiesRoutes = new Elysia()
 				.get()
 			if (!strategy) {
 				set.status = 404
-				return { error: "存储策略不存在" }
+				return { error: "นโยบายการจัดเก็บข้อมูลไม่มีอยู่" }
 			}
 			if (strategy.isActive) {
 				set.status = 400
-				return { error: "无法删除激活的存储策略，请先切换到其他策略" }
+				return { error: "ไม่สามารถลบนโยบายการจัดเก็บข้อมูลที่ถูกเปิดใช้งานได้ โปรดเปลี่ยนไปใช้นโยบายอื่นก่อน" }
 			}
 			await db.delete(storageStrategies).where(eq(storageStrategies.id, id))
 			logger.database("DELETE", "storage_strategies")
-			logger.info(`存储策略删除成功: ${id}`)
-			return { message: "存储策略删除成功" }
+			logger.info(`ลบนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว: ${id}`)
+			return { message: "ลบนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว" }
 		} catch (error) {
-			logger.error("删除存储策略失败:", error)
+			logger.error("ไม่สามารถลบนโยบายการจัดเก็บข้อมูลได้:", error)
 			set.status = 500
-			return { error: "删除存储策略失败" }
+			return { error: "ไม่สามารถลบนโยบายการจัดเก็บข้อมูลได้" }
 		}
 	})
 	// 切换存储策略状态
@@ -231,7 +231,7 @@ export const strategiesRoutes = new Elysia()
 			try {
 				const { id } = params
 				const { isActive } = body
-				logger.info(`切换存储策略状态: ${id} -> ${isActive}`)
+				logger.info(`การเปลี่ยนสถานะนโยบายการจัดเก็บข้อมูล: ${id} -> ${isActive}`)
 				const strategy = await db
 					.select()
 					.from(storageStrategies)
@@ -239,7 +239,7 @@ export const strategiesRoutes = new Elysia()
 					.get()
 				if (!strategy) {
 					set.status = 404
-					return { error: "存储策略不存在" }
+					return { error: "นโยบายการจัดเก็บข้อมูลไม่มีอยู่" }
 				}
 				if (isActive) {
 					await db.update(storageStrategies).set({ isActive: false }).where(eq(storageStrategies.isActive, true))
@@ -272,18 +272,18 @@ export const strategiesRoutes = new Elysia()
 						} else {
 							await db.insert(storageConfig).values({ id: 1, ...configData } as any)
 						}
-						logger.info(`存储配置已同步: ${strategy.type}`)
+						logger.info(`การกำหนดค่าการจัดเก็บข้อมูลแบบซิงโครไนซ์: ${strategy.type}`)
 					} catch (dbError) {
-						logger.error("同步存储配置失败:", dbError)
+						logger.error("ไม่สามารถซิงโครไนซ์การกำหนดค่าการจัดเก็บข้อมูลได้:", dbError)
 					}
 				}
 				logger.database("UPDATE", "storage_strategies")
-				logger.info(`存储策略状态切换成功: ${id}`)
-				return { message: "存储策略状态切换成功" }
+				logger.info(`เปลี่ยนสถานะนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว: ${id}`)
+				return { message: "เปลี่ยนสถานะนโยบายการจัดเก็บข้อมูลสำเร็จแล้ว" }
 			} catch (error) {
-				logger.error("切换存储策略状态失败:", error)
+				logger.error("ไม่สามารถเปลี่ยนสถานะนโยบายการจัดเก็บข้อมูลได้:", error)
 				set.status = 500
-				return { error: "切换存储策略状态失败" }
+				return { error: "ไม่สามารถเปลี่ยนสถานะนโยบายการจัดเก็บข้อมูลได้" }
 			}
 		},
 		{

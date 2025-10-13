@@ -8,7 +8,7 @@ export const listRoutes = new Elysia()
 	.get("/", async (ctx) => {
 		const { query } = ctx as any
 		const { user } = ctx as any
-		logger.debug(`获取用户文件列表: ${user.userId}`)
+		logger.debug(`รับรายชื่อไฟล์ผู้ใช้: ${user.userId}`)
 		let whereConditions = [eq(files.userId, user.userId)] as any[]
 		if (query?.folderId !== undefined) {
 			const folderId = query.folderId === "root" ? null : query.folderId

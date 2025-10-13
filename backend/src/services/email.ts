@@ -69,7 +69,7 @@ export function generateVerificationCode(): string {
 function getEmailTemplate(code: string, email: string): string {
   return `
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="th-TH">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -335,7 +335,7 @@ export function R2MountManagement() {
   }
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleString("zh-CN")
+    return new Date(timestamp).toLocaleString("th-TH")
   }
 
   const getDisplayR2Path = (path: string) => {

@@ -31,12 +31,12 @@ interface DatePickerProps {
 export function DatePicker({
   date,
   onDateChange,
-  placeholder = "选择日期",
+  placeholder = "เลือกวันที่",
   disabled = false,
   className,
 }: DatePickerProps) {
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString("zh-CN", {
+    return date.toLocaleDateString("th-TH", {
       year: "numeric",
       month: "long",
       day: "numeric"
@@ -70,14 +70,14 @@ export function DatePicker({
           }}
         >
           <SelectTrigger className="w-full h-9 text-sm">
-            <SelectValue placeholder="快速选择" />
+            <SelectValue placeholder="การเลือกอย่างรวดเร็ว" />
           </SelectTrigger>
           <SelectContent position="popper">
-            <SelectItem value="1">1天后过期</SelectItem>
-            <SelectItem value="3">3天后过期</SelectItem>
-            <SelectItem value="7">7天后过期</SelectItem>
-            <SelectItem value="30">30天后过期</SelectItem>
-            <SelectItem value="clear">永久有效</SelectItem>
+            <SelectItem value="1">หมดอายุใน 1 วัน</SelectItem>
+            <SelectItem value="3">หมดอายุใน 3 วัน</SelectItem>
+            <SelectItem value="7">หมดอายุใน 7 วัน</SelectItem>
+            <SelectItem value="30">หมดอายุใน 30 วัน</SelectItem>
+            <SelectItem value="clear">มีผลถาวร</SelectItem>
           </SelectContent>
         </Select>
         <div className="rounded-md border w-full">

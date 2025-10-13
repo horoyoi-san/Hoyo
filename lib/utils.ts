@@ -61,7 +61,7 @@ export async function downloadFile(url: string, filename?: string, token?: strin
     })
 
     if (!response.ok) {
-      throw new Error(`下载失败: ${response.status} ${response.statusText}`)
+      throw new Error(`การดาวน์โหลดล้มเหลว: ${response.status} ${response.statusText}`)
     }
 
     // 获取文件名
@@ -95,7 +95,7 @@ export async function downloadFile(url: string, filename?: string, token?: strin
 
     return true
   } catch (error) {
-    console.error('下载失败:', error)
+    console.error('การดาวน์โหลดล้มเหลว:', error)
     throw error
   }
 }

@@ -27,7 +27,7 @@ export default function AdminLogsPage() {
                 <BreadcrumbLink asChild>
                   <Link href="/admin" className="flex items-center gap-1 text-sm">
                     <Settings className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span className="whitespace-nowrap">系统管理</span>
+                    <span className="whitespace-nowrap">การจัดการระบบ</span>
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -35,7 +35,7 @@ export default function AdminLogsPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1 text-sm">
                   <Terminal className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                  <span className="whitespace-nowrap">运行日志</span>
+                  <span className="whitespace-nowrap">บันทึกการทำงาน</span>
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -43,8 +43,8 @@ export default function AdminLogsPage() {
 
           {/* 页面标题 - 移动端优化 */}
           <div className="space-y-1 sm:space-y-2">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">运行日志</h1>
-            <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">查看系统详细信息、实时运行日志和错误信息</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">บันทึกการทำงาน</h1>
+            <p className="text-xs sm:text-sm lg:text-base text-muted-foreground">ดูรายละเอียดระบบ บันทึกการทำงานแบบเรียลไทม์ และข้อมูลข้อผิดพลาด</p>
           </div>
 
           {/* 系统信息 */}

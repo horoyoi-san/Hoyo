@@ -19,15 +19,15 @@ export default function AdminOAuthPage() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1">
                   <Cloud className="h-4 w-4" />
-                  OAuth配置
+                  การกำหนดค่า OAuth
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">OAuth配置</h1>
-            <p className="text-sm sm:text-base text-muted-foreground">配置第三方OAuth登录服务</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">การกำหนดค่า OAuth</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">การกำหนดค่าบริการการเข้าสู่ระบบ OAuth ของบุคคลที่สาม</p>
           </div>
 
           <div className="space-y-6">

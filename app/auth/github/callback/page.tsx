@@ -31,7 +31,7 @@ function GitHubCallbackContent() {
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-        <p className="mt-4 text-muted-foreground">正在处理GitHub登录...</p>
+        <p className="mt-4 text-muted-foreground">กำลังประมวลผลการเข้าสู่ระบบ GitHub...</p>
       </div>
     </div>
   )
@@ -43,7 +43,7 @@ export default function GitHubCallbackPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">正在加载...</p>
+          <p className="mt-4 text-muted-foreground">กำลังโหลด...</p>
         </div>
       </div>
     }>

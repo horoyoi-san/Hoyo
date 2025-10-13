@@ -37,7 +37,7 @@ function GoogleCallbackContent() {
         <CardHeader className="text-center">
           <CardTitle className="flex items-center justify-center gap-2">
             <Loader2 className="h-5 w-5 animate-spin" />
-            处理谷歌登录
+            การจัดการการลงชื่อเข้าใช้ Google
           </CardTitle>
           <CardDescription>
             正在处理您的谷歌账户登录...
@@ -45,7 +45,7 @@ function GoogleCallbackContent() {
         </CardHeader>
         <CardContent>
           <div className="text-center text-sm text-muted-foreground">
-            请稍候，我们正在验证您的谷歌账户信息
+            โปรดรอสักครู่ในขณะที่เราตรวจสอบข้อมูลบัญชี Google ของคุณ
           </div>
         </CardContent>
       </Card>

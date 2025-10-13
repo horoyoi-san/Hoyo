@@ -561,7 +561,7 @@ async function sendTestEmail(email: string, code: string, config: any): Promise<
 
     const template = config.emailTemplate || `
       <!DOCTYPE html>
-      <html lang="zh-CN">
+      <html lang="th-TH">
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">

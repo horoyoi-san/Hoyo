@@ -6,8 +6,8 @@ import "./globals.css"
 import { Providers } from "@/components/providers"
 
 export const metadata: Metadata = {
-  title: "FireflyCloud - 云存储",
-  description: "支持本地存储和 R2 的云存储解决方案",
+  title: "FireflyCloud - การจัดเก็บข้อมูลบนคลาวด์",
+  description: "รองรับการจัดเก็บข้อมูลภายในเครื่องและโซลูชันการจัดเก็บข้อมูลบนคลาวด์ R2",
   generator: "v0.app",
 }
 
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+    <html lang="th-TH" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
       <body className={GeistSans.className} suppressHydrationWarning>
         <Providers>
           {children}

@@ -21,7 +21,7 @@ function OneDriveCallbackContent() {
     const handleCallback = async () => {
       if (!token) {
         setStatus("error")
-        setMessage("用户未登录，请先登录后再进行授权")
+        setMessage("ผู้ใช้ไม่ได้เข้าสู่ระบบ กรุณาเข้าสู่ระบบก่อนแล้วจึงอนุญาต")
         return
       }
 
@@ -31,13 +31,13 @@ function OneDriveCallbackContent() {
 
       if (error) {
         setStatus("error")
-        setMessage(`授权失败: ${error} - ${errorDescription || "未知错误"}`)
+        setMessage(`การอนุญาตล้มเหลว: ${error} - ${errorDescription || "ข้อผิดพลาดที่ไม่รู้จัก"}`)
         return
       }
 
       if (!code) {
         setStatus("error")
-        setMessage("未收到授权码，请重新尝试授权")
+        setMessage("ไม่ได้รับรหัสอนุมัติ กรุณาลองอนุมัติอีกครั้ง")
         return
       }
 
@@ -58,15 +58,15 @@ function OneDriveCallbackContent() {
 
         if (response.ok) {
           setStatus("success")
-          setMessage("OneDrive 授权成功！您现在可以创建 OneDrive 挂载点了。")
+          setMessage("การอนุญาต OneDrive สำเร็จ! ตอนนี้คุณสามารถสร้างจุดเชื่อมต่อ OneDrive ได้แล้ว")
         } else {
           const errorData = await response.json()
           setStatus("error")
-          setMessage(`授权处理失败: ${errorData.error || "未知错误"}`)
+          setMessage(`การประมวลผลการอนุญาตล้มเหลว: ${errorData.error || "ข้อผิดพลาดที่ไม่รู้จัก"}`)
         }
       } catch (error) {
         setStatus("error")
-        setMessage("网络错误，无法完成授权处理")
+        setMessage("ข้อผิดพลาดของเครือข่าย ไม่สามารถดำเนินการอนุมัติให้เสร็จสมบูรณ์ได้")
       }
     }
 
@@ -85,18 +85,18 @@ function OneDriveCallbackContent() {
             {status === "loading" && <Loader2 className="h-5 w-5 animate-spin" />}
             {status === "success" && <CheckCircle className="h-5 w-5 text-green-600" />}
             {status === "error" && <AlertCircle className="h-5 w-5 text-red-600" />}
-            OneDrive 授权
+            การอนุญาต OneDrive
           </CardTitle>
           <CardDescription>
-            {status === "loading" && "正在处理 OneDrive 授权..."}
-            {status === "success" && "授权成功"}
-            {status === "error" && "授权失败"}
+            {status === "loading" && "กำลังดำเนินการอนุมัติ OneDrive..."}
+            {status === "success" && "การอนุมัติสำเร็จ"}
+            {status === "error" && "การอนุญาตล้มเหลว"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {status === "loading" && (
             <div className="text-center text-sm text-muted-foreground">
-              请稍候，正在与 Microsoft 服务器通信...
+              กรุณารอสักครู่ กำลังสื่อสารกับเซิร์ฟเวอร์ Microsoft...
             </div>
           )}
           
@@ -117,7 +117,7 @@ function OneDriveCallbackContent() {
           {status !== "loading" && (
             <div className="flex justify-center">
               <Button onClick={handleGoBack}>
-                返回挂载管理
+                กลับไปที่การจัดการการเมาน
               </Button>
             </div>
           )}
