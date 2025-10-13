@@ -6,9 +6,9 @@ import json
 
 # Discord Webhooks จาก GitHub Secrets
 webhook_urls = [
-    os.environ.get("WEBHOOK1"),
-    os.environ.get("WEBHOOK2"),
-    os.environ.get("WEBHOOK3"),
+ #   os.environ.get("WEBHOOK1"),
+ #   os.environ.get("WEBHOOK2"),
+ #   os.environ.get("WEBHOOK3"),
     os.environ.get("WEBHOOK4"),
 ]
 
@@ -36,7 +36,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_n
     requests.post(webhook_url, json=embed)
 
 def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
-    max_length = 1630
+    max_length = 4000
     message = f"**{title}**\n"
     for line in lines:
         if len(message) + len(line) + 1 > max_length:
