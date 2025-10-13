@@ -16,10 +16,10 @@ last_data = None
 
 # URL ที่จะตรวจสอบ
 urls = {
-    "CNBETAAndroid": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.5.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
-    "OSBETAAndroid": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.5.51&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
-    "CNBETAWin": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.5.50&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
-    "OSBETAWin": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.5.50&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1"
+    "CNBETAAndroid": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.5.52&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "OSBETAAndroid": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.5.52&t=1684554883&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "CNBETAWin": "https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.5.53&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1",
+    "OSBETAWin": "https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.5.53&t=1745113477&language_type=3&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1"
 }
 
 def decode_data(raw_data):
