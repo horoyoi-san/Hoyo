@@ -14,7 +14,7 @@ webhook_urls = [
 
 # API URL
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4qvmDrMwKS&launcher_id=VYTpXlbWo8",
+    "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=&launcher_id=jGHBHlcOq1",
 ]
 
 # ฟังก์ชันส่ง embed message
@@ -61,7 +61,7 @@ def has_changed(api_url, game_name):
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
     # ใช้ absolute path จาก cwd ของ workflow
-    log_dir = os.path.join(os.getcwd(), "Hoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "CNHoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
     print(f"📂 Creating log directory: {log_dir}")
 
@@ -102,9 +102,9 @@ for api_url in api_urls:
         game_package = data["data"]["game_packages"][0]
 
         # ดึงข้อมูล display
-        game_info_url = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGames?&launcher_id=95ODRGH3xC"
+        game_info_url = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGames?&launcher_id=TC4836G73s"
         resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == "4qvmDrMwKS")
+        game_data = next(g for g in resp["data"]["games"] if g["id"] == "j7rlly0oYR")
         display_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]

@@ -12,9 +12,9 @@ webhook_urls = [
     os.environ.get("WEBHOOK4"),
 ]
 
-# API URL
+# API URL + Game name
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=U5hbdsT9W7&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8",
 ]
 
 # ฟังก์ชันส่ง embed message
@@ -23,7 +23,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_n
         "embeds": [{
             "title": title,
             "description": description,
-            "color": 16753920,
+            "color": 16777215,
             "thumbnail": {"url": icon_url},
             "image": {"url": bg_url},
             "footer": {
@@ -36,7 +36,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_n
     requests.post(webhook_url, json=embed)
 
 def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
-    max_length = 4000
+    max_length = 1900
     message = f"**{title}**\n"
     for line in lines:
         if len(message) + len(line) + 1 > max_length:
@@ -61,7 +61,7 @@ def has_changed(api_url, game_name):
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
     # ใช้ absolute path จาก cwd ของ workflow
-    log_dir = os.path.join(os.getcwd(), "Hoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "OSHoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
     print(f"📂 Creating log directory: {log_dir}")
 
@@ -90,9 +90,10 @@ def has_changed(api_url, game_name):
         return True
     return False
 
+
 # Main loop สำหรับทุก API
 for api_url in api_urls:
-    game_name = "ZZZ"
+    game_name = "GI"
     try:
         if not has_changed(api_url, game_name):
             print(f"[{game_name}] No change, skipping webhook")
@@ -104,7 +105,7 @@ for api_url in api_urls:
         # ดึงข้อมูล display
         game_info_url = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
         resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == "U5hbdsT9W7")
+        game_data = next(g for g in resp["data"]["games"] if g["id"] == "gopR6Cufr3")
         display_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]
@@ -153,4 +154,3 @@ for api_url in api_urls:
                 split_and_send(webhook_url, "❌ Error", [f"[{game_name}] error: {e}"], "", "", "")
 
 print("✅ Checked all APIs and sent updates if changed")
-
