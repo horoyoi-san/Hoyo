@@ -1,27 +1,42 @@
 export async function GET(request) {
 	const { searchParams } = new URL(request.url);
-	let launcherId = searchParams.get("launcher");
+	const launcherParam = searchParams.get("launcher") || "";
 
-	const res = await fetch(`https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=${launcherId}&language=en-us`)
-	.catch(error => {return new Response(error)})
+	// แปลง launcherParam เป็น object { os, cn } รองรับ string เดิม
+	let launcher;
+	try {
+		launcher = JSON.parse(launcherParam); // { os, cn }
+		if (!launcher.os || !launcher.cn) throw new Error();
+	} catch {
+		launcher = { os: launcherParam, cn: launcherParam };
+	}
 
-    const data = await res.json()
+	// URLs CN + OS
+	const urls = [
+		`https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=${launcher.cn}&language=zh-cn`,
+		`https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=${launcher.os}&language=en-us`
+	];
 
-    if (data.retcode !== 0) {
-        return new Response(JSON.stringify({}));
-    }
+	const results = await Promise.allSettled(
+		urls.map(url => fetch(url).then(r => r.json()))
+	);
 
-    // format data
-    let output = [{}]
+	const output = [{}];
 
-    for (const game of data.data.games) {
-        output[0][game.biz] = {
-            id: game.id,
-            name: game.display.name,
-            icon: game.display.icon.url,
-            background: game.display.background.url
-        }
-    }
+	for (const result of results) {
+		if (result.status === "fulfilled" && result.value.retcode === 0) {
+			for (const game of result.value.data.games) {
+				output[0][game.biz] = {
+					id: game.id,
+					name: game.display.name,
+					icon: game.display.icon.url,
+					background: game.display.background.url
+				};
+			}
+		}
+	}
 
-    return new Response(JSON.stringify(output));
+	return new Response(JSON.stringify(output), {
+		headers: { "Content-Type": "application/json" }
+	});
 }

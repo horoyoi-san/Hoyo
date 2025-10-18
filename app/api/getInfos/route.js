@@ -1,44 +1,58 @@
-import { data } from "framer-motion/client";
-
 export async function GET(request) {
-	const { searchParams } = new URL(request.url);
-	let launcherId = searchParams.get("launcher");
-    let gameId = searchParams.get("game");
+    const { searchParams } = new URL(request.url);
+    const launcherParam = searchParams.get("launcher") || ""; // string จาก frontend
+    const gameId = searchParams.get("game");
 
-    const sophonGames = [
-        "1Z8W5NHUQb" // hk4e
-    ]
+    const sophonGamescn = ["1Z8W5NHUQb"]; // hk4e CN
+    const sophonGamesos = ["gopR6Cufr3"]; // hk4e OS
 
-    var sophon = false;
+    let sophon = false;
 
-    let url = `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcherId}`;
-    if (sophonGames.includes(gameId)) {
+    // แปลง launcherParam เป็น object { os, cn } รองรับ string เดิม
+    let launcher;
+    try {
+        launcher = JSON.parse(launcherParam); // { os, cn }
+        if (!launcher.os || !launcher.cn) throw new Error();
+    } catch {
+        launcher = { os: launcherParam, cn: launcherParam };
+    }
+
+    // เตรียม URL ทั้ง CN และ OS
+    let urls = [
+        `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcher.cn}`,
+        `https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcher.os}`
+    ];
+
+    // ถ้าเป็น Sophon จะเปลี่ยน endpoint เป็น getGameBranches
+    if (sophonGamescn.includes(gameId)) {
         sophon = true;
-        url = `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcherId}`;
+        urls[0] = `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcher.cn}`;
+    }
+    if (sophonGamesos.includes(gameId)) {
+        sophon = true;
+        urls[1] = `https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcher.os}`;
     }
 
-	const res = await fetch(url)
-	.catch(error => {return new Response(error)})
+    // ดึงข้อมูลจากทั้งสอง API พร้อมกัน
+    const results = await Promise.allSettled(urls.map(url => fetch(url).then(r => r.json())));
 
-    let data = await res.json()
+    // เอาข้อมูลที่ดึงได้จริง (ไม่ error)
+    const validData = results
+        .filter(r => r.status === "fulfilled" && r.value.retcode === 0)
+        .map(r => r.value);
 
-    if (data.retcode !== 0) {
-        return new Response(JSON.stringify({}));
+    if (validData.length === 0) {
+        return new Response(JSON.stringify({ error: "No valid data" }), { status: 500 });
     }
 
-    let output = [{
-        "sophon": false,
-        "current": null,
-        "pre_download": null
-    }]
+    let data = validData[0];
 
-    //sophon
+    // ======================= SOPHON =======================
     if (sophon) {
-        // hardcoded lmao, too lazy to fix my code to make it dynamic
         let latestTag = data.data.game_branches[0].main.tag;
-        latestTag = latestTag.replace(/(\d+\.\d+)\.\d+$/, "$1"); // remove patch number
+        latestTag = latestTag.replace(/(\d+\.\d+)\.\d+$/, "$1");
 
-        let sophonData = [{
+        const sophonData = [{
             "sophon": true,
             "current": {
                 "major": {
@@ -53,91 +67,77 @@ export async function GET(request) {
                 },
                 "patches": []
             },
-            "pre_download": {
-                "major": null,
-                "patches": []
-            }
+            "pre_download": { "major": null, "patches": [] }
         }];
 
         for (const elem of data.data.game_branches[0].main.diff_tags) {
-            let patch = {
+            sophonData[0].current.patches.push({
                 "version": elem.replace(/(\d+\.\d+)\.\d+$/, "$1"),
                 "game_pkgs": [[gameId, latestTag, "game", "update"]],
                 "audio_pkgs": {
                     "en-us": [gameId, latestTag, "en-us", "update"],
                     "ja-jp": [gameId, latestTag, "ja-jp", "update"],
                     "ko-kr": [gameId, latestTag, "ko-kr", "update"],
-                    "zh-cn": [gameId, latestTag, "zh-cn", "update"],
+                    "zh-cn": [gameId, latestTag, "zh-cn", "update"]
                 }
-            }
-
-            sophonData[0].current.patches.push(patch);
+            });
         }
 
-        return new Response(JSON.stringify(sophonData));
+        return new Response(JSON.stringify(sophonData), {
+            headers: { "Content-Type": "application/json" }
+        });
     }
 
-    // update versions
+    // ======================= ปกติ =======================
     function modifyVersions(obj) {
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if (key === "version" && typeof obj[key] === "string") {
-                    obj[key] = obj[key].replace(/(\d+\.\d+)\.\d+$/, "$1");
-                } else if (typeof obj[key] === "object") {
-                    modifyVersions(obj[key]);
-                }
-            }
+        for (const key in obj) {
+            if (obj[key] && typeof obj[key] === "object") modifyVersions(obj[key]);
+            if (key === "version" && typeof obj[key] === "string")
+                obj[key] = obj[key].replace(/(\d+\.\d+)\.\d+$/, "$1");
         }
         return obj;
     }
 
-    data = modifyVersions(data)
+    data = modifyVersions(data);
 
-    // process packages
-    output[0]["current"] = data.data.game_packages[0].main
-    output[0]["pre_download"] = data.data.game_packages[0].pre_download
+    const output = [{
+        "sophon": false,
+        "current": data.data.game_packages[0].main,
+        "pre_download": data.data.game_packages[0].pre_download
+    }];
 
-    // redo audio for better processing
-    function convertAudioPkgs(data) {
-        let result = {};
-        data.forEach(pkg => {
-            result[pkg.language] = {
-                url: pkg.url,
-                md5: pkg.md5,
-                size: pkg.size,
-                decompressed_size: pkg.decompressed_size
-            };
+    function convertAudioPkgs(arr) {
+        const res = {};
+        arr.forEach(p => res[p.language] = {
+            url: p.url, md5: p.md5, size: p.size, decompressed_size: p.decompressed_size
         });
-        return result;
+        return res;
     }
 
-    output[0]["current"]["major"]["audio_pkgs"] = convertAudioPkgs(output[0]["current"]["major"]["audio_pkgs"])
-    output[0]["current"]["patches"].forEach(patch => {
-        patch["audio_pkgs"] = convertAudioPkgs(patch["audio_pkgs"])
-    });
+    const curr = output[0].current;
+    curr.major.audio_pkgs = convertAudioPkgs(curr.major.audio_pkgs);
+    curr.patches.forEach(p => p.audio_pkgs = convertAudioPkgs(p.audio_pkgs));
 
-    if (output[0]["pre_download"]["major"] != undefined) {
-        output[0]["pre_download"]["major"]["audio_pkgs"] = convertAudioPkgs(output[0]["pre_download"]["major"]["audio_pkgs"])
-        output[0]["pre_download"]["patches"].forEach(patch => {
-            patch["audio_pkgs"] = convertAudioPkgs(patch["audio_pkgs"])
-        });
+    if (output[0].pre_download?.major) {
+        output[0].pre_download.major.audio_pkgs = convertAudioPkgs(output[0].pre_download.major.audio_pkgs);
+        output[0].pre_download.patches.forEach(p => p.audio_pkgs = convertAudioPkgs(p.audio_pkgs));
     }
-    
 
     function removeResListUrl(obj) {
-        if (typeof obj !== "object" || obj === null) return obj;
         if (Array.isArray(obj)) return obj.map(removeResListUrl);
-    
-        const newObj = {};
-        for (const key in obj) {
-            if (key !== "res_list_url") {
-                newObj[key] = removeResListUrl(obj[key]);
+        if (obj && typeof obj === "object") {
+            const newObj = {};
+            for (const key in obj) {
+                if (key !== "res_list_url") newObj[key] = removeResListUrl(obj[key]);
             }
+            return newObj;
         }
-        return newObj;
+        return obj;
     }
 
-    output = removeResListUrl(output); // i don't like em
+    const cleaned = removeResListUrl(output);
 
-    return new Response(JSON.stringify(output));
+    return new Response(JSON.stringify(cleaned), {
+        headers: { "Content-Type": "application/json" }
+    });
 }

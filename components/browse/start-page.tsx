@@ -3,26 +3,59 @@ import { Container } from "@/components/misc";
 import { Input } from "@/components/ui/input";
 import { BButton } from "@/components/buttons";
 
-export default function StartPage({setLauncherId, appState, setState}: {setLauncherId: (id: string) => void, appState: number, setState: (state: number) => void}) {
-	const [typed, setTyped] = useState("");
-	
-	const handleClick = () => {
-		setLauncherId(typed);
-		setState(1);
-	}
+export default function StartPage({
+  setLauncherId,
+  appState,
+  setState
+}: {
+  setLauncherId: (id: string) => void,
+  appState: number,
+  setState: (state: number) => void
+}) {
+  const [typed, setTyped] = useState("");
+  const [region, setRegion] = useState<"os" | "cn">("os"); // เลือก Region
 
-	const [buttonDisabled, setButtonDisabled] = useState(true);
-	
-	return (
-		<Container>
-			<span className="text-white/60">กรุณาใส่รหัสตัวเรียกใช้งาน รหัสเริ่มต้นคือ &quot;<span className="text-white/95 select-all">jGHBHlcOq1</span>&quot; แต่คุณสามารถใช้ตัวอื่นได้ถ้าคุณต้องการ</span>
-			
-			{appState === -1 && (
-				<span className="text-red-400 block mb-[-10px]"><br/>Invalid launcher id</span>
-			)}
-			<Input onChange={(e) => {setButtonDisabled(e.target.value === ""); setTyped(e.target.value)}} className="mt-4 mb-4 w-full" placeholder="Launcher id"></Input>
-			
-			<BButton callback={handleClick} disabled={buttonDisabled} text="Start" />
-		</Container>
-	)
+  const handleClick = () => {
+    const launcherMap = {
+      os: "VYTpXlbWo8",
+      cn: "jGHBHlcOq1"
+    };
+
+    // ใช้ typed ถ้ามี ไม่งั้นใช้ launcherId ของ region
+    const id = typed || launcherMap[region];
+    setLauncherId(id); // ส่งเป็น string
+    setState(1);       // ไปหน้า GameList
+  };
+
+  return (
+    <Container>
+      <span className="text-white/60">
+        กรุณาใส่รหัสตัวเรียกใช้งาน หรือเลือก Region
+      </span>
+
+      {/* ปุ่มสลับ Region */}
+      <div className="flex gap-2 mt-2 mb-4">
+        <button
+          className={`px-3 py-1 rounded ${region === "os" ? "bg-cyan-500" : "bg-gray-600"}`}
+          onClick={() => setRegion("os")}
+        >
+          Global / OS
+        </button>
+        <button
+          className={`px-3 py-1 rounded ${region === "cn" ? "bg-cyan-500" : "bg-gray-600"}`}
+          onClick={() => setRegion("cn")}
+        >
+          China / CN
+        </button>
+      </div>
+
+      <Input
+        onChange={(e) => setTyped(e.target.value)}
+        className="w-full mb-4"
+        placeholder="Launcher id (optional)"
+      />
+
+      <BButton callback={handleClick} disabled={false} text="Start" />
+    </Container>
+  );
 }
