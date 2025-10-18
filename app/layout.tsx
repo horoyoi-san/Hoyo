@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import GlobalWarning from "@/components/global-warning";
 
 export const metadata: Metadata = {
-	title: "Hoyo game CN",
+	title: "Hoyo game",
 	description: "Utility สำหรับรับแพ็คเกจอัปเดตจากเกม Hoyo CN",
 };
 

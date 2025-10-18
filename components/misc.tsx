@@ -24,7 +24,7 @@ export function Header() {
             <div className="flex items-center mb-2">
                 {/* ชื่อพร้อม Gradient */}
                 <h1 className="bold text-2xl bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_6px_rgba(0,0,0,0.4)]">
-                    Hoyo Game CN
+                    Hoyo Game
                 </h1>
                 <span className="bold text-2xl">•</span>
             {/* Discord จากลิงก์ภาพ */}
