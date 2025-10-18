@@ -19,11 +19,11 @@ export default function Home() {
 	return (
 		<div className="w-full h-full overflow-hidden bg-[#1a1a1a] flex items-center justify-center flex-col p-2">
 			{(appState === 0 || appState === -1) && (
-				<StartPage
-					setLauncherId={setLauncherId} // ส่งตรงไปเป็น object
-					appState={appState}
-					setState={setAppState}
-				/>
+			<StartPage
+				setLauncherId={setLauncherId} // ส่งตรงได้เลย
+				appState={appState}
+				setState={setAppState}
+			/>
 			)}
 			{appState === 1 && (
 				<GameList
@@ -49,3 +49,4 @@ export default function Home() {
 		</div>
 	);
 }
+
