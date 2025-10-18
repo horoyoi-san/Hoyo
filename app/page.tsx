@@ -1,4 +1,4 @@
-"use client";
+"use client"; // ✅ ต้องอยู่บรรทัดแรก
 
 import { useState } from "react";
 import GameInfos from "@/components/browse/game-infos";
@@ -9,18 +9,18 @@ import Background from "@/components/background";
 export default function Home() {
 	const [appState, setAppState] = useState(1);
 	const [launcherId, setLauncherId] = useState({
-		os: "jGHBHlcOq1", // Global / OS
-		cn: "gU7BCkj29M", // China / CN
+		os: "jGHBHlcOq1",
+		cn: "gU7BCkj29M",
 	});
 	const [games, setGames] = useState([]);
 	const [selectedGame, setSelectedGame] = useState("");
-	const [background, setBackground] = useState("/background.mp4"); // 👈 พื้นหลังเหมือนเดิม
+	const [background, setBackground] = useState("/background.mp4");
 
 	return (
 		<div className="w-full h-full overflow-hidden bg-[#1a1a1a] flex items-center justify-center flex-col p-2">
 			{(appState === 0 || appState === -1) && (
 				<StartPage
-					setLauncherId={setLauncherId} // ส่งตรงไปเป็น object
+					setLauncherId={(id: string) => setLauncherId({ os: id, cn: id })}
 					appState={appState}
 					setState={setAppState}
 				/>
