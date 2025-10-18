@@ -1,3 +1,5 @@
+// ./app/page.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -14,20 +16,30 @@ export default function Home() {
 	});
 	const [games, setGames] = useState([]);
 	const [selectedGame, setSelectedGame] = useState("");
-	const [background, setBackground] = useState("/background.mp4"); // 👈 พื้นหลังเหมือนเดิม
+	const [background, setBackground] = useState("/background.mp4");
+
+    // ฟังก์ชันสำหรับ StartPage 
+    const handleSetLauncherId = (newId: string) => {
+        setLauncherId(prevIds => ({
+            ...prevIds,
+            os: newId, 
+        }));
+    };
 
 	return (
 		<div className="w-full h-full overflow-hidden bg-[#1a1a1a] flex items-center justify-center flex-col p-2">
 			{(appState === 0 || appState === -1) && (
 			<StartPage
-				setLauncherId={setLauncherId} // ส่งตรงได้เลย
+				setLauncherId={handleSetLauncherId}
 				appState={appState}
 				setState={setAppState}
 			/>
 			)}
 			{appState === 1 && (
 				<GameList
-					launcherId={launcherId}
+					// ส่งแค่ ID เดียวที่เป็น string เพื่อให้ Type ผ่าน
+					launcherId={launcherId.os} 
+					// ลบ prop 'allLauncherIds' ออก
 					games={games}
 					setGames={setGames}
 					setSelectedGame={setSelectedGame}
@@ -38,7 +50,9 @@ export default function Home() {
 			{appState === 2 && (
 				<GameInfos
 					setAppState={setAppState}
-					launcherId={launcherId}
+					// ส่งแค่ ID เดียวที่เป็น string เพื่อให้ Type ผ่าน
+					launcherId={launcherId.os} 
+					// ลบ prop 'allLauncherIds' ออก
 					selectedGame={selectedGame}
 					games={games}
 					setBackground={setBackground}
@@ -49,4 +63,3 @@ export default function Home() {
 		</div>
 	);
 }
-
