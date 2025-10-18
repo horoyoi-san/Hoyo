@@ -3,8 +3,11 @@ import { Container } from "@/components/misc";
 import { Input } from "@/components/ui/input";
 import { BButton } from "@/components/buttons";
 
-export default function StartPage({ setLauncherId, appState, setState }: {setLauncherId: React.Dispatch<React.SetStateAction<{ os: string; cn: string }>>, appState: number, setState: React.Dispatch<React.SetStateAction<number>> }) {
-
+export default function StartPage({ setLauncherId, appState, setState }: {
+  setLauncherId: (id: string) => void, // รับ string
+  appState: number,
+  setState: React.Dispatch<React.SetStateAction<number>>
+}) {
 	const [typed, setTyped] = useState("");
 	const [region, setRegion] = useState<"os" | "cn">("os"); // เลือก Region
 

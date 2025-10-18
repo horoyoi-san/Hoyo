@@ -20,7 +20,7 @@ export default function Home() {
 		<div className="w-full h-full overflow-hidden bg-[#1a1a1a] flex items-center justify-center flex-col p-2">
 			{(appState === 0 || appState === -1) && (
 				<StartPage
-					setLauncherId={(id: string) => setLauncherId({ os: id, cn: id })} // ตัวอย่าง mapping
+					setLauncherId={setLauncherId} // ส่งตรงไปเป็น object
 					appState={appState}
 					setState={setAppState}
 				/>
