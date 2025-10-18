@@ -12,23 +12,19 @@ export default function GameInfos({setAppState, launcherId, selectedGame, games,
 	const audioHelp = [["english", "en-us"], ["chinese", "zh-cn"], ["japanese", "ja-jp"], ["korean", "ko-kr"]];
 
 	useEffect(() => {
-	if (!selectedGame || !games[0]) return;
-
-	setGameInfos([]); // รีเซ็ตก่อน fetch ใหม่
-
-	fetch(`/api/getInfos?launcher=${launcherId}&game=${games[0][selectedGame].id}`)
+		if (gameInfos.length !== 0) return;
+		fetch(`/api/getInfos?launcher=${launcherId}&game=${games[0][selectedGame].id}`)
 		.then(res => res.json())
-		.then(data => setGameInfos([data])) // ทำเป็น array เหมือนเดิม
+		.then(data => setGameInfos(data))
 		.catch(err => console.error(err));
-	}, [launcherId, selectedGame, games]);
-
+	}, [])
 
 	useEffect(() => {
 		if (gameInfos.length === 0) return;
 		if (gameInfos[0].sophon) {
 			return;
 		};
-		if (!gameInfos[0].current.major?.audio_pkgs || Object.keys(gameInfos[0].current.major.audio_pkgs).length === 0) {
+		if (Object.keys(gameInfos[0].current.major?.audio_pkgs || {}).length === 0) {
 			setNoAudio(true);
 		}
 	}, [gameInfos])
@@ -62,8 +58,8 @@ export default function GameInfos({setAppState, launcherId, selectedGame, games,
 
 					{gameInfos[0].current.major != null && (
 						<Tabs defaultValue="current" className="w-full">
-								{
-								gameInfos[0].pre_download?.major && (
+							{
+								gameInfos[0].pre_download.major != null && (
 									<div className="w-full flex items-center justify-center">
 										<TabsList className="border-2 border-neutral-700">
 											<TabsTrigger value="current">Current version</TabsTrigger>
@@ -72,7 +68,6 @@ export default function GameInfos({setAppState, launcherId, selectedGame, games,
 									</div>
 								)
 							}
-
 
 							<TabsContent value="current">
 								<DisplayTabs gameInfos={gameInfos} noAudio={noAudio} audioHelp={audioHelp} isPre={false} />

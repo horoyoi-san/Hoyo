@@ -1,31 +1,29 @@
 export async function GET(request) {
 	const { searchParams } = new URL(request.url);
-	const launcherParam = searchParams.get("launcher") || "";
+	let launcherIdParam = searchParams.get("launcher");
 
-	// แปลง launcherParam เป็น object { os, cn } รองรับ string เดิม
-	let launcher;
-	try {
-		launcher = JSON.parse(launcherParam); // { os, cn }
-		if (!launcher.os || !launcher.cn) throw new Error();
-	} catch {
-		launcher = { os: launcherParam, cn: launcherParam };
-	}
+	// ถ้ามีส่ง launcher มาจาก client ก็ใช้ค่านั้น
+	// ถ้าไม่มี ใช้ launcherId ทั้งสองแบบ (CN + OS)
+	const launcherIds = typeof launcherIdParam === "string"
+		? { os: launcherIdParam, cn: launcherIdParam }
+		: { os: "jGHBHlcOq1", cn: "gU7BCkj29M" };
 
-	// URLs CN + OS
+	// ดึงข้อมูลจากทั้ง CN และ OS พร้อมกัน
 	const urls = [
-		`https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=${launcher.cn}&language=zh-cn`,
-		`https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=${launcher.os}&language=en-us`
+		`https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=${launcherIds.cn}&language=en-us`,
+		`https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=${launcherIds.os}&language=en-us`
 	];
 
-	const results = await Promise.allSettled(
-		urls.map(url => fetch(url).then(r => r.json()))
-	);
+	try {
+		const responses = await Promise.all(urls.map(url => fetch(url)));
+		const jsonResults = await Promise.all(responses.map(r => r.json()));
 
-	const output = [{}];
+		let output = [{}];
 
-	for (const result of results) {
-		if (result.status === "fulfilled" && result.value.retcode === 0) {
-			for (const game of result.value.data.games) {
+		// รวมผลลัพธ์จากทั้งสองฝั่ง
+		for (const data of jsonResults) {
+			if (data.retcode !== 0) continue;
+			for (const game of data.data.games) {
 				output[0][game.biz] = {
 					id: game.id,
 					name: game.display.name,
@@ -34,9 +32,9 @@ export async function GET(request) {
 				};
 			}
 		}
-	}
 
-	return new Response(JSON.stringify(output), {
-		headers: { "Content-Type": "application/json" }
-	});
+		return new Response(JSON.stringify(output));
+	} catch (error) {
+		return new Response(JSON.stringify({ error: error.message }));
+	}
 }

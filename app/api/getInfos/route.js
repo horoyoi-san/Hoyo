@@ -1,6 +1,6 @@
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const launcherParam = searchParams.get("launcher") || ""; // string จาก frontend
+    const launcherId = searchParams.get("launcher");
     const gameId = searchParams.get("game");
 
     const sophonGamescn = ["1Z8W5NHUQb"]; // hk4e CN
@@ -8,29 +8,20 @@ export async function GET(request) {
 
     let sophon = false;
 
-    // แปลง launcherParam เป็น object { os, cn } รองรับ string เดิม
-    let launcher;
-    try {
-        launcher = JSON.parse(launcherParam); // { os, cn }
-        if (!launcher.os || !launcher.cn) throw new Error();
-    } catch {
-        launcher = { os: launcherParam, cn: launcherParam };
-    }
-
     // เตรียม URL ทั้ง CN และ OS
     let urls = [
-        `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcher.cn}`,
-        `https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcher.os}`
+        `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcherId}`,
+        `https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=${gameId}&launcher_id=${launcherId}`
     ];
 
     // ถ้าเป็น Sophon จะเปลี่ยน endpoint เป็น getGameBranches
     if (sophonGamescn.includes(gameId)) {
         sophon = true;
-        urls[0] = `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcher.cn}`;
+        urls[0] = `https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcherId}`;
     }
     if (sophonGamesos.includes(gameId)) {
         sophon = true;
-        urls[1] = `https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcher.os}`;
+        urls[1] = `https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=${gameId}&launcher_id=${launcherId}`;
     }
 
     // ดึงข้อมูลจากทั้งสอง API พร้อมกัน
@@ -45,6 +36,7 @@ export async function GET(request) {
         return new Response(JSON.stringify({ error: "No valid data" }), { status: 500 });
     }
 
+    // ใช้ข้อมูลตัวแรกเป็นหลัก (หรือจะรวมทั้งคู่ก็ได้)
     let data = validData[0];
 
     // ======================= SOPHON =======================
