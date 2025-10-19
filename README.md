@@ -18,7 +18,7 @@ After Genshin forced SophonChunks to update and stopped giving zip files for upd
 # How to use
 ```
 Usage:
-    Sophon.Downloader.exe full <gameId> <package> <version> <outputDir> [options]                     Download full game assets
+    |Sophon.Downloader.exe full <gameId> <package> <version> <outputDir> [options]                     Download full game assets
     Sophon.Downloader.exe update <gameId> <package> <updateFrom> <updateTo> <outputDir> [options]     Download update assets
 
 Arguments:
@@ -51,6 +51,19 @@ Options:
 | Honkai: Star Rail | `hkrpg` |
 | Zenless Zone Zero | `nap` |
 | Honkai: Nexus anima | `abc` |
+
+| Downloader |
+| - |
+|Sophon.Downloader.exe full U5hbdsT9W7 game 2.3 output --region=OSREL |
+|Sophon.Downloader.exe full x6znKlJ0xK game 2.3 output --region=CNREL |
+|Sophon.Downloader.exe full 4ziysqXOQ8 game 3.6 output --region=OSREL |
+|Sophon.Downloader.exe full 64kMb5iAWu game 3.6 output --region=CNREL |
+|Sophon.Downloader.exe full gopR6Cufr3 game 6.0 output --region=OSREL |
+|Sophon.Downloader.exe full 1Z8W5NHUQb game 6.0 output --region=CNREL |
+|Sophon.Downloader.exe full 5TIVvvcwtM game 8.4 output --region=OSREL |
+|Sophon.Downloader.exe full osvnlOc0S8 game 8.4 output --region=CNREL |
+|Sophon.Downloader.exe full 4qvmDrMwKS game 0.3.0 output --region=OSBETA |
+|Sophon.Downloader.exe full j7rlly0oYR game 0.3.0 output --region=CNBETA |
 
 ---
 
