@@ -50,6 +50,7 @@ Options:
 | Genshin Impact | `hk4e` |
 | Honkai: Star Rail | `hkrpg` |
 | Zenless Zone Zero | `nap` |
+| Honkai: Nexus anima | `abc` |
 
 ---
 

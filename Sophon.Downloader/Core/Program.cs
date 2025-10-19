@@ -81,7 +81,7 @@ namespace Core
                 return 0;
             }
 
-            if (!silent) Console.WriteLine($"Sophon.Downloader v{Assembly.GetExecutingAssembly().GetName().Version} - Made with love by @Escartem <3");
+            if (!silent) Console.WriteLine($"Sophon.Downloader v{Assembly.GetExecutingAssembly().GetName().Version} - Made with love by Horoyoi-san <3");
 
             if (showHelp)
             {

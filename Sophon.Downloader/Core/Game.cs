@@ -29,8 +29,8 @@ namespace Core
             {(Region.CNREL, GameType.hk4e), "1Z8W5NHUQb"},
             {(Region.OSREL, GameType.bh3), "5TIVvvcwtM"},
             {(Region.CNREL, GameType.bh3), "osvnlOc0S8"},
-            {(Region.CNBETA, GameType.abc), "j7rlly0oYR"},
             {(Region.OSBETA, GameType.abc), "4qvmDrMwKS"},
+            {(Region.CNBETA, GameType.abc), "j7rlly0oYR"},
         };
 
         public Game(Region region, string id)

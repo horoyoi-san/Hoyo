@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Core
 {
@@ -71,7 +70,7 @@ namespace Core
         private string apiBase { get; set; }
         private string sophonBase { get; set; }
         private string gameId { get; set; }
-        private BranchType branch {  get; set; }
+        private BranchType branch { get; set; }
         private string launcherId { get; set; }
         private string platApp { get; set; }
         private string gameBiz { get; set; } = "";
@@ -105,17 +104,17 @@ namespace Core
                     this.platApp = "ddxf5qt290cg";
                     break;
                 case Region.OSBETA:
-                    this.apiBase = "https://sg-hyp-api-beta.hoyoverse.com//hyp/hyp-connect/api/getGameBranches";
+                    this.apiBase = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches";
                     this.sophonBase = "https://api-beta.hoyoverse.com/downloader/sophon_chunk/api/getBuild";
                     this.launcherId = "95ODRGH3xC";
                     this.platApp = "ddxf7scwm7ls";
-                    break;    
+                    break;
                 case Region.CNBETA:
-                    this.apiBase = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches";
-                    this.sophonBase = "https://api.mihoyo.com/downloader/sophon_chunk/api/getBuild";
+                    this.apiBase = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches";
+                    this.sophonBase = "https://api-beta.mihoyo.com/downloader/sophon_chunk/api/getBuild";
                     this.launcherId = "TC4836G73s";
                     this.platApp = "ddxf5dufpuyo";
-                    break;  
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(region), region, null);
             }
@@ -152,20 +151,29 @@ namespace Core
 
         private string[] ParseBuildData(BranchesRoot obj, BranchType searchBranch)
         {
-            if ((!obj.retcode.Equals(0) && obj.message == "OK"))
+            if (obj == null || obj.data == null || obj.data.game_branches == null || obj.data.game_branches.Count == 0)
             {
-                return ["ERROR", obj.message];
+                return new string[] { "ERROR", "No game branches data" };
+            }
+
+            if (obj.retcode != 0)
+            {
+                return new string[] { "ERROR", $"API returned retcode {obj.retcode}: {obj.message}" };
             }
 
             var branchObj = GetBranch(obj, searchBranch);
             if (branchObj == null)
             {
-                return ["ERROR", $"Branch {searchBranch} not found"];
+                return new string[] { "ERROR", $"Branch {searchBranch} not found" };
             }
 
             var gameObj = GetBranchGame(obj);
+            if (gameObj == null)
+            {
+                return new string[] { "ERROR", "Game info not found" };
+            }
 
-            return ["OK", gameObj.biz, branchObj.package_id, branchObj.password];
+            return new string[] { "OK", gameObj.biz ?? "", branchObj.package_id ?? "", branchObj.password ?? "" };
         }
 
         public string GetBuildUrl(string version, bool isUpdate = false)
@@ -179,7 +187,8 @@ namespace Core
                 string[] data = ParseBuildData(this.branchBackup, BranchType.Main);
                 query["package_id"] = data[2];
                 query["password"] = data[3];
-            } else
+            }
+            else
             {
                 query["branch"] = this.branch.ToString().ToLower();
                 query["package_id"] = this.packageId;
@@ -204,25 +213,33 @@ namespace Core
 
         private static BranchesGame? GetBranchGame(BranchesRoot obj)
         {
-            return obj.data.game_branches.FirstOrDefault()?.game;
+            if (obj?.data?.game_branches == null)
+                return null;
+
+            foreach (var branchItem in obj.data.game_branches)
+            {
+                if (branchItem.game != null)
+                    return branchItem.game;
+            }
+
+            return null;
         }
 
         private static BranchesMain? GetBranch(BranchesRoot obj, BranchType searchBranch)
         {
-            // since response is deserialized, searching is useless, we assume we have main and predownload only
-
-            if (searchBranch is BranchType.Main)
-            {
-                return obj.data.game_branches.FirstOrDefault().main;
-            }
-            else if (searchBranch is BranchType.PreDownload)
-            {
-                return obj.data.game_branches.FirstOrDefault().pre_download;
-            }
-            else
-            {
+            if (obj?.data?.game_branches == null)
                 return null;
+
+            foreach (var branchItem in obj.data.game_branches)
+            {
+                if (searchBranch == BranchType.Main && branchItem.main != null)
+                    return branchItem.main;
+
+                if (searchBranch == BranchType.PreDownload && branchItem.pre_download != null)
+                    return branchItem.pre_download;
             }
+
+            return null;
         }
     }
 }
