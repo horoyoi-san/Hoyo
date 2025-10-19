@@ -1,9 +1,13 @@
-name: build
+name: build  # 👈 ชื่อ workflow ต้องเป็นตัวเล็ก เพื่อให้ nightly.link ใช้งานได้
 
 on:
   push:
     branches:
       - 'SophonDownloader'
+    paths-ignore:
+      - '**/README.md'
+      - '**/build.yml'
+      - '**/.gitignore'
   workflow_dispatch:
 
 jobs:
@@ -23,7 +27,7 @@ jobs:
         run: dotnet restore Sophon.Downloader.sln
         working-directory: Sophon.Downloader
 
-      - name: Build
+      - name: Build (Publish)
         run: dotnet publish Sophon.Downloader.sln -c Release -o output
         working-directory: Sophon.Downloader
 
