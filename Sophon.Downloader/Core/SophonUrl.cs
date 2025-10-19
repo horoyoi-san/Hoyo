@@ -105,7 +105,7 @@ namespace Core
                     break;
                 case Region.OSBETA:
                     this.apiBase = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches";
-                    this.sophonBase = "https://api-beta.hoyoverse.com/downloader/sophon_chunk/api/getBuild";
+                    this.sophonBase = "https://sg-beta-api.hoyoverse.com/downloader/sophon_chunk/api/getBuild";
                     this.launcherId = "95ODRGH3xC";
                     this.platApp = "ddxf7scwm7ls";
                     break;
