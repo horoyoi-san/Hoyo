@@ -1,20 +1,18 @@
-name: Build
+name: build
 
 on:
   push:
     branches:
-      - 'master'
-    paths-ignore:
-      - '**/README.md'
-      - '**/build.yml'
-      - '**/.gitignore'
+      - 'SophonDownloader'
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -26,11 +24,11 @@ jobs:
         working-directory: Sophon.Downloader
 
       - name: Build
-        run: dotnet build Sophon.Downloader.sln -c Release
+        run: dotnet publish Sophon.Downloader.sln -c Release -o output
         working-directory: Sophon.Downloader
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Sophon.Downloader
-          path: Sophon.Downloader/Core/bin/Release/*
+          path: Sophon.Downloader/output/
