@@ -1,22 +1,20 @@
-name: build  # 👈 ชื่อ workflow ต้องเป็นตัวเล็ก เพื่อให้ nightly.link ใช้งานได้
+name: Build
 
 on:
   push:
     branches:
-      - 'SophonDownloader'
+      - 'master'
     paths-ignore:
       - '**/README.md'
       - '**/build.yml'
       - '**/.gitignore'
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -27,12 +25,12 @@ jobs:
         run: dotnet restore Sophon.Downloader.sln
         working-directory: Sophon.Downloader
 
-      - name: Build (Publish)
-        run: dotnet publish Sophon.Downloader.sln -c Release -o output
+      - name: Build
+        run: dotnet build Sophon.Downloader.sln -c Release
         working-directory: Sophon.Downloader
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Sophon.Downloader
-          path: Sophon.Downloader/output/
+          path: Sophon.Downloader/Core/bin/Release/*
