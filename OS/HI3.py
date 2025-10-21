@@ -7,9 +7,9 @@ import json
 # Discord Webhooks
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
-    os.environ.get("WEBHOOK2"),
-    os.environ.get("WEBHOOK3"),
-    os.environ.get("WEBHOOK4"),
+  #  os.environ.get("WEBHOOK2"),
+ #   os.environ.get("WEBHOOK3"),
+ #   os.environ.get("WEBHOOK4"),
 ]
 
 # API URL + Game name
@@ -137,6 +137,26 @@ for region, game_id, api_url in api_targets:
             combined_patch = [f"patch-version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
             game_data_list.append((f"{display_name} {patch_version} - Hdiff", combined_patch))
 
+        pre = game_package.get("pre_download")
+        if pre:
+            pre_major = pre.get("major")
+            if pre_major and pre_major.get("version"):
+                pre_version = pre_major["version"]
+                pre_game, pre_audio = extract_game_audio(pre_major)
+                combined_pre = [f"PRE-version: {pre_version}"] + pre_game + ["", "Audio Packages:"] + pre_audio
+                game_data_list.append((f"{display_name} Pre-Download {pre_version}", combined_pre))
+            else:
+                print(f"⚠️ {game_name} - pre_download found but no major")
+        else:
+            print(f"ℹ️ {game_name} - no pre_download section")
+
+        # Pre-Download Patches
+        for patch in pre.get("patches", []):
+            patch_version = patch["version"]
+            game, audio = extract_game_audio(patch)
+            combined_pre_patch = [f"Pre-Patch version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
+            game_data_list.append((f"{display_name} Pre-Download {patch_version} - Hdiff", combined_pre_patch))
+            
         # ส่ง webhook
         for webhook_url in webhook_urls:
             if webhook_url:
