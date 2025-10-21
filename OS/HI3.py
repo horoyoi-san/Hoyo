@@ -127,7 +127,7 @@ for region, game_id, api_url in api_targets:
         # Main Version
         version = game_package["main"]["major"]["version"]
         main_game, main_audio = extract_game_audio(game_package["main"]["major"])
-        combined_main = [f"version: {version}"] + main_game + ["", " Audio Packages:"] + main_audio
+        combined_main = [f"version: {version}"] + main_game 
         game_data_list.append((display_name, combined_main))
 
         # Main Patches
@@ -143,7 +143,7 @@ for region, game_id, api_url in api_targets:
         if pre_major:
             pre_version = pre_major["version"]
             pre_game, pre_audio = extract_game_audio(pre_major)
-            combined_pre = [f"PRE-version: {pre_version}"] + pre_game + ["", " Audio Packages:"] + pre_audio
+            combined_pre = [f"PRE-version: {pre_version}"] + pre_game 
             game_data_list.append((f"{display_name} Pre-Download", combined_pre))
 
         # Pre-Download Patches
