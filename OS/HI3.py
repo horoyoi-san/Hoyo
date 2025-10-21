@@ -7,9 +7,9 @@ import json
 # Discord Webhooks
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
-  #  os.environ.get("WEBHOOK2"),
- #   os.environ.get("WEBHOOK3"),
- #   os.environ.get("WEBHOOK4"),
+    os.environ.get("WEBHOOK2"),
+    os.environ.get("WEBHOOK3"),
+    os.environ.get("WEBHOOK4"),
 ]
 
 # API URL + Game name
