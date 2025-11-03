@@ -65,7 +65,7 @@ def has_changed(api_url, game_name):
         return False
 
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
-    log_dir = os.path.join(os.getcwd(), "OSHoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
 
     hash_file = os.path.join(log_dir, "last_hash.txt")

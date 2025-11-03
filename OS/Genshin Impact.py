@@ -61,7 +61,7 @@ def has_changed(api_url, game_name):
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
     # ใช้ absolute path จาก cwd ของ workflow
-    log_dir = os.path.join(os.getcwd(), "OSHoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
     print(f"📂 Creating log directory: {log_dir}")
 
