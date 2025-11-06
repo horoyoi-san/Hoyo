@@ -1,3 +1,4 @@
+const std = @import("std");
 const root = @import("root");
 const zz = @import("zigzag");
 const util = @import("util.zig");
@@ -9,8 +10,7 @@ const server_public_key = @embedFile("server_public_key.xml");
 pub fn init(allocator: zz.ChunkAllocator) void {
     const base = root.base;
 
-    @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_1))).* =
-        util.ptrToStringAnsi(sdk_public_key);
+    @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_1))).* = util.ptrToStringAnsi(sdk_public_key);
 
     // แก้เป็น UTF-8 และใช้ \x00 แทน \0
     const new_msg = "<color=#ff0400>T</color><color=#ff0400>h</color><color=#ffffff>a</color><color=#000dff>i</color><color=#000dff>l</color><color=#ffffff>a</color><color=#ff0400>n</color><color=#ff0400>d</color> | <color=#ff0000>Horoyoi-san</color>\x00";
@@ -21,9 +21,21 @@ pub fn init(allocator: zz.ChunkAllocator) void {
 
     initializeRsaCryptoServiceProvider();
 
+    _ = root.intercept(allocator, base + offsets.unwrapOffset(.SDK_RSA_ENCRYPT), SdkRsaEncryptHook);
     _ = root.intercept(allocator, base + offsets.unwrapOffset(.NETWORK_STATE_CHANGE), NetworkStateHook);
 }
 
+const SdkRsaEncryptHook = struct {
+    pub var originalFn: *const fn (usize, usize) callconv(.c) usize = undefined;
+
+    pub fn callback(_: usize, a2: usize) callconv(.c) usize {
+        std.log.debug("Replacing SDK RSA key", .{});
+        return @This().originalFn(
+            util.ptrToStringAnsi(sdk_public_key),
+            a2,
+        );
+    }
+};
 
 const NetworkStateHook = struct {
     pub var originalFn: *const fn (usize, usize) callconv(.c) usize = undefined;

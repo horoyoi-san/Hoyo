@@ -51,7 +51,6 @@ fn onAttach() void {
 
     @import("network.zig").init(allocator);
     @import("crypto.zig").init(allocator);
-    @import("hoyopass.zig").init();
     @import("ditherless.zig").init();
 
     std.log.debug("Fully initialized. Time to play Zenless Zone Zero!", .{});
@@ -61,13 +60,13 @@ pub const Offsets = struct {
     MAKE_INITIAL_URL: ?usize = null,
     PTR_TO_STRING_ANSI: ?usize = null,
     SYSTEM_URI_CREATE_THIS: ?usize = null,
-    HOYOPASS_INIT: ?usize = null,
     RSA_CREATE: ?usize = null,
     RSA_FROM_XML_STRING: ?usize = null,
     RSA_STATICS: ?usize = null,
     RSA_STATIC_ID: ?usize = null,
     CRYPTO_STR_1: ?usize = null,
     CRYPTO_STR_2: ?usize = null,
+    SDK_RSA_ENCRYPT: ?usize = null,
     NETWORK_STATE_CHANGE: ?usize = null,
     DITHER_ALPHA_STR_1: ?usize = null,
     DITHER_ALPHA_STR_2: ?usize = null,

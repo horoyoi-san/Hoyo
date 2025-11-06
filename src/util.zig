@@ -1,4 +1,5 @@
 const root = @import("root");
+const std = @import("std");
 
 pub fn readCSharpString(data: usize) []u16 {
     const len = @as(*const u32, @ptrFromInt(data + 16)).*;
@@ -6,11 +7,12 @@ pub fn readCSharpString(data: usize) []u16 {
     return ptr[0..len];
 }
 
-pub fn csharpStringReplace(object: usize, pattern: []const u16, replacement: []const u16) void {
+pub fn csharpStringReplace(object: usize, pattern: []const u16, replacement: []const u16, startIndex: usize) void {
     const str = readCSharpString(object);
 
-    @memcpy(str[0..replacement.len], replacement);
-    @memmove(str[replacement.len .. str.len - (pattern.len - replacement.len)], str[pattern.len..str.len]);
+    @memcpy(str[startIndex .. startIndex + replacement.len], replacement);
+    @memmove(str[startIndex + replacement.len .. str.len - (pattern.len - replacement.len)], str[startIndex + pattern.len .. str.len]);
+    // str[@intCast(str.len - (pattern.len - replacement.len))] = 0;
     @as(*u32, @ptrFromInt(object + 16)).* = @intCast(str.len - (pattern.len - replacement.len));
 }
 

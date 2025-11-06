@@ -5,7 +5,9 @@ const util = @import("util.zig");
 const unicode = std.unicode;
 
 const cn_dispatch_prefix = unicode.utf8ToUtf16LeStringLiteral("https://globaldp-prod-cn01.juequling.com");
+const cn_dispatch_prefix_2 = unicode.utf8ToUtf16LeStringLiteral("https://globaldp-prod-cn02.juequling.com");
 const global_dispatch_prefix = unicode.utf8ToUtf16LeStringLiteral("https://globaldp-prod-os01.zenlesszonezero.com");
+const global_dispatch_prefix_2 = unicode.utf8ToUtf16LeStringLiteral("https://globaldp-prod-os02.zenlesszonezero.com");
 const cn_sdk_domain = unicode.utf8ToUtf16LeStringLiteral("mihoyo.com");
 const global_sdk_domain = unicode.utf8ToUtf16LeStringLiteral("hoyoverse.com");
 
@@ -20,6 +22,7 @@ pub fn init(allocator: zz.ChunkAllocator) void {
 
     _ = root.intercept(allocator, @intFromPtr(getaddrinfo), GetaddrinfoHook);
     _ = root.intercept(allocator, root.base + root.offsets.unwrapOffset(.MAKE_INITIAL_URL), MakeInitialUrlHook);
+    _ = root.intercept(allocator, root.base + root.offsets.unwrapOffset(.SYSTEM_URI_CREATE_THIS), SystemUriCreateThisHook);
 }
 
 const MakeInitialUrlHook = struct {
@@ -29,20 +32,56 @@ const MakeInitialUrlHook = struct {
         const str = util.readCSharpString(a1);
 
         if (std.mem.startsWith(u16, str, cn_dispatch_prefix)) {
-            std.log.debug("dispatch request detected.", .{});
-            util.csharpStringReplace(a1, cn_dispatch_prefix, custom_dispatch_prefix);
+            std.log.debug("CN1 dispatch request detected.", .{});
+            util.csharpStringReplace(a1, cn_dispatch_prefix, custom_dispatch_prefix, 0);
+        } else if (std.mem.startsWith(u16, str, cn_dispatch_prefix_2)) {
+            std.log.debug("CN2 dispatch request detected.", .{});
+            util.csharpStringReplace(a1, cn_dispatch_prefix_2, custom_dispatch_prefix, 0);
         } else if (std.mem.startsWith(u16, str, global_dispatch_prefix)) {
-            std.log.debug("dispatch request detected.", .{});
-            util.csharpStringReplace(a1, global_dispatch_prefix, custom_dispatch_prefix);
+            std.log.debug("GLOBAL1 dispatch request detected.", .{});
+            util.csharpStringReplace(a1, global_dispatch_prefix, custom_dispatch_prefix, 0);
+        } else if (std.mem.startsWith(u16, str, global_dispatch_prefix_2)) {
+            std.log.debug("GLOBAL2 dispatch request detected.", .{});
+            util.csharpStringReplace(a1, global_dispatch_prefix, custom_dispatch_prefix, 0);
         } else if (std.mem.indexOf(u16, str, cn_sdk_domain)) |index| {
             std.log.debug("CN SDK request detected.", .{});
-            util.csharpStringReplace(a1, str[0 .. index + cn_sdk_domain.len], custom_sdk_prefix);
+            util.csharpStringReplace(a1, str[0 .. index + cn_sdk_domain.len], custom_sdk_prefix, 0);
         } else if (std.mem.indexOf(u16, str, global_sdk_domain)) |index| {
             std.log.debug("GLOBAL SDK request detected.", .{});
-            util.csharpStringReplace(a1, str[0 .. index + global_sdk_domain.len], custom_sdk_prefix);
+            util.csharpStringReplace(a1, str[0 .. index + global_sdk_domain.len], custom_sdk_prefix, 0);
         }
 
         return @This().originalFn(a1, a2);
+    }
+};
+
+const SystemUriCreateThisHook = struct {
+    pub var originalFn: *const fn (usize, usize, usize, usize) callconv(.c) usize = undefined;
+
+    pub fn callback(a1: usize, a2: usize, a3: usize, a4: usize) callconv(.c) usize {
+        const str = util.readCSharpString(a2);
+
+        if (std.mem.startsWith(u16, str, cn_dispatch_prefix)) {
+            std.log.debug("CN1 dispatch request detected.", .{});
+            util.csharpStringReplace(a2, cn_dispatch_prefix, custom_dispatch_prefix, 0);
+        } else if (std.mem.startsWith(u16, str, cn_dispatch_prefix_2)) {
+            std.log.debug("CN2 dispatch request detected.", .{});
+            util.csharpStringReplace(a2, cn_dispatch_prefix_2, custom_dispatch_prefix, 0);
+        } else if (std.mem.startsWith(u16, str, global_dispatch_prefix)) {
+            std.log.debug("GLOBAL1 dispatch request detected.", .{});
+            util.csharpStringReplace(a2, global_dispatch_prefix, custom_dispatch_prefix, 0);
+        } else if (std.mem.startsWith(u16, str, global_dispatch_prefix_2)) {
+            std.log.debug("GLOBAL2 dispatch request detected.", .{});
+            util.csharpStringReplace(a2, global_dispatch_prefix, custom_dispatch_prefix, 0);
+        } else if (std.mem.indexOf(u16, str, cn_sdk_domain)) |index| {
+            std.log.debug("CN SDK request detected.", .{});
+            util.csharpStringReplace(a2, str[0 .. index + cn_sdk_domain.len], custom_sdk_prefix, 0);
+        } else if (std.mem.indexOf(u16, str, global_sdk_domain)) |index| {
+            std.log.debug("GLOBAL SDK request detected.", .{});
+            util.csharpStringReplace(a2, str[0 .. index + global_sdk_domain.len], custom_sdk_prefix, 0);
+        }
+
+        return @This().originalFn(a1, a2, a3, a4);
     }
 };
 
