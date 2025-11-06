@@ -7,7 +7,9 @@ use std::{
 use axum::Router;
 use config::SdkConfig;
 use database::DbContext;
-use handlers::{combo_granter, mdk_shield_api, register, risky_api};
+use handlers::{
+    combo_box_api, combo_granter, device_fp, ma_passport, mdk_shield_api, register, risky_api,
+};
 use tokio::{net::TcpListener, time, task};
 use tracing::error;
 
@@ -60,6 +62,10 @@ async fn main() -> ExitCode {
         .merge(register::routes())
         .merge(mdk_shield_api::routes())
         .merge(combo_granter::routes())
+        .merge(combo_box_api::routes())
+        .merge(device_fp::routes())
+        .merge(ma_passport::routes())
+        .fallback(handle_404)
         .with_state(STATE.get().unwrap());
 
     let listener = TcpListener::bind(&CONFIG.http_addr)
@@ -106,4 +112,20 @@ async fn print_color_logo_loop() {
 
 fn init_tracing() {
     tracing_subscriber::fmt().without_time().init();
+}
+
+
+async fn handle_404(request: axum::extract::Request) -> (axum::http::StatusCode, String) {
+    let uri = request.uri().clone();
+    error!("404 - request: {} {}", request.method(), request.uri());
+    error!("404 - headers: {:?}", request.headers());
+    if request.method() == axum::http::Method::POST {
+        use http_body_util::BodyExt;
+        let body = request.collect().await.unwrap().to_bytes();
+        error!("404 - body: {:?}", body);
+    }
+    (
+        axum::http::StatusCode::NOT_FOUND,
+        format!("No route for {}", uri),
+    )
 }

@@ -1,13 +1,16 @@
 use crate::AppStateRef;
 use axum::{
+    Form, Json, Router,
     extract::State,
     response::Html,
     routing::{get, post},
-    Form, Json, Router,
 };
 use serde::{Deserialize, Serialize};
 
+pub mod combo_box_api;
 pub mod combo_granter;
+pub mod device_fp;
+pub mod ma_passport;
 pub mod mdk_shield_api;
 pub mod register;
 pub mod risky_api;
