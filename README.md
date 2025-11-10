@@ -51,6 +51,7 @@ Options:
 | Honkai: Star Rail | `hkrpg` |
 | Zenless Zone Zero | `nap` |
 | Honkai: Nexus anima | `abc` |
+| Petit Planet | `hyg` |
 
 | Game | Downloader |
 | - | - |
@@ -64,6 +65,7 @@ Options:
 | Honkai Impact 3rd |Sophon.Downloader.exe full osvnlOc0S8 game 8.4 output --region=CNREL |
 | Honkai: Nexus anima |Sophon.Downloader.exe full 4qvmDrMwKS game 0.3.0 output --region=OSBETA |
 | Honkai: Nexus anima |Sophon.Downloader.exe full j7rlly0oYR game 0.3.0 output --region=CNBETA |
+| Petit Planet |Sophon.Downloader.exe full 0fijU7nET7 game 0.83.6 output --region=CNBETA |
 
 ---
 

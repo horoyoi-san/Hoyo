@@ -16,7 +16,8 @@ namespace Core
             hkrpg,
             hk4e,
             bh3,
-            abc
+            abc,
+            hyg
         }
 
         static readonly Dictionary<(Region, GameType), string> gameMap = new()
@@ -32,6 +33,7 @@ namespace Core
 
             {(Region.OSBETA, GameType.abc), "4qvmDrMwKS"},
             {(Region.CNBETA, GameType.abc), "j7rlly0oYR"},
+            {(Region.CNBETA, GameType.hyg), "0fijU7nET7"},
         };
 
         public Game(Region region, string id)
