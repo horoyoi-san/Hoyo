@@ -30,7 +30,13 @@
 | CNBETAWin | HNA | https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s |
 | OSBETAWin | HNA | https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC |
 
-
+# API PP
+| Version | Name Game | Download link|
+| :--- | :--- | :--- |
+| CNBETAAndroid | PP |  |
+| OSBETAAndroid | PP |  |
+| CNBETAWin | PP | https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=x&launcher_id=x |
+| OSBETAWin | PP | https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=0fijU7nET7&launcher_id=GcFHm7rte6 |
 
 # API global
 
