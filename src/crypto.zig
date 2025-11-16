@@ -13,7 +13,7 @@ pub fn init(allocator: zz.ChunkAllocator) void {
     @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_1))).* = util.ptrToStringAnsi(sdk_public_key);
 
     // แก้เป็น UTF-8 และใช้ \x00 แทน \0
-    const new_msg = "<color=#ff0400>T</color><color=#ff0400>h</color><color=#ffffff>a</color><color=#000dff>i</color><color=#000dff>l</color><color=#ffffff>a</color><color=#ff0400>n</color><color=#ff0400>d</color> | <color=#ff0000>Horoyoi-san</color>\x00";
+    const new_msg = "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>Zero</color>| <color=#ff0000>Horoyoi-san ඞ</color>\x00";
 
     // ส่ง slice ตรงๆ
     @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_2))).* =
