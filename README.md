@@ -4,4 +4,7 @@
 # หรือหากรันไม่ได้ให้ใช้ Serverism.7z (zig 0.15.1)
 2. แตกไฟล์ `Serverism.7z` แล้วนำโฟลเดอร์ lib และไฟล์ zig.exe นำมาวางใน zzz-patch-zig หลังจากนั้นรันไฟล์ run.bat
 
+# อัพเดท Version
+- แก้ไขที่ไฟล์ offsets
+
 ถ้าต้องการแก้ไข uid ให้แก้ไขในไฟล์ `crypto.zig` 
