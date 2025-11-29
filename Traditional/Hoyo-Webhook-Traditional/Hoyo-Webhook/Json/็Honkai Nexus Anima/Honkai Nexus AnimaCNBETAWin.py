@@ -8,9 +8,9 @@ from datetime import datetime, timezone  # เพิ่ม timezone ที่น
 
 # Webhook
 webhook_urls = {
-    "beta": 'https://discord.com/api/webhooks/1403329828253601822/PyzXAXfK3n0-N3Eqxk12oQRaopJGSkCqph1B_xQT1VHcVnJU4tPNyNTY_GNKp2S1iQv6',
-    "beta-2": 'https://discord.com/api/webhooks/1403331007087640597/NvAF8of51-aYnmjwaymhs-fC1C_hnxs1iYCOiNASGOIyFqS5VEbYiO4K35LSqLfo8qan',
-    "Teat": 'https://discord.com/api/webhooks/1291725154937999444/CeBZotZNDREE7KM7mFx7DJ--Z2TD8tKKmfgZ8gqPUrLs2Bs2rALXjm6HPqv_VKNxGfQJ'
+    "beta": ' ',
+    "beta-2": ' ',
+    "Teat": ' '
 }
 
 # Log setup
