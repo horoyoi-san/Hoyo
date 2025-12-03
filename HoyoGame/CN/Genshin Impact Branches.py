@@ -36,7 +36,7 @@ def save_cache(data):
 
 
 # ================= Embed Sender =================
-def send_embed(title, desc, icon_url, bg_url, color=0x00AAFF):
+def send_embed(title, desc, icon_url, bg_url, color=0xffffff):
     embed = {
         "embeds": [
             {
