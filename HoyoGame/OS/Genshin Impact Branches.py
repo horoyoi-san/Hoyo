@@ -3,8 +3,8 @@ import json
 import os
 from datetime import datetime, timezone
 
-API_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1"
-GAME_INFO_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
+API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8"
+GAME_INFO_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
 
 # ================= Webhook =================
 webhook_urls = [
@@ -14,7 +14,7 @@ webhook_urls = [
     os.environ.get("WEBHOOK4"),
 ]
 
-LOG_DIR = "log/CNHoyo/log/GIBranches"
+LOG_DIR = "log/OSHoyo/log/GIBranches"
 os.makedirs(LOG_DIR, exist_ok=True)
 
 RAW_LOG_PATH = f"{LOG_DIR}/raw_log.jsonl"
@@ -68,7 +68,7 @@ def send_embed(title, desc, icon_url, bg_url, color=0xffffff):
 def check_branch():
     # ----- ดึงข้อมูลเกมเพื่อเอา icon / bg -----
     game_info = requests.get(GAME_INFO_URL).json()
-    game_data = next(g for g in game_info["data"]["games"] if g["id"] == "1Z8W5NHUQb")
+    game_data = next(g for g in game_info["data"]["games"] if g["id"] == "gopR6Cufr3")
 
     display_name = game_data["display"]["name"]
     icon_url = game_data["display"]["icon"]["url"]
