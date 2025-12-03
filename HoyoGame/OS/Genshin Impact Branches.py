@@ -36,7 +36,7 @@ def save_cache(data):
 
 
 # ================= Embed Sender =================
-def send_embed(title, desc, icon_url, bg_url, color=0xffffff):
+def send_embed(title, desc, icon_url, bg_url, game_name, color=0xffffff):
     embed = {
         "embeds": [
             {
@@ -46,7 +46,7 @@ def send_embed(title, desc, icon_url, bg_url, color=0xffffff):
                 "thumbnail": {"url": icon_url},
                 "image": {"url": bg_url},
                 "footer": {
-                    "text": "Genshin Impact | Branch Monitor",
+                    "text": f"{game_name} | Branch Monitor",
                     "icon_url": icon_url
                 },
                 "timestamp": datetime.now(timezone.utc).isoformat()
@@ -129,7 +129,8 @@ def check_branch():
                 f"{display_name} Branch Update",
                 desc,
                 icon_url,
-                bg_url
+                bg_url,
+                game_name
             )
 
 
