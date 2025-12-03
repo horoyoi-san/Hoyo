@@ -119,9 +119,9 @@ def check_branch():
             save_cache(cache)
 
             desc = (
-                f"**Detected `{game_name}` update `{old_ver}` → `{new_ver}`**\n\n"
+                f"**{game_name} update `{old_ver}` → `{new_ver}`**\n\n"
                 f"**Branch:** `{branch}`\n"
-                f"**Package ID:** `{package_id}`\n\n"
+                f"**Package ID:** `{package_id}`\n"
                 f"**Password:** `{password}`"
             )
 
@@ -131,8 +131,6 @@ def check_branch():
                 icon_url,
                 bg_url
             )
-
-    send_embed("Branch Checker", "✅ Checked all APIs and sent updates if changed", icon_url, bg_url)
 
 
 # Run
