@@ -7,7 +7,7 @@ start_dates = {
 }
 
 start_version = 4.0
-end_version = 8.0
+end_version = 10.0
 
 # ปรับระยะห่างวันของแต่ละช่วง (กำหนดได้ตามต้องการ)
 beta_interval_days = 42          # ระยะห่าง Beta-to-Beta
