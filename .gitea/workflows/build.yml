@@ -1,0 +1,32 @@
+name: Build and Release
+run-name: ${{ gitea.actor }} build 🚀
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: azenkain/go-node:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Go dependencies
+        run: go mod download
+
+      - name: Build for Windows
+        run: GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" .
+
+      - name: Grant execute permissions
+        run: |
+          chmod +x ./script/release-uploader
+
+      - name: Upload release
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        run: script/release-uploader -token=$REPO_TOKEN -release-url="https://git.kain.io.vn/api/v1/repos/Firefly-Shelter/Firefly_Go_Proxy/releases" -files="Cyrene-proxy.exe"
+
+
