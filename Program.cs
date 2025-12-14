@@ -26,6 +26,7 @@ namespace Proxy
                 ".bh3.com",
                 ".honkaiimpact3.com",
                 ".mob.com",
+                ".abc.com",
                 ".hyg.com"
             },
             AlwaysIgnoreDomains = {
@@ -34,7 +35,9 @@ namespace Proxy
                 "autopatchcn.juequling.com",
                 "autopatchos.zenlesszonezero.com",
                 "autopatchcn.bhsr.com",
-                "autopatchos.starrails.com"
+                "autopatchos.starrails.com",
+                "autopatchcn-beta.bhyyjl.com",
+                "autopatchos-beta.hknexusanima.com",
             },
             BlockUrls ={
                 "/data_abtest_api/config/experiment/list",
