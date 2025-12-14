@@ -36,8 +36,8 @@ namespace Proxy
                 "autopatchos.zenlesszonezero.com",
                 "autopatchcn.bhsr.com",
                 "autopatchos.starrails.com",
-                "autopatchcn-beta.bhyyjl.com",
-                "autopatchos-beta.hknexusanima.com",
+                "autopatchcn.bhyyjl.com",
+                "autopatchos.hknexusanima.com",
             },
             BlockUrls ={
                 "/data_abtest_api/config/experiment/list",
