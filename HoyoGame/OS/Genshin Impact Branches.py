@@ -14,8 +14,8 @@ webhook_urls = [
 ]
 
 # ===================== API =====================
-BRANCH_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8"
-GAME_INFO_URL = "https://sg-hyp-api.hoyoverse.comm/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
+BRANCH_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=gopR6Cufr3&launcher_id=VYTpXlbWo8"
+GAME_INFO_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
 
 GAME_ID = "gopR6Cufr3"
 GAME_NAME = "GIBranches"

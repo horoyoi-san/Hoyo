@@ -14,7 +14,7 @@ webhook_urls = [
 ]
 
 # ===================== API =====================
-BRANCH_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8"
+BRANCH_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8"
 GAME_INFO_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
 
 GAME_ID = "4ziysqXOQ8"
