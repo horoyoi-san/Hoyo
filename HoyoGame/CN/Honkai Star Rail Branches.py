@@ -96,7 +96,7 @@ def extract_game_branches(data):
     main = branch.get("main")
     if main:
         lines += [
-            "🟢 **Main Branch**",
+            "**Main Branch**",
             f"Tag: `{main['tag']}`",
             f"Package ID: `{main['package_id']}`",
             f"Diff from: `{', '.join(main.get('diff_tags', []))}`",
@@ -107,7 +107,7 @@ def extract_game_branches(data):
     pre = branch.get("pre_download")
     if pre:
         lines += [
-            "🟡 **Pre-Download Branch**",
+            "**Pre-Download Branch**",
             f"Tag: `{pre['tag']}`",
             f"Package ID: `{pre['package_id']}`",
             f"Diff from: `{', '.join(pre.get('diff_tags', []))}`",
@@ -134,7 +134,7 @@ try:
             if webhook:
                 split_and_send(
                     webhook,
-                    "HSR Game Branch Update",
+                    f"{DISPLAY_NAME} Branch Update",
                     lines,
                     ICON_URL,
                     BG_URL,
