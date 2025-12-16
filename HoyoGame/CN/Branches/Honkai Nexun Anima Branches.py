@@ -151,7 +151,7 @@ try:
                     f"{DISPLAY_NAME} Branch Monitor"
                 )
     else:
-        print("[HSR_BRANCH] No change, skipping webhook")
+        print("[HNA_BRANCH] No change, skipping webhook")
 
 except Exception as e:
     print(f"❌ Branch Error: {e}")
