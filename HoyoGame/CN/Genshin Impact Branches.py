@@ -1,12 +1,11 @@
 import requests
-import json
-import os
 from datetime import datetime, timezone
+import os
+import hashlib
+import json
+import time
 
-API_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1"
-GAME_INFO_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
-
-# ================= Webhook =================
+# ===================== Discord Webhooks =====================
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
     os.environ.get("WEBHOOK2"),
@@ -14,126 +13,137 @@ webhook_urls = [
     os.environ.get("WEBHOOK4"),
 ]
 
-LOG_DIR = "log/CNHoyo/log/GIBranches"
-os.makedirs(LOG_DIR, exist_ok=True)
+# ===================== API =====================
+BRANCH_API_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1"
+GAME_INFO_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
 
-RAW_LOG_PATH = f"{LOG_DIR}/raw_log.jsonl"
-CACHE_PATH = f"{LOG_DIR}/version_cache.json"
+GAME_ID = "1Z8W5NHUQb"
+GAME_NAME = "GIBranches"
 
-
-# Load cache
-def load_cache():
-    if not os.path.exists(CACHE_PATH):
-        return {}
-    with open(CACHE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-# Save cache
-def save_cache(data):
-    with open(CACHE_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-
-# ================= Embed Sender =================
-def send_embed(title, desc, icon_url, bg_url, game_name, color=0xffffff):
-    embed = {
-        "embeds": [
-            {
-                "title": title,
-                "description": desc,
-                "color": color,
-                "thumbnail": {"url": icon_url},
-                "image": {"url": bg_url},
-                "footer": {
-                    "text": f"{game_name} | Branch Monitor",
-                    "icon_url": icon_url
-                },
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
-        ]
+# ===================== Discord Embed =====================
+def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer_text):
+    payload = {
+        "embeds": [{
+            "title": title,
+            "description": description,
+            "color": 5814783,
+            "thumbnail": {"url": icon_url} if icon_url else None,
+            "image": {"url": bg_url} if bg_url else None,
+            "footer": {"text": footer_text},
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }]
     }
+    requests.post(webhook_url, json=payload, timeout=10)
 
-    for url in webhook_urls:
-        if url:
-            try:
-                requests.post(url, json=embed)
-            except:
-                pass
+def split_and_send(webhook_url, title, lines, icon_url, bg_url, footer_text):
+    max_length = 1800
+    message = ""
 
+    for line in lines:
+        if len(message) + len(line) + 1 > max_length:
+            send_embed_message(webhook_url, title, message, icon_url, bg_url, footer_text)
+            time.sleep(0.5)
+            message = ""
+        message += line + "\n"
 
-# ==================================================
-# MAIN
-# ==================================================
-def check_branch():
-    # ----- ดึงข้อมูลเกมเพื่อเอา icon / bg -----
-    game_info = requests.get(GAME_INFO_URL).json()
-    game_data = next(g for g in game_info["data"]["games"] if g["id"] == "1Z8W5NHUQb")
+    if message.strip():
+        send_embed_message(webhook_url, title, message, icon_url, bg_url, footer_text)
 
-    display_name = game_data["display"]["name"]
-    icon_url = game_data["display"]["icon"]["url"]
-    bg_url = game_data["display"]["background"]["url"]
+# ===================== Change Detection =====================
+def has_changed(api_url, log_name):
+    try:
+        r = requests.get(api_url, timeout=10)
+        r.raise_for_status()
+        data_text = r.text
+    except Exception as e:
+        print(f"❌ API fetch error: {e}")
+        return False
 
-    # ----- ดึง branch -----
-    resp = requests.get(API_URL, timeout=10)
-    data = resp.json()
+    current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
-    # raw log
-    with open(RAW_LOG_PATH, "a", encoding="utf-8") as f:
-        f.write(json.dumps(data, ensure_ascii=False) + "\n")
+    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", log_name)
+    os.makedirs(log_dir, exist_ok=True)
 
-    game_list = data.get("data", {}).get("game_branches", [])
+    hash_file = os.path.join(log_dir, "last_hash.txt")
+    raw_file = os.path.join(
+        log_dir,
+        f"raw_{datetime.now(timezone.utc).date()}.jsonl"
+    )
 
-    if not game_list:
-        send_embed("❌ Error", "API returned no game_branches", icon_url, bg_url)
-        return
+    with open(raw_file, "a", encoding="utf-8") as f:
+        f.write(json.dumps({
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "data": json.loads(data_text)
+        }, ensure_ascii=False) + "\n")
 
-    cache = load_cache()
+    last_hash = ""
+    if os.path.exists(hash_file):
+        with open(hash_file, "r") as f:
+            last_hash = f.read().strip()
 
-    # ----- Loop main branch -----
-    for item in game_list:
-        game = item.get("game", {})
-        main = item.get("main")
+    if current_hash != last_hash:
+        with open(hash_file, "w") as f:
+            f.write(current_hash)
+        return True
 
-        game_name = game.get("biz", "unknown")
-        game_id = game.get("id")
+    return False
 
-        if not main:
-            send_embed("❌ Error", "No 'main' branch found in API", icon_url, bg_url)
-            continue
+# ===================== Extract Branch Data =====================
+def extract_game_branches(data):
+    lines = []
+    branch = data["data"]["game_branches"][0]
 
-        # Extract data
-        new_ver = main.get("tag", "")
-        diff_tags = main.get("diff_tags", [])
-        old_ver = diff_tags[0] if diff_tags else "unknown"
+    main = branch.get("main")
+    if main:
+        lines += [
+            "🟢 **Main Branch**",
+            f"Tag: `{main['tag']}`",
+            f"Package ID: `{main['package_id']}`",
+            f"Diff from: `{', '.join(main.get('diff_tags', []))}`",
+            f"Password: `{main['password']}`",
+            ""
+        ]
 
-        package_id = main.get("package_id", "")
-        password = main.get("password", "")
-        branch = main.get("branch", "main")
+    pre = branch.get("pre_download")
+    if pre:
+        lines += [
+            "🟡 **Pre-Download Branch**",
+            f"Tag: `{pre['tag']}`",
+            f"Package ID: `{pre['package_id']}`",
+            f"Diff from: `{', '.join(pre.get('diff_tags', []))}`",
+            f"Password: `{pre['password']}`"
+        ]
 
-        last_ver = cache.get(game_id)
+    return lines
 
-        # หากเวอร์ชันเปลี่ยน = ส่ง webhook
-        if last_ver != new_ver:
-            cache[game_id] = new_ver
-            save_cache(cache)
+# ===================== Game Display Info =====================
+resp = requests.get(GAME_INFO_URL, timeout=10).json()
+game_data = next(g for g in resp["data"]["games"] if g["id"] == GAME_ID)
 
-            desc = (
-                f"**{game_name} update `{old_ver}` → `{new_ver}`**\n\n"
-                f"**Branch:** `{branch}`\n"
-                f"**Package ID:** `{package_id}`\n"
-                f"**Password:** `{password}`"
-            )
+DISPLAY_NAME = game_data["display"]["name"]
+ICON_URL = game_data["display"]["icon"]["url"]
+BG_URL = game_data["display"]["background"]["url"]
 
-            send_embed(
-                f"{display_name} Branch Update",
-                desc,
-                icon_url,
-                bg_url,
-                game_name
-            )
+# ===================== Branch Update =====================
+try:
+    if has_changed(BRANCH_API_URL, f"{GAME_NAME}_BRANCH"):
+        data = requests.get(BRANCH_API_URL, timeout=10).json()
+        lines = extract_game_branches(data)
 
+        for webhook in webhook_urls:
+            if webhook:
+                split_and_send(
+                    webhook,
+                    "HSR Game Branch Update",
+                    lines,
+                    ICON_URL,
+                    BG_URL,
+                    f"{DISPLAY_NAME} Branch Monitor"
+                )
+    else:
+        print("[HSR_BRANCH] No change, skipping webhook")
 
-# Run
-if __name__ == "__main__":
-    check_branch()
+except Exception as e:
+    print(f"❌ Branch Error: {e}")
+
+print("✅ Finished checking Branch API")
