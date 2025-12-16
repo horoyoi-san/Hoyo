@@ -26,7 +26,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer
         "embeds": [{
             "title": title,
             "description": description,
-            "color": 5814783,
+            "color": 16777215,
             "thumbnail": {"url": icon_url} if icon_url else None,
             "image": {"url": bg_url} if bg_url else None,
             "footer": {"text": footer_text},

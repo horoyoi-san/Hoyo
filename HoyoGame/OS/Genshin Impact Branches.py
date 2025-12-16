@@ -26,7 +26,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer
         "embeds": [{
             "title": title,
             "description": description,
-            "color": 5814783,
+            "color": 16777215,
             "thumbnail": {"url": icon_url} if icon_url else None,
             "image": {"url": bg_url} if bg_url else None,
             "footer": {"text": footer_text},
@@ -61,7 +61,7 @@ def has_changed(api_url, log_name):
 
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
-    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", log_name)
     os.makedirs(log_dir, exist_ok=True)
 
     hash_file = os.path.join(log_dir, "last_hash.txt")

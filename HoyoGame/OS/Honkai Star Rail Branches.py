@@ -61,7 +61,7 @@ def has_changed(api_url, log_name):
 
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
-    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", log_name)
     os.makedirs(log_dir, exist_ok=True)
 
     hash_file = os.path.join(log_dir, "last_hash.txt")
