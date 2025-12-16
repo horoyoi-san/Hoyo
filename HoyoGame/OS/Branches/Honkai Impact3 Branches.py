@@ -62,7 +62,7 @@ def split_and_send(webhook_url, title, lines, icon_url, bg_url, footer_text):
 
 # ===================== Change Detection =====================
 def has_changed(api_url, log_name):
-    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "log", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", log_name)
     os.makedirs(log_dir, exist_ok=True)
 
     raw_file = os.path.join(
@@ -148,6 +148,15 @@ GAME_DISPLAY_MAP = {
     }
     for g in resp["data"]["games"]
 }
+
+DISPLAY_GAME_ID = "5TIVvvcwtM"  # ใช้ GLB เป็น display กลาง
+
+display = GAME_DISPLAY_MAP.get(DISPLAY_GAME_ID)
+if not display:
+    raise RuntimeError(
+        f"❌ DISPLAY_GAME_ID not found in GAME_INFO: {DISPLAY_GAME_ID}"
+    )
+
 
 # ===================== Branch Update =====================
 for game in GAMES:
