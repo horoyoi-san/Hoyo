@@ -109,7 +109,6 @@ def extract_game_branches(data):
             "**Main Branch**",
             f"Tag: `{main['tag']}`",
             f"Package ID: `{main['package_id']}`",
-            f"Diff from: `{', '.join(main.get('diff_tags', []))}`",
             f"Password: `{main['password']}`",
             ""
         ]
@@ -120,7 +119,6 @@ def extract_game_branches(data):
             "**Pre-Download Branch**",
             f"Tag: `{pre['tag']}`",
             f"Package ID: `{pre['package_id']}`",
-            f"Diff from: `{', '.join(pre.get('diff_tags', []))}`",
             f"Password: `{pre['password']}`"
         ]
 
