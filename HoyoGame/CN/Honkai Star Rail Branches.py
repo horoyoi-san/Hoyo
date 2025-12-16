@@ -51,30 +51,39 @@ def split_and_send(webhook_url, title, lines, icon_url, bg_url, footer_text):
 
 # ===================== Change Detection =====================
 def has_changed(api_url, log_name):
-    try:
-        r = requests.get(api_url, timeout=10)
-        r.raise_for_status()
-        data_text = r.text
-    except Exception as e:
-        print(f"❌ API fetch error: {e}")
-        return False
-
-    current_hash = hashlib.md5(data_text.encode()).hexdigest()
-
     log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", log_name)
     os.makedirs(log_dir, exist_ok=True)
 
-    hash_file = os.path.join(log_dir, "last_hash.txt")
     raw_file = os.path.join(
         log_dir,
         f"raw_{datetime.now(timezone.utc).date()}.jsonl"
     )
+    hash_file = os.path.join(log_dir, "last_hash.txt")
 
+    try:
+        r = requests.get(api_url, timeout=10)
+        r.raise_for_status()
+        data_text = r.text
+        data_json = json.loads(data_text)
+    except Exception as e:
+        # ❗ error ก็ยัง log
+        with open(raw_file, "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "error": str(e)
+            }, ensure_ascii=False) + "\n")
+
+        print("❌ API error but log written")
+        return False
+
+    # log ปกติ
     with open(raw_file, "a", encoding="utf-8") as f:
         f.write(json.dumps({
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "data": json.loads(data_text)
+            "data": data_json
         }, ensure_ascii=False) + "\n")
+
+    current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
     last_hash = ""
     if os.path.exists(hash_file):
@@ -87,6 +96,7 @@ def has_changed(api_url, log_name):
         return True
 
     return False
+
 
 # ===================== Extract Branch Data =====================
 def extract_game_branches(data):
@@ -126,7 +136,7 @@ BG_URL = game_data["display"]["background"]["url"]
 
 # ===================== Branch Update =====================
 try:
-    if has_changed(BRANCH_API_URL, f"{GAME_NAME}_BRANCH"):
+    if has_changed(BRANCH_API_URL, f"{GAME_NAME}"):
         data = requests.get(BRANCH_API_URL, timeout=10).json()
         lines = extract_game_branches(data)
 
