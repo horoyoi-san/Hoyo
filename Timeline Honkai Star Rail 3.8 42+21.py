@@ -38,8 +38,8 @@ while version <= end_version:
     if round(version * 10) % 10 != 9:
         key = f"{version:.1f}"
 
-      #  current_beta = current_drip + timedelta(days=drip_interval_days)
-      #  current_release = current_beta + timedelta(days=release_after_beta_days)
+     #   current_beta = current_drip + timedelta(days=drip_interval_days)
+     #   current_release = current_beta + timedelta(days=release_after_beta_days)
 
         version_dates[key] = {
             "Drip": current_drip,
@@ -49,6 +49,8 @@ while version <= end_version:
 
         # ขยับรอบถัดไป
         current_drip += timedelta(days=drip_interval_days)
+        current_beta += timedelta(days=beta_interval_days)
+        current_release += timedelta(days=release_after_beta_days)
 
     version = round(version + 0.1, 1)
 
