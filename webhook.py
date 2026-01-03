@@ -4,7 +4,7 @@ import re
 from collections import defaultdict
 
 WEBHOOK_URL = "YOUR_DISCORD"
-DATA_URL = "https://gist.githubusercontent.com/horoyoi-san/6a5748b270d86741ddde697a34dc8beb/raw/4d7a4fd15f3f3d22b09bb790fb3644fa4c97e3a2/Timeline.json"
+DATA_URL = "YOUR_DATA_SOURCE_URL JSON OR TXT"
 
 PURPLE = 0x9B59B6
 GIF_URL = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGVuNWQwZG91a200dnFkenp3eWg2NXR5N255OWF6Zmx5c24xNGk3dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/v0sHKtV91El8zcWYe2/giphy.gif"
