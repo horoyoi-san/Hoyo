@@ -53,6 +53,17 @@ fn onAttach() void {
     @import("crypto.zig").init(allocator);
     @import("ditherless.zig").init();
 
+    // temporary fix for returning players event breaking UI
+    if (offsets.REFRESH_GACHA_TIME_ICON) |offset| {
+        const proc_addr = base + offset;
+
+        var protection: windows.DWORD = windows.PAGE_EXECUTE_READWRITE;
+        windows.VirtualProtect(@ptrFromInt(proc_addr), 1, protection, &protection) catch unreachable;
+        @as(*u8, @ptrFromInt(proc_addr)).* = 0xC3;
+
+        windows.VirtualProtect(@ptrFromInt(proc_addr), 1, protection, &protection) catch unreachable;
+    }
+
     std.log.debug("Fully initialized. Time to play Zenless Zone Zero!", .{});
 }
 
@@ -70,6 +81,7 @@ pub const Offsets = struct {
     NETWORK_STATE_CHANGE: ?usize = null,
     DITHER_ALPHA_STR_1: ?usize = null,
     DITHER_ALPHA_STR_2: ?usize = null,
+    REFRESH_GACHA_TIME_ICON: ?usize = null,
 
     pub fn unwrapOffset(comptime self: @This(), comptime name: anytype) usize {
         return @field(self, @tagName(name)) orelse @compileError("Missing offset for " ++ @tagName(name));
