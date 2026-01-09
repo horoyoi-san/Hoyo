@@ -13,7 +13,7 @@ namespace Proxy
         private static bool s_clearupd = false;
         private static readonly ProxyConfig Config = new ProxyConfig
         {
-            DestinationHost = "localhost",
+            DestinationHost = "127.0.0.1",
             DestinationPort = 21000,
             RedirectDomains = {
                 ".hoyoverse.com",
