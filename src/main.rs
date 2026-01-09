@@ -4,7 +4,7 @@ use std::process::ExitCode;
 use std::sync::OnceLock;
 use std::{io, task};
 
-use tokio::io::{AsyncReadExt, AsyncWriteExt, AsyncWrite};
+use tokio::io::{AsyncReadExt, AsyncWrite, AsyncWriteExt};
 use tokio::net::tcp::OwnedReadHalf;
 use tokio::net::{TcpStream, UdpSocket};
 use tokio::sync::mpsc;
@@ -83,7 +83,9 @@ async fn main() -> ExitCode {
                             },
                         );
 
-                        let _ = server.send_to(&fabricate_kcp_handshake_response(conv_id, token), from).await;
+                        let _ = server
+                            .send_to(&fabricate_kcp_handshake_response(conv_id, token), from)
+                            .await;
                     }
                     _ => {} // could be a disconnect but fuck that for now
                 }
@@ -117,6 +119,17 @@ fn fabricate_kcp_handshake_response(conv_id: u32, token: u32) -> [u8; 20] {
     buf
 }
 
+fn fabricate_kcp_disconnect_response(conv_id: u32, token: u32) -> [u8; 20] {
+    let mut buf = [0u8; 20];
+    (&mut buf[0..4]).copy_from_slice(&0x194_u32.to_be_bytes());
+    (&mut buf[4..8]).copy_from_slice(&conv_id.to_be_bytes());
+    (&mut buf[8..12]).copy_from_slice(&token.to_be_bytes());
+    (&mut buf[12..16]).copy_from_slice(&0_u32.to_be_bytes());
+    (&mut buf[16..20]).copy_from_slice(&0x19419494_u32.to_be_bytes());
+
+    buf
+}
+
 async fn session_task(mut udp_rx: mpsc::Receiver<Box<[u8]>>, mut kcpidor: Kcp<SlaveSink<'static>>) {
     let start_ts = unix_timestamp_ms();
 
@@ -140,6 +153,9 @@ async fn session_task(mut udp_rx: mpsc::Receiver<Box<[u8]>>, mut kcpidor: Kcp<Sl
                 kcpidor.async_flush().await.unwrap();
             } else {
                 eprintln!("TCP server closed the connection");
+                kcpidor.output.write(
+                    &fabricate_kcp_disconnect_response(kcpidor.conv(), kcpidor.token())
+                ).await.unwrap();
                 return;
             },
             maybe_data = udp_rx.recv() => if let Some(data) = maybe_data {
@@ -159,10 +175,7 @@ async fn session_task(mut udp_rx: mpsc::Receiver<Box<[u8]>>, mut kcpidor: Kcp<Sl
     }
 }
 
-async fn tcp_connection_task(
-    mut rh: OwnedReadHalf,
-    tx: mpsc::Sender<Box<[u8]>>,
-) -> io::Result<()> {
+async fn tcp_connection_task(mut rh: OwnedReadHalf, tx: mpsc::Sender<Box<[u8]>>) -> io::Result<()> {
     loop {
         let mut metadata = [0u8; 12];
         rh.read_exact(&mut metadata).await?;

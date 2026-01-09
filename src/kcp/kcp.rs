@@ -133,7 +133,7 @@ impl KcpSegment {
 }
 
 #[derive(Default)]
-struct KcpOutput<O>(O);
+pub struct KcpOutput<O>(O);
 
 impl<O: Write> Write for KcpOutput<O> {
     fn write(&mut self, data: &[u8]) -> io::Result<usize> {
@@ -265,7 +265,7 @@ pub struct Kcp<Output> {
     /// Get conv from the next input call
     input_conv: bool,
 
-    output: KcpOutput<Output>,
+    pub output: KcpOutput<Output>,
 }
 
 impl<Output> Debug for Kcp<Output> {
