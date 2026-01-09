@@ -14,7 +14,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const dll = b.addLibrary(.{
-        .name = "tentacle",
+        .name = "zzzpatch",
         .linkage = .dynamic,
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/root.zig"),

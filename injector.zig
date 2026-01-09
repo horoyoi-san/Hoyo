@@ -7,7 +7,7 @@ const game_executables = &.{
     "ZenlessZoneZero.exe",
 };
 
-const dll_path = "tentacle.dll" ++ .{0};
+const dll_path = "zzzpatch.dll" ++ .{0};
 const kernel32_name = unicode.utf8ToUtf16LeStringLiteral("kernel32.dll");
 
 pub extern "kernel32" fn ResumeThread(*anyopaque) callconv(.winapi) void;
