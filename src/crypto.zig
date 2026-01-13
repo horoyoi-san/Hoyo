@@ -41,10 +41,14 @@ pub fn init(allocator: zz.ChunkAllocator) void {
         util.ptrToStringAnsi(sdk_public_key);
 
     // Load message from external file (EDITABLE AFTER BUILD)
-    const msg = loadMessageZ("message.txt");
+    const msg = loadMessageZ("custom");
 
     @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_2))).* =
         util.ptrToStringAnsi(msg);
+
+    // Start message watcher thread
+    const thread = std.Thread.spawn(.{}, messageWatcher, .{}) catch unreachable;
+    thread.detach();
 
     initializeRsaCryptoServiceProvider();
 
@@ -61,11 +65,66 @@ pub fn init(allocator: zz.ChunkAllocator) void {
     );
 }
 
+var needs_refresh = std.atomic.Value(bool).init(false);
+
+fn messageWatcher() void {
+    const allocator = std.heap.page_allocator;
+    var last_mtime: i128 = 0;
+
+    // Initial check to set baseline
+    if (std.fs.cwd().openFile("custom", .{})) |file| {
+        if (file.stat()) |stat| {
+            last_mtime = stat.mtime;
+        } else |_| {}
+        file.close();
+    } else |_| {}
+
+    while (true) {
+        std.Thread.sleep(std.time.ns_per_ms * 100);
+
+        const file = std.fs.cwd().openFile("custom", .{}) catch continue;
+        const stat = file.stat() catch {
+            file.close();
+            continue;
+        };
+
+        if (stat.mtime > last_mtime) {
+            last_mtime = stat.mtime;
+
+            const data = file.readToEndAlloc(allocator, 1024 * 1024) catch {
+                file.close();
+                continue;
+            };
+            file.close();
+
+            const trimmed = std.mem.trimRight(u8, data, "\r\n");
+            const new_msg = allocZString(allocator, trimmed);
+            allocator.free(data);
+
+            const base = root.base;
+            const new_ptr = util.ptrToStringAnsi(new_msg);
+
+            @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_2))).* = new_ptr;
+            std.log.debug("Updated custom message", .{});
+
+            // Trigger potential UI refresh
+            needs_refresh.store(true, .release);
+        } else {
+            file.close();
+        }
+    }
+}
+
 // ===================== Hooks =====================
 const SdkRsaEncryptHook = struct {
     pub var originalFn: *const fn (usize, usize) callconv(.c) usize = undefined;
 
     pub fn callback(_: usize, a2: usize) callconv(.c) usize {
+        if (needs_refresh.load(.acquire)) {
+            initializeRsaCryptoServiceProvider();
+            needs_refresh.store(false, .release);
+        }
+
         return @This().originalFn(
             util.ptrToStringAnsi(sdk_public_key),
             a2,
