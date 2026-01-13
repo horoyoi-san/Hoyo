@@ -3,7 +3,7 @@
 
 # หรือหากรันไม่ได้ให้ใช้ Serverism.7z (zig 0.15.1)
 2. แตกไฟล์ `Serverism.7z` แล้วนำโฟลเดอร์ lib และไฟล์ zig.exe นำมาวางใน zzz-patch-zig หลังจากนั้นรันไฟล์ run.bat
-3. หลัง build เสร็จให้สร้างไฟล์ `uid_custom` หรือนำไฟล์จากที่นี้ [uid_custom](https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Custom-ZZZ-Zig-Patch/src/uid_custom) เพื่อแก้ไขข้อความ uid
+3. หลัง build เสร็จให้สร้างไฟล์ `uid_custom` หรือนำไฟล์จากที่นี้ [uid_custom](src/uid_custom) เพื่อแก้ไขข้อความ uid
 
 # อัพเดท Version
 - แก้ไขที่ไฟล์ offsets
