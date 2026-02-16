@@ -15,12 +15,12 @@
 # API HSR
 | Version | Name Game | Download link|
 | :--- | :--- | :--- |
-| CNBETAAndroid | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
-| OSBETAAndroid | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
-| CNBETAWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin3.5.55&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
-| OSBETAWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
-| CNCECREATIONWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNCECREATIONWin3.5.55&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
-| OSCECREATIONWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSCECREATIONWin3.5.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| CNBETAAndroid | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAAndroid4.0.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| OSBETAAndroid | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAAndroid4.0.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| CNBETAWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNBETAWin4.0.52&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| OSBETAWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSBETAWin4.0.52&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| CNCECREATIONWin | HSR | https://globaldp-beta-cn01.bhsr.com/query_dispatch?version=CNCECREATIONWin4.0.55&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
+| OSCECREATIONWin | HSR | https://globaldp-beta-os01.starrails.com/query_dispatch?version=OSCECREATIONWin4.0.51&language_type=1&platform_type=3&channel_id=1&sub_channel_id=1&is_new_format=1 |
 
 # API HNA
 | Version | Name Game | Download link|
