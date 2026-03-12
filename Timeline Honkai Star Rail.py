@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 # กำหนดวันเริ่มต้น Beta และ Release (ตัวอย่าง)
 start_dates = {
-    "Beta": datetime(2025, 3, 24, 10, 0),     # 28 ส.ค. 2024 10:00
-    "Release": datetime(2025, 4, 6, 10, 0)   # 9 ต.ค. 2024 10:00
+    "Beta": datetime(2026, 3, 24, 10, 0),     # 24 ม.ค 2026 10:00
+    "Release": datetime(2026, 4, 6, 10, 0)   # 9 เม.ย 2026 10:00
 }
 
 start_version = 4.2
@@ -62,4 +62,5 @@ for ver, dates in version_dates.items():
 
 markdown_text = "\n".join(markdown_lines)
 print(markdown_text)
+
 
