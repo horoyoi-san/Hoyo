@@ -1,1 +1,1 @@
-start dotnet build -c Release
+dotnet build -c Release

@@ -33,7 +33,7 @@ namespace Core
 
             {(Region.OSBETA, GameType.abc), "4qvmDrMwKS"},
             {(Region.CNBETA, GameType.abc), "j7rlly0oYR"},
-            {(Region.CNBETA, GameType.hyg), "0fijU7nET7"},
+            {(Region.CNBETA, GameType.hyg), "679gqJWz4L"},
         };
 
         public Game(Region region, string id)
