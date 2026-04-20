@@ -112,7 +112,7 @@ namespace Core
                 case Region.CNBETA:
                     this.apiBase = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches";
                     this.sophonBase = "https://api-beta.mihoyo.com/downloader/sophon_chunk/api/getBuild";
-                    this.launcherId = "GcFHm7rte6";
+                    this.launcherId = "kwykHprMm9";
                     this.platApp = "ddxf5dufpuyo";
                     break;
                 default:
