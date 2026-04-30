@@ -41,7 +41,7 @@ pub fn init(allocator: zz.ChunkAllocator) void {
         util.ptrToStringAnsi(sdk_public_key);
 
     // Load message from external file (EDITABLE AFTER BUILD)
-    const msg = loadMessageZ("uid_custom");
+    const msg = loadMessageZ("uid_custom.txt");
 
     @as(*usize, @ptrFromInt(base + offsets.unwrapOffset(.CRYPTO_STR_2))).* =
         util.ptrToStringAnsi(msg);
