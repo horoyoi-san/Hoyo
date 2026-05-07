@@ -23,10 +23,10 @@ def safe_asset(obj):
     return ""
 
 # ===================== API =====================
-BRANCH_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=xxxx&launcher_id=VYTpXlbWo8"
-GAME_INFO_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
+BRANCH_API_URL = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC"
+GAME_INFO_URL = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=95ODRGH3xC"
 
-GAME_ID = "xxxx"
+GAME_ID = "4qvmDrMwKS"
 GAME_NAME = "HNABranches"
 
 # ===================== Discord Embed =====================
