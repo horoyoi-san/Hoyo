@@ -138,7 +138,14 @@ def extract_game_branches(data):
 
 # ===================== Game Display Info =====================
 resp = requests.get(GAME_INFO_URL, timeout=10).json()
-game_data = next(g for g in resp["data"]["games"] if g["id"] == GAME_ID)
+game_data = next(
+    (g for g in resp["data"]["games"] if g["id"] == GAME_ID),
+    None
+)
+
+if not game_data:
+    print(f"❌ Game ID not found: {GAME_ID}")
+    exit(0)
 
 DISPLAY_NAME = game_data["display"]["name"]
 icon_url = safe_asset(game_data["display"].get("icon"))

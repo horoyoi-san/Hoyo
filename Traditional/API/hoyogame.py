@@ -142,7 +142,14 @@ for game_name, game_id in api_targets:
         # ดึงข้อมูล display
         game_info_url = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
         resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == game_id)
+        game_data = next(
+    (g for g in resp["data"]["games"] if g["id"] == GAME_ID),
+    None
+)
+
+if not game_data:
+    print(f"❌ Game ID not found: {GAME_ID}")
+    exit(0)
         display_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]
