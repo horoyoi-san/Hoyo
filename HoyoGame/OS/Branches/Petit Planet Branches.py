@@ -157,8 +157,8 @@ try:
                     webhook,
                     f"{DISPLAY_NAME} Branch Update",
                     lines,
-                    ICON_URL,
-                    BG_URL,
+                    icon_url,
+                    bg_url,
                     f"{DISPLAY_NAME} Branch Monitor"
                 )
     else:
