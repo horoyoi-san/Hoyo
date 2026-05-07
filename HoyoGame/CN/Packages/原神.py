@@ -4,7 +4,11 @@ import os
 import hashlib
 import json
 
-# Discord Webhooks
+# ================= Branding =================
+BOT_NAME = "原神 PROD"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/hk4e_cn.png"
+
+# Discord Webhooks จาก GitHub Secrets
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
     os.environ.get("WEBHOOK2"),
@@ -13,16 +17,19 @@ webhook_urls = [
 ]
 
 # API URL + Game name
-api_targets = [
-    ("rel", "osvnlOc0S8", "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=osvnlOc0S8&launcher_id=jGHBHlcOq1"),
+api_urls = [
+    "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=1Z8W5NHUQb&launcher_id=jGHBHlcOq1",
 ]
 
+# ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
     embed = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,
-            "color": 16776960,
+            "color": 16777215,
             "thumbnail": {"url": icon_url},
             "image": {"url": bg_url},
             "footer": {
@@ -32,10 +39,7 @@ def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_n
             "timestamp": datetime.now(timezone.utc).isoformat()
         }]
     }
-    try:
-        requests.post(webhook_url, json=embed, timeout=10)
-    except Exception as e:
-        print(f"❌ Error sending webhook to {webhook_url}: {e}")
+    requests.post(webhook_url, json=embed)
 
 def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
     max_length = 1900
@@ -57,25 +61,29 @@ def has_changed(api_url, game_name):
     try:
         data_text = requests.get(api_url, timeout=10).text
     except Exception as e:
-        print(f"❌ Error fetching API {game_name}: {e}")
+        print(f"❌ Error fetching API: {e}")
         return False
 
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
+
+    # ใช้ absolute path จาก cwd ของ workflow
     log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "log", game_name)
     os.makedirs(log_dir, exist_ok=True)
+    print(f"📂 Creating log directory: {log_dir}")
 
     hash_file = os.path.join(log_dir, "last_hash.txt")
     raw_file = os.path.join(log_dir, "raw_log.jsonl")
 
-    # บันทึก JSON ดิบทุกครั้ง
+    # บันทึก JSON ดิบทุกครั้ง (append)
     try:
         with open(raw_file, "a", encoding="utf-8") as f:
             f.write(json.dumps({
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "data": json.loads(data_text)
             }, ensure_ascii=False) + "\n")
+        print(f"✅ Wrote raw log: {raw_file}")
     except Exception as e:
-        print(f"❌ Error writing log file for {game_name}: {e}")
+        print(f"❌ Error writing log file: {e}")
 
     last_hash = ""
     if os.path.exists(hash_file):
@@ -88,42 +96,32 @@ def has_changed(api_url, game_name):
         return True
     return False
 
-# --- Main loop แก้ให้ try/except ครอบทุกตัว ไม่หยุด loop ---
-for region, game_id, api_url in api_targets:
-    game_name = region
-    print(f"🔹 Starting fetch for {game_name}")
+
+# Main loop สำหรับทุก API
+for api_url in api_urls:
+    game_name = "GI"
     try:
-        changed = has_changed(api_url, game_name)
-        print(f"[{game_name}] has_changed={changed}")
-        if not changed:
+        if not has_changed(api_url, game_name):
             print(f"[{game_name}] No change, skipping webhook")
             continue
 
-        try:
-            data = requests.get(api_url, timeout=10).json()
-            game_package = data["data"]["game_packages"][0]
-        except Exception as e:
-            print(f"❌ Error parsing API response for {game_name}: {e}")
-            continue  # ต่อไป API ตัวถัดไป
+        data = requests.get(api_url, timeout=10).json()
+        game_package = data["data"]["game_packages"][0]
 
         # ดึงข้อมูล display
-        try:
-            game_info_url = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
-            resp = requests.get(game_info_url, timeout=10).json()
-            game_data = next(g for g in resp["data"]["games"] if g["id"] == "osvnlOc0S8")
-            display_name = game_data["display"]["name"]
-            icon_url = game_data["display"]["icon"]["url"]
-            bg_url = game_data["display"]["background"]["url"]
-        except Exception as e:
-            print(f"❌ Error fetching display info for {game_name}: {e}")
-            display_name, icon_url, bg_url = game_name, "", ""
+        game_info_url = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
+        resp = requests.get(game_info_url).json()
+        game_data = next(g for g in resp["data"]["games"] if g["id"] == "1Z8W5NHUQb")
+        display_name = game_data["display"]["name"]
+        icon_url = game_data["display"]["icon"]["url"]
+        bg_url = game_data["display"]["background"]["url"]
 
         game_data_list = []
 
         # Main Version
         version = game_package["main"]["major"]["version"]
         main_game, main_audio = extract_game_audio(game_package["main"]["major"])
-        combined_main = [f"version: {version}"] + main_game 
+        combined_main = [f"version: {version}"] + main_game + ["", " Audio Packages:"] + main_audio
         game_data_list.append((display_name, combined_main))
 
         # Main Patches
@@ -139,7 +137,7 @@ for region, game_id, api_url in api_targets:
         if pre_major:
             pre_version = pre_major["version"]
             pre_game, pre_audio = extract_game_audio(pre_major)
-            combined_pre = [f"PRE-version: {pre_version}"] + pre_game
+            combined_pre = [f"PRE-version: {pre_version}"] + pre_game + ["", " Audio Packages:"] + pre_audio
             game_data_list.append((f"{display_name} Pre-Download", combined_pre))
 
         # Pre-Download Patches
@@ -148,20 +146,17 @@ for region, game_id, api_url in api_targets:
             game, audio = extract_game_audio(patch)
             combined_pre_patch = [f"Pre-Patch version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
             game_data_list.append((f"{display_name} Pre-Download {patch_version} - Hdiff", combined_pre_patch))
-            
+
         # ส่ง webhook
         for webhook_url in webhook_urls:
             if webhook_url:
                 for title, lines in game_data_list:
                     split_and_send(webhook_url, title, lines, icon_url, bg_url, display_name)
 
-        print(f"✅ Finished fetch for {game_name}")
-
     except Exception as e:
-        print(f"❌ Unexpected exception for {game_name}: {e}")
-        # ส่ง error webhook แต่ไม่หยุด loop
+        print(f"❌ Exception: {e}")
         for webhook_url in webhook_urls:
             if webhook_url:
-                split_and_send(webhook_url, "❌ Error", [f"[{game_name}] unexpected error: {e}"], "", "", "")
+                split_and_send(webhook_url, "❌ Error", [f"[{game_name}] error: {e}"], "", "", "")
 
 print("✅ Checked all APIs and sent updates if changed")

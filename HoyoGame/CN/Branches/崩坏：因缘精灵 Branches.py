@@ -5,6 +5,10 @@ import hashlib
 import json
 import time
 
+# ================= Branding =================
+BOT_NAME = "崩坏：因缘精灵 Branches"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn.png"
+
 # ===================== Discord Webhooks =====================
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
@@ -14,15 +18,17 @@ webhook_urls = [
 ]
 
 # ===================== API =====================
-BRANCH_API_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=xxxx&launcher_id=jGHBHlcOq1"
-GAME_INFO_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
+BRANCH_API_URL = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s"
+GAME_INFO_URL = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=TC4836G73s"
 
-GAME_ID = "xxxx"
+GAME_ID = "j7rlly0oYR"
 GAME_NAME = "HNABranches"
 
 # ===================== Discord Embed =====================
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer_text):
     payload = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,

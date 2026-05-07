@@ -4,6 +4,10 @@ import os
 import hashlib
 import json
 
+# ================= Branding =================
+BOT_NAME = "星布谷地 PROD"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/hyg_cn.png"
+
 # Discord Webhooks จาก GitHub Secrets
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
@@ -14,12 +18,14 @@ webhook_urls = [
 
 # API URL
 api_urls = [
-    "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=&launcher_id=jGHBHlcOq1",
+    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=Dg5IUTLSzd&launcher_id=kwykHprMm9",
 ]
 
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
     embed = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,
@@ -102,9 +108,9 @@ for api_url in api_urls:
         game_package = data["data"]["game_packages"][0]
 
         # ดึงข้อมูล display
-        game_info_url = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGames?&launcher_id=jGHBHlcOq1"
+        game_info_url = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGames?&launcher_id=kwykHprMm9"
         resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == "XXXXX")
+        game_data = next(g for g in resp["data"]["games"] if g["id"] == "Dg5IUTLSzd")
         display_name = game_data["display"]["name"]
         icon_url = game_data["display"]["icon"]["url"]
         bg_url = game_data["display"]["background"]["url"]

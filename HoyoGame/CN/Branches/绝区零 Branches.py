@@ -5,6 +5,10 @@ import hashlib
 import json
 import time
 
+# ================= Branding =================
+BOT_NAME = "绝区零 Branches"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/nap_cn.png"
+
 # ===================== Discord Webhooks =====================
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
@@ -14,19 +18,21 @@ webhook_urls = [
 ]
 
 # ===================== API =====================
-BRANCH_API_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=XXX&launcher_id=jGHBHlcOq1"
+BRANCH_API_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=x6znKlJ0xK&launcher_id=jGHBHlcOq1"
 GAME_INFO_URL = "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1"
 
-GAME_ID = "XXX"
-GAME_NAME = "PPBranches"
+GAME_ID = "x6znKlJ0xK"
+GAME_NAME = "ZZZBranches"
 
 # ===================== Discord Embed =====================
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer_text):
     payload = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,
-            "color": 16776960,
+            "color": 16753920,
             "thumbnail": {"url": icon_url} if icon_url else None,
             "image": {"url": bg_url} if bg_url else None,
             "footer": {"text": footer_text},
@@ -151,7 +157,7 @@ try:
                     f"{DISPLAY_NAME} Branch Monitor"
                 )
     else:
-        print("[PP_BRANCH] No change, skipping webhook")
+        print("[ZZZ_BRANCH] No change, skipping webhook")
 
 except Exception as e:
     print(f"❌ Branch Error: {e}")

@@ -4,6 +4,10 @@ import os
 import hashlib
 import json
 
+# ================= Branding =================
+BOT_NAME = "崩坏：因缘精灵 PROD"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn.png"
+
 # Discord Webhooks จาก GitHub Secrets
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
@@ -14,12 +18,14 @@ webhook_urls = [
 
 # API URL
 api_urls = [
-    "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=&launcher_id=jGHBHlcOq1",
+    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s",
 ]
 
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
     embed = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,

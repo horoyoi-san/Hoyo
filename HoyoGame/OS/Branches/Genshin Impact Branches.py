@@ -4,6 +4,9 @@ import os
 import hashlib
 import json
 import time
+# ================= Branding =================
+BOT_NAME = "Genshin Impact Branches"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/hk4e_global.png"
 
 # ===================== Discord Webhooks =====================
 webhook_urls = [
@@ -23,6 +26,8 @@ GAME_NAME = "GIBranches"
 # ===================== Discord Embed =====================
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer_text):
     payload = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,

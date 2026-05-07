@@ -68,6 +68,8 @@ GAME_COLORS = {
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name, game_id):
     color = GAME_COLORS.get(game_id, 0xFFFFFF)  # ถ้าไม่มีใช้สีขาว
     embed = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,

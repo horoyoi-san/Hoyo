@@ -5,6 +5,10 @@ import hashlib
 import json
 import time
 
+# ================= Branding =================
+BOT_NAME = "Honkai Star Rail Branches"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/hkrpg_global.png"
+
 # ===================== Discord Webhooks =====================
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
@@ -23,6 +27,8 @@ GAME_NAME = "HSRBranches"
 # ===================== Discord Embed =====================
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer_text):
     payload = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,

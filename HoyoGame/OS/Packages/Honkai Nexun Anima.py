@@ -4,6 +4,10 @@ import os
 import hashlib
 import json
 
+# ================= Branding =================
+BOT_NAME = "Honkai Nexus Anima PROD"
+BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+
 # Discord Webhooks จาก GitHub Secrets
 webhook_urls = [
     os.environ.get("WEBHOOK1"),
@@ -14,12 +18,14 @@ webhook_urls = [
 
 # API URL
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4qvmDrMwKS&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC",
 ]
 
 # ฟังก์ชันส่ง embed message
 def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
     embed = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,

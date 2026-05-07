@@ -26,6 +26,8 @@ bg_url = game_data["display"]["background"]["url"]
 
 def send_embed_message(webhook_url, title, description):
     embed = {
+        "username": BOT_NAME,
+        "avatar_url": BOT_ICON,
         "embeds": [{
             "title": title,
             "description": description,
