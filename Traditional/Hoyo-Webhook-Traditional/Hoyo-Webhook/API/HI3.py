@@ -25,8 +25,8 @@ resp = requests.get(game_info_url).json()
 game_data = next(g for g in resp["data"]["games"] if g["id"] == "5TIVvvcwtM")
 
 game_name = game_data["display"]["name"]
-icon_url = game_data["display"]["icon"]["url"]
-bg_url = game_data["display"]["background"]["url"]
+icon_url = safe_asset(game_data["display"].get("icon"))
+bg_url = safe_asset(game_data["display"].get("background"))
 
 def send_embed_message(webhook_url, title, description):
     embed = {

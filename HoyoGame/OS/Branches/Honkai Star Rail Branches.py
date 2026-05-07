@@ -17,6 +17,11 @@ webhook_urls = [
     os.environ.get("WEBHOOK4"),
 ]
 
+def safe_asset(obj):
+    if isinstance(obj, dict):
+        return obj.get("url", "")
+    return ""
+
 # ===================== API =====================
 BRANCH_API_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4ziysqXOQ8&launcher_id=VYTpXlbWo8"
 GAME_INFO_URL = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=VYTpXlbWo8"
@@ -137,8 +142,8 @@ resp = requests.get(GAME_INFO_URL, timeout=10).json()
 game_data = next(g for g in resp["data"]["games"] if g["id"] == GAME_ID)
 
 DISPLAY_NAME = game_data["display"]["name"]
-ICON_URL = game_data["display"]["icon"]["url"]
-BG_URL = game_data["display"]["background"]["url"]
+icon_url = safe_asset(game_data["display"].get("icon"))
+bg_url = safe_asset(game_data["display"].get("background"))
 
 # ===================== Branch Update =====================
 try:
