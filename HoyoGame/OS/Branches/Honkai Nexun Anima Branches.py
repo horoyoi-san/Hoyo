@@ -1,177 +1,538 @@
+import discord
+import asyncio
+
 import requests
 from datetime import datetime, timezone
+
 import os
 import hashlib
 import json
-import time
 
-# ================= Branding =================
-BOT_NAME = "Honkai Nexus Anima Branches"
-BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+# =========================================================
+# Discord
+# =========================================================
 
-# ===================== Discord Webhooks =====================
-webhook_urls = [
-    os.environ.get("WEBHOOK1"),
-    os.environ.get("WEBHOOK2"),
-    os.environ.get("WEBHOOK3"),
-    os.environ.get("WEBHOOK4"),
+TOKEN = os.environ.get("DISCORD_TOKEN")
+intents = discord.Intents.default()
+
+bot = discord.Client(
+    intents=intents
+)
+
+# =========================================================
+# Branding
+# =========================================================
+
+BOT_NAME = "Honkai Nexun Anima Branches"
+
+BOT_ICON = (
+    "https://raw.githubusercontent.com/"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+)
+
+# =========================================================
+# Channels
+# =========================================================
+
+CHANNELS = [
+    1292097230924283965, # Test
+    1291728736739131402, # 1
+    1267379122338791435, # 2
 ]
 
-def safe_asset(obj):
-    if isinstance(obj, dict):
-        return obj.get("url", "")
-    return ""
+# =========================================================
+# API
+# =========================================================
 
-# ===================== API =====================
-BRANCH_API_URL = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC"
-GAME_INFO_URL = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGames?launcher_id=95ODRGH3xC"
+BRANCH_API_URL = (
+    "https://sg-hyp-api-beta.hoyoverse.com/"
+    "hyp/hyp-connect/api/getGameBranches?"
+    "game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC"
+)
+
+GAME_INFO_URL = (
+    "https://sg-hyp-api-beta.hoyoverse.com/"
+    "hyp/hyp-connect/api/getGames?"
+    "launcher_id=95ODRGH3xC"
+)
 
 GAME_ID = "4qvmDrMwKS"
+
 GAME_NAME = "HNABranches"
 
-# ===================== Discord Embed =====================
-def send_embed_message(webhook_url, title, description, icon_url, bg_url, footer_text):
-    payload = {
-        "username": BOT_NAME,
-        "avatar_url": BOT_ICON,
-        "embeds": [{
-            "title": title,
-            "description": description,
-            "color": 56281,
-            "thumbnail": {"url": icon_url} if icon_url else None,
-            "image": {"url": bg_url} if bg_url else None,
-            "footer": {"text": footer_text},
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }]
-    }
-    requests.post(webhook_url, json=payload, timeout=10)
+# =========================================================
+# Utils
+# =========================================================
 
-def split_and_send(webhook_url, title, lines, icon_url, bg_url, footer_text):
-    max_length = 1800
+def safe_asset(obj):
+
+    if isinstance(obj, dict):
+
+        return obj.get(
+            "url",
+            ""
+        )
+
+    return ""
+
+# =========================================================
+# Discord Send
+# =========================================================
+
+async def send_embed_message(
+    channel_id,
+    title,
+    description,
+    icon_url,
+    bg_url,
+    footer_text
+):
+
+    try:
+
+        channel = await bot.fetch_channel(
+            channel_id
+        )
+
+    except Exception as e:
+
+        print(
+            f"❌ Channel fetch error: {channel_id}"
+        )
+
+        print(e)
+
+        return
+
+    embed = discord.Embed(
+        title=title,
+        description=description,
+        color=0x00CEFF,
+        timestamp=datetime.now(
+            timezone.utc
+        )
+    )
+
+    # =====================================================
+    # Thumbnail
+    # =====================================================
+
+    if icon_url:
+
+        embed.set_thumbnail(
+            url=icon_url
+        )
+
+    # =====================================================
+    # Background
+    # =====================================================
+
+    if bg_url:
+
+        embed.set_image(
+            url=bg_url
+        )
+
+    # =====================================================
+    # Footer
+    # =====================================================
+
+    embed.set_footer(
+        text=footer_text,
+        icon_url=icon_url
+    )
+
+    # =====================================================
+    # Send
+    # =====================================================
+
+    try:
+
+        await channel.send(
+            embed=embed
+        )
+
+        print(
+            f"✅ Sent -> {channel_id}"
+        )
+
+        # anti rate limit
+        await asyncio.sleep(1)
+
+    except Exception as e:
+
+        print(
+            f"❌ Send error -> {channel_id}"
+        )
+
+        print(e)
+
+# =========================================================
+# Split Long Message
+# =========================================================
+
+async def split_and_send(
+    channel_id,
+    title,
+    lines,
+    icon_url,
+    bg_url,
+    footer_text
+):
+
+    max_length = 4000
+
     message = ""
 
     for line in lines:
+
         if len(message) + len(line) + 1 > max_length:
-            send_embed_message(webhook_url, title, message, icon_url, bg_url, footer_text)
-            time.sleep(0.5)
+
+            await send_embed_message(
+                channel_id,
+                title,
+                message,
+                icon_url,
+                bg_url,
+                footer_text
+            )
+
             message = ""
+
         message += line + "\n"
 
     if message.strip():
-        send_embed_message(webhook_url, title, message, icon_url, bg_url, footer_text)
 
-# ===================== Change Detection =====================
-def has_changed(api_url, log_name):
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", log_name)
-    os.makedirs(log_dir, exist_ok=True)
+        await send_embed_message(
+            channel_id,
+            title,
+            message,
+            icon_url,
+            bg_url,
+            footer_text
+        )
+
+# =========================================================
+# Change Detection
+# =========================================================
+
+def has_changed(
+    api_url,
+    log_name
+):
+
+    log_dir = os.path.join(
+        os.getcwd(),
+        "log",
+        "OSHoyo",
+        "log",
+        log_name
+    )
+
+    os.makedirs(
+        log_dir,
+        exist_ok=True
+    )
 
     raw_file = os.path.join(
         log_dir,
         f"raw_{datetime.now(timezone.utc).date()}.jsonl"
     )
-    hash_file = os.path.join(log_dir, "last_hash.txt")
+
+    hash_file = os.path.join(
+        log_dir,
+        "last_hash.txt"
+    )
 
     try:
-        r = requests.get(api_url, timeout=10)
+
+        r = requests.get(
+            api_url,
+            timeout=10
+        )
+
         r.raise_for_status()
+
         data_text = r.text
-        data_json = json.loads(data_text)
+
+        data_json = json.loads(
+            data_text
+        )
+
     except Exception as e:
-        # ❗ error ก็ยัง log
-        with open(raw_file, "a", encoding="utf-8") as f:
+
+        # =================================================
+        # Error Log
+        # =================================================
+
+        with open(
+            raw_file,
+            "a",
+            encoding="utf-8"
+        ) as f:
+
             f.write(json.dumps({
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "error": str(e)
+
+                "timestamp":
+                datetime.now(
+                    timezone.utc
+                ).isoformat(),
+
+                "error":
+                str(e)
+
             }, ensure_ascii=False) + "\n")
 
-        print("❌ API error but log written")
+        print(
+            "❌ API error but log written"
+        )
+
         return False
 
-    # log ปกติ
-    with open(raw_file, "a", encoding="utf-8") as f:
+    # =====================================================
+    # Normal Log
+    # =====================================================
+
+    with open(
+        raw_file,
+        "a",
+        encoding="utf-8"
+    ) as f:
+
         f.write(json.dumps({
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "data": data_json
+
+            "timestamp":
+            datetime.now(
+                timezone.utc
+            ).isoformat(),
+
+            "data":
+            data_json
+
         }, ensure_ascii=False) + "\n")
 
-    current_hash = hashlib.md5(data_text.encode()).hexdigest()
+    current_hash = hashlib.md5(
+        data_text.encode()
+    ).hexdigest()
 
     last_hash = ""
+
     if os.path.exists(hash_file):
-        with open(hash_file, "r") as f:
+
+        with open(
+            hash_file,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
             last_hash = f.read().strip()
 
+    # =====================================================
+    # Changed
+    # =====================================================
+
     if current_hash != last_hash:
-        with open(hash_file, "w") as f:
+
+        with open(
+            hash_file,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
             f.write(current_hash)
+
         return True
 
     return False
 
+# =========================================================
+# Extract Branch Data
+# =========================================================
 
-# ===================== Extract Branch Data =====================
 def extract_game_branches(data):
+
     lines = []
+
     branch = data["data"]["game_branches"][0]
 
+    # =====================================================
+    # Main
+    # =====================================================
+
     main = branch.get("main")
+
     if main:
+
         lines += [
-            "**Main Branch**",
+
+            "## Main Branch",
+
             f"Tag: `{main['tag']}`",
+
             f"Package ID: `{main['package_id']}`",
+
             f"Diff from: `{', '.join(main.get('diff_tags', []))}`",
+
             f"Password: `{main['password']}`",
+
             ""
         ]
 
-    pre = branch.get("pre_download")
+    # =====================================================
+    # Pre Download
+    # =====================================================
+
+    pre = branch.get(
+        "pre_download"
+    )
+
     if pre:
+
         lines += [
-            "**Pre-Download Branch**",
+
+            "## Pre-Download Branch",
+
             f"Tag: `{pre['tag']}`",
+
             f"Package ID: `{pre['package_id']}`",
+
             f"Diff from: `{', '.join(pre.get('diff_tags', []))}`",
+
             f"Password: `{pre['password']}`"
         ]
 
     return lines
 
-# ===================== Game Display Info =====================
-resp = requests.get(GAME_INFO_URL, timeout=10).json()
-game_data = next(
-    (g for g in resp["data"]["games"] if g["id"] == GAME_ID),
-    None
-)
+# =========================================================
+# Main
+# =========================================================
 
-if not game_data:
-    print(f"❌ Game ID not found: {GAME_ID}")
-    exit(0)
+async def main():
 
-DISPLAY_NAME = game_data["display"]["name"]
-icon_url = safe_asset(game_data["display"].get("icon"))
-bg_url = safe_asset(game_data["display"].get("background"))
+    # =====================================================
+    # Login
+    # =====================================================
 
-# ===================== Branch Update =====================
-try:
-    if has_changed(BRANCH_API_URL, f"{GAME_NAME}"):
-        data = requests.get(BRANCH_API_URL, timeout=10).json()
-        lines = extract_game_branches(data)
+    await bot.login(TOKEN)
 
-        for webhook in webhook_urls:
-            if webhook:
-                split_and_send(
-                    webhook,
+    print(
+        f"✅ Logged in as {bot.user}"
+    )
+
+    # =====================================================
+    # Game Info
+    # =====================================================
+
+    resp = requests.get(
+        GAME_INFO_URL,
+        timeout=10
+    ).json()
+
+    game_data = next(
+
+        (
+            g
+
+            for g in resp["data"]["games"]
+
+            if g["id"] == GAME_ID
+        ),
+
+        None
+    )
+
+    if not game_data:
+
+        print(
+            f"❌ Game ID not found: {GAME_ID}"
+        )
+
+        await bot.close()
+
+        return
+
+    DISPLAY_NAME = (
+        game_data["display"]["name"]
+    )
+
+    icon_url = safe_asset(
+        game_data["display"].get(
+            "icon"
+        )
+    )
+
+    bg_url = safe_asset(
+        game_data["display"].get(
+            "background"
+        )
+    )
+
+    # =====================================================
+    # Branch Update
+    # =====================================================
+
+    try:
+
+        if has_changed(
+            BRANCH_API_URL,
+            GAME_NAME
+        ):
+
+            data = requests.get(
+                BRANCH_API_URL,
+                timeout=10
+            ).json()
+
+            lines = extract_game_branches(
+                data
+            )
+
+            for channel_id in CHANNELS:
+
+                await split_and_send(
+                    channel_id,
                     f"{DISPLAY_NAME} Branch Update",
                     lines,
                     icon_url,
                     bg_url,
                     f"{DISPLAY_NAME} Branch Monitor"
                 )
-    else:
-        print("[HNA_BRANCH] No change, skipping webhook")
 
-except Exception as e:
-    print(f"❌ Branch Error: {e}")
+        else:
 
-print("✅ Finished checking Branch API")
+            print(
+                "[GI_BRANCH] No change"
+            )
+
+    except Exception as e:
+
+        print(
+            f"❌ Branch Error: {e}"
+        )
+
+        for channel_id in CHANNELS:
+
+            await split_and_send(
+                channel_id,
+                "❌ Error",
+                [f"[{GAME_NAME}] error: {e}"],
+                "",
+                "",
+                ""
+            )
+
+    # =====================================================
+    # Close
+    # =====================================================
+
+    await bot.close()
+
+    print(
+        "✅ Finished checking Branch API"
+    )
+
+# =========================================================
+# Run
+# =========================================================
+
+asyncio.run(main())

@@ -1,162 +1,584 @@
+import discord
+import asyncio
+
 import requests
 from datetime import datetime, timezone
+
 import os
 import hashlib
 import json
 
-# ================= Branding =================
-BOT_NAME = "Honkai Nexus Anima PROD"
-BOT_ICON = "https://raw.githubusercontent.com/horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+# =========================================================
+# Discord
+# =========================================================
 
-# Discord Webhooks จาก GitHub Secrets
-webhook_urls = [
-    os.environ.get("WEBHOOK1"),
-    os.environ.get("WEBHOOK2"),
-    os.environ.get("WEBHOOK3"),
-    os.environ.get("WEBHOOK4"),
+TOKEN = os.environ.get("DISCORD_TOKEN")
+intents = discord.Intents.default()
+
+bot = discord.Client(
+    intents=intents
+)
+
+# =========================================================
+# Branding
+# =========================================================
+
+BOT_NAME = "Honkai Nexus Anima PROD"
+
+BOT_ICON = (
+    "https://raw.githubusercontent.com/"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+)
+
+# =========================================================
+# Channels
+# =========================================================
+
+CHANNELS = [
+    1292097230924283965, #Test
+    1291728736739131402, #1
+    1267379122338791435, #2
 ]
 
-# API URL
+# =========================================================
+# API
+# =========================================================
+
 api_urls = [
     "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC",
 ]
 
-# ฟังก์ชันส่ง embed message
-def send_embed_message(webhook_url, title, description, icon_url, bg_url, game_name):
-    embed = {
-        "username": BOT_NAME,
-        "avatar_url": BOT_ICON,
-        "embeds": [{
-            "title": title,
-            "description": description,
-            "color": 56281,
-            "thumbnail": {"url": icon_url},
-            "image": {"url": bg_url},
-            "footer": {
-                "text": f"{game_name} Update Monitor",
-                "icon_url": icon_url
-            },
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }]
-    }
-    requests.post(webhook_url, json=embed)
+# =========================================================
+# Discord Embed Send
+# =========================================================
 
-def split_and_send(webhook_url, title, lines, icon_url, bg_url, game_name):
-    max_length = 1900
-    message = f"**{title}**\n"
+async def send_embed_message(
+    channel_id,
+    title,
+    description,
+    icon_url,
+    bg_url,
+    game_name
+):
+
+    try:
+
+        channel = await bot.fetch_channel(
+            channel_id
+        )
+
+    except Exception as e:
+
+        print(
+            f"❌ Channel fetch error: {channel_id}"
+        )
+
+        print(e)
+
+        return
+
+    embed = discord.Embed(
+        title=title,
+        description=description,
+        color=0x00CEFF,
+        timestamp=datetime.now(
+            timezone.utc
+        )
+    )
+
+    embed.set_thumbnail(
+        url=icon_url
+    )
+
+    embed.set_image(
+        url=bg_url
+    )
+
+    embed.set_footer(
+        text=f"{game_name} Update Monitor",
+        icon_url=icon_url
+    )
+
+    try:
+
+        await channel.send(
+            embed=embed
+        )
+
+        print(
+            f"✅ Sent -> {channel_id}"
+        )
+
+        # anti rate limit
+        await asyncio.sleep(1)
+
+    except Exception as e:
+
+        print(
+            f"❌ Send error -> {channel_id}"
+        )
+
+        print(e)
+
+# =========================================================
+# Split Long Message
+# =========================================================
+
+async def split_and_send(
+    channel_id,
+    title,
+    lines,
+    icon_url,
+    bg_url,
+    game_name
+):
+
+    max_length = 4000
+
+    message = ""
+
     for line in lines:
+
         if len(message) + len(line) + 1 > max_length:
-            send_embed_message(webhook_url, title, message, icon_url, bg_url, game_name)
-            message = f"**{title}**\n"
+
+            await send_embed_message(
+                channel_id,
+                title,
+                message,
+                icon_url,
+                bg_url,
+                game_name
+            )
+
+            message = ""
+
         message += line + "\n"
+
     if message.strip():
-        send_embed_message(webhook_url, title, message, icon_url, bg_url, game_name)
+
+        await send_embed_message(
+            channel_id,
+            title,
+            message,
+            icon_url,
+            bg_url,
+            game_name
+        )
+
+# =========================================================
+# Extract Packages
+# =========================================================
 
 def extract_game_audio(pkg):
-    game_links = [p["url"] for p in pkg.get("game_pkgs", [])]
-    audio_links = [f"{a['language']}: {a['url']}" for a in pkg.get("audio_pkgs", [])]
+
+    game_links = [
+
+        p["url"]
+
+        for p in pkg.get(
+            "game_pkgs",
+            []
+        )
+    ]
+
+    audio_links = [
+
+        f"{a['language']}: {a['url']}"
+
+        for a in pkg.get(
+            "audio_pkgs",
+            []
+        )
+    ]
+
     return game_links, audio_links
 
-def has_changed(api_url, game_name):
+# =========================================================
+# Hash Check
+# =========================================================
+
+def has_changed(
+    api_url,
+    game_name
+):
+
     try:
-        data_text = requests.get(api_url, timeout=10).text
+
+        data_text = requests.get(
+            api_url,
+            timeout=10
+        ).text
+
     except Exception as e:
-        print(f"❌ Error fetching API: {e}")
+
+        print(
+            f"❌ Error fetching API: {e}"
+        )
+
         return False
 
-    current_hash = hashlib.md5(data_text.encode()).hexdigest()
+    current_hash = hashlib.md5(
+        data_text.encode()
+    ).hexdigest()
 
-    # ใช้ absolute path จาก cwd ของ workflow
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", game_name)
-    os.makedirs(log_dir, exist_ok=True)
-    print(f"📂 Creating log directory: {log_dir}")
+    # =====================================================
+    # Log Path
+    # =====================================================
 
-    hash_file = os.path.join(log_dir, "last_hash.txt")
-    raw_file = os.path.join(log_dir, "raw_log.jsonl")
+    log_dir = os.path.join(
+        os.getcwd(),
+        "log",
+        "OSHoyo",
+        "log",
+        game_name
+    )
 
-    # บันทึก JSON ดิบทุกครั้ง (append)
+    os.makedirs(
+        log_dir,
+        exist_ok=True
+    )
+
+    print(
+        f"📂 Creating log directory: {log_dir}"
+    )
+
+    hash_file = os.path.join(
+        log_dir,
+        "last_hash.txt"
+    )
+
+    raw_file = os.path.join(
+        log_dir,
+        "raw_log.jsonl"
+    )
+
+    # =====================================================
+    # Raw Log
+    # =====================================================
+
     try:
-        with open(raw_file, "a", encoding="utf-8") as f:
+
+        with open(
+            raw_file,
+            "a",
+            encoding="utf-8"
+        ) as f:
+
             f.write(json.dumps({
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "data": json.loads(data_text)
+
+                "timestamp":
+                datetime.now(
+                    timezone.utc
+                ).isoformat(),
+
+                "data":
+                json.loads(data_text)
+
             }, ensure_ascii=False) + "\n")
-        print(f"✅ Wrote raw log: {raw_file}")
+
+        print(
+            f"✅ Wrote raw log: {raw_file}"
+        )
+
     except Exception as e:
-        print(f"❌ Error writing log file: {e}")
+
+        print(
+            f"❌ Error writing log file: {e}"
+        )
+
+    # =====================================================
+    # Last Hash
+    # =====================================================
 
     last_hash = ""
+
     if os.path.exists(hash_file):
-        with open(hash_file, "r") as f:
+
+        with open(
+            hash_file,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
             last_hash = f.read().strip()
 
+    # =====================================================
+    # Changed
+    # =====================================================
+
     if current_hash != last_hash:
-        with open(hash_file, "w") as f:
+
+        with open(
+            hash_file,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
             f.write(current_hash)
+
         return True
+
     return False
 
-# Main loop สำหรับทุก API
-for api_url in api_urls:
-    game_name = "HNA"
-    try:
-        if not has_changed(api_url, game_name):
-            print(f"[{game_name}] No change, skipping webhook")
-            continue
+# =========================================================
+# Main
+# =========================================================
 
-        data = requests.get(api_url, timeout=10).json()
-        game_package = data["data"]["game_packages"][0]
+async def main():
 
-        # ดึงข้อมูล display
-        game_info_url = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGames?&launcher_id=95ODRGH3xC"
-        resp = requests.get(game_info_url).json()
-        game_data = next(g for g in resp["data"]["games"] if g["id"] == "4qvmDrMwKS")
-        display_name = game_data["display"]["name"]
-        icon_url = game_data["display"]["icon"]["url"]
-        bg_url = game_data["display"]["background"]["url"]
+    await bot.login(TOKEN)
 
-        game_data_list = []
+    print(
+        f"✅ Logged in as {bot.user}"
+    )
 
-        # Main Version
-        version = game_package["main"]["major"]["version"]
-        main_game, main_audio = extract_game_audio(game_package["main"]["major"])
-        combined_main = [f"version: {version}"] + main_game + ["", " Audio Packages:"] + main_audio
-        game_data_list.append((display_name, combined_main))
+    # =====================================================
+    # Loop APIs
+    # =====================================================
 
-        # Main Patches
-        for patch in game_package["main"].get("patches", []):
-            patch_version = patch["version"]
-            game, audio = extract_game_audio(patch)
-            combined_patch = [f"patch-version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
-            game_data_list.append((f"{display_name} {patch_version} - Hdiff", combined_patch))
+    for api_url in api_urls:
 
-        # Pre-Download Major
-        pre = game_package.get("pre_download", {})
-        pre_major = pre.get("major")
-        if pre_major:
-            pre_version = pre_major["version"]
-            pre_game, pre_audio = extract_game_audio(pre_major)
-            combined_pre = [f"PRE-version: {pre_version}"] + pre_game + ["", " Audio Packages:"] + pre_audio
-            game_data_list.append((f"{display_name} Pre-Download", combined_pre))
+        game_name = "HNA"
 
-        # Pre-Download Patches
-        for patch in pre.get("patches", []):
-            patch_version = patch["version"]
-            game, audio = extract_game_audio(patch)
-            combined_pre_patch = [f"Pre-Patch version: {patch_version}"] + game + ["", " Audio Packages:"] + audio
-            game_data_list.append((f"{display_name} Pre-Download {patch_version} - Hdiff", combined_pre_patch))
+        try:
 
-        # ส่ง webhook
-        for webhook_url in webhook_urls:
-            if webhook_url:
+            if not has_changed(
+                api_url,
+                game_name
+            ):
+
+                print(
+                    f"[{game_name}] No change"
+                )
+
+                continue
+
+            # =================================================
+            # Package API
+            # =================================================
+
+            data = requests.get(
+                api_url,
+                timeout=10
+            ).json()
+
+            game_package = (
+                data["data"]["game_packages"][0]
+            )
+
+            # =================================================
+            # Game Display API
+            # =================================================
+
+            game_info_url = (
+                "https://sg-hyp-api-beta.hoyoverse.com/"
+                "hyp/hyp-connect/api/getGames?"
+                "launcher_id=VYTpXlbWo8"
+            )
+
+            resp = requests.get(
+                game_info_url,
+                timeout=10
+            ).json()
+
+            game_data = next(
+
+                g
+
+                for g in resp["data"]["games"]
+
+                if g["id"] == "4qvmDrMwKS"
+            )
+
+            display_name = (
+                game_data["display"]["name"]
+            )
+
+            icon_url = (
+                game_data["display"]["icon"]["url"]
+            )
+
+            bg_url = (
+                game_data["display"]["background"]["url"]
+            )
+
+            game_data_list = []
+
+            # =================================================
+            # Main Version
+            # =================================================
+
+            version = (
+                game_package["main"]["major"]["version"]
+            )
+
+            main_game, main_audio = extract_game_audio(
+                game_package["main"]["major"]
+            )
+
+            combined_main = [
+
+                f"version: {version}"
+
+            ] + main_game + [
+
+                "",
+                "Audio Packages:"
+
+            ] + main_audio
+
+            game_data_list.append((
+                display_name,
+                combined_main
+            ))
+
+            # =================================================
+            # Main Patches
+            # =================================================
+
+            for patch in game_package[
+                "main"
+            ].get(
+                "patches",
+                []
+            ):
+
+                patch_version = patch["version"]
+
+                game, audio = extract_game_audio(
+                    patch
+                )
+
+                combined_patch = [
+
+                    f"patch-version: {patch_version}"
+
+                ] + game + [
+
+                    "",
+                    "Audio Packages:"
+
+                ] + audio
+
+                game_data_list.append((
+                    f"{display_name} {patch_version} - Hdiff",
+                    combined_patch
+                ))
+
+            # =================================================
+            # Pre-Download Major
+            # =================================================
+
+            pre = game_package.get(
+                "pre_download",
+                {}
+            )
+
+            pre_major = pre.get(
+                "major"
+            )
+
+            if pre_major:
+
+                pre_version = pre_major[
+                    "version"
+                ]
+
+                pre_game, pre_audio = extract_game_audio(
+                    pre_major
+                )
+
+                combined_pre = [
+
+                    f"PRE-version: {pre_version}"
+
+                ] + pre_game + [
+
+                    "",
+                    "Audio Packages:"
+
+                ] + pre_audio
+
+                game_data_list.append((
+                    f"{display_name} Pre-Download",
+                    combined_pre
+                ))
+
+            # =================================================
+            # Pre-Download Patches
+            # =================================================
+
+            for patch in pre.get(
+                "patches",
+                []
+            ):
+
+                patch_version = patch[
+                    "version"
+                ]
+
+                game, audio = extract_game_audio(
+                    patch
+                )
+
+                combined_pre_patch = [
+
+                    f"Pre-Patch version: {patch_version}"
+
+                ] + game + [
+
+                    "",
+                    "Audio Packages:"
+
+                ] + audio
+
+                game_data_list.append((
+                    f"{display_name} Pre-Download {patch_version} - Hdiff",
+                    combined_pre_patch
+                ))
+
+            # =================================================
+            # Send Discord
+            # =================================================
+
+            for channel_id in CHANNELS:
+
                 for title, lines in game_data_list:
-                    split_and_send(webhook_url, title, lines, icon_url, bg_url, display_name)
 
-    except Exception as e:
-        print(f"❌ Exception: {e}")
-        for webhook_url in webhook_urls:
-            if webhook_url:
-                split_and_send(webhook_url, "❌ Error", [f"[{game_name}] error: {e}"], "", "", "")
+                    await split_and_send(
+                        channel_id,
+                        title,
+                        lines,
+                        icon_url,
+                        bg_url,
+                        display_name
+                    )
 
-print("✅ Checked all APIs and sent updates if changed")
+        except Exception as e:
 
+            print(
+                f"❌ Exception: {e}"
+            )
+
+            for channel_id in CHANNELS:
+
+                await split_and_send(
+                    channel_id,
+                    "❌ Error",
+                    [f"[{game_name}] error: {e}"],
+                    "",
+                    "",
+                    ""
+                )
+
+    # =====================================================
+    # Close Bot
+    # =====================================================
+
+    await bot.close()
+
+# =========================================================
+# Run
+# =========================================================
+
+asyncio.run(main())
