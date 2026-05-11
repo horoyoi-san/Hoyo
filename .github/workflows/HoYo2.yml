@@ -30,24 +30,17 @@ jobs:
             pip install requests discord.py
 
 
-      - name: Run all game monitors
+      - name: Run all miHoYo game monitors
         env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN_1 }}
-
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN_2 }}
         run: |
+
           python "HoyoGame/CN/Branches/原神 Branches.py"
           python "HoyoGame/CN/Branches/崩坏：因缘精灵 Branches.py"
           python "HoyoGame/CN/Branches/崩坏：星穹铁道 Branches.py"
           python "HoyoGame/CN/Branches/崩坏3 Branches.py"
           python "HoyoGame/CN/Branches/星布谷地 Branches.py"
           python "HoyoGame/CN/Branches/绝区零 Branches.py"
-
-          python "HoyoGame/OS/Branches/Genshin Impact Branches.py"
-          python "HoyoGame/OS/Branches/Honkai Impact3 Branches.py"
-          python "HoyoGame/OS/Branches/Honkai Nexun Anima Branches.py"
-          python "HoyoGame/OS/Branches/Honkai Star Rail Branches.py"
-          python "HoyoGame/OS/Branches/Petit Planet Branches.py"
-          python "HoyoGame/OS/Branches/Zenless Zone Zero Branches.py"
 
           python "HoyoGame/CN/Packages/原神.py"
           python "HoyoGame/CN/Packages/崩坏：因缘精灵.py"
@@ -56,10 +49,23 @@ jobs:
           python "HoyoGame/CN/Packages/星布谷地.py"
           python "HoyoGame/CN/Packages/绝区零.py"
 
+      - name: Run all Hoyoverse game monitors
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN_1 }}
+        run: |
+          python "HoyoGame/OS/Branches/Genshin Impact Branches.py"
+          python "HoyoGame/OS/Branches/Honkai Impact3 Branches.py"
+          python "HoyoGame/OS/Branches/Honkai Nexun Anima Branches.py"
+          python "HoyoGame/OS/Branches/Honkai Star Rail Branches.py"
+          python "HoyoGame/OS/Branches/Petit Planet Branches.py"
+          python "HoyoGame/OS/Branches/Zenless Zone Zero Branches.py"
+
           python "HoyoGame/OS/Packages/Genshin Impact.py"
           python "HoyoGame/OS/Packages/Honkai Impact3.py"
           python "HoyoGame/OS/Packages/Honkai Nexun Anima.py"
-          python "HoyoGame/OS/Packages/H
+          python "HoyoGame/OS/Packages/Honkai Star Rail.py"
+          python "HoyoGame/OS/Packages/Petit Planet.py"
+          python "HoyoGame/OS/Packages/Zenless Zone Zero.py"
 
       - name: Commit and Push logs
         env:
