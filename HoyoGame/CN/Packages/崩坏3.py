@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import time
 
 import requests
 from datetime import datetime, timezone
@@ -611,14 +612,24 @@ async def main():
                     ""
                 )
 
-    # =====================================================
-    # Close Bot
-    # =====================================================
+# =========================================================
+# Start
+# =========================================================
+
+async def runner():
+
+    task = asyncio.create_task(
+        bot.start(TOKEN)
+    )
+
+    await asyncio.sleep(5)
+
+    await main()
+
+    await asyncio.sleep(60)
 
     await bot.close()
 
-# =========================================================
-# Run
-# =========================================================
+    await task
 
-asyncio.run(main())
+asyncio.run(runner())
