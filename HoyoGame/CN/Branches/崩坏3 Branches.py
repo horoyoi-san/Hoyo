@@ -600,7 +600,7 @@ async def runner():
 
     await main()
 
-    await asyncio.sleep(60)
+    await asyncio.sleep(15)
 
     await bot.close()
 
