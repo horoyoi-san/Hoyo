@@ -4,7 +4,57 @@ import re
 import os
 from collections import defaultdict
 
-WEBHOOK_URL = "YOUR_DISCORD"
+
+def load_env_file():
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    env_path = os.path.join(repo_root, ".env")
+
+    if not os.path.exists(env_path):
+        return
+
+    with open(env_path, "r", encoding="utf-8") as env_file:
+        for line in env_file:
+            line = line.strip()
+
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip("'\""))
+
+
+load_env_file()
+
+WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "YOUR_DISCORD")
+BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "YOUR_BOT_TOKEN")
+CHANNEL_ID = os.getenv("DISCORD_ABC_CHANNEL_ID", os.getenv("DISCORD_CHANNEL_ID", "YOUR_CHANNEL_ID"))
+DISCORD_API_URL = "https://discord.com/api/v10"
+
+
+def send_discord_message(payload):
+    if (
+        BOT_TOKEN
+        and BOT_TOKEN != "YOUR_BOT_TOKEN"
+        and CHANNEL_ID
+        and CHANNEL_ID != "YOUR_CHANNEL_ID"
+    ):
+        url = f"{DISCORD_API_URL}/channels/{CHANNEL_ID}/messages"
+        headers = {
+            "Authorization": f"Bot {BOT_TOKEN}",
+            "Content-Type": "application/json",
+        }
+        response = requests.post(url, headers=headers, json=payload, timeout=15)
+        response.raise_for_status()
+        return "bot"
+
+    if WEBHOOK_URL and WEBHOOK_URL != "YOUR_DISCORD":
+        response = requests.post(WEBHOOK_URL, json=payload, timeout=15)
+        response.raise_for_status()
+        return "webhook"
+
+    raise RuntimeError(
+        "Please set DISCORD_WEBHOOK_URL or set DISCORD_BOT_TOKEN and DISCORD_ABC_CHANNEL_ID."
+    )
 
 # =========================
 # แหล่งข้อมูล
@@ -122,12 +172,11 @@ for major in sorted(groups.keys()):
         }
 
         try:
-            response = requests.post(WEBHOOK_URL, json=payload)
-            response.raise_for_status()
+            send_mode = send_discord_message(payload)
 
-            print(f"Sent embed for {major}.0")
+            print(f"Sent embed for {major}.0 via {send_mode}")
 
         except Exception as e:
-            print(f"Failed to send webhook: {e}")
+            print(f"Failed to send Discord message: {e}")
 
         time.sleep(1)  # กัน rate limit
