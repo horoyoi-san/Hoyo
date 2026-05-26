@@ -16,9 +16,7 @@ import json
 TOKEN = os.environ.get("DISCORD_TOKEN")
 intents = discord.Intents.default()
 
-bot = discord.Client(
-    intents=intents
-)
+bot = discord.Client(intents=intents)
 
 # =========================================================
 # Branding
@@ -36,9 +34,9 @@ BOT_ICON = (
 # =========================================================
 
 CHANNELS = [
-    1292097230924283965, # Test
-    1291728736739131402, # 1
-    1267379122338791435, # 2
+    1292097230924283965,  # Test
+    1291728736739131402,  # 1
+    1267379122338791435,  # 2
 ]
 
 # =========================================================
@@ -65,41 +63,32 @@ GAME_NAME = "HNABranches"
 # Utils
 # =========================================================
 
+
 def safe_asset(obj):
 
     if isinstance(obj, dict):
 
-        return obj.get(
-            "url",
-            ""
-        )
+        return obj.get("url", "")
 
     return ""
+
 
 # =========================================================
 # Discord Send
 # =========================================================
 
+
 async def send_embed_message(
-    channel_id,
-    title,
-    description,
-    icon_url,
-    bg_url,
-    footer_text
+    channel_id, title, description, icon_url, bg_url, footer_text
 ):
 
     try:
 
-        channel = await bot.fetch_channel(
-            channel_id
-        )
+        channel = await bot.fetch_channel(channel_id)
 
     except Exception as e:
 
-        print(
-            f"❌ Channel fetch error: {channel_id}"
-        )
+        print(f"❌ Channel fetch error: {channel_id}")
 
         print(e)
 
@@ -109,9 +98,7 @@ async def send_embed_message(
         title=title,
         description=description,
         color=0x00CEFF,
-        timestamp=datetime.now(
-            timezone.utc
-        )
+        timestamp=datetime.now(timezone.utc),
     )
 
     # =====================================================
@@ -120,9 +107,7 @@ async def send_embed_message(
 
     if icon_url:
 
-        embed.set_thumbnail(
-            url=icon_url
-        )
+        embed.set_thumbnail(url=icon_url)
 
     # =====================================================
     # Background
@@ -130,18 +115,13 @@ async def send_embed_message(
 
     if bg_url:
 
-        embed.set_image(
-            url=bg_url
-        )
+        embed.set_image(url=bg_url)
 
     # =====================================================
     # Footer
     # =====================================================
 
-    embed.set_footer(
-        text=footer_text,
-        icon_url=icon_url
-    )
+    embed.set_footer(text=footer_text, icon_url=icon_url)
 
     # =====================================================
     # Send
@@ -149,37 +129,26 @@ async def send_embed_message(
 
     try:
 
-        await channel.send(
-            embed=embed
-        )
+        await channel.send(embed=embed)
 
-        print(
-            f"✅ Sent -> {channel_id}"
-        )
+        print(f"✅ Sent -> {channel_id}")
 
         # anti rate limit
         await asyncio.sleep(1)
 
     except Exception as e:
 
-        print(
-            f"❌ Send error -> {channel_id}"
-        )
+        print(f"❌ Send error -> {channel_id}")
 
         print(e)
+
 
 # =========================================================
 # Split Long Message
 # =========================================================
 
-async def split_and_send(
-    channel_id,
-    title,
-    lines,
-    icon_url,
-    bg_url,
-    footer_text
-):
+
+async def split_and_send(channel_id, title, lines, icon_url, bg_url, footer_text):
 
     max_length = 4000
 
@@ -190,12 +159,7 @@ async def split_and_send(
         if len(message) + len(line) + 1 > max_length:
 
             await send_embed_message(
-                channel_id,
-                title,
-                message,
-                icon_url,
-                bg_url,
-                footer_text
+                channel_id, title, message, icon_url, bg_url, footer_text
             )
 
             message = ""
@@ -205,60 +169,34 @@ async def split_and_send(
     if message.strip():
 
         await send_embed_message(
-            channel_id,
-            title,
-            message,
-            icon_url,
-            bg_url,
-            footer_text
+            channel_id, title, message, icon_url, bg_url, footer_text
         )
+
 
 # =========================================================
 # Change Detection
 # =========================================================
 
-def has_changed(
-    api_url,
-    log_name
-):
 
-    log_dir = os.path.join(
-        os.getcwd(),
-        "log",
-        "OSHoyo",
-        "log",
-        log_name
-    )
+def has_changed(api_url, log_name):
 
-    os.makedirs(
-        log_dir,
-        exist_ok=True
-    )
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", log_name)
 
-    raw_file = os.path.join(
-        log_dir,
-        f"raw_{datetime.now(timezone.utc).date()}.jsonl"
-    )
+    os.makedirs(log_dir, exist_ok=True)
 
-    hash_file = os.path.join(
-        log_dir,
-        "last_hash.txt"
-    )
+    raw_file = os.path.join(log_dir, f"raw_{datetime.now(timezone.utc).date()}.jsonl")
+
+    hash_file = os.path.join(log_dir, "last_hash.txt")
 
     try:
 
-        r = requests.get(
-            api_url,
-            timeout=10
-        )
+        r = requests.get(api_url, timeout=10)
 
         r.raise_for_status()
 
         data_text = r.text
 
-        data_json = json.loads(
-            data_text
-        )
+        data_json = json.loads(data_text)
 
     except Exception as e:
 
@@ -266,27 +204,20 @@ def has_changed(
         # Error Log
         # =================================================
 
-        with open(
-            raw_file,
-            "a",
-            encoding="utf-8"
-        ) as f:
+        with open(raw_file, "a", encoding="utf-8") as f:
 
-            f.write(json.dumps({
+            f.write(
+                json.dumps(
+                    {
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "error": str(e),
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
 
-                "timestamp":
-                datetime.now(
-                    timezone.utc
-                ).isoformat(),
-
-                "error":
-                str(e)
-
-            }, ensure_ascii=False) + "\n")
-
-        print(
-            "❌ API error but log written"
-        )
+        print("❌ API error but log written")
 
         return False
 
@@ -294,37 +225,26 @@ def has_changed(
     # Normal Log
     # =====================================================
 
-    with open(
-        raw_file,
-        "a",
-        encoding="utf-8"
-    ) as f:
+    with open(raw_file, "a", encoding="utf-8") as f:
 
-        f.write(json.dumps({
+        f.write(
+            json.dumps(
+                {
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "data": data_json,
+                },
+                ensure_ascii=False,
+            )
+            + "\n"
+        )
 
-            "timestamp":
-            datetime.now(
-                timezone.utc
-            ).isoformat(),
-
-            "data":
-            data_json
-
-        }, ensure_ascii=False) + "\n")
-
-    current_hash = hashlib.md5(
-        data_text.encode()
-    ).hexdigest()
+    current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
     last_hash = ""
 
     if os.path.exists(hash_file):
 
-        with open(
-            hash_file,
-            "r",
-            encoding="utf-8"
-        ) as f:
+        with open(hash_file, "r", encoding="utf-8") as f:
 
             last_hash = f.read().strip()
 
@@ -334,11 +254,7 @@ def has_changed(
 
     if current_hash != last_hash:
 
-        with open(
-            hash_file,
-            "w",
-            encoding="utf-8"
-        ) as f:
+        with open(hash_file, "w", encoding="utf-8") as f:
 
             f.write(current_hash)
 
@@ -346,9 +262,11 @@ def has_changed(
 
     return False
 
+
 # =========================================================
 # Extract Branch Data
 # =========================================================
+
 
 def extract_game_branches(data):
 
@@ -365,48 +283,37 @@ def extract_game_branches(data):
     if main:
 
         lines += [
-
             "## Main Branch",
-
             f"Tag: `{main['tag']}`",
-
             f"Package ID: `{main['package_id']}`",
-
             f"Diff from: `{', '.join(main.get('diff_tags', []))}`",
-
             f"Password: `{main['password']}`",
-
-            ""
+            "",
         ]
 
     # =====================================================
     # Pre Download
     # =====================================================
 
-    pre = branch.get(
-        "pre_download"
-    )
+    pre = branch.get("pre_download")
 
     if pre:
 
         lines += [
-
             "## Pre-Download Branch",
-
             f"Tag: `{pre['tag']}`",
-
             f"Package ID: `{pre['package_id']}`",
-
             f"Diff from: `{', '.join(pre.get('diff_tags', []))}`",
-
-            f"Password: `{pre['password']}`"
+            f"Password: `{pre['password']}`",
         ]
 
     return lines
 
+
 # =========================================================
 # Main
 # =========================================================
+
 
 async def main():
 
@@ -416,57 +323,29 @@ async def main():
 
     await bot.login(TOKEN)
 
-    print(
-        f"✅ Logged in as {bot.user}"
-    )
+    print(f"✅ Logged in as {bot.user}")
 
     # =====================================================
     # Game Info
     # =====================================================
 
-    resp = requests.get(
-        GAME_INFO_URL,
-        timeout=10
-    ).json()
+    resp = requests.get(GAME_INFO_URL, timeout=10).json()
 
-    game_data = next(
-
-        (
-            g
-
-            for g in resp["data"]["games"]
-
-            if g["id"] == GAME_ID
-        ),
-
-        None
-    )
+    game_data = next((g for g in resp["data"]["games"] if g["id"] == GAME_ID), None)
 
     if not game_data:
 
-        print(
-            f"❌ Game ID not found: {GAME_ID}"
-        )
+        print(f"❌ Game ID not found: {GAME_ID}")
 
         await bot.close()
 
         return
 
-    DISPLAY_NAME = (
-        game_data["display"]["name"]
-    )
+    DISPLAY_NAME = game_data["display"]["name"]
 
-    icon_url = safe_asset(
-        game_data["display"].get(
-            "icon"
-        )
-    )
+    icon_url = safe_asset(game_data["display"].get("icon"))
 
-    bg_url = safe_asset(
-        game_data["display"].get(
-            "background"
-        )
-    )
+    bg_url = safe_asset(game_data["display"].get("background"))
 
     # =====================================================
     # Branch Update
@@ -474,19 +353,11 @@ async def main():
 
     try:
 
-        if has_changed(
-            BRANCH_API_URL,
-            GAME_NAME
-        ):
+        if has_changed(BRANCH_API_URL, GAME_NAME):
 
-            data = requests.get(
-                BRANCH_API_URL,
-                timeout=10
-            ).json()
+            data = requests.get(BRANCH_API_URL, timeout=10).json()
 
-            lines = extract_game_branches(
-                data
-            )
+            lines = extract_game_branches(data)
 
             for channel_id in CHANNELS:
 
@@ -496,30 +367,21 @@ async def main():
                     lines,
                     icon_url,
                     bg_url,
-                    f"{DISPLAY_NAME} Branch Monitor"
+                    f"{DISPLAY_NAME} Branch Monitor",
                 )
 
         else:
 
-            print(
-                "[GI_BRANCH] No change"
-            )
+            print("[GI_BRANCH] No change")
 
     except Exception as e:
 
-        print(
-            f"❌ Branch Error: {e}"
-        )
+        print(f"❌ Branch Error: {e}")
 
         for channel_id in CHANNELS:
 
             await split_and_send(
-                channel_id,
-                "❌ Error",
-                [f"[{GAME_NAME}] error: {e}"],
-                "",
-                "",
-                ""
+                channel_id, "❌ Error", [f"[{GAME_NAME}] error: {e}"], "", "", ""
             )
 
     # =====================================================
@@ -528,9 +390,8 @@ async def main():
 
     await bot.close()
 
-    print(
-        "✅ Finished checking Branch API"
-    )
+    print("✅ Finished checking Branch API")
+
 
 # =========================================================
 # Run

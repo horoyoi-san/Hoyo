@@ -16,9 +16,7 @@ import json
 TOKEN = os.environ.get("DISCORD_TOKEN")
 intents = discord.Intents.default()
 
-bot = discord.Client(
-    intents=intents
-)
+bot = discord.Client(intents=intents)
 
 # =========================================================
 # Branding
@@ -36,9 +34,9 @@ BOT_ICON = (
 # =========================================================
 
 CHANNELS = [
-    1292097230924283965, #Test
-    1291728736739131402, #1
-    1267379122338791435, #2
+    1292097230924283965,  # Test
+    1291728736739131402,  # 1
+    1267379122338791435,  # 2
 ]
 
 # =========================================================
@@ -53,26 +51,18 @@ api_urls = [
 # Discord Embed Send
 # =========================================================
 
+
 async def send_embed_message(
-    channel_id,
-    title,
-    description,
-    icon_url,
-    bg_url,
-    game_name
+    channel_id, title, description, icon_url, bg_url, game_name
 ):
 
     try:
 
-        channel = await bot.fetch_channel(
-            channel_id
-        )
+        channel = await bot.fetch_channel(channel_id)
 
     except Exception as e:
 
-        print(
-            f"❌ Channel fetch error: {channel_id}"
-        )
+        print(f"❌ Channel fetch error: {channel_id}")
 
         print(e)
 
@@ -82,57 +72,37 @@ async def send_embed_message(
         title=title,
         description=description,
         color=0x00FF88,
-        timestamp=datetime.now(
-            timezone.utc
-        )
+        timestamp=datetime.now(timezone.utc),
     )
 
-    embed.set_thumbnail(
-        url=icon_url
-    )
+    embed.set_thumbnail(url=icon_url)
 
-    embed.set_image(
-        url=bg_url
-    )
+    embed.set_image(url=bg_url)
 
-    embed.set_footer(
-        text=f"{game_name} Update Monitor",
-        icon_url=icon_url
-    )
+    embed.set_footer(text=f"{game_name} Update Monitor", icon_url=icon_url)
 
     try:
 
-        await channel.send(
-            embed=embed
-        )
+        await channel.send(embed=embed)
 
-        print(
-            f"✅ Sent -> {channel_id}"
-        )
+        print(f"✅ Sent -> {channel_id}")
 
         # anti rate limit
         await asyncio.sleep(1)
 
     except Exception as e:
 
-        print(
-            f"❌ Send error -> {channel_id}"
-        )
+        print(f"❌ Send error -> {channel_id}")
 
         print(e)
+
 
 # =========================================================
 # Split Long Message
 # =========================================================
 
-async def split_and_send(
-    channel_id,
-    title,
-    lines,
-    icon_url,
-    bg_url,
-    game_name
-):
+
+async def split_and_send(channel_id, title, lines, icon_url, bg_url, game_name):
 
     max_length = 4000
 
@@ -143,12 +113,7 @@ async def split_and_send(
         if len(message) + len(line) + 1 > max_length:
 
             await send_embed_message(
-                channel_id,
-                title,
-                message,
-                icon_url,
-                bg_url,
-                game_name
+                channel_id, title, message, icon_url, bg_url, game_name
             )
 
             message = ""
@@ -158,100 +123,56 @@ async def split_and_send(
     if message.strip():
 
         await send_embed_message(
-            channel_id,
-            title,
-            message,
-            icon_url,
-            bg_url,
-            game_name
+            channel_id, title, message, icon_url, bg_url, game_name
         )
+
 
 # =========================================================
 # Extract Packages
 # =========================================================
 
+
 def extract_game_audio(pkg):
 
-    game_links = [
+    game_links = [p["url"] for p in pkg.get("game_pkgs", [])]
 
-        p["url"]
-
-        for p in pkg.get(
-            "game_pkgs",
-            []
-        )
-    ]
-
-    audio_links = [
-
-        f"{a['language']}: {a['url']}"
-
-        for a in pkg.get(
-            "audio_pkgs",
-            []
-        )
-    ]
+    audio_links = [f"{a['language']}: {a['url']}" for a in pkg.get("audio_pkgs", [])]
 
     return game_links, audio_links
+
 
 # =========================================================
 # Hash Check
 # =========================================================
 
-def has_changed(
-    api_url,
-    game_name
-):
+
+def has_changed(api_url, game_name):
 
     try:
 
-        data_text = requests.get(
-            api_url,
-            timeout=10
-        ).text
+        data_text = requests.get(api_url, timeout=10).text
 
     except Exception as e:
 
-        print(
-            f"❌ Error fetching API: {e}"
-        )
+        print(f"❌ Error fetching API: {e}")
 
         return False
 
-    current_hash = hashlib.md5(
-        data_text.encode()
-    ).hexdigest()
+    current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
     # =====================================================
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(
-        os.getcwd(),
-        "log",
-        "CNHoyo",
-        "log",
-        game_name
-    )
+    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "log", game_name)
 
-    os.makedirs(
-        log_dir,
-        exist_ok=True
-    )
+    os.makedirs(log_dir, exist_ok=True)
 
-    print(
-        f"📂 Creating log directory: {log_dir}"
-    )
+    print(f"📂 Creating log directory: {log_dir}")
 
-    hash_file = os.path.join(
-        log_dir,
-        "last_hash.txt"
-    )
+    hash_file = os.path.join(log_dir, "last_hash.txt")
 
-    raw_file = os.path.join(
-        log_dir,
-        "raw_log.jsonl"
-    )
+    raw_file = os.path.join(log_dir, "raw_log.jsonl")
 
     # =====================================================
     # Raw Log
@@ -259,33 +180,24 @@ def has_changed(
 
     try:
 
-        with open(
-            raw_file,
-            "a",
-            encoding="utf-8"
-        ) as f:
+        with open(raw_file, "a", encoding="utf-8") as f:
 
-            f.write(json.dumps({
+            f.write(
+                json.dumps(
+                    {
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "data": json.loads(data_text),
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
 
-                "timestamp":
-                datetime.now(
-                    timezone.utc
-                ).isoformat(),
-
-                "data":
-                json.loads(data_text)
-
-            }, ensure_ascii=False) + "\n")
-
-        print(
-            f"✅ Wrote raw log: {raw_file}"
-        )
+        print(f"✅ Wrote raw log: {raw_file}")
 
     except Exception as e:
 
-        print(
-            f"❌ Error writing log file: {e}"
-        )
+        print(f"❌ Error writing log file: {e}")
 
     # =====================================================
     # Last Hash
@@ -295,11 +207,7 @@ def has_changed(
 
     if os.path.exists(hash_file):
 
-        with open(
-            hash_file,
-            "r",
-            encoding="utf-8"
-        ) as f:
+        with open(hash_file, "r", encoding="utf-8") as f:
 
             last_hash = f.read().strip()
 
@@ -309,11 +217,7 @@ def has_changed(
 
     if current_hash != last_hash:
 
-        with open(
-            hash_file,
-            "w",
-            encoding="utf-8"
-        ) as f:
+        with open(hash_file, "w", encoding="utf-8") as f:
 
             f.write(current_hash)
 
@@ -321,17 +225,17 @@ def has_changed(
 
     return False
 
+
 # =========================================================
 # Main
 # =========================================================
+
 
 async def main():
 
     await bot.login(TOKEN)
 
-    print(
-        f"✅ Logged in as {bot.user}"
-    )
+    print(f"✅ Logged in as {bot.user}")
 
     # =====================================================
     # Loop APIs
@@ -343,14 +247,9 @@ async def main():
 
         try:
 
-            if not has_changed(
-                api_url,
-                game_name
-            ):
+            if not has_changed(api_url, game_name):
 
-                print(
-                    f"[{game_name}] No change"
-                )
+                print(f"[{game_name}] No change")
 
                 continue
 
@@ -358,14 +257,9 @@ async def main():
             # Package API
             # =================================================
 
-            data = requests.get(
-                api_url,
-                timeout=10
-            ).json()
+            data = requests.get(api_url, timeout=10).json()
 
-            game_package = (
-                data["data"]["game_packages"][0]
-            )
+            game_package = data["data"]["game_packages"][0]
 
             # =================================================
             # Game Display API
@@ -377,31 +271,17 @@ async def main():
                 "launcher_id=kwykHprMm9"
             )
 
-            resp = requests.get(
-                game_info_url,
-                timeout=10
-            ).json()
+            resp = requests.get(game_info_url, timeout=10).json()
 
             game_data = next(
-
-                g
-
-                for g in resp["data"]["games"]
-
-                if g["id"] == "Dg5IUTLSzd"
+                g for g in resp["data"]["games"] if g["id"] == "Dg5IUTLSzd"
             )
 
-            display_name = (
-                game_data["display"]["name"]
-            )
+            display_name = game_data["display"]["name"]
 
-            icon_url = (
-                game_data["display"]["icon"]["url"]
-            )
+            icon_url = game_data["display"]["icon"]["url"]
 
-            bg_url = (
-                game_data["display"]["background"]["url"]
-            )
+            bg_url = game_data["display"]["background"]["url"]
 
             game_data_list = []
 
@@ -409,134 +289,86 @@ async def main():
             # Main Version
             # =================================================
 
-            version = (
-                game_package["main"]["major"]["version"]
+            version = game_package["main"]["major"]["version"]
+
+            main_game, main_audio = extract_game_audio(game_package["main"]["major"])
+
+            combined_main = (
+                [f"version: {version}"]
+                + main_game
+                + ["", "Audio Packages:"]
+                + main_audio
             )
 
-            main_game, main_audio = extract_game_audio(
-                game_package["main"]["major"]
-            )
-
-            combined_main = [
-
-                f"version: {version}"
-
-            ] + main_game + [
-
-                "",
-                "Audio Packages:"
-
-            ] + main_audio
-
-            game_data_list.append((
-                display_name,
-                combined_main
-            ))
+            game_data_list.append((display_name, combined_main))
 
             # =================================================
             # Main Patches
             # =================================================
 
-            for patch in game_package[
-                "main"
-            ].get(
-                "patches",
-                []
-            ):
+            for patch in game_package["main"].get("patches", []):
 
                 patch_version = patch["version"]
 
-                game, audio = extract_game_audio(
-                    patch
+                game, audio = extract_game_audio(patch)
+
+                combined_patch = (
+                    [f"patch-version: {patch_version}"]
+                    + game
+                    + ["", "Audio Packages:"]
+                    + audio
                 )
 
-                combined_patch = [
-
-                    f"patch-version: {patch_version}"
-
-                ] + game + [
-
-                    "",
-                    "Audio Packages:"
-
-                ] + audio
-
-                game_data_list.append((
-                    f"{display_name} {patch_version} - Hdiff",
-                    combined_patch
-                ))
+                game_data_list.append(
+                    (f"{display_name} {patch_version} - Hdiff", combined_patch)
+                )
 
             # =================================================
             # Pre-Download Major
             # =================================================
 
-            pre = game_package.get(
-                "pre_download",
-                {}
-            )
+            pre = game_package.get("pre_download", {})
 
-            pre_major = pre.get(
-                "major"
-            )
+            pre_major = pre.get("major")
 
             if pre_major:
 
-                pre_version = pre_major[
-                    "version"
-                ]
+                pre_version = pre_major["version"]
 
-                pre_game, pre_audio = extract_game_audio(
-                    pre_major
+                pre_game, pre_audio = extract_game_audio(pre_major)
+
+                combined_pre = (
+                    [f"PRE-version: {pre_version}"]
+                    + pre_game
+                    + ["", "Audio Packages:"]
+                    + pre_audio
                 )
 
-                combined_pre = [
-
-                    f"PRE-version: {pre_version}"
-
-                ] + pre_game + [
-
-                    "",
-                    "Audio Packages:"
-
-                ] + pre_audio
-
-                game_data_list.append((
-                    f"{display_name} Pre-Download",
-                    combined_pre
-                ))
+                game_data_list.append((f"{display_name} Pre-Download", combined_pre))
 
             # =================================================
             # Pre-Download Patches
             # =================================================
 
-            for patch in pre.get(
-                "patches",
-                []
-            ):
+            for patch in pre.get("patches", []):
 
-                patch_version = patch[
-                    "version"
-                ]
+                patch_version = patch["version"]
 
-                game, audio = extract_game_audio(
-                    patch
+                game, audio = extract_game_audio(patch)
+
+                combined_pre_patch = (
+                    [f"Pre-Patch version: {patch_version}"]
+                    + game
+                    + ["", "Audio Packages:"]
+                    + audio
                 )
 
-                combined_pre_patch = [
-
-                    f"Pre-Patch version: {patch_version}"
-
-                ] + game + [
-
-                    "",
-                    "Audio Packages:"
-
-                ] + audio
-
-                game_data_list.append((
-                    f"{display_name} Pre-Download {patch_version} - Hdiff",
-                    combined_pre_patch
-                ))
+                game_data_list.append(
+                    (
+                        f"{display_name} Pre-Download {patch_version} - Hdiff",
+                        combined_pre_patch,
+                    )
+                )
 
             # =================================================
             # Send Discord
@@ -547,40 +379,28 @@ async def main():
                 for title, lines in game_data_list:
 
                     await split_and_send(
-                        channel_id,
-                        title,
-                        lines,
-                        icon_url,
-                        bg_url,
-                        display_name
+                        channel_id, title, lines, icon_url, bg_url, display_name
                     )
 
         except Exception as e:
 
-            print(
-                f"❌ Exception: {e}"
-            )
+            print(f"❌ Exception: {e}")
 
             for channel_id in CHANNELS:
 
                 await split_and_send(
-                    channel_id,
-                    "❌ Error",
-                    [f"[{game_name}] error: {e}"],
-                    "",
-                    "",
-                    ""
+                    channel_id, "❌ Error", [f"[{game_name}] error: {e}"], "", "", ""
                 )
+
 
 # =========================================================
 # Start
 # =========================================================
 
+
 async def runner():
 
-    task = asyncio.create_task(
-        bot.start(TOKEN)
-    )
+    task = asyncio.create_task(bot.start(TOKEN))
 
     await asyncio.sleep(5)
 
@@ -591,5 +411,6 @@ async def runner():
     await bot.close()
 
     await task
+
 
 asyncio.run(runner())
