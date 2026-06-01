@@ -269,13 +269,13 @@ async def main():
             game_info_url = (
                 "https://hyp-api.mihoyo.com/"
                 "hyp/hyp-connect/api/getGames?"
-                "launcher_id=VYTpXlbWo8"
+                "launcher_id=jGHBHlcOq1"
             )
 
             resp = requests.get(game_info_url, timeout=10).json()
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "4ziysqXOQ8"
+                g for g in resp["data"]["games"] if g["id"] == "64kMb5iAWu"
             )
 
             display_name = game_data["display"]["name"]
