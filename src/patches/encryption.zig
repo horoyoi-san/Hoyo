@@ -11,7 +11,7 @@ pub fn init(assembly: GameAssembly) !void {
     }
 
     // Set crypto_str to the fixed custom message provided by the user
-    @as(**const String, @ptrFromInt(assembly.offset(.crypto_str))).* = assembly.ptrToStringAnsi("<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#ff0000>Horoyoi-san ඞ</color>\x00");
+    @as(**const String, @ptrFromInt(assembly.offset(.crypto_str))).* = assembly.ptrToStringAnsi("<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san ඞ</color>\x00");
 
     game_assembly_instance = assembly;
     try interceptor.replace(assembly.offset(.get_device_fp), getDeviceFpReplacement);
