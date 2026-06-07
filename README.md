@@ -2,7 +2,7 @@
 
 **Vortex** is a client patch for the game **Zenless Zone Zero**. It's main goal is to redirect your client requests to another destination, such as server emulator. Codebase should be kept simple and easily extensible.
 
-Currently supported game version is: `CNBetaWin3.0.4`
+Currently supported game version is: `CNBetaWin3.1.x`
 
 ## Requirements
 
