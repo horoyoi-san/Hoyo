@@ -16,7 +16,7 @@ Currently supported game version is: `CNBetaWin3.1.x`
 git clone https://git.xeondev.com/ESD/vortex.git
 cd vortex
 zig build -Dtarget=x86_64-windows -Doptimize=ReleaseSmall
-mv zig-out/bin/velina.exe zig-out/bin/vortex.dll PATH_TO_CLIENT/
+mv zig-out/bin/velina.exe zig-out/bin/Sunbringer.dll PATH_TO_CLIENT/
 ```
 
 ## Configuration

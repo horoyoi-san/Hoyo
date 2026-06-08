@@ -8,7 +8,7 @@ pub fn main(init: Init) noreturn {
     );
 
     cwd.access(io, dll_name, .{}) catch fatal(
-        \\The 'vortex.dll' wasn't found.
+        \\The 'Sunbringer.dll' wasn't found.
         \\Make sure you've copied it here as well
     );
 
@@ -76,7 +76,7 @@ fn fatal(comptime message: [:0]const u8) noreturn {
     exit(1);
 }
 
-const dll_name = "vortex.dll";
+const dll_name = "Sunbringer.dll";
 
 const Io = std.Io;
 const Init = std.process.Init;
