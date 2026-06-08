@@ -4,7 +4,7 @@ pub fn main(init: Init) noreturn {
 
     const exe_name = whichExecutable(io, cwd) orelse fatal(
         \\The game executable wasn't found
-        \\Make sure you've put vortex into the game directory.
+        \\Make sure you've put Sunbringer into the game directory.
     );
 
     cwd.access(io, dll_name, .{}) catch fatal(
@@ -72,7 +72,7 @@ fn fatal(comptime message: [:0]const u8) noreturn {
         "MessageBoxA",
     ));
 
-    _ = messageBoxA(null, message, "Vortex", 0x30);
+    _ = messageBoxA(null, message, "Sunbringer", 0x30);
     exit(1);
 }
 

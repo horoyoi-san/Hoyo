@@ -1,4 +1,4 @@
-const log = std.log.scoped(.vortex);
+const log = std.log.scoped(.Sunbringer);
 
 fn start(assembly: GameAssembly) void {
     const init_delay: winapi.LARGE_INTEGER = @divTrunc((-4000 * std.time.ns_per_ms), 100);

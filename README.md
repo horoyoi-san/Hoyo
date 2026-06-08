@@ -1,6 +1,6 @@
-# Vortex
+# Sunbringer
 
-**Vortex** is a client patch for the game **Zenless Zone Zero**. It's main goal is to redirect your client requests to another destination, such as server emulator. Codebase should be kept simple and easily extensible.
+**Sunbringer** is a client patch for the game **Zenless Zone Zero**. It's main goal is to redirect your client requests to another destination, such as server emulator. Codebase should be kept simple and easily extensible.
 
 Currently supported game version is: `CNBetaWin3.1.x`
 
@@ -13,12 +13,12 @@ Currently supported game version is: `CNBetaWin3.1.x`
 ## Building from source
 
 ```sh
-git clone https://git.xeondev.com/ESD/vortex.git
-cd vortex
+git clone https://git.xeondev.com/ESD/Sunbringer.git
+cd Sunbringer
 zig build -Dtarget=x86_64-windows -Doptimize=ReleaseSmall
 mv zig-out/bin/velina.exe zig-out/bin/Sunbringer.dll PATH_TO_CLIENT/
 ```
 
 ## Configuration
 
-**Vortex** can be easily configured by changing destination addresses inside `assets/login_setting.json` and `assets/server_pc.json`. In case you want to adapt it for a different game version - just swap out offsets in `assets/offsets.zon`.
+**Sunbringer** can be easily configured by changing destination addresses inside `assets/login_setting.json` and `assets/server_pc.json`. In case you want to adapt it for a different game version - just swap out offsets in `assets/offsets.zon`.

@@ -1,4 +1,4 @@
-const log = std.log.scoped(.@"vortex::ditherless");
+const log = std.log.scoped(.@"Sunbringer::ditherless");
 
 var game_assembly_instance: GameAssembly = undefined; // Populated by `init`
 

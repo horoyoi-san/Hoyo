@@ -1,4 +1,4 @@
-const log = std.log.scoped(.@"vortex::sec_engine");
+const log = std.log.scoped(.@"Sunbringer::sec_engine");
 
 pub fn init(assembly: GameAssembly) !void {
     if (assembly.optionalOffset(.config_is_load_mhy_base)) |address|

@@ -1,4 +1,4 @@
-const log = std.log.scoped(.@"vortex::networking");
+const log = std.log.scoped(.@"Sunbringer::networking");
 
 var game_assembly_instance: GameAssembly = undefined; // Populated by `init`
 
