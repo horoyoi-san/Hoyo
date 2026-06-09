@@ -75,7 +75,7 @@ const Offsets = struct {
     rsa_statics_id: usize,
     dither_alpha_strings: []const usize,
     refresh_gacha_time_icon: usize,
-    config_is_load_mhy_base: ?usize,
+    config_is_load_mhy_base: usize,
 
     pub const Name = std.meta.FieldEnum(Offsets);
 };
