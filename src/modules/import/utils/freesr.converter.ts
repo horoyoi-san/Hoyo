@@ -1,4 +1,12 @@
-import relicConfig from "@/cache/data/RelicConfig.json";
+import relicConfigRaw from "@/cache/data/RelicConfig.json";
+
+const relicConfig = relicConfigRaw as Record<
+  string,
+  {
+    Type?: string;
+    [key: string]: any;
+  }
+>;
 
 type FreesrData = any;
 
@@ -19,23 +27,40 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
       const level = r.level ?? r.Level ?? 0;
       const main_affix_id = r.main_affix_id || r.mainAffixId || r.main || 0;
 
-      // sub affixes: try common shapes
       const sub_affixes: any[] = [];
       const subs = r.sub_affixes || r.subAffixes || r.sub || r.affixes || [];
+
       if (Array.isArray(subs)) {
         subs.forEach((s: any) => {
-          const id = s.id || s.sub_affix_id || s.SubAffixID || s.SubAffixId || s.subAffixId || null;
+          const id =
+            s.id ||
+            s.sub_affix_id ||
+            s.SubAffixID ||
+            s.SubAffixId ||
+            s.subAffixId ||
+            null;
+
           const count = s.count ?? s.times ?? (s.value ? 1 : 0);
           const step = s.step ?? s.level ?? 0;
-          if (id != null) sub_affixes.push({ sub_affix_id: Number(id), count: Number(count || 0), step: Number(step || 0) });
+
+          if (id != null) {
+            sub_affixes.push({
+              sub_affix_id: Number(id),
+              count: Number(count || 0),
+              step: Number(step || 0),
+            });
+          }
         });
       }
 
-      // attempt to infer type from relic_id via cache
       let type = r.type || r.Type || "UNKNOWN";
+
       if ((!type || type === "UNKNOWN") && relic_id) {
         const lookup = relicConfig[String(relic_id)];
-        if (lookup && lookup.Type) type = lookup.Type;
+
+        if (lookup?.Type) {
+          type = lookup.Type;
+        }
       }
 
       output.relics[String(uid)] = {
@@ -46,7 +71,11 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
         level: Number(level || 0),
         main_affix_id: Number(main_affix_id || 0),
         sub_affixes,
-        equipped_by: r.equipped_by ? (Array.isArray(r.equipped_by) ? r.equipped_by.map(Number) : [Number(r.equipped_by)]) : [],
+        equipped_by: r.equipped_by
+          ? Array.isArray(r.equipped_by)
+            ? r.equipped_by.map(Number)
+            : [Number(r.equipped_by)]
+          : [],
       };
     });
   }
@@ -56,12 +85,13 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
     Object.entries(data.avatars).forEach(([key, val]) => {
       const a: any = val || {};
       const id = Number(key);
+
       const level = a.level ?? a.Level ?? 1;
       const promotion = a.promotion ?? a.Promotion ?? 0;
       const rank = a.rank ?? a.Rank ?? 0;
 
-      // lightcone info possibly nested
       const lightcone = a.lightcone || a.weapon || {};
+
       const lc = {
         id: Number(lightcone.id || lightcone.ID || null) || null,
         promotion: Number(lightcone.promotion ?? lightcone.Promotion ?? 0),
@@ -69,13 +99,27 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
         level: Number(lightcone.level ?? lightcone.Level ?? 0),
       };
 
-      // build relic slot mapping by scanning converted relics for equipped_by
-      const relicSlots: any = { HEAD: null, HAND: null, BODY: null, FOOT: null, NECK: null, OBJECT: null };
+      const relicSlots: any = {
+        HEAD: null,
+        HAND: null,
+        BODY: null,
+        FOOT: null,
+        NECK: null,
+        OBJECT: null,
+      };
+
       Object.entries(output.relics).forEach(([uid, relic]) => {
-        const r: any = relic as any;
-        if (Array.isArray(r.equipped_by) && r.equipped_by.includes(id)) {
+        const r: any = relic;
+
+        if (
+          Array.isArray(r.equipped_by) &&
+          r.equipped_by.includes(id)
+        ) {
           const t = (r.type || "").toUpperCase();
-          if (["HEAD", "HAND", "BODY", "FOOT", "NECK", "OBJECT"].includes(t)) {
+
+          if (
+            ["HEAD", "HAND", "BODY", "FOOT", "NECK", "OBJECT"].includes(t)
+          ) {
             relicSlots[t] = uid;
           }
         }
