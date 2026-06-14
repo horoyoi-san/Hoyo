@@ -1,0 +1,32 @@
+export const MAIN_STATS = [
+  "HP",
+  "ATK",
+  "DEF",
+  "HP%",
+  "ATK%",
+  "DEF%",
+  "Crit Rate",
+  "Crit DMG",
+  "Outgoing Healing Booster",
+  "Effect Hit Rate",
+  "Speed",
+  "Physical DMG Boost",
+  "Fire DMG Boost",
+  "Ice DMG Boost",
+  "Lightning DMG Boost",
+  "Wind DMG Boost",
+  "Quantum DMG Boost",
+  "Imaginary DMG Boost",
+  "Break Effect",
+  "Energy Regeneration Rate",
+];
+
+export const RELIC_TYPES = [
+  "all",
+  "HEAD",
+  "HAND",
+  "BODY",
+  "FOOT",
+  "NECK",
+  "OBJECT",
+];
