@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import {
   Select,
   SelectContent,
@@ -22,6 +24,7 @@ const MainAffixCreateRelic = ({
   currentMainAffixData,
   currentRelicData,
 }: Props) => {
+  const { t } = useTranslation();
   const relic = useCreateRelicStore((state) => state.relic);
   const updateRelic = useCreateRelicStore((state) => state.updateRelic);
   const { data: statPorperties } = useGetStatProperties();
@@ -30,7 +33,7 @@ const MainAffixCreateRelic = ({
   return (
     <>
       <label htmlFor="main-affix">
-        <span className="font-medium">Main Stat</span>
+        <span className="font-medium">{t("mainStat")}</span>
         <Select
           value={String(relic.main_affix_id || "")}
           onValueChange={(val) => {
@@ -68,7 +71,7 @@ const MainAffixCreateRelic = ({
             disabled={!currentRelicData?.main_affix_id}
             className="w-full"
           >
-            <SelectValue placeholder="Select Main Stat" />
+            <SelectValue placeholder={t("selectMainStat")} />
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectGroup>

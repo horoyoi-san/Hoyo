@@ -21,10 +21,16 @@ export const createCharacterSlice: StateCreator<
         id: charId,
       };
 
+      const mergedData = {
+        ...currentData,
+        skills: currentData.skills ?? {},
+        enhanced: currentData.enhanced ?? null,
+      };
+
       return {
         characters: {
           ...state.characters,
-          [charId]: { ...currentData, ...updates },
+          [charId]: { ...mergedData, ...updates },
         },
       };
     }),

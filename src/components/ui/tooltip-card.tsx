@@ -179,7 +179,7 @@ export const Tooltip = ({
                   damping: 20,
                 }}
                 className={cn(
-                  "pointer-events-none fixed z-9999 min-w-[25rem] max-w-sm overflow-hidden rounded-md border border-transparent bg-white shadow-sm ring-1 shadow-black/5 ring-black/5 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5",
+                  "pointer-events-none fixed z-9999 min-w-[25rem] max-w-sm overflow-hidden rounded-xl border border-white/[0.08] bg-zinc-900/90 shadow-xl backdrop-blur-xl",
                   contentClassName,
                 )}
                 style={{
@@ -189,7 +189,7 @@ export const Tooltip = ({
               >
                 <div
                   ref={contentRef}
-                  className="p-2 text-sm text-neutral-600 md:p-4 dark:text-neutral-400"
+                  className="p-2 text-sm text-zinc-300 md:p-4"
                 >
                   {content}
                 </div>

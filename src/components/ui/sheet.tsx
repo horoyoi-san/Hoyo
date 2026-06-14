@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import * as React from "react"
 import { Dialog as SheetPrimitive } from "radix-ui"
 
@@ -55,6 +56,7 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left"
   showCloseButton?: boolean
 }) {
+  const { t } = useTranslation();
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -77,7 +79,7 @@ function SheetContent({
             >
               <XIcon
               />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t("close")}</span>
             </Button>
           </SheetPrimitive.Close>
         )}

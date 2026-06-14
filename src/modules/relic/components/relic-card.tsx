@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { RelicConfigStore } from "@/src/store/types";
 import { calculateSubAffixValue, imgUrl, isPercent } from "@/src/utils/helpers";
 import { ChevronRight } from "lucide-react";
@@ -25,6 +27,7 @@ const RelicCard = ({
   renderAction,
   showEquippedBy = false,
 }: RelicCardProps) => {
+  const { t } = useTranslation();
   const { data: allRelicData } = useGetRelics();
   const { data: statProperties } = useGetStatProperties();
   const { data: mainAffixes } = useGetMainAffixes();
@@ -45,17 +48,17 @@ const RelicCard = ({
     <div
       className={cn(
         "rounded-xl h-full overflow-hidden flex flex-col relative group will-change-transform duration-200 text-foreground",
-        onClick && "cursor-pointer hover:ring-1 ring-secondary",
+        onClick && "cursor-pointer hover:ring-1 ring-white/20",
         className,
       )}
       onClick={onClick}
     >
       {showEquippedBy && relic.equipped_by && relic.equipped_by.length > 0 && (
         <Tooltip
-          contentClassName="bg-primary/50 backdrop-blur-sm min-w-fit"
+          contentClassName="bg-card/80 backdrop-blur-sm min-w-fit"
           content={
             <div className="text-foreground space-y-2">
-              <p>Equipped</p>
+              <p>{t("equipped")}</p>
               <div className="flex gap-1 flex-wrap">
                 {relic.equipped_by.map((charId) => {
                   return (
@@ -66,7 +69,7 @@ const RelicCard = ({
                       height={52}
                       src={`https://fribbels.github.io/hsr-optimizer/assets/icon/avatar/${charId}.webp`}
                       alt={charId.toString()}
-                      className="rounded-full border-2 border-secondary object-cover"
+                      className="rounded-full border-2 border-white/20 object-cover"
                     />
                   );
                 })}
@@ -83,11 +86,11 @@ const RelicCard = ({
                 height={32}
                 src={`https://fribbels.github.io/hsr-optimizer/assets/icon/avatar/${charId}.webp`}
                 alt={charId.toString()}
-                className="rounded-full border-2 border-primary backdrop-blur-sm object-cover"
+                className="rounded-full border-2 border-white/[0.1] backdrop-blur-sm object-cover"
               />
             ))}
             {relic.equipped_by.length > 3 && (
-              <div className="flex items-center justify-center size-8 rounded-full border-2 border-primary bg-muted text-[10px] font-bold z-10 text-muted-foreground">
+              <div className="flex items-center justify-center size-8 rounded-full border-2 border-white/[0.1] bg-muted text-[10px] font-bold z-10 text-muted-foreground">
                 +{relic.equipped_by.length - 3}
               </div>
             )}
@@ -104,7 +107,7 @@ const RelicCard = ({
       )}
 
       {/* Header */}
-      <div className="p-3 flex bg-background/50 flex-col items-center shrink-0 relative">
+      <div className="p-3 flex bg-white/[0.03] flex-col items-center shrink-0 relative">
         <Image
           unoptimized
           width={64}
@@ -119,13 +122,13 @@ const RelicCard = ({
       </div>
 
       {/* Stats Body */}
-      <div className="p-3 space-y-3 bg-background/75 flex-1 flex flex-col justify-between">
+      <div className="p-3 space-y-3 bg-white/[0.02] flex-1 flex flex-col justify-between">
         {/* Main Stat */}
         <div className="flex justify-between items-center pb-2 gap-2">
           <span className="text-[11px] font-medium uppercase line-clamp-2">
             {statProperties?.[mainProp]?.name}
           </span>
-          <span className="text-base font-bold text-secondary">
+          <span className="text-base font-bold text-foreground">
             {isPercent(mainProp)
               ? `${(mainValue * 100).toFixed(1)}%`
               : Math.floor(mainValue)}
@@ -135,7 +138,7 @@ const RelicCard = ({
         {/* Sub Stats */}
         <div className="space-y-1">
           {relic.sub_affixes.map((sub, idx) => {
-            const subData = subAffixes?.[5]?.[sub.sub_affix_id];
+            const subData = subAffixes?.[relicData.rarity]?.[sub.sub_affix_id];
             if (!subData) return null;
 
             const val = calculateSubAffixValue(
@@ -155,7 +158,7 @@ const RelicCard = ({
                     {statProperties?.[subData.Property]?.name}
                   </span>
                   {sub.count > 1 && (
-                    <div className="flex -space-x-1.5 text-secondary">
+                    <div className="flex -space-x-1.5 text-white/50">
                       {Array.from({ length: sub.count - 1 }).map((_, i) => (
                         <ChevronRight key={i} size={10} strokeWidth={3} />
                       ))}

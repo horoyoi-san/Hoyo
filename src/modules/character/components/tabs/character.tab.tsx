@@ -1,6 +1,9 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { Separator } from "@/src/components/ui/separator";
 import { Slider } from "@/src/components/ui/slider";
+import { Button } from "@/src/components/ui/button";
 import LightconeDialog from "../dialog/lightcone-dialog.character";
 import { useCharacterStore } from "../../store/use-character.store";
 import { useUserStore } from "@/src/store/use-user.store";
@@ -14,6 +17,7 @@ import { Lock } from "lucide-react";
 import { useMemo } from "react";
 
 const CharacterTab = () => {
+  const { t } = useTranslation();
   const id = useCharacterStore((state) => state.id);
   const isTingyun = id === "1202";
   const charData = useCharacterStore((state) => state.charData);
@@ -35,44 +39,60 @@ const CharacterTab = () => {
 
   return (
     <>
-      <div className="space-y-4 shrink-0">
-        <p className="mb-4 text-4xl font-bold">Character</p>
+      <div className="space-y-4 shrink-0 overflow-y-auto overflow-x-hidden pr-4 custom-scrollbar h-full min-h-0 w-[45%]">
+        <p className="mb-4 text-4xl font-bold">{t("character")}</p>
         <div className="space-y-4">
-          <label
-            htmlFor="lv"
-            className="flex items-center gap-1 justify-between px-4"
-          >
-            <span className="text-xl font-semibold">Level</span>
-            <InputNumber
-              id="lv"
-              className="w-16 border-secondary"
-              placeholder="Level"
-              value={charConfig.level}
-              onChange={(val) => {
-                updateChar(Number(id), {
-                  level: val,
-                });
+          <div className="space-y-4 px-4">
+            <label
+              htmlFor="lv"
+              className="flex items-center gap-1 justify-between w-full"
+            >
+              <span className="text-xl font-semibold">{t("level")}</span>
+              <div className="flex gap-2 items-center">
+                <InputNumber
+                  id="lv"
+                  className="w-16 border-white/[0.1]"
+                  placeholder={t("level")}
+                  value={charConfig.level}
+                  onChange={(val) => {
+                    updateChar(Number(id), {
+                      level: val,
+                    });
+                  }}
+                />
+                <Button variant="secondary" size="sm" onClick={() => updateChar(Number(id), { level: 80 })}>{t("max")}</Button>
+              </div>
+            </label>
+            <Slider
+              min={1}
+              max={80}
+              value={[charConfig.level]}
+              onValueChange={([val]) => {
+                updateChar(Number(id), { level: val });
               }}
             />
-          </label>
-          <div className="space-y-2 px-4">
+          </div>
+          <div className="space-y-4 px-4 mt-6">
             <div className="flex gap-2">
               <label
                 htmlFor="energy"
                 className="flex items-center gap-1 justify-between w-full"
               >
-                <span className="text-xl font-semibold">Energy</span>
-                <InputNumber
-                  id="energy"
-                  className="w-16 border-secondary"
-                  value={isTingyun ? 90 : charConfig.sp}
-                  disabled={isTingyun}
-                  onChange={(val) => {
-                    updateChar(Number(id), {
-                      sp: val,
-                    });
-                  }}
-                />
+                <span className="text-xl font-semibold">{t("energy")}</span>
+                <div className="flex gap-2 items-center">
+                  <InputNumber
+                    id="energy"
+                    className="w-16 border-white/[0.1]"
+                    value={isTingyun ? 90 : charConfig.sp}
+                    disabled={isTingyun}
+                    onChange={(val) => {
+                      updateChar(Number(id), {
+                        sp: val,
+                      });
+                    }}
+                  />
+                  <Button disabled={isTingyun} variant="secondary" size="sm" onClick={() => updateChar(Number(id), { sp: 50 })}>{t("setTo50")}</Button>
+                </div>
               </label>
             </div>
             <Slider
@@ -87,7 +107,7 @@ const CharacterTab = () => {
           </div>
           <label
             htmlFor="use-technique"
-            className="text-lg flex items-center gap-1 border-y-2 py-4 border-secondary px-4"
+            className="text-lg flex items-center gap-1 border-y py-4 border-white/[0.06] px-4"
           >
             <Checkbox
               id="use-technique"
@@ -98,70 +118,35 @@ const CharacterTab = () => {
                 updateChar(Number(id), { use_technique: !!val });
               }}
             />
-            <span>Use Technique</span>
+            <span>{t("useTechnique")}</span>
           </label>
         </div>
-        <div className="space-y-2">
-          <p className="font-lg font-semibold">Eidolon</p>
-          <div className="flex gap-2 items-center">
-            {ranks &&
-              ranks.map((rank, index) => {
-                const currentRank = charConfig.rank;
-                const val = index + 1;
-
-                return (
-                  <Tooltip
-                    key={rank.id}
-                    containerClassName="bg-background/50 p-px rounded-full relative cursor-pointer"
-                    content={
-                      <div>
-                        <p className="font-semibold">{rank.name}</p>
-                        <p className="text-xs font-light text-muted-foreground mb-1">
-                          Eidolon: {index + 1}
-                        </p>
-                        <p
-                          dangerouslySetInnerHTML={{
-                            __html: parsedDesc(rank.desc, rank.params),
-                          }}
-                        />
-                      </div>
-                    }
-                    onClick={() => {
-                      const setToZero = currentRank === val ? 0 : val;
-
-                      updateChar(Number(id), {
-                        rank: setToZero,
-                      });
-                    }}
-                  >
-                    {currentRank < val && (
-                      <div className="absolute bg-black/50 rounded-full size-full flex justify-center items-center">
-                        <Lock size={16} strokeWidth={3} />
-                      </div>
-                    )}
-                    <Image
-                      unoptimized
-                      height={52}
-                      width={52}
-                      src={rank.icon}
-                      alt={`Eidolon ${rank.rank}`}
-                      className="w-12"
-                    />
-                  </Tooltip>
-                );
-              })}
-          </div>
-        </div>
+        {Object.keys(charData?.skills_enhanced || {}).length > 0 && (
+          <label
+            htmlFor="use-enhanced"
+            className="text-lg flex items-center gap-2 border-y py-4 border-white/[0.06] px-4"
+          >
+            <Checkbox
+              id="use-enhanced"
+              className="bg-foreground"
+              checked={!!charConfig.enhanced}
+              onCheckedChange={(val) => {
+                updateChar(Number(id), { enhanced: val ? "true" : null });
+              }}
+            />
+            <span className="font-semibold text-white/80">{t("enhancedState")}</span>
+          </label>
+        )}
       </div>
 
       <Separator
         orientation="vertical"
-        className="data-vertical:w-0.5 bg-secondary data-vertical:mx-6"
+        className="data-vertical:w-0.5 bg-white/[0.06] data-vertical:mx-6"
       />
 
       {/* LIGHTCONE */}
-      <div className="flex-1">
-        <p className="mb-4 text-4xl font-bold">Lightcone</p>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pr-4 custom-scrollbar h-full min-h-0">
+        <p className="mb-4 text-4xl font-bold">{t("lightcone")}</p>
         <div className="flex gap-8">
           <LightconeDialog />
           {!!charConfig.lightcone.id && !isPending && (
@@ -176,70 +161,71 @@ const CharacterTab = () => {
                       allLightcones?.[charConfig.lightcone.id].rank
                         .desc as string,
                       allLightcones?.[charConfig.lightcone.id].rank.params[
-                        charConfig.lightcone.rank - 1 < 0
-                          ? 0
-                          : charConfig.lightcone.rank - 1
+                      charConfig.lightcone.rank - 1 < 0
+                        ? 0
+                        : charConfig.lightcone.rank - 1
                       ] as number[],
                     ),
                   }}
                 />
               </div>
-              <div className="flex gap-4 items-center w-full">
-                <label
-                  htmlFor="lv-lightcone"
-                  className="flex gap-1 items-center justify-between"
-                >
-                  <span>Lv.</span>
-                  <InputNumber
-                    id="lv-lightcone"
-                    placeholder="Level"
+              <div className="space-y-6 w-full">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between w-full">
+                    <span className="font-semibold text-lg">{t("level")}</span>
+                    <div className="flex gap-2 items-center">
+                      <InputNumber
+                        id="lv-lightcone"
+                        placeholder={t("level")}
+                        max={80}
+                        value={charConfig.lightcone.level}
+                        onChange={(val) => {
+                          updateChar(Number(id), {
+                            lightcone: {
+                              ...charConfig.lightcone,
+                              level: val,
+                            },
+                          });
+                        }}
+                        className="w-16 border-white/[0.1]"
+                      />
+                      <Button variant="secondary" size="sm" onClick={() => updateChar(Number(id), { lightcone: { ...charConfig.lightcone, level: 80 } })}>{t("max")}</Button>
+                    </div>
+                  </div>
+                  <Slider
+                    min={1}
                     max={80}
-                    value={charConfig.lightcone.level}
-                    onChange={(val) => {
+                    value={[charConfig.lightcone.level]}
+                    onValueChange={([val]) => {
                       updateChar(Number(id), {
-                        lightcone: {
-                          ...charConfig.lightcone,
-                          level: val,
-                        },
+                        lightcone: { ...charConfig.lightcone, level: val },
                       });
                     }}
-                    className="w-16 border-secondary"
                   />
-                </label>
-                <label
-                  htmlFor="superimpose"
-                  className="flex gap-2 items-center"
-                >
-                  <span>Superimpose</span>
-                  <InputNumber
-                    id="superimpose"
-                    placeholder="Rank"
-                    className="w-16 border-secondary"
-                    value={charConfig.lightcone.rank}
-                    max={5}
-                    onChange={(val) => {
-                      updateChar(Number(id), {
-                        lightcone: {
-                          ...charConfig.lightcone,
-                          rank: val,
-                        },
-                      });
-                    }}
-                    onBlur={() => {
-                      if (
-                        !charConfig.lightcone.rank ||
-                        charConfig.lightcone.rank < 1
-                      ) {
-                        updateChar(Number(id), {
-                          lightcone: {
-                            ...charConfig.lightcone,
-                            rank: 1,
-                          },
-                        });
-                      }
-                    }}
-                  />
-                </label>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="font-semibold text-lg">{t("superimpositionRank")}</span>
+                  <div className="flex gap-2 w-full justify-between">
+                    {[1, 2, 3, 4, 5].map((rank) => (
+                      <Button
+                        key={rank}
+                        variant={charConfig.lightcone.rank === rank ? "default" : "outline"}
+                        className={`flex-1 ${charConfig.lightcone.rank === rank ? "bg-white text-black hover:bg-white/90" : "border-white/20 text-white"}`}
+                        onClick={() => {
+                          updateChar(Number(id), {
+                            lightcone: {
+                              ...charConfig.lightcone,
+                              rank: rank,
+                            },
+                          });
+                        }}
+                      >
+                        S{rank}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}

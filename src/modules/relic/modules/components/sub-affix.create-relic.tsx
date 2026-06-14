@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { Button } from "@/src/components/ui/button";
 import { ButtonGroup } from "@/src/components/ui/button-group";
 import {
@@ -20,6 +22,7 @@ interface Props {
 }
 
 const SubAffixCreateRelic = ({ mainAffixProperty }: Props) => {
+  const { t } = useTranslation();
   const { data: statPorperties } = useGetStatProperties();
   const { data: subAffixes } = useGetSubAffixes();
 
@@ -46,7 +49,7 @@ const SubAffixCreateRelic = ({ mainAffixProperty }: Props) => {
       <div className="mb-2 flex justify-between">
         <div className="flex gap-2">
           <div>
-            <p className="text-xl font-semibold">Sub Stat</p>
+            <p className="text-xl font-semibold">{t("subStat")}</p>
             <p className="text-xs text-muted-foreground">
               Upgrades: {totalUpgradesUsed}/5
             </p>
@@ -56,14 +59,14 @@ const SubAffixCreateRelic = ({ mainAffixProperty }: Props) => {
               disabled={!mainAffixProperty}
               onClick={() => randomizeStat(mainAffixProperty ?? "", subAffixes)}
             >
-              Random Stats
+              {t("randomStats")}
             </Button>
             <Button
               disabled={!mainAffixProperty}
               variant={"outline"}
               onClick={() => randomizeRolls()}
             >
-              Random Rolls
+              {t("randomRolls")}
             </Button>
           </div>
         </div>
@@ -87,7 +90,7 @@ const SubAffixCreateRelic = ({ mainAffixProperty }: Props) => {
 
           return (
             <React.Fragment key={i}>
-              {i !== 0 && <div className="h-px bg-primary" />}
+              {i !== 0 && <div className="h-px bg-white/[0.06]" />}
               <div className="flex items-center justify-between">
                 {/* SELECT */}
                 <div>
@@ -106,7 +109,7 @@ const SubAffixCreateRelic = ({ mainAffixProperty }: Props) => {
                         disabled={!mainAffixProperty}
                         className="w-52"
                       >
-                        <SelectValue placeholder="Select Sub Stat" />
+                        <SelectValue placeholder={t("selectSubStat")} />
                       </SelectTrigger>
                       <SelectContent position="popper">
                         <SelectGroup>

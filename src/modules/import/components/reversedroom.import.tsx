@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { useState, useRef } from "react";
 import { Button } from "@/src/components/ui/button";
 import { useUserStore } from "@/src/store/use-user.store";
@@ -6,7 +8,6 @@ import { toast } from "sonner";
 import { decodeRelicString, importConfigJsonParser } from "../utils/helpers";
 import { useCharacters } from "../../character/hooks/use-characters.hook";
 import { useLightcones } from "../../character/hooks/use-lightcones.hook";
-import { Tooltip } from "@/src/components/ui/tooltip-card";
 import { calculateSubAffixValue, isPercent } from "@/src/utils/helpers";
 import { REVERSE_SLOT_MAP } from "../utils/constants";
 import { useGetRelics } from "../../relic/hooks/use-get-relics.hook";
@@ -14,10 +15,14 @@ import { useGetMainAffixes } from "../../relic/hooks/use-get-main-affixes.hook";
 import { useGetSubAffixes } from "../../relic/hooks/use-get-sub-affixes.hook";
 import { useGetStatProperties } from "../../relic/hooks/use-get-stat-properties.hook";
 import { useParsedDesc } from "@/src/hooks/use-parsed-desc.hook";
+import PreviewCard, { PreviewCharacter } from "./preview-card.import";
+import { UploadCloud } from "lucide-react";
 
 const ReversedRoom = () => {
+  const { t } = useTranslation();
   const [tempData, setTempData] = useState<any>(null);
   const [selectedCharIds, setSelectedCharIds] = useState<number[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const parseDesc = useParsedDesc();
 
@@ -31,10 +36,7 @@ const ReversedRoom = () => {
 
   const addImportedData = useUserStore((state) => state.addImportedData);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const handleFileProcess = (file: File) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
@@ -46,16 +48,47 @@ const ReversedRoom = () => {
         setTempData(json);
         setSelectedCharIds(json.avatar_config.map((c: any) => Number(c.id)));
       } catch (err) {
-        toast.error("Invalid JSON format");
+        toast.error(t("invalidJsonFormat"));
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileProcess(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFileProcess(file);
   };
 
   const toggleChar = (id: number) => {
     setSelectedCharIds((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
+  };
+
+  const handleSelectAll = () => {
+    if (!tempData) return;
+    setSelectedCharIds(tempData.avatar_config.map((c: any) => Number(c.id)));
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedCharIds([]);
   };
 
   const handleProcessImport = () => {
@@ -83,200 +116,162 @@ const ReversedRoom = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-bold">Import from config.json</h2>
-        <div className="flex gap-2">
-          <input
-            type="file"
-            accept=".json"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-          />
-          <Button onClick={() => fileInputRef.current?.click()}>
-            Choose JSON File
-          </Button>
-          {tempData && (
-            <Button variant="ghost" onClick={reset}>
-              Clear
-            </Button>
-          )}
+    <div className="space-y-6 flex-1 flex flex-col overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 min-h-0">
+      <div className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-bold mb-1">{t("importFromConfigJson")}</h2>
+          <p className="text-sm text-muted-foreground">
+            {t("uploadConfigJson")}
+          </p>
         </div>
+
+        {!tempData ? (
+          <div
+            className={`border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-4 transition-all duration-300 cursor-pointer
+              ${isDragging ? "border-[#00c3ff] bg-[#00c3ff]/5" : "border-white/20 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/40"}
+            `}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <input
+              type="file"
+              accept=".json"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <div className={`p-4 rounded-full transition-colors ${isDragging ? "bg-[#00c3ff]/20 text-[#00c3ff]" : "bg-white/5 text-white/60"}`}>
+              <UploadCloud size={40} />
+            </div>
+            <div className="text-center space-y-1">
+              <p className="font-bold text-lg text-white/90">{t("clickOrDragJson")}</p>
+              <p className="text-sm text-muted-foreground">{t("supportedFormatConfig")}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex gap-4 items-center p-4 rounded-xl border border-[#00c3ff]/30 bg-[#00c3ff]/10">
+            <div className="p-2 rounded-full bg-[#00c3ff]/20 text-[#00c3ff]">
+              <UploadCloud size={24} />
+            </div>
+            <div className="flex-1">
+              <p className="font-bold text-white">{t("configJsonLoaded")}</p>
+              <p className="text-xs text-[#00c3ff]">Ready to process {tempData.avatar_config.length} characters</p>
+            </div>
+            <Button variant="ghost" onClick={reset} className="hover:bg-red-500/20 hover:text-red-400">
+              {t("clearFile")}
+            </Button>
+          </div>
+        )}
       </div>
 
       {tempData && (
-        <div className="space-y-4">
-          <Separator />
-          <div className="flex justify-between items-center">
-            <h3 className="font-semibold">Select Characters to Restore</h3>
-            <p className="text-xs text-muted-foreground italic">
-              Found {tempData.avatar_config.length} characters
-            </p>
+        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <Separator className="bg-white/[0.08]" />
+          
+          <div className="flex justify-between items-end pb-2">
+            <div>
+              <h3 className="font-semibold text-lg text-[#00c3ff]">{t("selectCharactersToRestore")}</h3>
+              <p className="text-sm text-muted-foreground">
+                Found {tempData.avatar_config.length} characters in file.
+              </p>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleSelectAll} className="border-white/10 hover:bg-white/5">
+                {t("selectAll")}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleDeselectAll} className="border-white/10 hover:bg-white/5">
+                {t("deselectAll")}
+              </Button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {tempData.avatar_config.map((char: any) => {
-              if (!allCharacters || !allLightcones) return;
-              const isSelected = selectedCharIds.includes(Number(char.id));
-
+              if (!allCharacters || !allLightcones || !allRelics || !mainAffixes || !subAffixes || !statProperties) return null;
+              
               const charData = allCharacters[char.id];
-              const lightconeData = allLightcones[char.lightcone.id];
+              if (!charData) return null;
+              
+              const lightconeData = char.lightcone?.id ? allLightcones[char.lightcone.id] : null;
+
+              const previewChar: PreviewCharacter = {
+                id: char.id,
+                name: parseDesc(charData.name, []) || charData.name,
+                level: char.level,
+                rank: char.rank,
+                icon: `https://fribbels.github.io/hsr-optimizer/assets/icon/avatar/${char.id}.webp`,
+                lightcone: char.lightcone?.id && lightconeData && !isPendingAllLightcones ? {
+                  id: char.lightcone.id,
+                  name: lightconeData.name,
+                  level: char.lightcone.level,
+                  rank: char.lightcone.rank,
+                  icon: `https://fribbels.github.io/hsr-optimizer/assets/image/light_cone_portrait/${char.lightcone.id}.webp`
+                } : undefined,
+                relics: char.relics.map((relicStr: string) => {
+                  try {
+                    const decodedRelic = decodeRelicString(relicStr);
+                    const relicData = allRelics[decodedRelic.relic_id];
+                    if (!relicData) return null;
+                    
+                    const mainAffixData = mainAffixes[relicData.main_affix_id]?.[decodedRelic.main_affix_id];
+                    if (!mainAffixData) return null;
+                    
+                    const mainAffixValue = mainAffixData.BaseValue.Value + decodedRelic.level * mainAffixData.LevelAdd.Value;
+
+                    return {
+                      id: decodedRelic.relic_id,
+                      setId: decodedRelic.relic_set_id,
+                      name: relicData.name,
+                      icon: `https://cdn.neonteam.dev/neonteam/assets/spriteoutput/relicfigures/IconRelic_${decodedRelic.relic_set_id}_${REVERSE_SLOT_MAP[decodedRelic.type]}.webp`,
+                      mainStat: {
+                        name: statProperties[mainAffixData.Property]?.name || mainAffixData.Property,
+                        value: isPercent(mainAffixData.Property) ? `${(mainAffixValue * 100).toFixed(1)}%` : `${mainAffixValue.toFixed(0)}`
+                      },
+                      subStats: decodedRelic.sub_affixes.map(sub => {
+                        const subData = subAffixes[5]?.[sub.sub_affix_id];
+                        if (!subData) return null;
+                        
+                        const subValue = calculateSubAffixValue(subData.BaseValue.Value, subData.StepValue.Value, sub.step, sub.count);
+                        return {
+                          name: statProperties[subData.Property]?.name || subData.Property,
+                          value: isPercent(subData.Property) ? `${(subValue * 100).toFixed(1)}%` : `${subValue.toFixed(1)}`
+                        };
+                      }).filter(Boolean) as any[]
+                    };
+                  } catch (e) {
+                    return null;
+                  }
+                }).filter(Boolean) as any[]
+              };
+
               return (
-                <div
+                <PreviewCard
                   key={char.id}
-                  className={`flex gap-3 p-3 border rounded-md cursor-pointer transition-colors ${
-                    isSelected
-                      ? "border-secondary bg-secondary/10"
-                      : "opacity-60"
-                  }`}
-                  onClick={() => toggleChar(Number(char.id))}
-                >
-                  <img
-                    src={`https://fribbels.github.io/hsr-optimizer/assets/icon/avatar/${char.id}.webp`}
-                    className="w-10 h-10 rounded-full"
-                    alt={char.name}
-                  />
-                  <div className="flex-1 space-y-2">
-                    <div className="flex gap-2 items-center">
-                      <p
-                        className="font-medium"
-                        dangerouslySetInnerHTML={{
-                          __html: parseDesc(charData.name, []),
-                        }}
-                      />{" "}
-                      <span className="text-xs text-muted-foreground shrink-0">
-                        E{char.rank} Lv.{char.level}
-                      </span>
-                    </div>
-                    {char.lightcone?.id && !isPendingAllLightcones ? (
-                      <div className="flex gap-2">
-                        <img
-                          src={`https://fribbels.github.io/hsr-optimizer/assets/image/light_cone_portrait/${char.lightcone.id}.webp`}
-                          alt={char.lightcone.name}
-                          className="h-24"
-                        />
-                        <div className="text-xs text-muted-foreground">
-                          <p className="text-white line-clamp-2">
-                            {lightconeData.name ?? "None"}
-                          </p>
-                          <p>Lv. {char.lightcone.level}</p>
-                          <p>Superimpose {char.lightcone.rank}</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-xs text-muted-foreground italic">
-                        no lightcone.
-                      </p>
-                    )}
-                    {char.relics.length > 0 ? (
-                      <div className="flex gap-2">
-                        {char.relics.map((relic: string) => {
-                          if (
-                            !allRelics ||
-                            !mainAffixes ||
-                            !subAffixes ||
-                            !statProperties
-                          )
-                            return;
-
-                          const decodedRelic = decodeRelicString(relic);
-                          const relicData = allRelics[decodedRelic.relic_id];
-                          const mainAffixData =
-                            mainAffixes[relicData.main_affix_id][
-                              decodedRelic.main_affix_id
-                            ];
-                          const mainAffixValue =
-                            mainAffixData.BaseValue.Value +
-                            decodedRelic.level * mainAffixData.LevelAdd.Value;
-
-                          return (
-                            <Tooltip
-                              key={`${decodedRelic.relic_id} - ${relicData.name} - ${charData.id}`}
-                              contentClassName="min-w-32 max-w-72"
-                              content={
-                                <div className="space-y-2">
-                                  <p className="text-primary font-medium">
-                                    {relicData.name}
-                                  </p>
-                                  <div className="text-xs flex justify-between">
-                                    <p>
-                                      {
-                                        statProperties[mainAffixData.Property]
-                                          .name
-                                      }
-                                    </p>
-                                    <p>
-                                      {isPercent(mainAffixData.Property)
-                                        ? `${(mainAffixValue * 100).toFixed(1)}%`
-                                        : `${mainAffixValue.toFixed(0)}`}
-                                    </p>
-                                  </div>
-                                  <Separator />
-                                  <div>
-                                    {decodedRelic.sub_affixes.map((sub) => {
-                                      const subData =
-                                        subAffixes[5][sub.sub_affix_id];
-                                      const subValue = calculateSubAffixValue(
-                                        subData.BaseValue.Value,
-                                        subData.StepValue.Value,
-                                        sub.step,
-                                        sub.count,
-                                      );
-
-                                      return (
-                                        <div
-                                          key={`${decodedRelic.relic_id} - ${relicData.name} - ${subData.Property} - ${charData.id}`}
-                                          className="text-xs flex justify-between gap-4"
-                                        >
-                                          <p>
-                                            {
-                                              statProperties[subData.Property]
-                                                .name
-                                            }
-                                          </p>
-                                          <p>
-                                            {isPercent(subData.Property)
-                                              ? `${(subValue * 100).toFixed(1)}%`
-                                              : `${subValue.toFixed(1)}`}
-                                          </p>
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              }
-                            >
-                              <img
-                                src={`https://cdn.neonteam.dev/neonteam/assets/spriteoutput/relicfigures/IconRelic_${decodedRelic.relic_set_id}_${REVERSE_SLOT_MAP[decodedRelic.type]}.webp`}
-                                alt={decodedRelic.relic_id.toString()}
-                                className="size-8"
-                              />
-                            </Tooltip>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <p className="text-xs text-muted-foreground italic">
-                        no relics.
-                      </p>
-                    )}
-                  </div>
-                </div>
+                  character={previewChar}
+                  isSelected={selectedCharIds.includes(Number(char.id))}
+                  onToggle={() => toggleChar(Number(char.id))}
+                />
               );
             })}
           </div>
 
-          <div className="flex gap-2 pt-2">
+          <div className="flex gap-4 pt-4 sticky bottom-0 bg-background/80 backdrop-blur-md p-4 -mx-4 border-t border-white/[0.08] z-30">
             <Button
-              className="flex-1"
+              className="flex-1 h-12 font-bold bg-[#00c3ff] hover:bg-[#00c3ff]/80 text-black shadow-[0_0_15px_rgba(0,195,255,0.2)]"
               onClick={handleProcessImport}
               disabled={selectedCharIds.length === 0}
             >
               Import Selected ({selectedCharIds.length})
             </Button>
-            <Button variant="outline" onClick={reset}>
-              Cancel
+            <Button 
+              variant="outline" 
+              className="h-12 px-8 border-white/10 hover:bg-white/5" 
+              onClick={reset}
+            >
+              {t("cancel")}
             </Button>
           </div>
         </div>

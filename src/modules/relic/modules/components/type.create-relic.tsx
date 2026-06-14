@@ -19,10 +19,10 @@ const TypeCreateRelic = () => {
   };
 
   return (
-    <div className="rounded-lg bg-primary w-fit overflow-hidden h-fit">
+    <div className="rounded-lg bg-white/[0.04] w-fit overflow-hidden h-fit">
       <LayoutGroup id="relic-parts-group">
         {/* RELIC PART */}
-        <div className="flex border-b border-primary/20">
+        <div className="flex border-b border-white/[0.06]">
           {RELIC_PART.map((item) => {
             const isActive = relic.type === item;
             return (

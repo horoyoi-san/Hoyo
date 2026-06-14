@@ -1,3 +1,4 @@
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { useParsedDesc } from "@/src/hooks/use-parsed-desc.hook";
 import { useCharacterStore } from "../../store/use-character.store";
 import { RELIC_SLOTS } from "../../utils/constants";
@@ -9,6 +10,7 @@ import RelicCard from "@/src/modules/relic/components/relic-card";
 import { Tooltip } from "@/src/components/ui/tooltip-card";
 
 const RelicShowcase = () => {
+  const { t } = useTranslation();
   const charId = useCharacterStore((state) => state.id);
   const parseDesc = useParsedDesc();
   const { data: relicSets } = useGetRelicSets();
@@ -67,9 +69,9 @@ const RelicShowcase = () => {
               {relicEntry ? (
                 <RelicCard relic={relicEntry} />
               ) : (
-                <div className="flex flex-col items-center rounded-lg justify-center bg-card/15">
+                <div className="flex flex-col items-center rounded-xl justify-center bg-white/[0.02] border border-white/[0.04]">
                   <p className="text-muted-foreground text-xs italic">
-                    no relic.
+                    {t("noRelicsFound")}
                   </p>
                 </div>
               )}
@@ -84,11 +86,11 @@ const RelicShowcase = () => {
 
             return (
               <Tooltip
-                containerClassName="hover:bg-primary/25 p-2 rounded-md"
+                containerClassName="hover:bg-white/[0.04] p-2 rounded-lg"
                 key={idx}
                 content={
                   <div className="space-y-2">
-                    <p className="font-semibold text-primary">{set.setName}</p>
+                    <p className="font-semibold text-white">{set.setName}</p>
                     <p
                       className="text-[11px] leading-relaxed"
                       dangerouslySetInnerHTML={{
@@ -99,9 +101,9 @@ const RelicShowcase = () => {
                 }
               >
                 <div className="min-w-0">
-                  <p className="text-[10px] flex items-center font-bold text-secondary leading-none">
+                  <p className="text-[10px] flex items-center font-bold text-white/80 leading-none">
                     <span className="truncate">{set.setName}</span>
-                    <span className="ml-2 text-[10px] shrink-0 bg-secondary px-1.5 py-0.5 rounded text-secondary-foreground">
+                    <span className="ml-2 text-[10px] shrink-0 bg-white/[0.08] px-1.5 py-0.5 rounded text-white/60">
                       {set.requirement}
                     </span>
                   </p>

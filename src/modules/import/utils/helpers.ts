@@ -75,6 +75,8 @@ export const mihomoToStoreParser = (mihomoData: ResponseMihomo) => {
       relics: relicSlots,
       sp: 50,
       use_technique: false,
+      skills: {},
+      enhanced: null,
     };
   });
 
@@ -159,6 +161,8 @@ export const importConfigJsonParser = (jsonData: any) => {
       },
       relics: relicSlots,
       use_technique: char.use_technique,
+      skills: char.skills || {},
+      enhanced: char.enhanced || null,
     };
   });
 
@@ -251,6 +255,8 @@ export const hoyolabToStoreParser = (
       relics: characterRelics,
       sp: 50,
       use_technique: false,
+      skills: {},
+      enhanced: null,
     };
   });
 

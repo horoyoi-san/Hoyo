@@ -37,7 +37,7 @@ const ImportPage = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="flex-1 flex flex-col"
+        className="flex-1 flex flex-col min-h-0"
       >
         {/* TAB HEADERS */}
         <motion.div
@@ -58,7 +58,7 @@ const ImportPage = () => {
                 className={`
                   relative p-4 cursor-pointer flex-1 flex justify-center 
                   tracking-widest transition-colors duration-300 z-10
-                  ${isActive ? "text-white" : "text-gray-400 hover:text-white"}
+                  ${isActive ? "text-white" : "text-white/40 hover:text-white/70"}
                 `}
                 onClick={() => setActiveTab(key)}
               >
@@ -70,7 +70,7 @@ const ImportPage = () => {
                     layoutId="activeTabBackground"
                     initial={false}
                     animate={{ opacity: 1 }}
-                    className="absolute inset-0 bg-white/10 rounded-t-lg"
+                    className="absolute inset-0 bg-white/[0.05] rounded-t-xl"
                     transition={{
                       type: "spring",
                       bounce: 0.1,
@@ -79,13 +79,13 @@ const ImportPage = () => {
                   >
                     {index < Object.keys(TABS).length - 1 && (
                       <div className="absolute -right-5 bottom-0 w-5 h-5 overflow-hidden pointer-events-none">
-                        <div className="absolute top-0 left-0 w-5 h-5 rounded-bl-xl shadow-[-10px_10px_0_10px_rgba(255,255,255,0.1)]" />
+                        <div className="absolute top-0 left-0 w-5 h-5 rounded-bl-xl shadow-[-10px_10px_0_10px_rgba(255,255,255,0.05)]" />
                       </div>
                     )}
 
                     {index > 0 && (
                       <div className="absolute -left-5 bottom-0 w-5 h-5 overflow-hidden pointer-events-none">
-                        <div className="absolute top-0 right-0 w-5 h-5 rounded-br-xl shadow-[10px_10px_0_10px_rgba(255,255,255,0.1)]" />
+                        <div className="absolute top-0 right-0 w-5 h-5 rounded-br-xl shadow-[10px_10px_0_10px_rgba(255,255,255,0.05)]" />
                       </div>
                     )}
                   </motion.div>
@@ -98,7 +98,7 @@ const ImportPage = () => {
         {/* TAB CONTENT CONTAINER */}
         <div
           className={`
-            p-6 bg-white/10 flex-1 min-h-52 transition-all duration-300
+            p-6 bg-white/[0.04] flex-1 flex flex-col min-h-0 relative overflow-hidden transition-all duration-300
             rounded-b-xl
             /* Logic Rounded Top: Hilangkan rounded di area yang ada tab aktifnya */
             ${activeIndex === 0 ? "rounded-tr-xl rounded-tl-none" : ""}

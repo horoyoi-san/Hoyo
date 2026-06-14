@@ -66,7 +66,7 @@ const EidolonShowcase = () => {
           return (
             <motion.div key={rank.id} variants={itemVariants}>
               <Tooltip
-                containerClassName="bg-background/50 p-px rounded-full relative"
+                containerClassName="bg-black/30 p-px rounded-full relative backdrop-blur-sm"
                 content={
                   <div className="space-y-2">
                     <div>

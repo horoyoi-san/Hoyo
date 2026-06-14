@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import {
   Dialog,
   DialogContent,
@@ -21,17 +23,19 @@ import { useCharacterStore } from "../../store/use-character.store";
 import { Button } from "@/src/components/ui/button";
 
 const LightconeDialog = () => {
+  const { t } = useTranslation();
   const id = useCharacterStore((state) => state.id);
 
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [path, setPath] = useState("");
+  const [rarity, setRarity] = useState<number | null>(null);
   const { data, isPending } = useLightcones();
 
   const filteredData = useMemo(() => {
     const allItems = Object.values(data ?? {}).reverse();
 
-    if (!search && !path) return allItems;
+    if (!search && !path && !rarity) return allItems;
 
     const searchLower = search.toLowerCase();
 
@@ -39,11 +43,12 @@ const LightconeDialog = () => {
       const nameText = item.name;
 
       const filterSearch = nameText?.toLowerCase().includes(searchLower);
-      const filterPath = item.path.includes(path);
+      const filterPath = path ? item.path.includes(path) : true;
+      const filterRarity = rarity ? item.rarity === rarity : true;
 
-      return filterSearch && filterPath;
+      return filterSearch && filterPath && filterRarity;
     });
-  }, [data, search, path]);
+  }, [data, search, path, rarity]);
 
   const charConfig = useUserStore(
     (state) => state.characters[id!] ?? DEFAULT_CHAR_CONFIG,
@@ -52,59 +57,73 @@ const LightconeDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger
-        disabled={isPending}
-        className="h-[245.3px] w-[176px] shrink-0 border-2 cursor-pointer border-foreground relative flex justify-center items-end"
-      >
-        {charConfig.lightcone.id &&
-        data?.[charConfig.lightcone.id]?.portrait ? (
-          <>
-            <Image
-              unoptimized
-              width={200}
-              height={200}
-              src={data?.[charConfig.lightcone.id]?.portrait}
-              alt={"tes"}
-              className="h-full object-cover"
-            />
-            <Button
-              size={"icon"}
-              variant={"destructive"}
-              className="absolute top-2 right-2 bg-red-600/75 hover:bg-red-700/75 p-1.5"
-              onClick={(e) => {
-                e.preventDefault();
-                updateChar(Number(id), {
-                  lightcone: {
-                    ...charConfig.lightcone,
-                    id: null,
-                  },
-                });
-              }}
-              asChild
-            >
-              <X color="white" />
-            </Button>
-          </>
-        ) : (
-          <>
-            <Plus className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-            <p className="mb-2">Select Lightcone</p>
-          </>
-        )}
+      <DialogTrigger asChild disabled={isPending}>
+        <div
+          role="button"
+          tabIndex={0}
+          className={
+            charConfig.lightcone.id
+              ? "h-[245.3px] w-[176px] shrink-0 border border-white/[0.08] rounded-xl cursor-pointer relative flex justify-center items-end bg-white/[0.02] hover:bg-white/[0.04] transition-all overflow-hidden"
+              : "h-[245.3px] w-full shrink-0 border border-white/[0.08] rounded-xl cursor-pointer relative flex flex-col justify-center items-center bg-white/[0.02] hover:bg-white/[0.04] transition-all overflow-hidden"
+          }
+        >
+          {charConfig.lightcone.id &&
+          data?.[charConfig.lightcone.id]?.portrait ? (
+            <>
+              <Image
+                unoptimized
+                width={200}
+                height={200}
+                src={data?.[charConfig.lightcone.id]?.portrait}
+                alt={"tes"}
+                className="h-full object-cover"
+              />
+              <Button
+                size={"icon"}
+                variant={"destructive"}
+                className="absolute top-2 right-2 bg-red-600/75 hover:bg-red-700/75 p-1.5 z-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  updateChar(Number(id), {
+                    lightcone: {
+                      ...charConfig.lightcone,
+                      id: null,
+                    },
+                  });
+                }}
+              >
+                <X color="white" />
+              </Button>
+            </>
+          ) : (
+            <div className="flex flex-col items-center gap-2 p-6 text-center">
+              <div className="size-16 rounded-full bg-white/[0.05] flex items-center justify-center mb-2">
+                <Plus size={32} className="opacity-50" />
+              </div>
+              <p className="text-xl font-bold">{t("noLightconeEquipped")}</p>
+              <p className="text-sm opacity-50 mb-4">{t("equipLightconeDesc")}</p>
+              <div className="bg-[#00c3ff]/20 text-[#00c3ff] hover:bg-[#00c3ff]/30 font-bold border border-[#00c3ff]/30 rounded-lg px-8 py-2 inline-flex items-center justify-center whitespace-nowrap text-sm transition-colors">
+                <Plus size={16} className="mr-2" /> {t("equipLightcone")}
+              </div>
+            </div>
+          )}
+        </div>
       </DialogTrigger>
 
-      <DialogContent showCloseButton={false} className="h-[90vh] flex flex-col">
+      <DialogContent showCloseButton={false} className="h-[90vh] flex flex-col bg-card/95 backdrop-blur-2xl border-white/[0.06]">
         <DialogHeader className="shrink-0">
           <VisuallyHidden.Root>
-            <DialogTitle>Lightcone</DialogTitle>
-            <DialogDescription>Description</DialogDescription>
+            <DialogTitle>{t("lightcone")}</DialogTitle>
+            <DialogDescription>{t("description")}</DialogDescription>
           </VisuallyHidden.Root>
           <Input
-            placeholder="Search..."
+            placeholder={t("search")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            className="bg-white/[0.04] border-white/[0.08]"
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-between items-center w-full">
             <div className="flex flex-wrap gap-2">
               {PATHS.map((item) => {
                 const isSelected = path === item;
@@ -127,15 +146,15 @@ const LightconeDialog = () => {
                                 relative flex items-center justify-center
                                 ${
                                   isSelected
-                                    ? "bg-primary/20 ring-2 ring-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]"
-                                    : "bg-background/40 hover:bg-background/60"
+                                    ? "bg-white/[0.08] ring-2 ring-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+                                    : "bg-white/[0.03] hover:bg-white/[0.06]"
                                 }
                               `}
                   >
                     {isSelected && (
                       <motion.div
                         layoutId="active-dot"
-                        className="absolute -top-1 -right-1 size-2 bg-primary rounded-full"
+                        className="absolute -top-1 -right-1 size-2 bg-white rounded-full"
                       />
                     )}
 
@@ -147,6 +166,20 @@ const LightconeDialog = () => {
                 );
               })}
             </div>
+            
+            <div className="flex gap-2 items-center shrink-0">
+              {[3, 4, 5].map((star) => (
+                <Button
+                  key={star}
+                  variant={rarity === star ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setRarity(rarity === star ? null : star)}
+                  className={`px-3 py-1 ${rarity === star ? "bg-white text-black hover:bg-white/90" : "border-white/20 text-white bg-transparent hover:bg-white/10"}`}
+                >
+                  {star}*
+                </Button>
+              ))}
+            </div>
           </div>
         </DialogHeader>
 
@@ -154,12 +187,9 @@ const LightconeDialog = () => {
           <div className="h-3" />
           <div className="grid grid-cols-6 gap-8 px-4 justify-items-center">
             {filteredData.map((item) => (
-              <motion.div
+              <div
                 key={item.id}
                 className="relative cursor-pointer group"
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
                 onClick={() => {
                   updateChar(Number(id), {
                     lightcone: { ...charConfig.lightcone, id: item.id },
@@ -168,35 +198,25 @@ const LightconeDialog = () => {
                 }}
               >
                 {/* FRONT */}
-                <motion.div
-                  variants={{
-                    rest: { top: 0, left: 0, opacity: 1 },
-                    hover: { top: -8, left: -8, opacity: 1 },
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="size-full absolute z-50 border-3 border-foreground pointer-events-none"
+                <div
+                  className="size-full absolute z-50 border-2 border-transparent group-hover:border-white/20 pointer-events-none transition-all duration-300 group-hover:-top-2 group-hover:-left-2 top-0 left-0"
                 >
                   <PathIcon
                     src={item.path}
                     className="size-8 absolute top-2 right-2 bg-background/50 rounded-full p-1 backdrop-blur-xs"
                   />
-                  <div className="absolute bottom-0 left-0 bg-background/50 p-2 w-full rounded-t-lg backdrop-blur-xs">
+                  <div className="absolute bottom-0 left-0 bg-black/60 p-2 w-full rounded-t-lg backdrop-blur-sm">
                     <p
-                      className={`text-center font-semibold ${item.rarity === 5 ? "text-secondary" : "text-blue-200"}`}
+                      className={`text-center font-semibold ${item.rarity === 5 ? "text-amber-200/80" : "text-blue-200/80"}`}
                     >
                       {item.name}
                     </p>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* BACK */}
-                <motion.div
-                  variants={{
-                    rest: { bottom: 0, right: 0, opacity: 0 },
-                    hover: { bottom: -8, right: -8, opacity: 1 },
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className={`size-full absolute -z-10 border border-foreground ${item.rarity === 5 ? "bg-secondary/25" : "bg-primary/75"} pointer-events-none`}
+                <div
+                  className={`size-full absolute -z-10 border border-transparent group-hover:border-white/[0.08] ${item.rarity === 5 ? "bg-amber-200/5" : "bg-blue-200/10"} pointer-events-none transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-bottom-2 group-hover:-right-2 bottom-0 right-0`}
                 />
 
                 {/* IMAGE LIGHTCONE */}
@@ -208,7 +228,7 @@ const LightconeDialog = () => {
                   alt={String(item.name)}
                   className="w-full"
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
         </ScrollArea>

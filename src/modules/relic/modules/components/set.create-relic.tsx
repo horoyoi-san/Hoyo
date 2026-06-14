@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import {
   Combobox,
   ComboboxContent,
@@ -14,6 +16,7 @@ import { useGetRelics } from "../../hooks/use-get-relics.hook";
 import { RelicSet } from "../../types/relic-set.type";
 
 const SetCreateRelic = () => {
+  const { t } = useTranslation();
   const relic = useCreateRelicStore((state) => state.relic);
   const updateRelic = useCreateRelicStore((state) => state.updateRelic);
   const { data: allRelics, isPending: isPendingAllRelics } = useGetRelics();
@@ -40,7 +43,7 @@ const SetCreateRelic = () => {
 
   return (
     <>
-      <label htmlFor="relic-set">Set</label>
+      <label htmlFor="relic-set">{t("set")}</label>
       <Combobox
         items={filteredRelicSets}
         value={
@@ -68,9 +71,9 @@ const SetCreateRelic = () => {
           });
         }}
       >
-        <ComboboxInput id="relic-set" placeholder="Select relic set" />
+        <ComboboxInput id="relic-set" placeholder={t("selectRelicSet")} />
         <ComboboxContent>
-          <ComboboxEmpty>No relics found.</ComboboxEmpty>
+          <ComboboxEmpty>{t("noRelicsFound")}</ComboboxEmpty>
           <ComboboxList>
             {(item) => (
               <ComboboxItem

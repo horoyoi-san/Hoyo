@@ -50,4 +50,6 @@ export const DEFAULT_CHAR_CONFIG: CharacterConfigStore = {
   },
   sp: 50,
   use_technique: false,
+  skills: {},
+  enhanced: null,
 };

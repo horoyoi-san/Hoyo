@@ -1,4 +1,4 @@
-export type UserStore = CharacterSlice & RelicSlice;
+export type UserStore = CharacterSlice & RelicSlice & ConnectSlice & BattleSlice & GlobalSlice;
 
 // CHARACTER
 export type CharacterSlice = {
@@ -31,6 +31,8 @@ export type CharacterConfigStore = {
   };
   sp: number;
   use_technique: boolean;
+  skills: Record<string, number>;
+  enhanced: string | null;
 };
 
 // LIGHTCONE
@@ -62,4 +64,96 @@ export type RelicConfigStore = {
     step: number;
   }[];
   equipped_by?: number[];
+};
+
+// CONNECT — PS Server Connection
+export type ConnectSlice = {
+  connectionType: string;
+  privateType: string;
+  serverUrl: string;
+  username: string;
+  password: string;
+  setConnectionType: (type: string) => void;
+  setPrivateType: (type: string) => void;
+  setServerUrl: (url: string) => void;
+  setUsername: (username: string) => void;
+  setPassword: (password: string) => void;
+};
+
+// BATTLE CONFIG
+export type BattleSlice = {
+  battle_type: string;
+  moc_config: MOCConfigStore;
+  pf_config: PFConfigStore;
+  as_config: ASConfigStore;
+  ce_config: CEConfigStore;
+  peak_config: PEAKConfigStore;
+  setBattleType: (type: string) => void;
+  setMocConfig: (config: MOCConfigStore) => void;
+  setPfConfig: (config: PFConfigStore) => void;
+  setAsConfig: (config: ASConfigStore) => void;
+  setCeConfig: (config: CEConfigStore) => void;
+  setPeakConfig: (config: PEAKConfigStore) => void;
+};
+
+export type MOCConfigStore = {
+  event_id: number;
+  challenge_id: number;
+  floor_side: string;
+  use_turbulence_buff: boolean;
+  use_cycle_count: boolean;
+  blessings: number[];
+  cycle_count: number;
+  stage_id: number;
+  monsters: number[][];
+};
+
+export type PFConfigStore = {
+  event_id: number;
+  challenge_id: number;
+  buff_id: number;
+  floor_side: string;
+  blessings: number[];
+  cycle_count: number;
+  stage_id: number;
+  monsters: number[][];
+};
+
+export type ASConfigStore = {
+  event_id: number;
+  challenge_id: number;
+  buff_id: number;
+  floor_side: string;
+  blessings: number[];
+  cycle_count: number;
+  stage_id: number;
+  monsters: number[][];
+};
+
+export type CEConfigStore = {
+  blessings: number[];
+  cycle_count: number;
+  stage_id: number;
+  monsters: number[][];
+};
+
+export type PEAKConfigStore = {
+  event_id: number;
+  challenge_id: number;
+  buff_id: number;
+  boss_mode: string;
+  blessings: number[];
+  cycle_count: number;
+  stage_id: number;
+  monsters: number[][];
+};
+
+// GLOBAL STATE
+export type GlobalSlice = {
+  isConnectPS: boolean;
+  isEnableChangePath: boolean;
+  isEnableLua: boolean;
+  setIsConnectPS: (val: boolean) => void;
+  setIsEnableChangePath: (val: boolean) => void;
+  setIsEnableLua: (val: boolean) => void;
 };

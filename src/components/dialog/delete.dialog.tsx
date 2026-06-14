@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -23,6 +25,7 @@ const DeleteDialog = ({
   title,
   description,
 }: DeleteDialogProps) => {
+  const { t } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
@@ -32,10 +35,10 @@ const DeleteDialog = ({
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t("cancel")}
           </Button>
           <Button variant="destructive" onClick={onConfirm}>
-            Delete
+            {t("delete")}
           </Button>
         </DialogFooter>
       </DialogContent>

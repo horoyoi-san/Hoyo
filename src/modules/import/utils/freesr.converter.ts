@@ -63,6 +63,13 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
         }
       }
 
+      const rawEquip = r.equipped_by || r.equip_avatar || r.EquipAvatar;
+      const equipped_by = rawEquip
+        ? Array.isArray(rawEquip)
+          ? rawEquip.map(Number)
+          : [Number(rawEquip)]
+        : [];
+
       output.relics[String(uid)] = {
         id: String(uid),
         relic_id: Number(relic_id || 0),
@@ -71,16 +78,14 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
         level: Number(level || 0),
         main_affix_id: Number(main_affix_id || 0),
         sub_affixes,
-        equipped_by: r.equipped_by
-          ? Array.isArray(r.equipped_by)
-            ? r.equipped_by.map(Number)
-            : [Number(r.equipped_by)]
-          : [],
+        equipped_by,
       };
     });
   }
 
   // Convert avatars / characters
+  const allLightcones = data.lightcones || data.light_cones || data.equipment || data.weapons || [];
+
   if (data.avatars && typeof data.avatars === "object") {
     Object.entries(data.avatars).forEach(([key, val]) => {
       const a: any = val || {};
@@ -90,10 +95,11 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
       const promotion = a.promotion ?? a.Promotion ?? 0;
       const rank = a.rank ?? a.Rank ?? 0;
 
-      const lightcone = a.lightcone || a.weapon || {};
+      const rootLc = allLightcones.find((x: any) => Number(x.equip_avatar || x.EquipAvatar) === id);
+      const lightcone = rootLc || a.lightcone || a.weapon || {};
 
       const lc = {
-        id: Number(lightcone.id || lightcone.ID || null) || null,
+        id: Number(lightcone.item_id || lightcone.id || lightcone.ID || null) || null,
         promotion: Number(lightcone.promotion ?? lightcone.Promotion ?? 0),
         rank: Number(lightcone.rank ?? lightcone.Rank ?? 0),
         level: Number(lightcone.level ?? lightcone.Level ?? 0),
@@ -125,6 +131,8 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
         }
       });
 
+      const skills = a.skills || a.data?.skills || {};
+
       output.characters[String(id)] = {
         id,
         level: Number(level || 1),
@@ -134,6 +142,7 @@ export const convertFreesrToUserStore = (data: FreesrData) => {
         relics: relicSlots,
         sp: 0,
         use_technique: false,
+        skills,
       };
     });
   }
@@ -289,6 +298,8 @@ export const convertFreesrToConfig = (data: any) => {
           Boolean(
             avatar.use_technique
           ),
+
+        skills: avatar.skills || avatar.data?.skills || {},
 
         buff_id_list:
           avatar.buff_id_list ||

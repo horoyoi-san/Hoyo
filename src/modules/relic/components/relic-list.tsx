@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { useUserStore } from "@/src/store/use-user.store";
 import { useGetRelics } from "../hooks/use-get-relics.hook";
 import { LayoutGrid } from "lucide-react";
@@ -39,6 +41,7 @@ const RelicList = ({
   emptyClassName,
   type,
 }: Props) => {
+  const { t } = useTranslation();
   const anchorSet = useComboboxAnchor();
   const anchorEquip = useComboboxAnchor();
   const [selectedType, setSelectedType] = useState(type || "all");
@@ -97,7 +100,7 @@ const RelicList = ({
               className={`px-4 py-2 rounded-lg transition-all capitalize text-foreground ${
                 selectedType === type
                   ? "bg-background shadow-md"
-                  : "bg-primary hover:bg-primary"
+                  : "bg-white/[0.03] hover:bg-white/[0.06]"
               }`}
             >
               {type === "all" ? (
@@ -133,14 +136,14 @@ const RelicList = ({
                         <ComboboxChip key={value.id}>{value.name}</ComboboxChip>
                       );
                     })}
-                    <ComboboxChipsInput placeholder="Filter by set..." />
+                    <ComboboxChipsInput placeholder={t("filterBySet")} />
                   </>
                 );
               }}
             </ComboboxValue>
           </ComboboxChips>
           <ComboboxContent anchor={anchorSet}>
-            <ComboboxEmpty>No relic sets found.</ComboboxEmpty>
+            <ComboboxEmpty>{t("noRelicSetsFound")}</ComboboxEmpty>
             <ComboboxList>
               {(item) => (
                 <ComboboxItem
@@ -188,14 +191,14 @@ const RelicList = ({
                         </ComboboxChip>
                       );
                     })}
-                    <ComboboxChipsInput placeholder="Filter by character..." />
+                    <ComboboxChipsInput placeholder={t("filterByCharacter")} />
                   </>
                 );
               }}
             </ComboboxValue>
           </ComboboxChips>
           <ComboboxContent anchor={anchorEquip}>
-            <ComboboxEmpty>No character sets found.</ComboboxEmpty>
+            <ComboboxEmpty>{t("noCharacterSetsFound")}</ComboboxEmpty>
             <ComboboxList>
               {(item) => (
                 <ComboboxItem
@@ -236,7 +239,7 @@ const RelicList = ({
             emptyClassName,
           )}
         >
-          No relics found.
+          {t("noRelicsFound")}
         </div>
       )}
     </>

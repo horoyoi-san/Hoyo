@@ -1,3 +1,5 @@
+
+import { useTranslation } from "@/src/hooks/use-translation.hook";
 import { useMemo } from "react";
 import { useLightcones } from "../../hooks/use-lightcones.hook";
 import { useUserStore } from "@/src/store/use-user.store";
@@ -10,6 +12,7 @@ import { Separator } from "@/src/components/ui/separator";
 import { imgUrl } from "@/src/utils/helpers";
 
 const LightconeShowcase = () => {
+  const { t } = useTranslation();
   const { data: allLightcones } = useLightcones();
   const charId = useCharacterStore((state) => state.id);
   const parseDesc = useParsedDesc();
@@ -32,16 +35,16 @@ const LightconeShowcase = () => {
           <Tooltip
             content={
               <div className="max-w-xs space-y-1">
-                <p className="font-bold text-primary">{lightconeData.name}</p>
+                <p className="font-bold text-white">{lightconeData.name}</p>
                 <p
                   className="text-xs leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html: parseDesc(
                       lightconeData.rank.desc as string,
                       lightconeData.rank.params[
-                        charConfig.lightcone.rank - 1 < 0
-                          ? 0
-                          : charConfig.lightcone.rank - 1
+                      charConfig.lightcone.rank - 1 < 0
+                        ? 0
+                        : charConfig.lightcone.rank - 1
                       ] as number[],
                     ),
                   }}
@@ -71,19 +74,19 @@ const LightconeShowcase = () => {
 
             <div className="flex items-center gap-3">
               <div className="flex flex-col">
-                <span className="text-[10px] uppercase font-medium">Level</span>
+                <span className="text-[10px] uppercase font-medium">{t("level")}</span>
                 <span className="font-bold">
                   Lv. {charConfig.lightcone.level}
                 </span>
               </div>
 
-              <Separator orientation="vertical" className="h-8 bg-white/10" />
+              <Separator orientation="vertical" className="h-8 bg-white/[0.06]" />
 
               <div className="flex flex-col">
                 <span className="text-[10px] uppercase font-medium">
-                  Superimpose
+                  {t("superimpose")}
                 </span>
-                <span className="font-bold text-secondary">
+                <span className="font-bold text-white">
                   S{charConfig.lightcone.rank}
                 </span>
               </div>
@@ -92,7 +95,7 @@ const LightconeShowcase = () => {
         </div>
       ) : (
         <div className="h-24 flex justify-center items-center">
-          <p className="text-xs italic">no lightcone.</p>
+          <p className="text-xs italic">{t("noLightconeEquipped")}</p>
         </div>
       )}
     </>

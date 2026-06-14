@@ -220,8 +220,8 @@ const SkillsShowcase = () => {
                     className={cn(
                       "size-9 rounded-full border flex items-center justify-center transition-all relative",
                       groupHasBonus
-                        ? "bg-secondary/20 border-secondary/50 shadow-[0_0_10px_rgba(0,255,255,0.15)]"
-                        : "bg-primary/10 border-primary/20",
+                        ? "bg-white/[0.08] border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.05)]"
+                        : "bg-white/[0.04] border-white/[0.08]",
                     )}
                   >
                     <Image
@@ -302,7 +302,7 @@ const NodeIcon = ({ node }: { node: SkillTreePoint }) => {
         className={cn(
           "shrink-0 rounded-full border",
           node.anchor.startsWith("Point0") && node.anchor !== "Point05"
-            ? "size-8 bg-primary/20 border-primary/40 p-1" // Bonus Ability
+            ? "size-8 bg-white/[0.06] border-white/[0.12] p-1" // Bonus Ability
             : "size-6 bg-white/5 border-white/10 p-1", // Stat Boost
         )}
       >

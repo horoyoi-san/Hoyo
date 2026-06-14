@@ -93,14 +93,14 @@ const StatsShowcase = () => {
   if (!stats) return null;
 
   return (
-    <div className="grid grid-rows-7 grid-flow-col gap-x-8 gap-y-3 pr-2">
+    <div className="grid grid-rows-7 grid-flow-col gap-x-8 gap-y-2.5 pr-2">
       {finalDisplayStats.map((item) => (
         <div
           key={item.name}
-          className="flex justify-between text-xs items-center border-b border-white/5 pb-1"
+          className="flex justify-between text-xs items-center border-b border-white/[0.04] pb-1.5"
         >
-          <p className="font-semibold tracking-wide">{item.name}</p>
-          <p className="font-bold text-secondary">{item.val}</p>
+          <p className="font-medium tracking-wide text-white/60">{item.name}</p>
+          <p className="font-bold text-foreground">{item.val}</p>
         </div>
       ))}
     </div>
