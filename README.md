@@ -22,3 +22,16 @@ mv zig-out/bin/velina.exe zig-out/bin/Sunbringer.dll PATH_TO_CLIENT/
 ## Configuration
 
 **Sunbringer** can be easily configured by changing destination addresses inside `assets/login_setting.json` and `assets/server_pc.json`. In case you want to adapt it for a different game version - just swap out offsets in `assets/offsets.zon`.
+
+## รองรับชื่อไฟล์ที่ต้องการ: 
+ในฟังก์ชัน loadUidCustom ได้ปรับลำดับให้อ่านไฟล์ดังต่อไปนี้เป็นลำดับแรกๆ:
+```
+        "crypto_custom.txt",
+        "crypto_custom",
+        "Crypto_Custom.txt",
+        "crypto.txt",
+        "message.txt", 
+        "UID_Custom.txt", 
+        "uid_custom.txt", 
+        "uid_custom"
+```
