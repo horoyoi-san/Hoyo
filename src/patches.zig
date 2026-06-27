@@ -15,6 +15,10 @@ pub fn onLoad(assembly: GameAssembly) !void {
     try sec_engine.init(assembly);
 }
 
+pub fn ensureExternalFiles() void {
+    encryption.ensureCustomFiles();
+}
+
 const various = @import("patches/various.zig");
 const sec_engine = @import("patches/sec_engine.zig");
 const networking = @import("patches/networking.zig");

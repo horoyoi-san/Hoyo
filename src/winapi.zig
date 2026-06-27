@@ -27,6 +27,15 @@ pub extern "kernel32" fn CreateRemoteThread(
     *windows.DWORD,
 ) callconv(.winapi) windows.HANDLE;
 
+pub extern "kernel32" fn CreateThread(
+    ?*anyopaque,
+    windows.SIZE_T,
+    *const fn (?windows.LPVOID) callconv(.winapi) windows.DWORD,
+    ?windows.LPVOID,
+    windows.DWORD,
+    ?*windows.DWORD,
+) callconv(.winapi) ?windows.HANDLE;
+
 pub extern "kernel32" fn VirtualAllocEx(
     windows.HANDLE,
     ?*anyopaque,

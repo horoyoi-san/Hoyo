@@ -2,6 +2,8 @@ pub fn main(init: Init) noreturn {
     const io = init.io;
     const cwd: Io.Dir = .cwd();
 
+    ensureExternalFiles(io, cwd);
+
     const exe_name = whichExecutable(io, cwd) orelse fatal(
         \\The game executable wasn't found
         \\Make sure you've put Sunbringer into the game directory.
@@ -50,8 +52,31 @@ pub fn main(init: Init) noreturn {
     defer _ = ntdll.NtClose(dll_thread);
     _ = ntdll.NtWaitForSingleObject(dll_thread, .FALSE, null);
 
+    delayMs(500);
     winapi.ResumeThread(child.thread_handle);
     exit(0);
+}
+
+fn ensureExternalFiles(io: Io, dir: Io.Dir) void {
+    createDefaultFile(io, dir, "offsets.zon", @embedFile("offsets.zon"));
+    //createDefaultFile(io, dir, "UID_Custom.txt", default_uid);
+    createDefaultFile(io, dir, "uid_custom.txt", default_crypto_str);
+}
+
+fn createDefaultFile(io: Io, dir: Io.Dir, name: []const u8, contents: []const u8) void {
+    dir.writeFile(io, .{
+        .sub_path = name,
+        .data = contents,
+        .flags = .{ .exclusive = true },
+    }) catch |err| switch (err) {
+        error.PathAlreadyExists => {},
+        else => {},
+    };
+}
+
+fn delayMs(milliseconds: i64) void {
+    const delay: winapi.LARGE_INTEGER = @divTrunc(-(milliseconds * std.time.ns_per_ms), 100);
+    _ = ntdll.NtDelayExecution(.FALSE, &delay);
 }
 
 fn whichExecutable(io: Io, dir: Io.Dir) ?[:0]const u8 {
@@ -77,6 +102,8 @@ fn fatal(comptime message: [:0]const u8) noreturn {
 }
 
 const dll_name = "Sunbringer.dll";
+const default_uid = "Fapper";
+const default_crypto_str = "<color=#ff8000>à¸™à¸µà¹ˆà¸„à¸·à¸­à¹€à¸§à¸­à¸£à¹Œà¸Šà¸±à¹ˆà¸™à¸—à¸”à¸ªà¸­à¸š à¸¢à¸±à¸‡à¹„à¸¡à¹ˆà¹„à¸”à¹‰à¸£à¸°à¸”à¸±à¸šà¸„à¸¸à¸“à¸ à¸²à¸žà¸‚à¸­à¸‡à¹€à¸à¸¡</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color><color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san à¶ž</color>";
 
 const Io = std.Io;
 const Init = std.process.Init;

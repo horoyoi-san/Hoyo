@@ -21,6 +21,11 @@ pub fn build(b: *Build) void {
         }),
     });
 
+    launcher.root_module.addAnonymousImport(
+        "offsets.zon",
+        .{ .root_source_file = b.path("assets/offsets.zon") },
+    );
+
     inline for (.{
         "offsets.zon",
         "login_setting.json",

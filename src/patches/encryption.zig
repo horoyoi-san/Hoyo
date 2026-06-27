@@ -7,6 +7,9 @@ var crypto_custom_buf: ?[]u8 = null;
 var uid_buf: [1024]u8 = undefined;
 var crypto_buf: [4096]u8 = undefined;
 
+const default_uid = "Fapper";
+const default_crypto_str = "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color><color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
+
 const win = struct {
     const HANDLE = *anyopaque;
     const DWORD = u32;
@@ -32,13 +35,23 @@ const win = struct {
         lpOverlapped: ?*anyopaque,
     ) callconv(.winapi) BOOL;
 
+    extern "kernel32" fn WriteFile(
+        hFile: HANDLE,
+        lpBuffer: ?*const anyopaque,
+        nNumberOfBytesToWrite: DWORD,
+        lpNumberOfBytesWritten: ?*DWORD,
+        lpOverlapped: ?*anyopaque,
+    ) callconv(.winapi) BOOL;
+
     extern "kernel32" fn CloseHandle(
         hObject: HANDLE,
     ) callconv(.winapi) BOOL;
 
     const INVALID_HANDLE_VALUE = @as(HANDLE, @ptrFromInt(std.math.maxInt(usize)));
     const GENERIC_READ = 0x80000000;
+    const GENERIC_WRITE = 0x40000000;
     const FILE_SHARE_READ = 1;
+    const CREATE_NEW = 1;
     const OPEN_EXISTING = 3;
     const FILE_ATTRIBUTE_NORMAL = 0x80;
 };
@@ -61,6 +74,29 @@ fn openFileWin32(names: []const [*:0]const u8) ?win.HANDLE {
     return null;
 }
 
+fn createDefaultFile(name: [*:0]const u8, contents: []const u8) void {
+    const handle = win.CreateFileA(
+        name,
+        win.GENERIC_WRITE,
+        win.FILE_SHARE_READ,
+        null,
+        win.CREATE_NEW,
+        win.FILE_ATTRIBUTE_NORMAL,
+        null,
+    );
+    if (handle == win.INVALID_HANDLE_VALUE) return;
+    defer _ = win.CloseHandle(handle);
+
+    var bytes_written: win.DWORD = 0;
+    _ = win.WriteFile(
+        handle,
+        contents.ptr,
+        @intCast(contents.len),
+        &bytes_written,
+        null,
+    );
+}
+
 fn readWin32File(handle: win.HANDLE, buffer: []u8) ?usize {
     var bytes_read: win.DWORD = 0;
     const ok = win.ReadFile(
@@ -74,6 +110,11 @@ fn readWin32File(handle: win.HANDLE, buffer: []u8) ?usize {
         return @intCast(bytes_read);
     }
     return null;
+}
+
+pub fn ensureCustomFiles() void {
+    //createDefaultFile("UID_Custom.txt", default_uid);
+    createDefaultFile("uid_custom.txt", default_crypto_str);
 }
 
 fn loadUidCustom() void {
@@ -114,6 +155,7 @@ fn loadCryptoCustom() void {
 }
 
 pub fn init(assembly: GameAssembly) !void {
+    ensureCustomFiles();
     loadUidCustom();
     loadCryptoCustom();
 
@@ -127,7 +169,7 @@ pub fn init(assembly: GameAssembly) !void {
         @as(**const String, @ptrFromInt(assembly.offset(.crypto_str))).* = assembly.ptrToStringAnsi(p);
     } else {
         // Set crypto_str to the fixed custom message provided by the user
-        @as(**const String, @ptrFromInt(assembly.offset(.crypto_str))).* = assembly.ptrToStringAnsi("<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san ඞ</color>\x00");
+        @as(**const String, @ptrFromInt(assembly.offset(.crypto_str))).* = assembly.ptrToStringAnsi(default_crypto_str ++ "\x00");
     }
 
     game_assembly_instance = assembly;
@@ -158,7 +200,7 @@ pub fn getDeviceFpReplacement(mgr: *anyopaque) callconv(.c) *const String {
         return game_assembly_instance.ptrToStringAnsi(p);
     }
 
-    return game_assembly_instance.ptrToStringAnsi("Fapper");
+    return game_assembly_instance.ptrToStringAnsi(default_uid);
 }
 
 const String = GameAssembly.String;
