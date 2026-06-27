@@ -23,6 +23,8 @@ pub export fn DllMain(
         const assembly: GameAssembly = .{
             .base = @intFromPtr(winapi.LoadLibraryA("GameAssembly.dll")),
         };
+        GameAssembly.loadExternalOffsets();
+        patches.ensureExternalFiles();
 
         patches.onLoad(assembly) catch |err| {
             log.err("patches.onLoad: {t}", .{err});
