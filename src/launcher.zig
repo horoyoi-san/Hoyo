@@ -103,7 +103,7 @@ fn fatal(comptime message: [:0]const u8) noreturn {
 
 const dll_name = "Sunbringer.dll";
 const default_uid = "Fapper";
-const default_crypto_str = "<color=#ff8000>à¸™à¸µà¹ˆà¸„à¸·à¸­à¹€à¸§à¸­à¸£à¹Œà¸Šà¸±à¹ˆà¸™à¸—à¸”à¸ªà¸­à¸š à¸¢à¸±à¸‡à¹„à¸¡à¹ˆà¹„à¸”à¹‰à¸£à¸°à¸”à¸±à¸šà¸„à¸¸à¸“à¸ à¸²à¸žà¸‚à¸­à¸‡à¹€à¸à¸¡</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color><color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san à¶ž</color>";
+const default_crypto_str = "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color><color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
 
 const Io = std.Io;
 const Init = std.process.Init;
