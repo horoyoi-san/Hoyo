@@ -53,19 +53,36 @@ Options:
 | Honkai: Nexus anima | `abc` |
 | Petit Planet | `hyg` |
 
+# Zenless Zone Zero
 | Game | Version | Downloader |
 | - | - | - |
 | Zenless Zone Zero |2.8|Sophon.Downloader.exe full U5hbdsT9W7 game 2.3 output --region=OSREL |
 | Zenless Zone Zero |2.8|Sophon.Downloader.exe full x6znKlJ0xK game 2.3 output --region=CNREL |
+
+# Honkai: Star Rail
+| Game | Version | Downloader |
 | Honkai: Star Rail |4.5|Sophon.Downloader.exe full 4ziysqXOQ8 game 3.6 output --region=OSREL |
 | Honkai: Star Rail |4.5|Sophon.Downloader.exe full 64kMb5iAWu game 3.6 output --region=CNREL |
+
+# Genshin Impact
+| Game | Version | Downloader |
 | Genshin Impact |6.7|Sophon.Downloader.exe full gopR6Cufr3 game 6.0 output --region=OSREL |
 | Genshin Impact |6.7|Sophon.Downloader.exe full 1Z8W5NHUQb game 6.0 output --region=CNREL |
+
+# Honkai Impact 3rd
+| Game | Version | Downloader |
 | Honkai Impact 3rd |9.0|Sophon.Downloader.exe full 5TIVvvcwtM game 8.4 output --region=OSREL |
 | Honkai Impact 3rd |9.0|Sophon.Downloader.exe full osvnlOc0S8 game 8.4 output --region=CNREL |
+
+# Honkai: Nexus anima
+| Game | Version | Downloader |
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full 4qvmDrMwKS game 0.3.0 output --region=OSBETA |
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full j7rlly0oYR game 0.3.0 output --region=CNBETA |
 | Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full lgyIM35mz8 game 0.6.0 output --region=CNBETA |
+
+# Petit Planet
+| Game | Version | Downloader |
+| Petit Planet |0.83.6|Sophon.Downloader.exe full 0fijU7nET7 game 0.83.6 output --region=CNBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
 
