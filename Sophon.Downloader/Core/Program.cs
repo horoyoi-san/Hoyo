@@ -129,7 +129,12 @@ namespace Core
             Enum.TryParse(region, out Region curRegion);
             BranchType curBranch = Enum.Parse<BranchType>(branch, true);
             Game game = new Game(curRegion, gameId);
-            SophonUrl sophonUrl = new SophonUrl(curRegion, game.GetGameId(), curBranch, launcherId, platApp);
+            SophonUrl sophonUrl = new SophonUrl(
+            curRegion,
+            game.GetGameIds(),
+            curBranch,
+            launcherId,
+            platApp);
             await sophonUrl.GetBuildData();
 
             if (!silent) Console.WriteLine($"Running with {threads} threads and {maxHttpHandle} handles");

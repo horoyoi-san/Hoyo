@@ -68,7 +68,7 @@ namespace Core
     {
         private string apiBase { get; set; }
         private string sophonBase { get; set; }
-        private string gameId { get; set; }
+        private List<string> gameIds { get; set; } = new();
         private BranchType branch { get; set; }
         private string platApp { get; set; }
 
@@ -82,14 +82,14 @@ namespace Core
 
         public SophonUrl(
             Region region,
-            string gameId,
+            IEnumerable<string> gameIds,
             BranchType branch = BranchType.Main,
             string launcherId = "",
             string platApp = "")
         {
             UpdateRegion(region);
 
-            this.gameId = gameId;
+            this.gameIds = gameIds.ToList();
             this.branch = branch;
 
             if (!string.IsNullOrEmpty(launcherId))
@@ -127,7 +127,7 @@ namespace Core
                 case Region.CNBETA:
                     apiBase = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches";
                     sophonBase = "https://api-beta.mihoyo.com/downloader/sophon_chunk/api/getBuild";
-                    launcherIds = new List<string> { "kwykHprMm9", "TC4836G73s" };
+                    launcherIds = new List<string> { "kwykHprMm9", "TC4836G73s", "WBjNy0hOrG" };
                     platApp = "ddxf5dufpuyo";
                     break;
 
@@ -138,33 +138,41 @@ namespace Core
 
         public async Task<int> GetBuildData()
         {
-            var tasks = launcherIds.Select(async launcherId =>
-            {
-                var uri = new UriBuilder(apiBase);
-                var query = HttpUtility.ParseQueryString(uri.Query);
-
-                query["game_ids[]"] = gameId;
-                query["launcher_id"] = launcherId;
-                uri.Query = query.ToString();
-
-                try
+            var tasks =
+                from gameId in gameIds
+                from launcherId in launcherIds
+                select Task.Run(async () =>
                 {
-                    var json = await FetchUrl(uri.ToString());
-                    var obj = JsonSerializer.Deserialize<BranchesRoot>(json);
+                    var uri = new UriBuilder(apiBase);
+                    var query = HttpUtility.ParseQueryString(uri.Query);
 
-                    if (obj == null)
+                    query["game_ids[]"] = gameId;
+                    query["launcher_id"] = launcherId;
+                    uri.Query = query.ToString();
+
+                    try
+                    {
+                        var json = await FetchUrl(uri.ToString());
+                        var obj = JsonSerializer.Deserialize<BranchesRoot>(json);
+
+                        if (obj == null)
+                            return null;
+
+                        var data = ParseBuildData(obj, branch);
+
+                        return new
+                        {
+                            gameId,
+                            launcherId,
+                            obj,
+                            data
+                        };
+                    }
+                    catch
+                    {
                         return null;
-
-                    var data = ParseBuildData(obj, branch);
-
-                    return new { launcherId, obj, data };
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"❌ {launcherId}: {ex.Message}");
-                    return null;
-                }
-            });
+                    }
+                });
 
             var results = await Task.WhenAll(tasks);
 
