@@ -26,7 +26,7 @@ BOT_NAME = "崩坏：因缘精灵"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn2.png"
 )
 
 # =========================================================
@@ -44,7 +44,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=j7rlly0oYR&launcher_id=TC4836G73s",
+    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=WBjNy0hOrG&launcher_id=lgyIM35mz8",
 ]
 
 # =========================================================
@@ -268,13 +268,13 @@ async def main():
             game_info_url = (
                 "https://hyp-api-beta.mihoyo.com/"
                 "hyp/hyp-connect/api/getGames?"
-                "launcher_id=VYTpXlbWo8"
+                "launcher_id=WBjNy0hOrG"
             )
 
             resp = requests.get(game_info_url, timeout=10).json()
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "j7rlly0oYR"
+                g for g in resp["data"]["games"] if g["id"] == "lgyIM35mz8"
             )
 
             display_name = game_data["display"]["name"]
