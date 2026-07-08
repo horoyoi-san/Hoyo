@@ -26,7 +26,7 @@ BOT_NAME = "Honkai Nexun Anima Branches"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global2.png"
 )
 
 # =========================================================
@@ -46,16 +46,16 @@ CHANNELS = [
 BRANCH_API_URL = (
     "https://sg-hyp-api-beta.hoyoverse.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC"
+    "game_ids[]=IWISpEcDbC&launcher_id=KAGKS3zS99"
 )
 
 GAME_INFO_URL = (
     "https://sg-hyp-api-beta.hoyoverse.com/"
     "hyp/hyp-connect/api/getGames?"
-    "launcher_id=95ODRGH3xC"
+    "launcher_id=KAGKS3zS99"
 )
 
-GAME_ID = "4qvmDrMwKS"
+GAME_ID = "IWISpEcDbC"
 
 GAME_NAME = "HNABranches"
 

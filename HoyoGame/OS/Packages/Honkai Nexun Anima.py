@@ -26,7 +26,7 @@ BOT_NAME = "Honkai Nexus Anima PROD"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_global2.png"
 )
 
 # =========================================================
@@ -44,7 +44,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=4qvmDrMwKS&launcher_id=95ODRGH3xC",
+    "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=IWISpEcDbC&launcher_id=KAGKS3zS99",
 ]
 
 # =========================================================
@@ -274,7 +274,7 @@ async def main():
             resp = requests.get(game_info_url, timeout=10).json()
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "4qvmDrMwKS"
+                g for g in resp["data"]["games"] if g["id"] == "IWISpEcDbC"
             )
 
             display_name = game_data["display"]["name"]
