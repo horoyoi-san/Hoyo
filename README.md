@@ -78,6 +78,7 @@ Options:
 | Game | Version | Downloader |
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full 4qvmDrMwKS game 0.3.0 output --region=OSBETA |
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full j7rlly0oYR game 0.3.0 output --region=CNBETA |
+| Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full IWISpEcDbC game 0.6.0 output --region=OSBETA |
 | Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full lgyIM35mz8 game 0.6.0 output --region=CNBETA |
 
 # Petit Planet
