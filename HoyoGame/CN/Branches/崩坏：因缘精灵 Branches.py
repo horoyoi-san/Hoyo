@@ -26,7 +26,7 @@ BOT_NAME = "崩坏：因缘精灵 Branches"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn2.png"
 )
 
 # =========================================================
