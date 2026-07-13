@@ -46,16 +46,16 @@ CHANNELS = [
 BRANCH_API_URL = (
     "https://hyp-api-beta.mihoyo.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=WBjNy0hOrG&launcher_id=lgyIM35mz8"
+    "game_ids[]=lgyIM35mz8&launcher_id=WBjNy0hOrG"
 )
 
 GAME_INFO_URL = (
     "https://hyp-api-beta.mihoyo.com/"
     "hyp/hyp-connect/api/getGames?"
-    "launcher_id=lgyIM35mz8"
+    "launcher_id=WBjNy0hOrG"
 )
 
-GAME_ID = "WBjNy0hOrG"
+GAME_ID = "lgyIM35mz8"
 
 GAME_NAME = "HNABranches"
 
