@@ -44,7 +44,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=WBjNy0hOrG&launcher_id=lgyIM35mz8",
+    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=lgyIM35mz8&launcher_id=WBjNy0hOrG",
 ]
 
 # =========================================================
