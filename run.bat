@@ -9,10 +9,6 @@ REM Build hkrpg
 cargo build -p hkrpg --release
 if ERRORLEVEL 1 exit /b 1
 
-REM Build mhypbase
-cargo build -p mhypbase --release
-if ERRORLEVEL 1 exit /b 1
-
 REM Build launcher
 cargo build -p launcher --release
 if ERRORLEVEL 1 exit /b 1
