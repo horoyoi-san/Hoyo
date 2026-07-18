@@ -22,7 +22,7 @@ impl HkrpgModule for HkrpgModuleContext<Network> {
 
 impl Network {
     const SDK_URL: &str = "http://127.0.0.1:21000";
-    // const DISPATCH_URL: &str = "http://127.0.0.1:21000";
+    const DISPATCH_URL: &str = "http://127.0.0.1:21000";
     const REDIRECT_SDK: bool = true;
     const REDIRECT_DISPATCH: bool = true;
 
@@ -38,7 +38,7 @@ impl Network {
             s if (s.contains("bhsr.com") || s.contains("starrails.com"))
                 && Self::REDIRECT_DISPATCH =>
             {
-                Self::SDK_URL.to_string()
+                Self::DISPATCH_URL.to_string()
             }
             s => {
                 println!("Leaving request as-is: {s}");

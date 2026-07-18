@@ -2,11 +2,12 @@ use std::marker::PhantomData;
 
 use crate::{addr, interceptor::Interceptor};
 
+pub mod apn;
 pub mod censorship_patch;
 pub mod crypto;
 pub mod hk_check;
-pub mod network;
 pub mod misc;
+pub mod network;
 
 pub struct HkrpgModuleContext<T> {
     _base: usize,

@@ -1,0 +1,99 @@
+name: Prebuilt release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  releases: write
+
+jobs:
+  prebuilt:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install nightly Rust
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: x86_64-pc-windows-gnu
+
+      - name: Install MinGW and packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 zip unzip jq
+
+      - name: Build release binaries
+        env:
+          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
+        run: cargo build --release --target x86_64-pc-windows-gnu -p ext -p launcher
+
+      - name: Package prebuilt release
+        run: |
+          set -euo pipefail
+
+          rm -rf dist
+          mkdir -p dist
+          cp target/x86_64-pc-windows-gnu/release/hkrpg.dll dist/
+          cp target/x86_64-pc-windows-gnu/release/launcher.exe dist/
+
+          test -f dist/hkrpg.dll
+          test -f dist/launcher.exe
+
+          (
+            cd dist
+            zip -9 -q ../hkrpg.zip hkrpg.dll launcher.exe
+          )
+          unzip -l hkrpg.zip
+
+      - name: Publish prebuilt release
+        env:
+          GITEA_API_URL: ${{ gitea.server_url }}/api/v1
+          GITEA_REPOSITORY: ${{ gitea.repository }}
+          GITEA_SHA: ${{ gitea.sha }}
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          api="${GITEA_API_URL}"
+          repo="${GITEA_REPOSITORY}"
+          tag="prebuilt"
+          auth=(-H "Authorization: token ${GITEA_TOKEN}" -H "Accept: application/json")
+
+          release_status="$(curl -sS "${auth[@]}" -o release.json -w '%{http_code}' \
+            "${api}/repos/${repo}/releases/tags/${tag}" || true)"
+
+          case "${release_status}" in
+            200)
+              ;;
+            404)
+              curl -fsS -X POST "${auth[@]}" \
+                -H "Content-Type: application/json" \
+                -d "{\"tag_name\":\"${tag}\",\"target_commitish\":\"${GITEA_SHA}\",\"name\":\"${tag}\",\"body\":\"Automated prebuilt binaries for ${GITEA_SHA}\",\"draft\":false,\"prerelease\":false}" \
+                "${api}/repos/${repo}/releases" > release.json
+              ;;
+            *)
+              cat release.json
+              exit 1
+              ;;
+          esac
+
+          release_id="$(jq -er '.id' release.json)"
+          assets="$(curl -fsS "${auth[@]}" \
+            "${api}/repos/${repo}/releases/${release_id}/assets")"
+
+          while read -r asset_id; do
+            test -z "${asset_id}" || curl -fsS -X DELETE "${auth[@]}" \
+              "${api}/repos/${repo}/releases/${release_id}/assets/${asset_id}"
+          done < <(printf '%s' "${assets}" | jq -r '.[] | select(.name == "hkrpg.zip") | .id')
+
+          curl -fsS -X POST "${auth[@]}" \
+            -F "attachment=@hkrpg.zip;type=application/zip" \
+            "${api}/repos/${repo}/releases/${release_id}/assets?name=hkrpg.zip"

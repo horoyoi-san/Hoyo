@@ -31,10 +31,8 @@ impl Misc {
             if host.contains("globaldp-")
                 && (host.contains("bhsr.com") || host.contains("starrails.com"))
             {
-               // println!("[*] [on_get_addr_info] {host} -> 0.0.0.0");
-               // std::ptr::copy_nonoverlapping(c"0.0.0.0".as_ptr(), (*reg).rcx as *mut i8, 9);
-                println!("[*] [on_get_addr_info] {host} -> 127.0.0.1");
-                std::ptr::copy_nonoverlapping(c"127.0.0.1".as_ptr(), (*reg).rcx as *mut i8, 9);
+                println!("[*] [on_get_addr_info] {host} -> 0.0.0.0");
+                std::ptr::copy_nonoverlapping(c"0.0.0.0".as_ptr(), (*reg).rcx as *mut i8, 9);
             }
         }
     }

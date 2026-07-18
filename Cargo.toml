@@ -1,10 +1,16 @@
 [workspace]
-members = ["hkrpg", "launcher", "mhypbase", "ext"]
+members = ["hkrpg", "launcher", "ext"]
 
 resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
 
 [workspace.dependencies]
 windows = { version = "0.54.0", features = [
@@ -22,6 +28,7 @@ windows = { version = "0.54.0", features = [
 ] }
 ilhook = "2.1.1"
 patternscan = "1.2.0"
+dashmap = "6.1.0"
 
 # Local crates
 hkrpg = { path = "hkrpg/" }

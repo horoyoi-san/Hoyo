@@ -1,14 +1,16 @@
-#![feature(str_from_utf16_endian, once_cell_get_mut)]
+#![feature(once_cell_get_mut)]
 
 use std::{thread, time::Duration};
+
 use modules::{
-    HkrpgModuleManager, censorship_patch::CensorshipPatch, crypto::Crypto, hk_check::HkCheck,
-    misc::Misc, network::Network,
+    HkrpgModuleManager, apn::ApnPatch, censorship_patch::CensorshipPatch, crypto::Crypto,
+    hk_check::HkCheck, misc::Misc, network::Network,
 };
 use windows::{
     Win32::System::{Console, LibraryLoader::GetModuleHandleA},
     core::s,
 };
+
 mod addr;
 mod il2cpp_string;
 mod interceptor;
@@ -73,6 +75,7 @@ pub fn main() {
         addr::init_rvas();
 
         let mut module_manager = HkrpgModuleManager::default();
+        module_manager.add::<ApnPatch>();
         module_manager.add::<HkCheck>();
         module_manager.add::<Network>();
         module_manager.add::<Crypto>();
