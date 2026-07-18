@@ -2,4 +2,4 @@
 REM --------------------------------------
 REM Build Release optimized for size
 REM --------------------------------------
-cargo +nightly build
+cargo build --release -p ext -p launcher
