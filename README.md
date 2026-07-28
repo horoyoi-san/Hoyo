@@ -1,37 +1,41 @@
 # Sunbringer
 
-**Sunbringer** is a client patch for the game **Zenless Zone Zero**. It's main goal is to redirect your client requests to another destination, such as server emulator. Codebase should be kept simple and easily extensible.
-
-Currently supported game version is: `CNBetaWin3.1.x`
+**Sunbringer** is a client patch for the game **Zenless Zone Zero**. It's designed to work with the [Remielle Server Emulator](https://git.xeondev.com/Remielle/Remielle).
 
 ## Requirements
+To build **Sunbringer** from sources you need:
+- Zig Compiler, version `0.16.0`: [Linux](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)/[Windows](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)
 
-- Zig 0.16.0
-  - [Windows x86_64](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)
-  - [Linux x86_64](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)
+#### Currently supported client version: `CNBetaWin3.2.0`, it can be found in our [discord server](https://discord.xeondev.com/)
 
-## Building from source
-
+## Steps to compile and run
 ```sh
-git clone https://git.xeondev.com/ESD/Sunbringer.git
+git clone https://git.xeondev.com/Remielle/Sunbringer.git
 cd Sunbringer
-zig build -Dtarget=x86_64-windows -Doptimize=ReleaseSmall
-mv zig-out/bin/velina.exe zig-out/bin/Sunbringer.dll PATH_TO_CLIENT/
+zig build -Doptimize=ReleaseSmall
+mv zig-out/bin/Remielle.exe zig-out/bin/Sunbringer.dll PATH_TO_CLIENT/
 ```
+#### NOTE: "PATH_TO_CLIENT" must be replaced with the actual path to the game directory.
 
 ## Configuration
+**Sunbringer** is configured by editing files in the `assets` directory and (re-)compiling its source code.
+- URL from `login_setting.json` are used to communicate with the dispatch server (dpsv)
+- URLs from `server_pc.json` are used to communicate with the SDK server (sdksv)
+- `sdk_public_key.xml` is the RSA key used for communication with the SDK server
+- `server_public_key.xml` is the RSA key used for communication with dispatch and game servers
+- `offsets.zon` contains version-specific values
 
-**Sunbringer** can be easily configured by changing destination addresses inside `assets/login_setting.json` and `assets/server_pc.json`. In case you want to adapt it for a different game version - just swap out offsets in `assets/offsets.zon`.
+## Contributing
+[Donate](https://boosty.to/xeondev/donate).
 
-## รองรับชื่อไฟล์ที่ต้องการ: 
-ในฟังก์ชัน loadUidCustom ได้ปรับลำดับให้อ่านไฟล์ดังต่อไปนี้เป็นลำดับแรกๆ:
-```
-        "crypto_custom.txt",
-        "crypto_custom",
-        "Crypto_Custom.txt",
-        "crypto.txt",
-        "message.txt", 
-        "UID_Custom.txt", 
-        "uid_custom.txt", 
-        "uid_custom"
-```
+[Join project-specific discord server](https://Remielle.xeondev.com).
+
+[Join ReversedRooms discord server](https://discord.xeondev.com).
+
+[Join ReversedRooms telegram channel](https://t.me/reversedrooms).
+
+The contributions (in form of patches) can be submitted in one of our discord servers. You can also get an account on [our git instance](https://git.xeondev.com/) after a number of accepted contributions.
+
+## License
+This repository was made public in the hopes that it will be useful. However, it comes with no warranty whatsoever (expressed or implied).
+It's licensed under [GNU Affero General Public License v3](LICENSE).

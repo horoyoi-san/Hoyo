@@ -1,17 +1,24 @@
-pub fn build(b: *Build) void {
+const std = @import("std");
+
+pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{ .default_target = .{ .os_tag = .windows } });
     const optimize = b.standardOptimizeOption(.{});
 
     const launcher = b.addExecutable(.{
         .name = "Remielle",
+        .win32_manifest = b.addWriteFiles().add(
+            "launcher.manifest",
+            @embedFile("win32_manifest.xml"),
+        ),
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/launcher.zig"),
             .target = target,
             .optimize = optimize,
         }),
     });
+    b.installArtifact(launcher);
 
-    const dll = b.addLibrary(.{
+    const dynlib = b.addLibrary(.{
         .name = "Sunbringer",
         .linkage = .dynamic,
         .root_module = b.createModule(.{
@@ -20,26 +27,21 @@ pub fn build(b: *Build) void {
             .optimize = optimize,
         }),
     });
+    b.installArtifact(dynlib);
 
-    launcher.root_module.addAnonymousImport(
-        "offsets.zon",
-        .{ .root_source_file = b.path("assets/offsets.zon") },
-    );
+    const assets_dir = b.build_root.handle.openDir(b.graph.io, "assets", .{ .iterate = true }) catch |err| {
+        std.debug.panic("unable to open assets directory: {t}", .{err});
+    };
+    defer assets_dir.close(b.graph.io);
 
-    inline for (.{
-        "offsets.zon",
-        "login_setting.json",
-        "server_pc.json",
-        "sdk_public_key.xml",
-        "server_public_key.xml",
-    }) |asset| dll.root_module.addAnonymousImport(
-        asset,
-        .{ .root_source_file = b.path("assets/" ++ asset) },
-    );
+    var it = assets_dir.iterateAssumeFirstIteration();
+    while (it.next(b.graph.io) catch @panic("failed to read dir")) |entry| {
+        if (std.mem.startsWith(u8, entry.name, ".") or entry.kind != .file)
+            continue;
 
-    b.installArtifact(launcher);
-    b.installArtifact(dll);
+        dynlib.root_module.addAnonymousImport(
+            entry.name,
+            .{ .root_source_file = b.path(b.fmt("assets/{s}", .{entry.name})) },
+        );
+    }
 }
-
-const Build = std.Build;
-const std = @import("std");
