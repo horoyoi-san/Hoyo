@@ -12,7 +12,7 @@ pub fn build(b: *Build) void {
     });
 
     const dll = b.addLibrary(.{
-        .name = "Sunbringer",
+        .name = "Moonlight_Whispers",
         .linkage = .dynamic,
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/dynlib.zig"),

@@ -1,4 +1,4 @@
-const log = std.log.scoped(.@"Sunbringer::ditherless");
+const log = std.log.scoped(.@"Moonlight_Whispers::ditherless");
 
 var game_assembly_instance: GameAssembly = undefined; // Populated by `init`
 

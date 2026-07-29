@@ -1,4 +1,4 @@
-const log = std.log.scoped(.@"Sunbringer::encryption");
+const log = std.log.scoped(.@"Moonlight_Whispers::encryption");
 
 var game_assembly_instance: GameAssembly = undefined;
 var uid_custom_buf: ?[]u8 = null;

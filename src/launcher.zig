@@ -6,11 +6,11 @@ pub fn main(init: Init) noreturn {
 
     const exe_name = whichExecutable(io, cwd) orelse fatal(
         \\The game executable wasn't found
-        \\Make sure you've put Sunbringer into the game directory.
+        \\Make sure you've put Moonlight_Whispers into the game directory.
     );
 
     cwd.access(io, dll_name, .{}) catch fatal(
-        \\The 'Sunbringer.dll' wasn't found.
+        \\The 'Moonlight_Whispers.dll' wasn't found.
         \\Make sure you've copied it here as well
     );
 
@@ -97,11 +97,11 @@ fn fatal(comptime message: [:0]const u8) noreturn {
         "MessageBoxA",
     ));
 
-    _ = messageBoxA(null, message, "Sunbringer", 0x30);
+    _ = messageBoxA(null, message, "Moonlight_Whispers", 0x30);
     exit(1);
 }
 
-const dll_name = "Sunbringer.dll";
+const dll_name = "Moonlight_Whispers.dll";
 const default_uid = "Fapper";
 const default_crypto_str = "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color><color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
 
