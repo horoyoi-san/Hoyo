@@ -16,7 +16,7 @@ pub const std_options: std.Options = .{
     .log_level = .info,
 };
 
-const log = std.log.scoped(.Sunbringer);
+const log = std.log.scoped(.Covenant_of_Dayat);
 
 var game_assembly: GameAssembly = undefined; // populated by `hookLoadMhyBase`
 var uid_custom_buf: ?[]u8 = null;
@@ -26,7 +26,7 @@ var crypto_buf: [4096]u8 = undefined;
 
 const default_uid = "Fapper";
 const default_crypto_custom =
-    "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Remielle</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
+    "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#E088B0>Sunbringer</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
 
 pub export fn DllMain(
     _: std.os.windows.HINSTANCE,

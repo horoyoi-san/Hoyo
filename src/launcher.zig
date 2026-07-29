@@ -4,7 +4,7 @@ const common = @import("common.zig");
 const die = common.die;
 
 const exe_name = "ZenlessZoneZeroBeta.exe";
-const dll_name: [:0]const u8 = "Sunbringer.dll";
+const dll_name: [:0]const u8 = "Covenant_of_Dayat.dll";
 
 pub fn main() void {
     const w = std.os.windows;
@@ -26,7 +26,7 @@ pub fn main() void {
     ) == .FALSE)
         die(
             \\Failed to create game process.
-            \\Make sure you've placed remielle.exe in the game directory, near 
+            \\Make sure you've placed Sunbringer.exe in the game directory, near 
         ++ exe_name, .{});
     defer _ = w.ntdll.NtClose(process_info.hProcess);
 
