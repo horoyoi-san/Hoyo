@@ -164,7 +164,7 @@ def has_changed(api_url, game_name):
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "Packages", game_name)
 
     os.makedirs(log_dir, exist_ok=True)
 
