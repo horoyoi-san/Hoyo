@@ -3,12 +3,15 @@ import asyncio
 import time
 
 import requests
+import certifi
 from datetime import datetime, timezone
 
 import os
 import hashlib
 import json
 
+session = requests.Session()
+session.verify = certifi.where()
 # =========================================================
 # Discord
 # =========================================================
