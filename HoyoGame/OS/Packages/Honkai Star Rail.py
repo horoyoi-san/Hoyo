@@ -151,9 +151,39 @@ def has_changed(api_url, game_name):
 
     try:
 
-        data_text = requests.get(api_url, timeout=10).text
+        response = requests.get(
+            api_url,
+            timeout=10
+        )
+
+        response.raise_for_status()
+
+        data_text = response.text
+
+        data_json = response.json()
 
     except Exception as e:
+
+        try:
+
+            with open(raw_file, "a", encoding="utf-8") as f:
+
+                f.write(
+                    json.dumps(
+                        {
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                            "data": json.loads(data_text),
+                        },
+                        ensure_ascii=False,
+                    )
+                    + "\n"
+                )
+
+            print(f"❌ API error logged -> {raw_file}")
+
+        except Exception as log_error:
+
+            print(f"❌ Failed to write error log: {log_error}")
 
         print(f"❌ Error fetching API: {e}")
 
@@ -173,7 +203,10 @@ def has_changed(api_url, game_name):
 
     hash_file = os.path.join(log_dir, "last_hash.txt")
 
-    raw_file = os.path.join(log_dir, "raw_log.jsonl")
+    raw_file = os.path.join(
+    log_dir,
+    f"raw_{datetime.now(timezone.utc).date()}.jsonl"
+)
 
     # =====================================================
     # Raw Log

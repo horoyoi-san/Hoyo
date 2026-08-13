@@ -182,7 +182,10 @@ def has_changed(api_url, game_name):
 
     hash_file = os.path.join(log_dir, "last_hash.txt")
 
-    raw_file = os.path.join(log_dir, "raw_log.jsonl")
+    raw_file = os.path.join(
+    log_dir,
+    f"raw_{datetime.now(timezone.utc).date()}.jsonl"
+)
 
     # =====================================================
     # Raw Log
