@@ -124,6 +124,7 @@ namespace Core
                         | Petit Planet |0.83.6|Sophon.Downloader.exe full 0fijU7nET7 game 0.83.6 output --region=CNBETA |
                         | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
                         | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
+                        | TheWeavers |0.7.0|Sophon.Downloader.exe full pkMBmK7jxJ game 0.7.0 output --region=CNBETA |
                  """);
                 return 0;
             }

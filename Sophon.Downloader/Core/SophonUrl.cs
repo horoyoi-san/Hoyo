@@ -127,7 +127,7 @@ namespace Core
                 case Region.CNBETA:
                     apiBase = "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGameBranches";
                     sophonBase = "https://api-beta.mihoyo.com/downloader/sophon_chunk/api/getBuild";
-                    launcherIds = new List<string> { "GcFHm7rte6", "kwykHprMm9", "TC4836G73s", "WBjNy0hOrG" }; //hyg 0.83.6, hyg 0.92.7, abc 0.3.0, abc 0.6.0
+                    launcherIds = new List<string> { "GcFHm7rte6", "kwykHprMm9", "TC4836G73s", "WBjNy0hOrG", "TATUNXLuIq" }; //hyg 0.83.6, hyg 0.92.7, abc 0.3.0, abc 0.6.0, kl 0.7.0
                     platApp = "ddxf5dufpuyo";
                     break;
 

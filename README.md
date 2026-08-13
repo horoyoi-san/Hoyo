@@ -52,6 +52,7 @@ Options:
 | Zenless Zone Zero | `nap` |
 | Honkai: Nexus anima | `abc` |
 | Petit Planet | `hyg` |
+| TheWeavers | `kl` |
 
 # Zenless Zone Zero
 | Game | Version | Downloader |
@@ -87,6 +88,9 @@ Options:
 | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
 
+# TheWeavers
+| Game | Version | Downloader |
+| TheWeavers |0.7.0|Sophon.Downloader.exe full pkMBmK7jxJ game 0.7.0 output --region=CNBETA |
 ---
 
 # Note
