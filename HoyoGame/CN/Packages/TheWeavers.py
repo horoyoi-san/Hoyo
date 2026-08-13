@@ -14,6 +14,7 @@ import json
 # =========================================================
 
 TOKEN = os.environ.get("DISCORD_TOKEN")
+
 intents = discord.Intents.default()
 
 bot = discord.Client(intents=intents)
@@ -22,11 +23,11 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "崩坏：因缘精灵"
+BOT_NAME = "TheWeavers PROD"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn2.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/kl_cn.png"
 )
 
 # =========================================================
@@ -35,8 +36,8 @@ BOT_ICON = (
 
 CHANNELS = [
     1292097230924283965,  # Test
-    1291728736739131402,  # 1
-    1267379122338791435,  # 2
+    #1291728736739131402,  # 1
+    #1267379122338791435,  # 2
 ]
 
 # =========================================================
@@ -44,7 +45,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=lgyIM35mz8&launcher_id=WBjNy0hOrG",
+    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=pkMBmK7jxJ&launcher_id=TATUNXLuIq",
 ]
 
 # =========================================================
@@ -71,7 +72,7 @@ async def send_embed_message(
     embed = discord.Embed(
         title=title,
         description=description,
-        color=0x00CEFF,
+        color=0x252525,
         timestamp=datetime.now(timezone.utc),
     )
 
@@ -164,7 +165,7 @@ def has_changed(api_url, game_name):
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "Packages", game_name)
 
     os.makedirs(log_dir, exist_ok=True)
 
@@ -243,7 +244,7 @@ async def main():
 
     for api_url in api_urls:
 
-        game_name = "abc"
+        game_name = "kl"
 
         try:
 
@@ -268,13 +269,13 @@ async def main():
             game_info_url = (
                 "https://hyp-api-beta.mihoyo.com/"
                 "hyp/hyp-connect/api/getGames?"
-                "launcher_id=WBjNy0hOrG"
+                "launcher_id=TATUNXLuIq"
             )
 
             resp = requests.get(game_info_url, timeout=10).json()
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "lgyIM35mz8"
+                g for g in resp["data"]["games"] if g["id"] == "pkMBmK7jxJ"
             )
 
             display_name = game_data["display"]["name"]

@@ -57,7 +57,7 @@ GAME_INFO_URL = (
 
 GAME_ID = "lgyIM35mz8"
 
-GAME_NAME = "HNABranches"
+GAME_NAME = "abcBranches"
 
 # =========================================================
 # Utils
@@ -180,7 +180,7 @@ async def split_and_send(channel_id, title, lines, icon_url, bg_url, footer_text
 
 def has_changed(api_url, log_name):
 
-    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "log", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Branches", log_name)
 
     os.makedirs(log_dir, exist_ok=True)
 

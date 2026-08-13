@@ -164,7 +164,7 @@ def has_changed(api_url, game_name):
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", game_name)
 
     os.makedirs(log_dir, exist_ok=True)
 
@@ -243,7 +243,7 @@ async def main():
 
     for api_url in api_urls:
 
-        game_name = "PP"
+        game_name = "hyg"
 
         try:
 

@@ -46,7 +46,7 @@ CHANNELS = [
 
 api_targets = [
     (
-        "cn",
+        "bh3_cn",
         "osvnlOc0S8",
         "https://hyp-api.mihoyo.com/"
         "hyp/hyp-connect/api/getGamePackages?"
@@ -176,7 +176,7 @@ def has_changed(api_url, game_name):
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", game_name)
 
     os.makedirs(log_dir, exist_ok=True)
 

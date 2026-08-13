@@ -62,7 +62,7 @@ def split_and_send(webhook_url, title, lines, icon_url, bg_url, footer_text):
 
 # ===================== Change Detection =====================
 def has_changed(api_url, log_name):
-    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "log", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", log_name)
     os.makedirs(log_dir, exist_ok=True)
 
     raw_file = os.path.join(

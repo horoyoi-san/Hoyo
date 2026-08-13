@@ -46,35 +46,35 @@ CHANNELS = [
 
 api_targets = [
     (
-        "tw",
+        "bh3_tw",
         "wkE5P5WsIf",
         "https://sg-hyp-api.hoyoverse.com/"
         "hyp/hyp-connect/api/getGamePackages?"
         "game_ids[]=wkE5P5WsIf&launcher_id=VYTpXlbWo8",
     ),
     (
-        "glb",
+        "bh3_glb",
         "5TIVvvcwtM",
         "https://sg-hyp-api.hoyoverse.com/"
         "hyp/hyp-connect/api/getGamePackages?"
         "game_ids[]=5TIVvvcwtM&launcher_id=VYTpXlbWo8",
     ),
     (
-        "jp",
+        "bh3_jp",
         "g0mMIvshDb",
         "https://sg-hyp-api.hoyoverse.com/"
         "hyp/hyp-connect/api/getGamePackages?"
         "game_ids[]=g0mMIvshDb&launcher_id=VYTpXlbWo8",
     ),
     (
-        "kr",
+        "bh3_kr",
         "uxB4MC7nzC",
         "https://sg-hyp-api.hoyoverse.com/"
         "hyp/hyp-connect/api/getGamePackages?"
         "game_ids[]=uxB4MC7nzC&launcher_id=VYTpXlbWo8",
     ),
     (
-        "overseas",
+        "bh3_overseas",
         "bxPTXSET5t",
         "https://sg-hyp-api.hoyoverse.com/"
         "hyp/hyp-connect/api/getGamePackages?"
@@ -204,7 +204,7 @@ def has_changed(api_url, game_name):
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", game_name)
 
     os.makedirs(log_dir, exist_ok=True)
 

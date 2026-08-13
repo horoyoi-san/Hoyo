@@ -22,11 +22,11 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "Petit Planet Branches"
+BOT_NAME = "TheWeavers Branches"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/hyg_global.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/kl_cn.png"
 )
 
 # =========================================================
@@ -44,20 +44,20 @@ CHANNELS = [
 # =========================================================
 
 BRANCH_API_URL = (
-    "https://sg-hyp-api-beta.hoyoverse.com/"
+    "https://hyp-api-beta.mihoyo.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=679gqJWz4L&launcher_id=9HDza24TWA"
+    "game_ids[]=pkMBmK7jxJ&launcher_id=TATUNXLuIq"
 )
 
 GAME_INFO_URL = (
-    "https://sg-hyp-api-beta.hoyoverse.com/"
+    "https://hyp-api-beta.mihoyo.com/"
     "hyp/hyp-connect/api/getGames?"
-    "launcher_id=9HDza24TWA"
+    "launcher_id=TATUNXLuIq"
 )
 
-GAME_ID = "679gqJWz4L"
+GAME_ID = "pkMBmK7jxJ"
 
-GAME_NAME = "hygBranches"
+GAME_NAME = "hk4eBranches"
 
 # =========================================================
 # Utils
@@ -97,7 +97,7 @@ async def send_embed_message(
     embed = discord.Embed(
         title=title,
         description=description,
-        color=0x00FF88,
+        color=0xFFFFFF,
         timestamp=datetime.now(timezone.utc),
     )
 
@@ -283,7 +283,7 @@ def extract_game_branches(data):
     if main:
 
         lines += [
-            "**Main Branch**",
+            "## Main Branch",
             f"Tag: `{main['tag']}`",
             f"Package ID: `{main['package_id']}`",
             f"Diff from: `{', '.join(main.get('diff_tags', []))}`",

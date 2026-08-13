@@ -74,7 +74,7 @@ GAMES = [
     {"id": "bxPTXSET5t", "region": "overseas"},
 ]
 
-GAME_NAME = "HI3Branches"
+GAME_NAME = "bh3Branches"
 
 DISPLAY_GAME_ID = "5TIVvvcwtM"
 
@@ -169,7 +169,7 @@ async def split_and_send(channel_id, title, lines, icon_url, bg_url, footer_text
 
 def has_changed(api_url, log_name):
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "log", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Branches", log_name)
 
     os.makedirs(log_dir, exist_ok=True)
 
