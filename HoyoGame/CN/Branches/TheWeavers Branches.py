@@ -60,7 +60,7 @@ GAME_INFO_URL = (
 
 GAME_ID = "pkMBmK7jxJ"
 
-GAME_NAME = "hk4eBranches"
+GAME_NAME = "klBranches"
 
 # =========================================================
 # Utils
