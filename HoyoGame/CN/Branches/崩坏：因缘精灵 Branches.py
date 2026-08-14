@@ -398,7 +398,7 @@ async def main():
 
         else:
 
-            print("[GI_BRANCH] No change")
+            print("[abc_BRANCH] No change")
 
     except Exception as e:
 

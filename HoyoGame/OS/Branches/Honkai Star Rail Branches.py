@@ -398,7 +398,7 @@ async def main():
 
         else:
 
-            print("[GI_BRANCH] No change")
+            print("[hkrpg_BRANCH] No change")
 
     except Exception as e:
 
