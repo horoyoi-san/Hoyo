@@ -9,6 +9,24 @@ import os
 import hashlib
 import json
 
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+session = requests.Session()
+
+retry = Retry(
+    total=5,
+    connect=5,
+    read=5,
+    backoff_factor=2,
+    status_forcelist=[500, 502, 503, 504],
+)
+
+adapter = HTTPAdapter(max_retries=retry)
+
+session.mount("https://", adapter)
+session.mount("http://", adapter)
+
 # =========================================================
 # Discord
 # =========================================================
@@ -151,7 +169,7 @@ def has_changed(api_url, game_name):
 
     try:
 
-        response = requests.get(
+        response = session.get(
             api_url,
             timeout=10
         )
@@ -291,7 +309,7 @@ async def main():
             # Package API
             # =================================================
 
-            data = requests.get(api_url, timeout=10).json()
+            data = session.get(api_url, timeout=10).json()
 
             game_package = data["data"]["game_packages"][0]
 
@@ -305,7 +323,15 @@ async def main():
                 "launcher_id=VYTpXlbWo8"
             )
 
-            resp = requests.get(game_info_url, timeout=10).json()
+            try:
+                r = session.get(GAME_INFO_URL, timeout=30)
+                r.raise_for_status()
+                resp = r.json()
+
+            except requests.exceptions.RequestException as e:
+                print(f"❌ Game Info API Error: {e}")
+                await bot.close()
+                return
 
             game_data = next(
                 g for g in resp["data"]["games"] if g["id"] == "4ziysqXOQ8"

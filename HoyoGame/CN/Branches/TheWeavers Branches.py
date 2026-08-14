@@ -10,6 +10,24 @@ import os
 import hashlib
 import json
 
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+session = requests.Session()
+
+retry = Retry(
+    total=5,
+    connect=5,
+    read=5,
+    backoff_factor=2,
+    status_forcelist=[500, 502, 503, 504],
+)
+
+adapter = HTTPAdapter(max_retries=retry)
+
+session.mount("https://", adapter)
+session.mount("http://", adapter)
+
 session = requests.Session()
 session.verify = certifi.where()
 # =========================================================
@@ -193,7 +211,7 @@ def has_changed(api_url, log_name):
 
     try:
 
-        r = requests.get(api_url, timeout=10)
+        r = session.get(api_url, timeout=10)
 
         r.raise_for_status()
 
@@ -332,7 +350,15 @@ async def main():
     # Game Info
     # =====================================================
 
-    resp = requests.get(GAME_INFO_URL, timeout=10).json()
+    try:
+        r = session.get(GAME_INFO_URL, timeout=30)
+        r.raise_for_status()
+        resp = r.json()
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Game Info API Error: {e}")
+        await bot.close()
+        return
 
     game_data = next((g for g in resp["data"]["games"] if g["id"] == GAME_ID), None)
 
@@ -358,7 +384,7 @@ async def main():
 
         if has_changed(BRANCH_API_URL, GAME_NAME):
 
-            data = requests.get(BRANCH_API_URL, timeout=10).json()
+            data = session.get(BRANCH_API_URL, timeout=10).json()
 
             lines = extract_game_branches(data)
 

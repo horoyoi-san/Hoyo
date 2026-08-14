@@ -1,7 +1,6 @@
 import discord
 import asyncio
 import time
-import certifi
 
 import requests
 from datetime import datetime, timezone
@@ -10,16 +9,28 @@ import os
 import hashlib
 import json
 
-session = requests.Session()
-session.verify = certifi.where()
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
+session = requests.Session()
+
+retry = Retry(
+    total=5,
+    connect=5,
+    read=5,
+    backoff_factor=2,
+    status_forcelist=[500, 502, 503, 504],
+)
+
+adapter = HTTPAdapter(max_retries=retry)
+
+session.mount("https://", adapter)
+session.mount("http://", adapter)
 # =========================================================
 # Discord
 # =========================================================
 
-# TOKEN = os.environ.get("DISCORD_TOKEN")
 TOKEN = ""
-
 intents = discord.Intents.default()
 
 bot = discord.Client(intents=intents)
@@ -28,11 +39,11 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "TheWeavers Branches"
+BOT_NAME = "崩坏：因缘精灵 Branches"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/kl_cn.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/abc_cn2.png"
 )
 
 # =========================================================
@@ -52,18 +63,18 @@ CHANNELS = [
 BRANCH_API_URL = (
     "https://hyp-api-beta.mihoyo.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=pkMBmK7jxJ&launcher_id=TATUNXLuIq"
+    "game_ids[]=lgyIM35mz8&launcher_id=WBjNy0hOrG"
 )
 
 GAME_INFO_URL = (
     "https://hyp-api-beta.mihoyo.com/"
     "hyp/hyp-connect/api/getGames?"
-    "launcher_id=TATUNXLuIq"
+    "launcher_id=WBjNy0hOrG"
 )
 
-GAME_ID = "pkMBmK7jxJ"
+GAME_ID = "lgyIM35mz8"
 
-GAME_NAME = "klBranches"
+GAME_NAME = "abcBranches"
 
 # =========================================================
 # Utils
@@ -103,7 +114,7 @@ async def send_embed_message(
     embed = discord.Embed(
         title=title,
         description=description,
-        color=0xFFFFFF,
+        color=0x00CEFF,
         timestamp=datetime.now(timezone.utc),
     )
 
@@ -196,7 +207,7 @@ def has_changed(api_url, log_name):
 
     try:
 
-        r = requests.get(api_url, timeout=10)
+        r = session.get(api_url, timeout=10)
 
         r.raise_for_status()
 
@@ -335,7 +346,15 @@ async def main():
     # Game Info
     # =====================================================
 
-    resp = requests.get(GAME_INFO_URL, timeout=10).json()
+    try:
+        r = session.get(GAME_INFO_URL, timeout=30)
+        r.raise_for_status()
+        resp = r.json()
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Game Info API Error: {e}")
+        await bot.close()
+        return
 
     game_data = next((g for g in resp["data"]["games"] if g["id"] == GAME_ID), None)
 
@@ -361,7 +380,7 @@ async def main():
 
         if has_changed(BRANCH_API_URL, GAME_NAME):
 
-            data = requests.get(BRANCH_API_URL, timeout=10).json()
+            data = session.get(BRANCH_API_URL, timeout=10).json()
 
             lines = extract_game_branches(data)
 
