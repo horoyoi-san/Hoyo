@@ -75,7 +75,7 @@ GAME_INFO_URL = (
 
 GAME_ID = "4ziysqXOQ8"
 
-GAME_NAME = "hk4eBranches"
+GAME_NAME = "hkrpgBranches"
 
 # =========================================================
 # Utils
