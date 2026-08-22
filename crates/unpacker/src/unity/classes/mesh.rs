@@ -1,0 +1,374 @@
+use anyhow::Result;
+use num_enum::TryFromPrimitive;
+
+use crate::{
+    binary_reader::BinaryReader,
+    unity::{classes::animation_clip::AABB, object::ObjectInfo},
+};
+
+#[derive(Debug, Eq, PartialEq, TryFromPrimitive, Clone, Copy, Default)]
+#[repr(i32)]
+pub enum GfxPrimitiveType {
+    #[default]
+    Triangles = 0,
+    TriangleStrip = 1,
+    Quads = 2,
+    Lines = 3,
+    LineStrip = 4,
+    Points = 5,
+}
+
+#[derive(Debug)]
+pub struct BoneWeights4 {
+    pub weight: [f32; 4],
+    pub bone_index: [i32; 4],
+}
+
+impl BoneWeights4 {
+    pub fn from_reader(br: &mut BinaryReader) -> Result<Self> {
+        Ok(Self {
+            weight: br.read_f32_array::<4>()?,
+            bone_index: br.read_i32_array::<4>()?,
+        })
+    }
+}
+
+#[derive(Debug, Default)]
+pub struct VertexData {
+    pub current_channels: u8,
+    pub vertex_count: usize,
+    pub channels: Vec<ChannelInfo>,
+    pub streams: Vec<StreamInfo>,
+    pub data_size: Vec<u8>,
+}
+
+impl VertexData {
+    pub fn from_object_reader(br: &mut BinaryReader, object: &ObjectInfo) -> Result<Self> {
+        let mut result = Self::default();
+        if object.version[0] < 2018 {
+            result.current_channels = br.read_u32()? as u8;
+        }
+
+        result.vertex_count = br.read_u32()? as usize;
+
+        if object.version[0] >= 4 {
+            let size = br.read_i32()?;
+            for _ in 0..size {
+                result.channels.push(ChannelInfo::from_reader(br)?);
+            }
+        }
+
+        if object.version[0] < 5 {
+            if object.version[0] < 4 {
+                result.streams = Vec::with_capacity(4);
+            } else {
+                result.streams = Vec::with_capacity(br.read_i32()? as usize);
+            }
+
+            for _ in 0..result.streams.capacity() {
+                result
+                    .streams
+                    .push(StreamInfo::from_binary_reader(br, object)?);
+            }
+
+            if object.version[0] < 4 {
+                result.get_channels(object.version)?;
+            }
+        } else {
+            result.get_streams(object.version)?;
+        }
+
+        let size = br.read_i32()?;
+        result.data_size = br.read_u8_list(size as usize)?;
+
+        Ok(result)
+    }
+
+    fn get_channels(&mut self, _version: [i32; 4]) -> Result<()> {
+        self.channels = Vec::with_capacity(6);
+        for _ in 0..6 {
+            self.channels.push(ChannelInfo::default());
+        }
+
+        for s in 0..self.streams.len() {
+            let channel_mask = self.streams[s].channel_mask;
+            let offset = 0;
+            for i in 0..6 {
+                if (channel_mask >> i) & 0x1 == 0 {
+                    continue;
+                }
+                let channel = &mut self.channels[i];
+                channel.stream = s as u8;
+                channel.offset = offset;
+                match i {
+                    0 | 1 => {
+                        channel.format = 0;
+                        channel.dimension = 3;
+                        break;
+                    }
+                    2 => {
+                        channel.format = 2;
+                        channel.dimension = 4;
+                        break;
+                    }
+                    3 | 4 => {
+                        channel.format = 0;
+                        channel.dimension = 2;
+                        break;
+                    }
+                    5 => {
+                        channel.format = 0;
+                        channel.dimension = 4;
+                        break;
+                    }
+                    _ => unreachable!(),
+                }
+                //offset += (m_Channel.dimension
+                //    * VertexFormat::load(m_Channel.format, _version)?.get_format_size())
+            }
+        }
+        Ok(())
+    }
+
+    fn get_streams(&mut self, version: [i32; 4]) -> Result<()> {
+        let stream_count = {
+            let mut max = 0;
+            for i in &self.channels {
+                if i.stream > max {
+                    max = i.stream;
+                }
+            }
+            max + 1
+        };
+        self.streams = Vec::with_capacity(stream_count as usize);
+        let mut offset = std::num::Wrapping(0);
+        for s in 0..stream_count {
+            let mut chn_mask = 0;
+            let mut stride = 0;
+            for chn in 0..self.channels.len() {
+                let channel = &self.channels[chn];
+                if channel.stream == s && channel.dimension > 0 {
+                    chn_mask |= 1u8 << chn;
+                    stride += channel.dimension
+                        * VertexFormat::new(channel.format, version)?.get_format_size();
+                }
+            }
+            self.streams.push(StreamInfo {
+                channel_mask: chn_mask,
+                offset: offset.0,
+                stride,
+                align: 0,
+                frequency: 0,
+                divider_op: 0,
+            });
+            offset += std::num::Wrapping(self.vertex_count as u8) * std::num::Wrapping(stride);
+            offset += std::num::Wrapping((16u8 - 1u8) & (!(16u8 - 1u8)));
+        }
+        Ok(())
+    }
+}
+
+#[derive(Default, Debug)]
+pub struct SubMesh {
+    pub first_bytes: u32,
+    pub index_count: u32,
+    pub topology: GfxPrimitiveType,
+    pub triangle_count: u32,
+    pub base_vertex: u32,
+    pub first_vertex: u32,
+    pub vertex_count: u32,
+    pub local_aabb: Option<AABB>,
+}
+
+impl SubMesh {
+    pub fn from_object_reader(br: &mut BinaryReader, object: &ObjectInfo) -> Result<Self> {
+        let mut result = Self::default();
+        let version = object.version;
+        result.first_bytes = br.read_u32()?;
+        result.index_count = br.read_u32()?;
+        result.topology = br.read_i32()?.try_into()?;
+
+        if version[0] < 4 {
+            result.triangle_count = br.read_u32()?;
+        }
+
+        if version[0] > 2017 || (version[0] == 2017 && version[1] >= 3) {
+            result.base_vertex = br.read_u32()?;
+        }
+
+        if version[0] >= 3 {
+            result.first_vertex = br.read_u32()?;
+            result.vertex_count = br.read_u32()?;
+            result.local_aabb = Some(AABB::from_reader(br)?);
+        }
+
+        Ok(result)
+    }
+}
+
+#[derive(Default, Debug)]
+pub struct StreamInfo {
+    pub channel_mask: u8,
+    pub offset: u8,
+    pub stride: u8,
+    pub align: u8,
+    pub divider_op: u8,
+    pub frequency: u16,
+}
+
+impl StreamInfo {
+    pub fn from_binary_reader(br: &mut BinaryReader, object: &ObjectInfo) -> Result<Self> {
+        let version = object.version;
+        let mut result = Self {
+            channel_mask: br.read_u8()?,
+            offset: br.read_u8()?,
+            ..Self::default()
+        };
+
+        if version[0] < 4 {
+            result.stride = br.read_u32()? as u8;
+            result.align = br.read_u32()? as u8;
+        } else {
+            result.stride = br.read_u8()?;
+            result.divider_op = br.read_u8()?;
+            result.frequency = br.read_u16()?;
+        }
+
+        Ok(result)
+    }
+}
+
+#[derive(Default, Debug)]
+pub struct ChannelInfo {
+    pub stream: u8,
+    pub offset: u8,
+    pub format: u8,
+    pub dimension: u8,
+}
+
+impl ChannelInfo {
+    pub fn from_reader(br: &mut BinaryReader) -> Result<Self> {
+        Ok(Self {
+            stream: br.read_u8()?,
+            offset: br.read_u8()?,
+            format: br.read_u8()?,
+            dimension: br.read_u8()? & 0xF,
+        })
+    }
+}
+
+#[derive(Debug, Eq, PartialEq, TryFromPrimitive, Clone, Copy)]
+#[repr(u8)]
+pub enum VertexFormat {
+    Float,
+    Float16,
+    UNorm8,
+    SNorm8,
+    UNorm16,
+    SNorm16,
+    UInt8,
+    SInt8,
+    UInt16,
+    SInt16,
+    UInt32,
+    SInt32,
+}
+
+#[derive(Debug, Eq, PartialEq, TryFromPrimitive, Clone, Copy)]
+#[repr(u8)]
+pub enum VertexChannelFormat {
+    Float,
+    Float16,
+    Color,
+    Byte,
+    UInt32,
+}
+
+#[derive(Debug, Eq, PartialEq, TryFromPrimitive, Clone, Copy)]
+#[repr(u8)]
+pub enum VertexFormat2017 {
+    Float,
+    Float16,
+    Color,
+    UNorm8,
+    SNorm8,
+    UNorm16,
+    SNorm16,
+    UInt8,
+    SInt8,
+    UInt16,
+    SInt16,
+    UInt32,
+    SInt32,
+}
+
+impl VertexFormat {
+    fn new(format: u8, version: [i32; 4]) -> Result<Self> {
+        if version[0] < 2017 {
+            let result = match VertexChannelFormat::try_from(format)? {
+                VertexChannelFormat::Float => VertexFormat::Float,
+                VertexChannelFormat::Float16 => VertexFormat::Float16,
+                VertexChannelFormat::Color => VertexFormat::UNorm8,
+                VertexChannelFormat::Byte => VertexFormat::UInt8,
+                VertexChannelFormat::UInt32 => VertexFormat::UInt32,
+            };
+            return Ok(result);
+        }
+
+        if version[0] < 2019 {
+            let result = match VertexFormat2017::try_from(format)? {
+                VertexFormat2017::Float => VertexFormat::Float,
+                VertexFormat2017::Float16 => VertexFormat::Float16,
+                VertexFormat2017::Color => VertexFormat::UNorm8,
+                VertexFormat2017::UNorm8 => VertexFormat::UNorm8,
+                VertexFormat2017::SNorm8 => VertexFormat::SNorm8,
+                VertexFormat2017::UNorm16 => VertexFormat::UNorm16,
+                VertexFormat2017::SNorm16 => VertexFormat::SNorm16,
+                VertexFormat2017::UInt8 => VertexFormat::UInt8,
+                VertexFormat2017::SInt8 => VertexFormat::SInt8,
+                VertexFormat2017::UInt16 => VertexFormat::UInt16,
+                VertexFormat2017::SInt16 => VertexFormat::SInt16,
+                VertexFormat2017::UInt32 => VertexFormat::UInt32,
+                VertexFormat2017::SInt32 => VertexFormat::SInt32,
+            };
+            return Ok(result);
+        }
+
+        Ok(VertexFormat::try_from(format)?)
+    }
+
+    fn get_format_size(&self) -> u8 {
+        match *self {
+            VertexFormat::Float | VertexFormat::UInt32 | VertexFormat::SInt32 => 4,
+
+            VertexFormat::Float16
+            | VertexFormat::UNorm16
+            | VertexFormat::SNorm16
+            | VertexFormat::UInt16
+            | VertexFormat::SInt16 => 2,
+
+            VertexFormat::UNorm8
+            | VertexFormat::SNorm8
+            | VertexFormat::UInt8
+            | VertexFormat::SInt8 => 1,
+        }
+    }
+
+    #[expect(unused)]
+    fn is_int(&self) -> bool {
+        match self {
+            VertexFormat::Float => false,
+            VertexFormat::Float16 => false,
+            VertexFormat::UNorm8 => false,
+            VertexFormat::SNorm8 => false,
+            VertexFormat::UNorm16 => false,
+            VertexFormat::SNorm16 => false,
+            VertexFormat::UInt8 => true,
+            VertexFormat::SInt8 => true,
+            VertexFormat::UInt16 => true,
+            VertexFormat::SInt16 => true,
+            VertexFormat::UInt32 => true,
+            VertexFormat::SInt32 => true,
+        }
+    }
+}

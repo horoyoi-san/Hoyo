@@ -1,0 +1,1 @@
+CS.UnityEngine.Application.targetFrameRate = 180
