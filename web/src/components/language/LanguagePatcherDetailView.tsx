@@ -1,0 +1,313 @@
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Globe,
+  FolderOpen,
+  Zap,
+  CheckCircle2,
+  Volume2,
+  Languages,
+  Check,
+} from 'lucide-react';
+import { Badge, Button, Card, Input, SectionHeader } from '../ui';
+import { useAppStore } from '../../stores/useAppStore';
+import { useT } from '../../lib/hooks';
+import { isTauri, tauriApi, GameLanguageState, LanguagePatchResult } from '../../lib/tauri';
+
+interface LangOption {
+  code: string;
+  name: string;
+  nativeName: string;
+  flag: string;
+}
+
+const TEXT_LANGUAGES: LangOption[] = [
+  { code: 'th', name: 'Thai', nativeName: 'ภาษาไทย', flag: '🇹🇭' },
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
+  { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
+  { code: 'zh-cn', name: 'Simplified Chinese', nativeName: '简体中文', flag: '🇨🇳' },
+  { code: 'zh-tw', name: 'Traditional Chinese', nativeName: '繁體中文', flag: '🇹🇼' },
+  { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
+  { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
+  { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
+  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
+  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
+  { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇧🇷' },
+  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia', flag: '🇮🇩' },
+  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt', flag: '🇻🇳' },
+];
+
+const VOICE_LANGUAGES: LangOption[] = [
+  { code: 'ja', name: 'Japanese Voice', nativeName: '日本語音声', flag: '🇯🇵' },
+  { code: 'en', name: 'English Voice', nativeName: 'English Voiceover', flag: '🇺🇸' },
+  { code: 'zh', name: 'Chinese Voice', nativeName: '中文配音', flag: '🇨🇳' },
+  { code: 'ko', name: 'Korean Voice', nativeName: '한국어 음성', flag: '🇰🇷' },
+];
+
+export function LanguagePatcherDetailView() {
+  const { isTh } = useT();
+  const gamePath = useAppStore((state) => state.gamePath);
+  const updateSettings = useAppStore((state) => state.updateSettings);
+
+  const [selectedText, setSelectedText] = useState<string>('th');
+  const [selectedVoice, setSelectedVoice] = useState<string>('ja');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [result, setResult] = useState<LanguagePatchResult | null>(null);
+
+  const [logs, setLogs] = useState<string[]>([
+    '🌐 AstralOS Native In-Game Language Patcher v2026 Ready.',
+    '💡 รองรับภาษาข้อความ (Text) 13 ภาษา และเสียงพากย์ (Voice) 4 ภาษาหลัก',
+    '📁 แก้ไขค่า GeneralConfig.json ในตัวเกมโดยตรง ปลอดภัย และมีผลทันทีในเกม',
+  ]);
+
+  const addLog = (msg: string) => {
+    const timestamp = new Date().toTimeString().split(' ')[0];
+    setLogs((prev) => [`[${timestamp}] ${msg}`, ...prev.slice(0, 99)]);
+  };
+
+  const loadCurrentLanguage = useCallback(async () => {
+    if (isTauri() && gamePath) {
+      try {
+        const state: GameLanguageState = await tauriApi.getGameLanguages(gamePath);
+        if (state.currentTextLang) setSelectedText(state.currentTextLang);
+        if (state.currentAudioLang) setSelectedVoice(state.currentAudioLang);
+        addLog(isTh ? `ตรวจพบการตั้งค่าภาษาปัจจุบัน: Text=${state.currentTextLang}, Voice=${state.currentAudioLang}` : `Detected current language: Text=${state.currentTextLang}, Voice=${state.currentAudioLang}`);
+      } catch (e) {
+        console.debug('Failed to get game languages:', e);
+      }
+    }
+  }, [gamePath, isTh]);
+
+  useEffect(() => {
+    loadCurrentLanguage();
+  }, [loadCurrentLanguage]);
+
+  const handleBrowseGamePath = async () => {
+    if (isTauri()) {
+      const p = await tauriApi.pickDirectoryDialog();
+      if (p) {
+        updateSettings({ gamePath: p });
+        addLog(isTh ? `เลือกโฟลเดอร์ตัวเกม: ${p}` : `Selected Game Directory: ${p}`);
+      }
+    }
+  };
+
+  const handleApplyLanguage = async () => {
+    if (!gamePath) return;
+    setLoading(true);
+    setResult(null);
+    addLog(isTh ? `🌐 กำลังเปลี่ยนภาษาเกมเป็น Text=[${selectedText}] Voice=[${selectedVoice}]...` : `🌐 Switching language to Text=[${selectedText}] Voice=[${selectedVoice}]...`);
+
+    if (isTauri()) {
+      try {
+        const res = await tauriApi.setGameLanguage(gamePath, selectedText, selectedVoice);
+        setResult(res);
+        addLog(isTh ? `✅ เปลี่ยนภาษาสำเร็จ: ${res.message}` : `✅ Successfully switched language: ${res.message}`);
+      } catch (e) {
+        addLog(`❌ Error: ${e}`);
+      }
+    } else {
+      setTimeout(() => {
+        const mock: LanguagePatchResult = {
+          success: true,
+          previousText: 'en',
+          newText: selectedText,
+          previousAudio: 'en',
+          newAudio: selectedVoice,
+          message: `In-game language successfully switched to Text=${selectedText}, Voice=${selectedVoice}`,
+        };
+        setResult(mock);
+        addLog(`✅ [Dev Mode] ${mock.message}`);
+        setLoading(false);
+      }, 500);
+      return;
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto bg-hz-navy-900">
+      <SectionHeader
+        icon={<Globe className="h-5 w-5" />}
+        title={isTh ? 'ระบบเปลี่ยนภาษาในเกม (hsr-lang-patcher 2026)' : 'In-Game Language Switcher (hsr-lang-patcher 2026)'}
+        badge={<Badge variant="violet">13 Texts + 4 Voices</Badge>}
+        description={
+          isTh
+            ? 'เปลี่ยนภาษาเมนู ซับไตเติล และเสียงพากย์ในเกม Honkai: Star Rail ได้อย่างอิสระโดยไม่ต้องโหลดข้อมูลซ้ำซ้อน'
+            : 'Effortlessly switch in-game text and audio languages with instant GeneralConfig.json synchronization.'
+        }
+      />
+
+      {/* Directory Configuration Card */}
+      <Card className="p-4 border-hz-navy-500/50 bg-hz-navy-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-end gap-3">
+          <div className="flex-1 min-w-0">
+            <label className="text-xs text-hz-gray-400 block mb-1.5 font-medium">
+              {isTh ? 'โฟลเดอร์ตัวเกม (Game Directory)' : 'Game Directory'}
+            </label>
+            <div className="flex gap-2">
+              <Input
+                value={gamePath || ''}
+                onChange={(e) => updateSettings({ gamePath: e.target.value })}
+                className="font-mono text-xs flex-1"
+                placeholder="C:/Program Files/Star Rail/Games"
+              />
+              <Button variant="secondary" size="sm" onClick={handleBrowseGamePath} className="shrink-0 px-3">
+                <FolderOpen className="h-4 w-4 mr-1.5" />
+                <span>{isTh ? 'เลือกโฟลเดอร์' : 'Browse'}</span>
+              </Button>
+            </div>
+          </div>
+
+          <div className="shrink-0">
+            <Button
+              variant="primary"
+              size="sm"
+              loading={loading}
+              onClick={handleApplyLanguage}
+              disabled={!gamePath}
+              icon={<Zap className="h-4 w-4 fill-current" />}
+              className="w-full sm:w-auto"
+            >
+              {isTh ? 'บันทึกภาษาลงตัวเกม' : 'Apply Language Settings'}
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      {/* Selection Grids */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Text Language Selector */}
+        <Card className="p-5 border-hz-navy-500/50 bg-hz-navy-800/80 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-hz-navy-500/40">
+            <div className="flex items-center gap-2.5 text-white">
+              <div className="p-2 rounded-xl bg-purple-500/15 border border-purple-500/25 text-purple-400">
+                <Languages className="h-4 w-4" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-white">
+                  {isTh ? 'เลือกภาษาข้อความในเกม (Text Language)' : 'Select Text Language'}
+                </h2>
+                <p className="text-xs text-hz-gray-400">
+                  {isTh ? 'ข้อความ เมนู และบทสนทนาในเกม' : 'In-game menus, subtitles, and dialogue.'}
+                </p>
+              </div>
+            </div>
+            <Badge variant="violet">{selectedText.toUpperCase()}</Badge>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto pr-1 scrollbar-thin">
+            {TEXT_LANGUAGES.map((lang) => {
+              const isSelected = selectedText === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => setSelectedText(lang.code)}
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                    isSelected
+                      ? 'bg-hz-brand-400/20 border-hz-brand-400 shadow-md shadow-hz-brand-400/20'
+                      : 'bg-hz-navy-900/60 border-hz-navy-500/40 hover:bg-hz-navy-700/60 hover:border-hz-navy-500'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg">{lang.flag}</span>
+                    {isSelected && <Check className="h-3.5 w-3.5 text-hz-brand-400" />}
+                  </div>
+                  <div className="mt-2">
+                    <div className="text-xs font-bold text-white truncate">{lang.nativeName}</div>
+                    <div className="text-[10px] text-hz-gray-400 truncate">{lang.name}</div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* Audio / Voice Language Selector */}
+        <Card className="p-5 border-hz-navy-500/50 bg-hz-navy-800/80 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-hz-navy-500/40">
+            <div className="flex items-center gap-2.5 text-white">
+              <div className="p-2 rounded-xl bg-cyan-500/15 border border-cyan-500/25 text-cyan-400">
+                <Volume2 className="h-4 w-4" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-white">
+                  {isTh ? 'เลือกเสียงพากย์ตัวละคร (Voice Language)' : 'Select Voice Audio Language'}
+                </h2>
+                <p className="text-xs text-hz-gray-400">
+                  {isTh ? 'เสียงพากย์ในคัตซีนและการต่อสู้' : 'Cutscenes and combat voiceovers.'}
+                </p>
+              </div>
+            </div>
+            <Badge variant="emerald">{selectedVoice.toUpperCase()}</Badge>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {VOICE_LANGUAGES.map((lang) => {
+              const isSelected = selectedVoice === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => setSelectedVoice(lang.code)}
+                  className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                    isSelected
+                      ? 'bg-emerald-500/20 border-emerald-500 shadow-md shadow-emerald-500/20'
+                      : 'bg-hz-navy-900/60 border-hz-navy-500/40 hover:bg-hz-navy-700/60 hover:border-hz-navy-500'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl">{lang.flag}</span>
+                    {isSelected && <Check className="h-4 w-4 text-emerald-400" />}
+                  </div>
+                  <div className="mt-3">
+                    <div className="text-xs font-bold text-white">{lang.nativeName}</div>
+                    <div className="text-[10px] text-hz-gray-400">{lang.name}</div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {result && (
+            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              <span>{result.message}</span>
+            </div>
+          )}
+        </Card>
+      </div>
+
+      {/* Terminal Log Output */}
+      <Card className="flex-1 min-h-48 p-4 flex flex-col font-mono text-xs space-y-2.5 shadow-lg shadow-black/20" flat>
+        <div className="flex items-center justify-between pb-2.5 border-b border-hz-navy-500/40">
+          <div className="flex items-center gap-2 text-white">
+            <span className="font-bold text-xs">
+              {isTh ? '🌐 บันทึกการทำงานของ Language Patcher' : '🌐 Language Patcher Output Stream'}
+            </span>
+          </div>
+          <Badge variant="outline" className="text-[10px] font-mono">
+            {logs.length} Events
+          </Badge>
+        </div>
+
+        <div className="flex-1 overflow-y-auto space-y-1.5 p-3 rounded-xl bg-hz-navy-900 border border-hz-navy-500/40 text-[11px] scrollbar-thin max-h-56">
+          {logs.map((log, i) => (
+            <div
+              key={i}
+              className={`break-all font-mono leading-relaxed ${
+                log.includes('✅')
+                  ? 'text-emerald-300 font-bold'
+                  : log.includes('🌐') || log.includes('💡')
+                  ? 'text-cyan-300 font-semibold'
+                  : 'text-zinc-300'
+              }`}
+            >
+              {log}
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
+  );
+}

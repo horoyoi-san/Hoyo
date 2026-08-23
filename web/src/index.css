@@ -1,0 +1,201 @@
+@import "tailwindcss";
+@import "@fontsource/kanit/400.css";
+@import "@fontsource/kanit/500.css";
+@import "@fontsource/kanit/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+/* ============================================================
+   Stealth Charcoal & Matte Dark Theme (Obsidian / Matte Grey)
+   Base: #090a0d | Sidebar: #12141a | Card: #161920 | Accent: #5e6ad2
+   ============================================================ */
+@theme {
+  --color-base: #090a0d;
+  --color-surface-1: #161920;
+  --color-surface-2: #1e222b;
+  --color-surface-3: #282c37;
+  --color-inset: #0c0d12;
+
+  /* Horizon Navy/Charcoal Palette Tokens */
+  --color-hz-navy-900: #090a0d;
+  --color-hz-navy-850: #0d0f14;
+  --color-hz-navy-800: #12141a;
+  --color-hz-navy-700: #161920;
+  --color-hz-navy-600: #1f232d;
+  --color-hz-navy-500: #292e3b;
+  --color-hz-navy-400: #383f4f;
+
+  /* Sleek Brand & Semantics (Stealth Slate-Indigo) */
+  --color-hz-brand-400: #5e6ad2;
+  --color-hz-brand-500: #4b55c3;
+  --color-hz-brand-300: #818cf8;
+  --color-hz-green-400: #10b981;
+  --color-hz-red-400: #f43f5e;
+  --color-hz-orange-400: #f59e0b;
+  --color-hz-gray-400: #94a3b8;
+  --color-hz-gray-500: #64748b;
+  --color-hz-gray-600: #475569;
+
+  /* Semantic mappings */
+  --color-hairline: rgba(255, 255, 255, 0.04);
+  --color-edge: rgba(255, 255, 255, 0.07);
+  --color-edge-strong: rgba(255, 255, 255, 0.12);
+
+  --color-ink: #ffffff;
+  --color-ink-2: #cbd5e1;
+  --color-ink-3: #94a3b8;
+  --color-ink-4: #64748b;
+
+  --color-accent: #5e6ad2;
+  --color-accent-strong: #4b55c3;
+  --color-accent-soft: #818cf8;
+  --color-gold: #f59e0b;
+
+  --font-sans: "Kanit", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --animate-fade-in: fade-in 0.15s ease-out both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-hz-navy-900);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    user-select: none;
+  }
+
+  .selectable,
+  pre,
+  code {
+    user-select: text;
+  }
+
+  ::selection {
+    background: rgba(94, 106, 210, 0.35);
+    color: #fff;
+  }
+
+  /* Compact modern scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(94, 106, 210, 0.6);
+    outline-offset: 1px;
+  }
+}
+
+/* Scrollbar utilities */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   Horizon UI Surface & Elevation Utilities
+   ============================================================ */
+
+@utility panel-surface {
+  background-color: var(--color-hz-navy-700);
+  border: 1px solid var(--color-edge);
+}
+
+@utility card-surface {
+  background-color: var(--color-hz-navy-700);
+  border: 1px solid var(--color-edge);
+}
+
+@utility card-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  &:hover {
+    background-color: var(--color-hz-navy-600);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@utility log-pane {
+  background-color: var(--color-inset);
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   @xyflow / React Flow Dark Theme Customization
+   ============================================================ */
+
+.react-flow__controls {
+  background: #141720 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+.react-flow__controls-button {
+  background: #141720 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  fill: #a1a1aa !important;
+  color: #a1a1aa !important;
+}
+
+.react-flow__controls-button:hover {
+  background: #1e222d !important;
+  fill: #ffffff !important;
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor !important;
+}
+
+.react-flow__attribution {
+  display: none !important;
+}
+
+.react-flow__minimap {
+  background: #090a0e !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}

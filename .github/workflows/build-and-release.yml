@@ -1,0 +1,95 @@
+name: Build and Release AstralOS
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build AstralOS (Windows x64)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            .
+            src-tauri
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd web
+          npm ci || npm install
+
+      - name: Verify Cargo Workspace
+        run: |
+          cargo check --workspace
+
+      - name: Build Dumper Hook DLL (version.dll)
+        run: |
+          cargo build --release -p dumper
+          if (-not (Test-Path bin)) { New-Item -ItemType Directory -Path bin }
+          Copy-Item target/release/version.dll bin/version.dll -Force
+
+      - name: Build Desktop Application (Tauri 2.0)
+        run: |
+          cd web
+          npx tauri build --no-bundle
+          cd ..
+          Copy-Item src-tauri/target/release/hsr-desktop.exe bin/hsr-desktop.exe -Force
+          Copy-Item src-tauri/target/release/hsr-desktop.exe AstralOS.exe -Force
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@4
+        with:
+          name: AstralOS-Windows-x64
+          path: |
+            AstralOS.exe
+            bin/version.dll
+            bin/res.json
+            bin/freesr-data.json
+            bin/versions.json
+            menu.bat
+          retention-days: 14
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@2
+        with:
+          files: |
+            AstralOS.exe
+            bin/version.dll
+            bin/res.json
+            bin/freesr-data.json
+            bin/versions.json
+            menu.bat
+          draft: false
+          prerelease: false
+          generate_release_notes: true

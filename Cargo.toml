@@ -1,0 +1,118 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/il2cpp",
+    "crates/reflection",
+    "crates/utils",
+    "crates/derive",
+    "crates/dumper",
+    "crates/ipc",
+    "crates/cheat",
+    "crates/starrail-exe",
+    "crates/sniffer",
+    "crates/crypto/prism256",
+    "crates/crypto/mr0k",
+    "crates/unpacker",
+    "crates/design",
+    "crates/gacha",
+    "crates/morax",
+    "crates/mcp-server",
+    "crates/robinsr",
+]
+
+default-members = [
+    "crates/il2cpp",
+    "crates/reflection",
+    "crates/utils",
+    "crates/derive",
+    "crates/dumper",
+    "crates/ipc",
+    "crates/cheat",
+    "crates/starrail-exe",
+    "crates/sniffer",
+]
+
+# Standalone packages living inside the repo, not part of this workspace.
+exclude = ["lib", "src-tauri"]
+
+[workspace.package]
+version = "0.1.0"
+
+[workspace.dependencies]
+windows = { version = "0.62.2", features = [
+    "Win32_Foundation",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Console",
+    "Win32_Security",
+    "Win32_System_Threading",
+    "Win32_System_ProcessStatus",
+    "Win32_System_SystemServices",
+    "Win32_System_Memory",
+    "Win32_System_Diagnostics_Debug",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Pipes",
+    "Win32_System_IO",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+base64 = "0.22.1"
+cc = "1.0"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = { version = "1.0.150", features = ["preserve_order"] }
+paste = "1.0.15"
+convert_case = "0.11.0"
+bitflags = "2.13.0"
+indexmap = { version = "2.14.0", features = ["serde"] }
+ilhook = "2.3.0"
+microseh = "1.2.0"
+iced-x86 = "1.21.0"
+patternscan = "1.2.0"
+byteorder = "1.5.0"
+indicatif = "0.18.4"
+prost = "0.14.4"
+log = "0.4.28"
+image = "0.25.10"
+lz4_flex = "0.12.0"
+num_enum = "0.7.5"
+memmap2 = "0.9"
+inventory = "0.3.24"
+syn = { version = "2.0.100", features = ["full"] }
+regex = "1.11"
+
+ureq = { version = "3.3.0", features = ["rustls"] }
+
+anyhow = "1.0.102"
+rand = "0.9"
+rand_core = { version = "0.9", features = ["os_rng"] }
+rayon = "1.11"
+dashmap = "6"
+tungstenite = "0.26"
+axum = "0.8"
+kcp = "0.6"
+tokio = { version = "1.43", features = ["full"] }
+env_logger = "0.11"
+
+il2cpp = { path = "crates/il2cpp" }
+reflection = { path = "crates/reflection" }
+utils = { path = "crates/utils" }
+dahlah-derive = { path = "crates/derive" }
+sniffer = { path = "crates/sniffer" }
+hsr-ipc = { path = "crates/ipc" }
+cheat = { path = "crates/cheat" }
+prism128 = { path = "crates/crypto/prism256" }
+mr0k = { path = "crates/crypto/mr0k" }
+unpacker = { path = "crates/unpacker" }
+design = { path = "crates/design" }
+gacha = { path = "crates/gacha" }
+morax = { path = "crates/morax" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
+
+[profile.release.build-override]
+opt-level = 3
+codegen-units = 1
+strip = true
