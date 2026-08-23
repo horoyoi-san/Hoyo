@@ -27,7 +27,7 @@ impl UnpackerPage {
         .detach();
     }
 
-    fn start_scan(&mut self, cx: &mut Context<Self>) {
+    pub(super) fn start_scan(&mut self, cx: &mut Context<Self>) {
         if self.roots.is_empty() {
             return;
         }
@@ -59,7 +59,9 @@ impl UnpackerPage {
                         }
                     }
                     let n = done.fetch_add(1, Ordering::Relaxed) + 1;
-                    let _ = tx.send(UnpackMsg::ScanProgress(n, total));
+                    if n % 50 == 0 || n == total {
+                        let _ = tx.send(UnpackMsg::ScanProgress(n, total));
+                    }
                     v
                 })
                 .flatten()

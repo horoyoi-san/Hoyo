@@ -21,6 +21,7 @@ mod version;
 mod xluau;
 
 pub fn start_in_process() {
+    utils::hook_unity_player();
     std::thread::spawn(|| thread_entry(false));
 }
 

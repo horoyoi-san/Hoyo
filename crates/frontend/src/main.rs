@@ -5,6 +5,7 @@ mod assets;
 mod cheat;
 mod components;
 mod config_store;
+mod game_manager;
 mod ipc;
 mod logging;
 mod pages;
@@ -25,6 +26,7 @@ fn main() {
         .build_global();
 
     logging::init();
+    game_manager::init_game_dir();
 
     let app = gpui_platform::application().with_assets(assets::Assets);
 

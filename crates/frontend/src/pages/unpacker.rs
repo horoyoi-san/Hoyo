@@ -84,9 +84,26 @@ impl UnpackerPage {
         let (preview_tx, preview_rx) = channel::<PreviewReq>();
         workers::spawn_preview_worker(preview_rx, tx.clone());
 
+        let mut initial_roots = Vec::new();
+        let mut initial_source = "No folder loaded".to_string();
+        let mut initial_status = "Click Load and pick your StreamingAssets\\Asb\\Windows folder.".to_string();
+
+        if let Some(game_dir) = crate::game_manager::get_game_dir() {
+            let asb = game_dir
+                .join("StarRail_Data")
+                .join("StreamingAssets")
+                .join("Asb")
+                .join("Windows");
+            if asb.exists() {
+                initial_source = asb.display().to_string();
+                initial_status = format!("Detected game assets: {}", asb.display());
+                initial_roots.push(asb);
+            }
+        }
+
         let mut page = Self {
-            roots: Vec::new(),
-            source_label: "No folder loaded".into(),
+            roots: initial_roots,
+            source_label: initial_source,
             assets: Vec::new(),
             tree: TreeNode::default(),
             expanded: HashSet::new(),
@@ -103,7 +120,7 @@ impl UnpackerPage {
             thumb_tx,
             thumb_requested: Arc::new(Mutex::new(HashSet::new())),
             pending_drops: Vec::new(),
-            status: "Click Load and pick your StreamingAssets\\Asb\\Windows folder.".into(),
+            status: initial_status,
             busy: false,
             tx,
             rx: Some(rx),

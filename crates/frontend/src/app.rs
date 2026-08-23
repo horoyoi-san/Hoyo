@@ -9,12 +9,13 @@ use crate::components::ui::{
     render_background_video, render_starfield, update_cosmic_stars,
 };
 use crate::pages::{
-    CheatPage, ConfigPage, ConsolePage, DesignPage, DumperPage, GachaPage, LuaPage, MoraxPage,
-    SnifferPage, UidPage, UnpackerPage,
+    CheatPage, ConfigPage, ConsolePage, DesignPage, DumperPage, ExtractorPage, GachaPage, LuaPage,
+    MoraxPage, SnifferPage, UidPage, UnpackerPage,
 };
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Page {
+    Extractor,
     Dumper,
     Morax,
     Sniffer,
@@ -30,6 +31,7 @@ enum Page {
 
 pub struct HsrApp {
     page: Page,
+    extractor: Entity<ExtractorPage>,
     dumper: Entity<DumperPage>,
     morax: Entity<MoraxPage>,
     sniffer: Entity<SnifferPage>,
@@ -48,6 +50,7 @@ pub struct HsrApp {
 
 impl HsrApp {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
+        let extractor = cx.new(|cx| ExtractorPage::new(window, cx));
         let dumper = cx.new(|cx| DumperPage::new(window, cx));
         let morax = cx.new(|cx| MoraxPage::new(window, cx));
         let sniffer = cx.new(|cx| SnifferPage::new(window, cx));
@@ -123,7 +126,8 @@ impl HsrApp {
         .detach();
 
         Self {
-            page: Page::Dumper,
+            page: Page::Extractor,
+            extractor,
             dumper,
             morax,
             sniffer,
@@ -143,6 +147,7 @@ impl HsrApp {
 
     fn nav_icon(page: Page) -> AnyElement {
         let path = match page {
+            Page::Extractor => "icons/Dumper.png",
             Page::Dumper => "icons/Dumper.png",
             Page::Morax => "icons/Morax.png",
             Page::Sniffer => "icons/Sniffer.png",
@@ -282,21 +287,18 @@ impl HsrApp {
                             .child(
                                 v_flex()
                                     .gap_2p5()
-                                    .child(self.nav_item(Page::Dumper, "Dumper", "Game Dumper", cx))
+                                    .child(self.nav_item(
+                                        Page::Extractor,
+                                        "Extractor",
+                                        "Raw Data Hub",
+                                        cx,
+                                    ))
                                     .child(self.nav_item(
                                         Page::Morax,
                                         "Morax",
                                         "IL2CPP Cracker",
                                         cx,
                                     ))
-                                    .child(self.nav_item(
-                                        Page::Sniffer,
-                                        "Sniffer",
-                                        "Packet Stream",
-                                        cx,
-                                    ))
-                                    .child(self.nav_item(Page::Cheat, "Cheat", "Game Easier", cx))
-                                    .child(self.nav_item(Page::Lua, "Lua", "XLua Engine", cx))
                                     .child(self.nav_item(
                                         Page::Unpacker,
                                         "Unpacker",
@@ -310,6 +312,15 @@ impl HsrApp {
                                         cx,
                                     ))
                                     .child(self.nav_item(Page::Gacha, "Gacha", "Warp Analyzer", cx))
+                                    .child(self.nav_item(Page::Dumper, "Dumper", "Game Dumper", cx))
+                                    .child(self.nav_item(
+                                        Page::Sniffer,
+                                        "Sniffer",
+                                        "Packet Stream",
+                                        cx,
+                                    ))
+                                    .child(self.nav_item(Page::Cheat, "Cheat", "Game Easier", cx))
+                                    .child(self.nav_item(Page::Lua, "Lua", "XLua Engine", cx))
                                     .child(self.nav_item(Page::Uid, "UID", "Relic", cx))
                                     .child(self.nav_item(
                                         Page::Config,
@@ -330,27 +341,75 @@ impl HsrApp {
     }
 
     fn title_bar(&self, cx: &Context<Self>) -> impl IntoElement {
+        let game_dir = crate::game_manager::get_game_dir();
+        let is_valid = game_dir
+            .as_ref()
+            .map(|d| crate::game_manager::validate_game_dir(d).is_valid)
+            .unwrap_or(false);
+        let game_label = if let Some(ref dir) = game_dir {
+            let name = dir
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_else(|| dir.display().to_string());
+            format!("Game: {name}")
+        } else {
+            "Game: Not Selected".to_string()
+        };
+
         TitleBar::new()
             .bg(rgba(0x0a0c12f2))
             .border_b_1()
             .border_color(rgba(0xffffff14))
             .child(
                 h_flex()
+                    .justify_between()
                     .items_center()
-                    .gap_2()
-                    .child(crate::ui::hsr_star(16.0, crate::theme::gold_strong()))
+                    .w_full()
                     .child(
-                        div()
-                            .text_sm()
-                            .font_weight(FontWeight::BOLD)
-                            .text_color(cx.theme().foreground)
-                            .child("HSR Owner"),
+                        h_flex()
+                            .items_center()
+                            .gap_2()
+                            .child(crate::ui::hsr_star(16.0, crate::theme::gold_strong()))
+                            .child(
+                                div()
+                                    .text_sm()
+                                    .font_weight(FontWeight::BOLD)
+                                    .text_color(cx.theme().foreground)
+                                    .child("HSR Owner"),
+                            ),
+                    )
+                    .child(
+                        h_flex()
+                            .items_center()
+                            .gap_2()
+                            .pr_4()
+                            .child(
+                                div()
+                                    .size(px(7.))
+                                    .rounded_full()
+                                    .bg(if is_valid {
+                                        rgb(0x4cd964)
+                                    } else {
+                                        rgb(0xe05d5d)
+                                    }),
+                            )
+                            .child(
+                                div()
+                                    .text_xs()
+                                    .text_color(if is_valid {
+                                        cx.theme().foreground
+                                    } else {
+                                        cx.theme().muted_foreground
+                                    })
+                                    .child(game_label),
+                            ),
                     ),
             )
     }
 
     fn body(&self) -> AnyElement {
         match self.page {
+            Page::Extractor => self.extractor.clone().into_any_element(),
             Page::Dumper => self.dumper.clone().into_any_element(),
             Page::Morax => self.morax.clone().into_any_element(),
             Page::Sniffer => self.sniffer.clone().into_any_element(),

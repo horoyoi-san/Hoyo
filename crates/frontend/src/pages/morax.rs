@@ -29,7 +29,8 @@ impl MoraxPage {
             return;
         }
 
-        let root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+        let root = crate::game_manager::get_game_dir()
+            .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
         let game = root.join("GameAssembly.dll");
         let meta_dir = root
             .join("StarRail_Data")
@@ -40,7 +41,7 @@ impl MoraxPage {
 
         for path in [&game, &global, &startup] {
             if !path.exists() {
-                self.status = format!("Missing input: {}", path.display());
+                self.status = format!("Missing file: {} (Please select valid Game Directory)", path.display());
                 cx.notify();
                 return;
             }
@@ -74,80 +75,65 @@ impl MoraxPage {
 }
 
 fn dump_morax(game: PathBuf, global: PathBuf, startup: PathBuf) -> Result<(f64, String), String> {
+    use std::panic::{AssertUnwindSafe, catch_unwind};
+
     let total = Instant::now();
     let out_dir = game
         .parent().map_or_else(|| PathBuf::from("Morax"), |parent| parent.join("Morax"));
 
     let global_data =
         std::fs::read(&global).map_err(|error| format!("read {}: {error}", global.display()))?;
-    let metadata =
-        Metadata::load(&game, global_data, &startup).map_err(|error| error.to_string())?;
+    
+    let metadata = catch_unwind(AssertUnwindSafe(|| {
+        Metadata::load(&game, global_data, &startup)
+    }))
+    .map_err(|_| "Failed: Metadata::load encountered an unexpected error / panic".to_string())?
+    .map_err(|error| error.to_string())?;
+
     std::fs::create_dir_all(&out_dir)
         .map_err(|error| format!("create {}: {error}", out_dir.display()))?;
 
     let md = &metadata;
     let out = &out_dir;
-    type Job<'a> = (
-        &'static str,
-        Box<dyn Fn() -> morax::Result<()> + Send + Sync + 'a>,
-    );
-    let jobs: Vec<Job> = vec![
-        (
-            "dump.cs",
-            Box::new(move || {
-                Ok(std::fs::write(
-                    out.join("dump.cs"),
-                    morax::dump::build_dump_cs(md)?,
-                )?)
-            }),
-        ),
-        (
-            "script.json",
-            Box::new(move || {
-                Ok(std::fs::write(
-                    out.join("script.json"),
-                    morax::script::build_script_json(md)?,
-                )?)
-            }),
-        ),
-        (
-            "il2cpp.h",
-            Box::new(move || {
-                Ok(std::fs::write(
-                    out.join("il2cpp.h"),
-                    morax::il2cpp_header::build_il2cpp_h(md)?,
-                )?)
-            }),
-        ),
-        (
-            "stringLiterals.json",
-            Box::new(move || {
-                Ok(std::fs::write(
-                    out.join("stringLiterals.json"),
-                    morax::script::build_string_literals(md)?,
-                )?)
-            }),
-        ),
-        (
-            "DummyDll",
-            Box::new(move || {
-                morax::dummydll::build_dummy_dll(md, &out.join("DummyDll"))?;
-                Ok(())
-            }),
-        ),
-    ];
-
-    let results: Vec<(&'static str, morax::Result<()>)> = jobs
-        .into_par_iter()
-        .map(|(name, job)| (name, job()))
-        .collect();
-
     let mut ok = 0usize;
-    for (name, result) in results {
-        match result {
-            Ok(()) => ok += 1,
-            Err(error) => return Err(format!("{name}: {error}")),
-        }
+
+    // 1. dump.cs
+    if let Ok(Ok(())) = catch_unwind(AssertUnwindSafe(|| {
+        morax::dump::build_dump_cs(md).and_then(|cs| Ok(std::fs::write(out.join("dump.cs"), cs)?))
+    })) {
+        ok += 1;
+    }
+
+    // 2. il2cpp.h
+    if let Ok(Ok(())) = catch_unwind(AssertUnwindSafe(|| {
+        morax::il2cpp_header::build_il2cpp_h(md).and_then(|h| Ok(std::fs::write(out.join("il2cpp.h"), h)?))
+    })) {
+        ok += 1;
+    }
+
+    // 3. stringLiterals.json
+    if let Ok(Ok(())) = catch_unwind(AssertUnwindSafe(|| {
+        morax::script::build_string_literals(md).and_then(|s| Ok(std::fs::write(out.join("stringLiterals.json"), s)?))
+    })) {
+        ok += 1;
+    }
+
+    // 4. script.json
+    if let Ok(Ok(())) = catch_unwind(AssertUnwindSafe(|| {
+        morax::script::build_script_json(md).and_then(|j| Ok(std::fs::write(out.join("script.json"), j)?))
+    })) {
+        ok += 1;
+    }
+
+    // 5. DummyDll
+    if let Ok(Ok(_)) = catch_unwind(AssertUnwindSafe(|| {
+        morax::dummydll::build_dummy_dll(md, &out.join("DummyDll"))
+    })) {
+        ok += 1;
+    }
+
+    if ok == 0 {
+        return Err("Extraction failed to generate files. Please verify game files.".into());
     }
 
     Ok((

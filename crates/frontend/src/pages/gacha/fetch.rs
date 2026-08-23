@@ -20,7 +20,8 @@ impl GachaPage {
         self.status = "Locating Warp link…".into();
         cx.notify();
 
-        let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
+        let cwd = crate::game_manager::get_game_dir()
+            .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
         let view = cx.entity();
         let progress = self.progress.clone();
 
