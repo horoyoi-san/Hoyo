@@ -1,5 +1,5 @@
 use super::*;
-
+// หากมีการอัพเดท ของตัวละครใหม่ ๆ ให้เพิ่ม ID ของตัวละครเหล่านั้นใน BASE_AVATAR_IDS
 pub static BASE_AVATAR_IDS: [u32; 87] = [
     8001, 1001, //
     //

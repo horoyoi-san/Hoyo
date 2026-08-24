@@ -25,6 +25,7 @@ pub async fn on_player_heart_beat_cs_req(
     });
 }
 
+// หากมีการอัพเดท package ใหม่ ๆ ให้เพิ่ม ID ของ package เหล่านั้นใน ContentPackageSyncDataScNotify
 pub async fn on_player_login_finish_cs_req(
     session: &mut PlayerSession,
     _req: &PlayerLoginFinishCsReq,
