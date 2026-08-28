@@ -412,7 +412,6 @@ async fn load_scene(
     scene_info.entity_group_list.push(SceneEntityGroupInfo {
         state: 0,
         group_id: 0,
-        property_map: HashMap::with_capacity(0),
         entity_list: json
             .lineups
             .iter()
@@ -429,6 +428,7 @@ async fn load_scene(
                 ..Default::default()
             })
             .collect(),
+        ..Default::default()
     });
 
     if is_enter_scene {
