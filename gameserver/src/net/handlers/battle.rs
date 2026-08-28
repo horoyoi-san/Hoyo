@@ -377,6 +377,7 @@ async fn create_battle_info(
                 }),
             }),
             skill_info: Vec::with_capacity(0),
+            ..Default::default()
         })
     }
 
