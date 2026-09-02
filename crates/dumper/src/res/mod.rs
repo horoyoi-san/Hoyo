@@ -1,4 +1,4 @@
-use std::{borrow::Cow, sync::LazyLock, time::Duration};
+use std::{borrow::Cow, sync::LazyLock};
 
 use iced_x86::{Decoder, DecoderOptions, Instruction, Mnemonic, OpKind, Register};
 use il2cpp::get_cached_class;

@@ -108,21 +108,21 @@ impl Gateway {
                     }
                 };
 
-            let path = Path::new("freesr-data.json");
+            let path = common::sr_tools::FreesrData::resolve_file_path("freesr-data.json");
 
             if let Err(e) = debouncer
                 .watcher()
-                .watch(path, notify::RecursiveMode::NonRecursive)
+                .watch(&path, notify::RecursiveMode::NonRecursive)
             {
                 tracing::error!("failed to watch {path:?}: {e}");
                 return;
             }
 
-            tracing::info!("watching freesr-data.json changes");
+            tracing::info!("watching {} changes", path.display());
 
             let mut shutdown_rx = session.read().await.shutdown_rx.clone();
 
-            let mut last_modified = std::fs::metadata(path)
+            let mut last_modified = std::fs::metadata(&path)
                 .and_then(|meta| meta.modified())
                 .unwrap_or(SystemTime::UNIX_EPOCH);
 
@@ -137,7 +137,7 @@ impl Gateway {
                                 if events
                                     .iter()
                                     .any(|p| p.path.file_name() == path.file_name())
-                                    && let Ok(metadata) = std::fs::metadata(path)
+                                    && let Ok(metadata) = std::fs::metadata(&path)
                                         && let Ok(modified) = metadata.modified()
                                             && modified > last_modified {
                                                 last_modified = modified;

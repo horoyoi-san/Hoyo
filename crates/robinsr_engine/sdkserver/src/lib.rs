@@ -36,13 +36,8 @@ impl AppState {
         let hotfix = match VersionConfig::fetch_hotfix(version, dispatch_seed).await {
             Ok(hotfix) => hotfix,
             Err(err) => {
-                tracing::warn!("failed to fetch hotfix online ({err}), searching local fallback...");
-                self.hotfix_map.iter()
-                    .filter(|(k, v)| (k.contains("4.4") || k.starts_with(&version[..version.len().min(8)])) && !v.asset_bundle_url.is_empty())
-                    .map(|(_, v)| v.clone())
-                    .next()
-                    .or_else(|| self.hotfix_map.values().find(|v| !v.asset_bundle_url.is_empty()).cloned())
-                    .unwrap_or_default()
+                tracing::error!("failed to fetch hotfix. reason: {err}");
+                VersionConfig::default()
             }
         };
 
@@ -72,24 +67,24 @@ pub async fn start_sdkserver() -> Result<()> {
     let router = Router::new()
         .route(
             dispatch::QUERY_DISPATCH_ENDPOINT,
-            get(dispatch::query_dispatch).post(dispatch::query_dispatch).head(dispatch::query_dispatch),
+            get(dispatch::query_dispatch),
         )
         .route(
             dispatch::QUERY_GATEWAY_ENDPOINT,
-            get(dispatch::query_gateway).post(dispatch::query_gateway).head(dispatch::query_gateway),
+            get(dispatch::query_gateway),
         )
-        .route(auth::RISKY_API_CHECK_ENDPOINT, post(auth::risky_api_check).get(auth::risky_api_check))
+        .route(auth::RISKY_API_CHECK_ENDPOINT, post(auth::risky_api_check))
         .route(
             auth::LOGIN_WITH_PASSWORD_ENDPOINT,
-            post(auth::login_with_password).get(auth::login_with_password),
+            post(auth::login_with_password),
         )
         .route(
             auth::LOGIN_WITH_SESSION_TOKEN_ENDPOINT,
-            post(auth::login_with_session_token).get(auth::login_with_session_token),
+            post(auth::login_with_session_token),
         )
         .route(
             auth::GRANTER_LOGIN_VERIFICATION_ENDPOINT,
-            post(auth::granter_login_verification).get(auth::granter_login_verification),
+            post(auth::granter_login_verification),
         )
         .route(
             sr_tools::SRTOOLS_UPLOAD_ENDPOINT,
@@ -97,14 +92,16 @@ pub async fn start_sdkserver() -> Result<()> {
         )
         .route(
             auth::APN_LOGIN_BY_PASSWORD_ENDPOINT,
-            post(auth::apn_login_with_password).get(auth::apn_login_with_password),
+            post(auth::apn_login_with_password),
         )
-        .route(auth::APN_VERIFY_TOKEN_ENDPOINT, post(auth::apn_veriy_token).get(auth::apn_veriy_token))
-        .route(auth::APN_EXCHANGE_ENDPOINT, post(auth::apn_exchange).get(auth::apn_exchange))
+        .route(auth::APN_VERIFY_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
+        .route(auth::APN_EXCHANGE_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
+        .route(auth::APN_GET_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
+        .route(auth::APN_GET_USER_INFO_ENDPOINT, post(auth::apn_veriy_token))
         .layer(
             CorsLayer::new()
                 .allow_origin(Any)
-                .allow_methods([Method::GET, Method::POST, Method::HEAD, Method::PATCH, Method::DELETE, Method::OPTIONS])
+                .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
                 .allow_headers([CONTENT_TYPE]),
         )
         .with_state(state)

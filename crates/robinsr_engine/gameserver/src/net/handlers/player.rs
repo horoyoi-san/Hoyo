@@ -20,7 +20,7 @@ pub async fn on_player_heart_beat_cs_req(
     res.download_data = Some(ClientDownloadData {
         version: 51,
         time: res.server_time_ms as i64,
-        data: rbase64::decode("bG9jYWwgZnVuY3Rpb24gYmV0YV90ZXh0KG9iaikKICAgIGxvY2FsIGdhbWVPYmplY3QgPSBDUy5Vbml0eUVuZ2luZS5HYW1lT2JqZWN0LkZpbmQoIlVJUm9vdC9BYm92ZURpYWxvZy9CZXRhSGludERpYWxvZyhDbG9uZSkiKQogICAgaWYgZ2FtZU9iamVjdCB0aGVuCiAgICAgICAgbG9jYWwgdGV4dENvbXBvbmVudCA9IGdhbWVPYmplY3Q6R2V0Q29tcG9uZW50SW5DaGlsZHJlbih0eXBlb2YoQ1MuUlBHLkNsaWVudC5Mb2NhbGl6ZWRUZXh0KSkKICAgICAgICBpZiB0ZXh0Q29tcG9uZW50IHRoZW4KICAgICAgICAgICAgdGV4dENvbXBvbmVudC50ZXh0ID0gIjxjb2xvcj0jZmYwMDAwPkhvcm95b2ktc2FuIOC2njwvY29sb3I+IgogICAgICAgIGVuZAogICAgZW5kCmVuZAoKbG9jYWwgZnVuY3Rpb24gdmVyc2lvbl90ZXh0KG9iaikKICAgIGxvY2FsIGdhbWVPYmplY3QgPSBDUy5Vbml0eUVuZ2luZS5HYW1lT2JqZWN0LkZpbmQoIlZlcnNpb25UZXh0IikKICAgIGlmIGdhbWVPYmplY3QgdGhlbgogICAgICAgIGxvY2FsIHRleHRDb21wb25lbnQgPSBnYW1lT2JqZWN0OkdldENvbXBvbmVudEluQ2hpbGRyZW4odHlwZW9mKENTLlJQRy5DbGllbnQuTG9jYWxpemVkVGV4dCkpCiAgICAgICAgaWYgdGV4dENvbXBvbmVudCB0aGVuCiAgICAgICAgICAgIHRleHRDb21wb25lbnQudGV4dCA9ICI8Y29sb3I9I2JiMDBmZj7guJnguLXguYjguITguLfguK3guYDguKfguK3guKPguYzguIrguLHguYjguJnguJfguJTguKrguK3guJog4Lii4Lix4LiH4LmE4Lih4LmI4LmE4LiU4LmJ4Lij4Liw4LiU4Lix4Lia4LiE4Li44LiT4Lig4Liy4Lie4LiC4Lit4LiH4LmA4LiB4LihPC9jb2xvcj4gPGNvbG9yPSNGRjAwMDA+SG88L2NvbG9yPjxjb2xvcj0jRkY3RjAwPm5rPC9jb2xvcj48Y29sb3I9I0ZGRkYwMD5haTwvY29sb3I+IDxjb2xvcj0jMDBGRjAwPlN0PC9jb2xvcj48Y29sb3I9IzAwMDBGRj5hcjwvY29sb3I+IDxjb2xvcj0jNEIwMDgyPkdheTwvY29sb3I+IgogICAgICAgIGVuZAogICAgZW5kCmVuZAoKdmVyc2lvbl90ZXh0KCkKYmV0YV90ZXh0KCk=").unwrap(),
+        data: rbase64::decode("BAEcA2xvZwJDUwtVbml0eUVuZ2luZQtBcHBsaWNhdGlvbg90YXJnZXRGcmFtZVJhdGUPUXVhbGl0eVNldHRpbmdzCnZTeW5jQ291bnQIcGF0Y2hGcHMKR2FtZU9iamVjdARGaW5kKFVJUm9vdC9BYm92ZURpYWxvZy9CZXRhSGludERpYWxvZyhDbG9uZSkDUlBHBkNsaWVudA1Mb2NhbGl6ZWRUZXh0BnR5cGVvZhZHZXRDb21wb25lbnRJbkNoaWxkcmVuJjxjb2xvcj0jMDBlMWZmPnQubWUvbmVvbnRlYW0yNTwvY29sb3I+BHRleHQLVmVyc2lvblRleHQiPGNvbG9yPSMwMGUxZmY+Um9iaW5TUiEgfCA8L2NvbG9yPg88Y29sb3I9IzAwZTFmZj4KR2xvYmFsVmFycw1zX1ZlcnNpb25EYXRhF0dldFNlcnZlclBha1R5cGVWZXJzaW9uCDwvY29sb3I+C3BhdGNoQmV0YVdtBG1haW4GeHBjYWxsBQEBAAAAAAEWAAEAAAAEAQEYAAUAAAAAAgAAAAAACwwAAwACBADABAFoARABAAMEAAAADAAGAAUEAMAEAQAAEAEA0AcAAAAWAAEACAMCAwMDBAQCBADAAwUDBgQFBADAAwcABwgBGAAAAAAAAQAAAAABCAAAAAAJAAAAAAA2DAEDAAIEAMAPAAF2BAAAAAUBBQAVAAICDAQIAAcYAMAPAwQUCQAAAE0sAwIMAgsAAACgQBUCAgAUAACxDAAAABUAAAIFAQ0AEAEA1Q4AAAAMAQMAAgQAwA8AAXYEAAAABQEPABUAAgIMBAgABxgAwA8DBBQJAAAATSwDAgwCCwAAAKBAFQICABQAALEMAAAAFQAAAgUCEAAFAxEADAgIAAcYAMAPBwisEgAAAA8GByMTAAAAFAYGkRQAAAAVBgICBgQGAAUFFQA1AQIFEAEA1Q4AAAAWAAEAFgMCAwMDCQQCBADAAwoDCwMMAw0EBxgAwAMOAw8EAACgQAMQAxEDEgMTAxQDFQMWAxcDGAMZAAwaARgAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAQEBAAAAAAAAAAAAAQD8AAUOAAAAAAEAAQAAAAMJAAAAFQABARYAAQAAABkbARgAAAEaAAAAAAcAAAEAAAxFAAAARAAAAEQBAQBEAgIARAMDAEoAAgAMBAUAAABAQAYFAwAGBgAAFQQDARYAAQAGBgAGAQYCBgMDHAQAAEBABAABAgMBAAEYAAMDBQ0ABAAAAAAAAQAAAAAE").unwrap(),
         ..Default::default()
     });
 }
@@ -52,4 +52,70 @@ pub async fn on_player_login_finish_cs_req(
         .await?;
 
     Ok(())
+}
+
+pub async fn on_get_player_board_data_cs_req(
+    _session: &mut PlayerSession,
+    _req: &GetPlayerBoardDataCsReq,
+    res: &mut GetPlayerBoardDataScRsp,
+) {
+    res.retcode = 0;
+    res.signature = String::from("AstralOS Private Server");
+    res.current_head_icon_id = 200001; // Default head icon in AvatarPlayerIcon.json
+    res.current_personal_card_id = 253000; // Default card in PlayerPersonalCard.json
+
+    res.display_avatar_vec = Some(DisplayAvatarVec {
+        display_avatar_list: Vec::new(),
+        is_display: true,
+    });
+
+    res.head_frame_info = Some(HeadFrameInfo {
+        head_frame_item_id: 0,
+        head_frame_expire_time: 0,
+    });
+
+    // Exact Unlocked Card Themes from PlayerPersonalCard.json
+    res.unlocked_personal_card_list = game_data::ALL_CARD_IDS.to_vec();
+
+    // Exact 217 Unlocked Head Icons from AvatarPlayerIcon.json
+    res.unlocked_head_icon_list = game_data::ALL_HEAD_ICON_IDS
+        .iter()
+        .map(|&id| HeadIconData { id })
+        .collect();
+}
+
+pub async fn on_set_head_icon_cs_req(
+    _session: &mut PlayerSession,
+    req: &SetHeadIconCsReq,
+    res: &mut SetHeadIconScRsp,
+) {
+    res.retcode = 0;
+    res.current_head_icon_id = req.id;
+}
+
+pub async fn on_set_personal_card_cs_req(
+    _session: &mut PlayerSession,
+    req: &SetPersonalCardCsReq,
+    res: &mut SetPersonalCardScRsp,
+) {
+    res.retcode = 0;
+    res.current_personal_card_id = req.card_id;
+}
+
+pub async fn on_set_signature_cs_req(
+    _session: &mut PlayerSession,
+    req: &SetSignatureCsReq,
+    res: &mut SetSignatureScRsp,
+) {
+    res.retcode = 0;
+    res.signature = req.signature.clone();
+}
+
+pub async fn on_set_display_avatar_cs_req(
+    _session: &mut PlayerSession,
+    req: &SetDisplayAvatarCsReq,
+    res: &mut SetDisplayAvatarScRsp,
+) {
+    res.retcode = 0;
+    res.display_avatar_vec = req.display_avatar_vec.clone();
 }

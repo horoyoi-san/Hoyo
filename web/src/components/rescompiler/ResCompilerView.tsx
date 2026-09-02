@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   FolderOpen,
   Zap,
@@ -31,11 +31,21 @@ export function ResCompilerView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [stats, setStats] = useState<ResCompileResult | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [logs, setLogs] = useState<string[]>([
-    '⚡ AstralOS Native Rayon Resource Compiler Ready.',
-    '💡 ระบบประมวลผลไฟล์ดิบ Config/LevelOutput และ ExcelOutput เป็น res.json ความเร็วสูง',
-    '📁 กำหนดโฟลเดอร์ Resources ต้นทาง แล้วกดปุ่ม "เริ่มประมวลผล res.json" ได้ทันที',
-  ]);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLogs([
+      isTh
+        ? '[*] ระบบรวมทรัพยากรเกม (Resource Compiler) พร้อมทำงาน'
+        : '[*] Automated Resource Compiler Engine Ready.',
+      isTh
+        ? '[*] ประมวลผลไฟล์ Config/LevelOutput และ ExcelOutput เป็น res.json'
+        : '[*] Compile raw Config/LevelOutput & ExcelOutput data into unified res.json',
+      isTh
+        ? '[*] กำหนดโฟลเดอร์ Resources ต้นทาง แล้วกดปุ่ม "เริ่มประมวลผล res.json" ได้ทันที'
+        : '[*] Specify the source Resources directory and click "Compile res.json Now"',
+    ]);
+  }, [isTh]);
 
   const addLog = (msg: string) => {
     const timestamp = new Date().toTimeString().split(' ')[0];
@@ -48,7 +58,7 @@ export function ResCompilerView() {
       if (p) {
         setResourcesDir(p);
         setErrorMessage('');
-        addLog(isTh ? `เลือกโฟลเดอร์ Resources: ${p}` : `Selected Resources directory: ${p}`);
+        addLog(isTh ? `[*] เลือกโฟลเดอร์ Resources: ${p}` : `[*] Selected Resources directory: ${p}`);
       }
     }
   };
@@ -56,35 +66,35 @@ export function ResCompilerView() {
   const handleCompile = async () => {
     if (!resourcesDir.trim()) {
       const err = isTh
-        ? '❌ กรุณากำหนดโฟลเดอร์ Resources ต้นทางก่อนเริ่มการประมวลผล'
-        : '❌ Please specify the source Resources directory first';
+        ? 'กรุณากำหนดโฟลเดอร์ Resources ต้นทางก่อนเริ่มการประมวลผล'
+        : 'Please specify the source Resources directory first';
       setErrorMessage(err);
-      addLog(err);
+      addLog(`[ERR] ${err}`);
       return;
     }
 
     setLoading(true);
     setStats(null);
     setErrorMessage('');
-    addLog(isTh ? `🚀 กำลังตรวจสอบและอ่านไฟล์จาก: ${resourcesDir}...` : `🚀 Verifying & reading files from: ${resourcesDir}...`);
+    addLog(isTh ? `[*] กำลังตรวจสอบและอ่านไฟล์จาก: ${resourcesDir}...` : `[*] Verifying & reading files from: ${resourcesDir}...`);
 
     if (isTauri()) {
       try {
         const res = await tauriApi.executeGenerateResJson(resourcesDir, outputFile);
         if (res && res.success) {
           setStats(res);
-          addLog(isTh ? `✅ สร้างสำเร็จ: ${res.outputFile} (${res.fileSizeMb} MB) ในเวลา ${res.timeSeconds}s` : `✅ Successfully generated ${res.outputFile} (${res.fileSizeMb} MB) in ${res.timeSeconds}s`);
-          addLog(isTh ? `📊 สรุป: ฉากทั้งหมด ${res.sceneGroupsCount} แมพ, ตัวละคร ${res.avatarsCount} ตัว, จุดวาร์ป ${res.mapEntrancesCount} จุด` : `📊 Summary: ${res.sceneGroupsCount} scenes, ${res.avatarsCount} avatars, ${res.mapEntrancesCount} map entrances`);
-          addLog(isTh ? '📂 ไฟล์ถูกซิงค์ไปยัง ./res.json และ ./bin/res.json พร้อมให้เซิร์ฟเวอร์ RobinSR ใช้งานทันที' : '📂 Automatically synced to ./res.json and ./bin/res.json for RobinSR server.');
+          addLog(isTh ? `[OK] สร้างสำเร็จ: ${res.outputFile} (${res.fileSizeMb} MB) ในเวลา ${res.timeSeconds}s` : `[OK] Successfully generated ${res.outputFile} (${res.fileSizeMb} MB) in ${res.timeSeconds}s`);
+          addLog(isTh ? `[INFO] สรุป: ฉากทั้งหมด ${res.sceneGroupsCount} แมพ, ตัวละคร ${res.avatarsCount} ตัว, จุดวาร์ป ${res.mapEntrancesCount} จุด` : `[INFO] Summary: ${res.sceneGroupsCount} scenes, ${res.avatarsCount} avatars, ${res.mapEntrancesCount} map entrances`);
+          addLog(isTh ? '[*] ไฟล์ถูกซิงค์ไปยัง ./res.json และ ./bin/res.json พร้อมให้เซิร์ฟเวอร์ RobinSR ใช้งานทันที' : '[*] Automatically synced to ./res.json and ./bin/res.json for RobinSR server.');
         } else {
           const err = res.message || 'Unknown compile error';
           setErrorMessage(err);
-          addLog(`❌ ${err}`);
+          addLog(`[ERR] ${err}`);
         }
       } catch (e) {
         const errStr = `${e}`;
         setErrorMessage(errStr);
-        addLog(`❌ ${errStr}`);
+        addLog(`[ERR] ${errStr}`);
       }
     } else {
       setTimeout(() => {
@@ -99,7 +109,7 @@ export function ResCompilerView() {
           message: 'Successfully compiled res.json (12.55 MB) with 929 scene maps in 0.83s',
         };
         setStats(mock);
-        addLog(`✅ [Dev Mode] ${mock.message}`);
+        addLog(`[OK] [Dev Mode] ${mock.message}`);
         setLoading(false);
       }, 600);
       return;
@@ -117,8 +127,7 @@ export function ResCompilerView() {
     <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto bg-hz-navy-900">
       <SectionHeader
         icon={<Database className="h-5 w-5" />}
-        title={isTh ? 'ระบบสร้าง res.json อัตโนมัติ (Resource Compiler)' : 'Automated Resource Compiler (res.json Generator)'}
-        badge={<Badge variant="violet">Pure Rust Rayon</Badge>}
+        title={isTh ? 'ระบบสร้าง res.json อัตโนมัติ' : 'Automated Resource Compiler'}
         description={
           isTh
             ? 'รวบรวมไฟล์ดิบจากโฟลเดอร์ Resources (Config & ExcelOutput) รวมเป็นไฟล์ res.json (~13MB) ในคลิกเดียวด้วยความเร็วระดับ Sub-second'
@@ -286,7 +295,7 @@ export function ResCompilerView() {
         <div className="flex items-center justify-between pb-2.5 border-b border-hz-navy-500/40">
           <div className="flex items-center gap-2 text-white">
             <span className="font-bold text-xs">
-              {isTh ? '📦 บันทึกการทำงานของ Resource Compiler' : '📦 Resource Compiler Live Execution Stream'}
+              {isTh ? 'บันทึกการทำงานของ Resource Compiler' : 'Resource Compiler Live Execution Stream'}
             </span>
           </div>
           <Badge variant="outline" className="text-[10px] font-mono">
@@ -299,13 +308,13 @@ export function ResCompilerView() {
             <div
               key={i}
               className={`break-all font-mono leading-relaxed ${
-                log.includes('✅')
+                log.includes('[OK]') || log.includes('Successfully')
                   ? 'text-emerald-300 font-bold'
-                  : log.includes('⚡') || log.includes('🚀')
+                  : log.includes('[*]') || log.includes('Starting') || log.includes('Verifying')
                   ? 'text-cyan-300 font-semibold'
-                  : log.includes('📊')
+                  : log.includes('[INFO]')
                   ? 'text-amber-300 font-semibold'
-                  : log.includes('❌')
+                  : log.includes('[ERR]') || log.includes('Error')
                   ? 'text-rose-400 font-semibold'
                   : 'text-zinc-300'
               }`}

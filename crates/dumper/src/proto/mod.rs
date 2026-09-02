@@ -8,7 +8,7 @@ use std::{
 use cache::{CachedType, TypeCache};
 use iced_x86::{Decoder, DecoderOptions, Instruction, Mnemonic};
 use il2cpp::{
-    CLASS_TABLE_VEC, get_cached_class, get_native_method,
+    CLASS_TABLE_VEC, get_cached_class,
     vm::{metadata_cache, value::Il2CppValue},
 };
 use reflection::{property_info::PropertyInfo, runtime_type::RuntimeType};

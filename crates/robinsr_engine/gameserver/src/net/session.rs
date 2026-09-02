@@ -75,6 +75,7 @@ impl PlayerSession {
                 let _ = self.shutdown_tx.send(());
                 return Ok(());
             };
+            tracing::info!("recv packet with CmdID: {}", packet.cmd_type);
             Self::on_message(self, packet.cmd_type, packet.body).await?;
         }
 

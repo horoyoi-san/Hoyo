@@ -9,6 +9,10 @@ mod mail;
 mod mission;
 mod player;
 mod scene;
+mod jukebox;
+mod activity;
+mod challenge;
+pub mod game_data;
 
 use anyhow::Result;
 use paste::paste;
@@ -20,6 +24,7 @@ use crate::net::NetPacket;
 pub use authentication::*;
 pub use avatar::*;
 pub use battle::*;
+pub use game_data::*;
 pub use chat::*;
 pub use gacha::*;
 pub use inventory::*;
@@ -28,6 +33,9 @@ pub use mail::*;
 pub use mission::*;
 pub use player::*;
 pub use scene::*;
+pub use jukebox::*;
+pub use activity::*;
+pub use challenge::*;
 
 macro_rules! dummy {
     ($($cmd:ident),* $(,)*) => {
@@ -66,58 +74,69 @@ macro_rules! dummy {
 }
 
 dummy! {
-    // SceneEntityMove,
-    GetLevelRewardTakenList,
-    // GetRogueScoreRewardInfo, // ?3.7.51
-    // GetGachaInfo,
+    GetPhoneData,
     QueryProductInfo,
     GetQuestData,
     GetQuestRecord,
-    // GetFriendListInfo,
-    // GetFriendApplyListInfo,
     GetCurAssist,
-    // GetRogueHandbookData, // ?3.7.51
-    GetDailyActiveInfo,
     GetFightActivityData,
-    // GetMultipleDropInfo, // ?3.7.51
-    // GetPlayerReturnMultiDropInfo, // ?3.7.51
-    // GetShareData, // ?3.7.51
-    // GetTreasureDungeonActivityData, // ?3.7.51
-    // PlayerReturnInfoQuery, // ?3.7.51
-    // GetBag,
-    GetPlayerBoardData,
-    GetActivityScheduleConfig,
     GetMissionData,
-    GetChallenge,
-    GetCurChallenge,
-    // GetRogueInfo, // ?3.7.51
-    GetExpeditionData,
-    // GetRogueDialogueEventData,
-    GetJukeboxData,
     SyncClientResVersion,
-    // DailyFirstMeetPam, // ?3.7.51
-    // GetMuseumInfo, // ?3.7.51
-    GetLoginActivity,
     GetRaidInfo,
-    GetTrialActivityData,
-    // GetBoxingClubInfo, // ?3.7.51
     GetNpcStatus,
-    // TextJoinQuery, // ?3.7.51
-    // GetSpringRecoverData, // Removed 2.7.51
-    // GetChatFriendHistory,
     GetSecretKeyInfo,
     GetVideoVersionKey,
     GetCurBattleInfo,
-    GetPhoneData,
-    // PlayerLoginFinish,
     InteractProp,
     FinishTalkMission,
     GetRechargeGiftInfo,
-    // RelicRecommend
     GetPreAvatarGrowthInfo,
     GetPreAvatarActivityList,
-    // GetUnreleasedBlockInfo,
     GetFriendAssistList,
-    GetAssistList,
-    B51RacingGetData
+    B51RacingGetData,
+    GetChallengeTierceData,
+    GetChallengeTierceController,
+    GetChallengePeakData,
+    GetCurChallengePeak,
+    SetPlayerInfo,
+    GetActiveActivityData,
+    GetActivityHotData,
+    GetMaterialSubmitActivityData,
+    GetMultipleDropInfo,
+    GetPlayerReturnMultiDropInfo,
+    GetAlleyInfo,
+    GetStrongChallengeActivityData,
+    ClockParkGetInfo,
+    MusicRhythmData,
+    GetTrackPhotoActivityData,
+    GetSwordTrainingData,
+    GetFightFestData,
+    ChimeraGetData,
+    ChimeraDuelGetData,
+    ChenLingGetData,
+    MarbleGetData,
+    DiceCombatGetSystemData,
+    GetHipplenData,
+    FateRinGetData,
+    ChooseDeliveryGetData,
+    SpaceZooData,
+    TravelBrochureGetData,
+    GetMuseumInfo,
+    GetTelevisionActivityData,
+    GetBoxingClubInfo,
+    GetFeverTimeActivityData,
+    GetSummonActivityData,
+    LimaoNewsGetData,
+    TeamTowersGetData,
+    VoracityInvasionGetData,
+    GetDrinkMakerData,
+    MatchThreeGetData,
+    GetAetherDivideInfo,
+    GetAetherDivideChallengeInfo,
+    GetTreasureDungeonActivityData,
+    HeliobusActivityData,
+    GetStarFightData,
+    EvolveBuildQueryInfo,
+    GetHeartDialInfo,
+    GetBattleCollegeData
 }

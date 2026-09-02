@@ -37,7 +37,13 @@ pub async fn sr_tool_save(Json(json): Json<SrToolDataReq>) -> Json<SrToolDataRsp
         }
     };
 
-    let path = Path::new("freesr-data.json");
+    let candidates = [
+        std::path::PathBuf::from("freesr-data.json"),
+        std::path::PathBuf::from("bin/freesr-data.json"),
+        std::path::PathBuf::from("../bin/freesr-data.json"),
+        std::path::PathBuf::from("../../bin/freesr-data.json"),
+    ];
+    let path = candidates.into_iter().find(|p| p.exists()).unwrap_or_else(|| std::path::PathBuf::from("freesr-data.json"));
     let env = std::env::current_dir();
 
     if let Err(err) = fs::write(&path, json).await {

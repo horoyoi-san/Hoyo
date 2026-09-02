@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   Cpu,
   FileCode,
@@ -11,9 +11,7 @@ import {
   Code2,
   Binary,
   Clock,
-  Zap,
   Sparkles,
-  PackageCheck,
 } from 'lucide-react';
 import { Badge, Button, Card, Input } from '../ui';
 import { pickFile } from '../../lib/filePicker';
@@ -36,7 +34,7 @@ export function MoraxView() {
   const { isTh } = useT();
   const gamePath = useAppStore((state) => state.gamePath);
 
-  const [gameDir, setGameDir] = useState<string>(
+  const [gameDir] = useState<string>(
     gamePath ? gamePath.replace(/\\/g, '/') : ''
   );
   const [metadataFile, setMetadataFile] = useState<string>(
@@ -51,12 +49,24 @@ export function MoraxView() {
 
   const [activeTask, setActiveTask] = useState<string | null>(null);
   const [stats, setStats] = useState<DecryptStats | null>(null);
-  const [logs, setLogs] = useState<string[]>([
-    '🔮 Morax Native IL2CPP & Protobuf Engine v4.4 Ready.',
-    '⚡ Disassembler: Native iced-x86 pure Rust decoder.',
-    '📦 Metadata Parser: Rayon multi-threaded IL2CPP metadata resolver.',
-    '💡 เลือกไฟล์ GameAssembly.dll และ global-metadata.dat เพื่อเริ่มต้นการถอดรหัส',
-  ]);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLogs([
+      isTh
+        ? '[*] ระบบ Morax IL2CPP & Protobuf Engine พร้อมทำงาน'
+        : '[*] Morax IL2CPP & Protobuf Engine Ready.',
+      isTh
+        ? '[*] ตัวถอดรหัส Disassembler: Native iced-x86 decoder'
+        : '[*] Disassembler: Native iced-x86 decoder',
+      isTh
+        ? '[*] ตัววิเคราะห์ Metadata: Multi-threaded IL2CPP metadata resolver'
+        : '[*] Metadata Parser: Multi-threaded IL2CPP metadata resolver',
+      isTh
+        ? '[*] เลือกไฟล์ GameAssembly.dll และ global-metadata.dat เพื่อเริ่มต้นการถอดรหัส'
+        : '[*] Select GameAssembly.dll and global-metadata.dat to begin decryption',
+    ]);
+  }, [isTh]);
 
   const addLog = useCallback((msg: string) => {
     const timestamp = new Date().toTimeString().split(' ')[0];
@@ -67,7 +77,7 @@ export function MoraxView() {
     const p = await pickFile(['dll']);
     if (p) {
       setAssemblyFile(p);
-      addLog(isTh ? `เลือก GameAssembly.dll: ${p}` : `Selected GameAssembly.dll: ${p}`);
+      addLog(isTh ? `[*] เลือก GameAssembly.dll: ${p}` : `[*] Selected GameAssembly.dll: ${p}`);
     }
   };
 
@@ -75,7 +85,7 @@ export function MoraxView() {
     const p = await pickFile(['dat']);
     if (p) {
       setMetadataFile(p);
-      addLog(isTh ? `เลือก global-metadata.dat: ${p}` : `Selected global-metadata.dat: ${p}`);
+      addLog(isTh ? `[*] เลือก global-metadata.dat: ${p}` : `[*] Selected global-metadata.dat: ${p}`);
     }
   };
 
@@ -83,7 +93,7 @@ export function MoraxView() {
     const p = await pickFile(['json']);
     if (p) {
       setMethodsJsonFile(p);
-      addLog(isTh ? `เลือก methods.json: ${p}` : `Selected methods.json: ${p}`);
+      addLog(isTh ? `[*] เลือก methods.json: ${p}` : `[*] Selected methods.json: ${p}`);
     }
   };
 
@@ -91,7 +101,7 @@ export function MoraxView() {
     const p = await pickFile(['cs']);
     if (p) {
       setDumpCsFile(p);
-      addLog(isTh ? `เลือก dump.cs: ${p}` : `Selected dump.cs: ${p}`);
+      addLog(isTh ? `[*] เลือก dump.cs: ${p}` : `[*] Selected dump.cs: ${p}`);
     }
   };
 
@@ -99,23 +109,23 @@ export function MoraxView() {
     if (isTauri()) {
       try {
         await tauriApi.openDumpFolder();
-        addLog(isTh ? 'เปิดโฟลเดอร์ ./DUMP ใน Windows Explorer แล้ว' : 'Opened ./DUMP folder in Explorer');
+        addLog(isTh ? '[OK] เปิดโฟลเดอร์ ./DUMP ใน Windows Explorer แล้ว' : '[OK] Opened ./DUMP folder in Explorer');
       } catch (e) {
-        addLog(`⚠️ Explorer error: ${e}`);
+        addLog(`[ERR] Explorer error: ${e}`);
       }
     } else {
-      addLog(isTh ? 'คัดลอกที่อยู่โฟลเดอร์ ./DUMP ลง Clipboard แล้ว' : 'Copied ./DUMP path to clipboard');
+      addLog(isTh ? '[OK] คัดลอกที่อยู่โฟลเดอร์ ./DUMP ลง Clipboard แล้ว' : '[OK] Copied ./DUMP path to clipboard');
     }
   };
 
-  // Action 1: Static Metadata Parser (IL2CPP Rayon / Firefly Engine)
+  // Action 1: Static Metadata Parser
   const handleRunMetadataParser = async () => {
     if (activeTask) return;
     setActiveTask('metadata');
     setStats(null);
 
-    addLog(isTh ? '🔮 [1/3] เริ่มต้น Morax IL2CPP Metadata Parser...' : '🔮 [1/3] Initializing Morax IL2CPP Metadata Parser...');
-    addLog(isTh ? 'สแกน global-metadata.dat และคำนวณ Method RVA จาก GameAssembly.dll...' : 'Scanning global-metadata.dat & calculating Method RVAs from GameAssembly.dll...');
+    addLog(isTh ? '[*] [1/3] เริ่มต้น Morax IL2CPP Metadata Parser...' : '[*] [1/3] Initializing Morax IL2CPP Metadata Parser...');
+    addLog(isTh ? '[*] สแกน global-metadata.dat และคำนวณ Method RVA จาก GameAssembly.dll...' : '[*] Scanning global-metadata.dat & calculating Method RVAs from GameAssembly.dll...');
 
     let timeSec = '0.28';
     let outputFiles = ['metadata/dump.cs', 'metadata/methods.json', 'metadata/il2cpp.h', 'dump.cs', 'methods.json', 'il2cpp.h'];
@@ -127,9 +137,9 @@ export function MoraxView() {
         timeSec = res.timeSeconds.toString();
         outputFiles = res.files;
         displayOutDir = res.outputDir;
-        addLog(isTh ? `📁 สร้าง dump.cs, methods.json และ il2cpp.h สำเร็จที่: ${res.outputDir}` : `📁 Generated dump.cs, methods.json, and il2cpp.h at: ${res.outputDir}`);
+        addLog(isTh ? `[OK] สร้าง dump.cs, methods.json และ il2cpp.h สำเร็จที่: ${res.outputDir}` : `[OK] Generated dump.cs, methods.json, and il2cpp.h at: ${res.outputDir}`);
       } catch (e) {
-        addLog(isTh ? `⚠️ ข้อผิดพลาด: ${e}` : `⚠️ Execution warning: ${e}`);
+        addLog(isTh ? `[ERR] ข้อผิดพลาด: ${e}` : `[ERR] Execution warning: ${e}`);
       }
     }
 
@@ -142,17 +152,17 @@ export function MoraxView() {
       outputFiles,
     });
     setActiveTask(null);
-    addLog(isTh ? `✅ [Metadata] ถอดรหัส dump.cs, methods.json และ RVAs สำเร็จใน ${timeSec}s! (ไฟล์ Raw บันทึกที่ ${displayOutDir})` : `✅ [Metadata] Decrypted dump.cs, methods.json, and RVAs in ${timeSec}s! (Raw files saved to ${displayOutDir})`);
+    addLog(isTh ? `[OK] [Metadata] ถอดรหัส dump.cs, methods.json และ RVAs สำเร็จใน ${timeSec}s! (ไฟล์ Raw บันทึกที่ ${displayOutDir})` : `[OK] [Metadata] Decrypted dump.cs, methods.json, and RVAs in ${timeSec}s! (Raw files saved to ${displayOutDir})`);
   };
 
-  // Action 2: Beta Static Proto Dumper (Pure Native Rust + iced-x86 Disassembly)
+  // Action 2: Static Proto Dumper
   const handleRunBetaProtoDump = async () => {
     if (activeTask) return;
     setActiveTask('beta-proto');
     setStats(null);
 
-    addLog(isTh ? '⚡ [2/3] เริ่มต้น Beta Static Proto Dumper (Native iced-x86 Engine)...' : '⚡ [2/3] Starting Beta Static Proto Dumper (Native iced-x86 Engine)...');
-    addLog(isTh ? 'ถอดรหัส Wire Tags และกู้คืนชื่อคลาส/เมธอดจาก methods.json & IL2CPP Metadata...' : 'Decoding Wire Tags & recovering clean Class/Method names dynamically...');
+    addLog(isTh ? '[*] [2/3] เริ่มต้น Static Proto Dumper...' : '[*] [2/3] Starting Static Proto Dumper...');
+    addLog(isTh ? '[*] ถอดรหัส Wire Tags และกู้คืนชื่อคลาส/เมธอดจาก methods.json & IL2CPP Metadata...' : '[*] Decoding Wire Tags & recovering clean Class/Method names dynamically...');
 
     let timeSec = '0.35';
     let outputFiles = ['StarRail.proto', 'packetIds.json', 'beta/StarRail.proto', 'beta/packetIds.json'];
@@ -176,9 +186,9 @@ export function MoraxView() {
         methodsCount = res.methodsCount;
         fieldsCount = res.fieldsCount;
         displayOutDir = res.outputDir;
-        addLog(isTh ? `📁 สร้าง StarRail.proto & packetIds.json สำเร็จที่: ${res.outputDir}` : `📁 StarRail.proto & packetIds.json generated at: ${res.outputDir}`);
+        addLog(isTh ? `[OK] สร้าง StarRail.proto & packetIds.json สำเร็จที่: ${res.outputDir}` : `[OK] StarRail.proto & packetIds.json generated at: ${res.outputDir}`);
       } catch (e) {
-        addLog(isTh ? `⚠️ ข้อผิดพลาด: ${e}` : `⚠️ Execution warning: ${e}`);
+        addLog(isTh ? `[ERR] ข้อผิดพลาด: ${e}` : `[ERR] Execution warning: ${e}`);
       }
     }
 
@@ -191,7 +201,7 @@ export function MoraxView() {
       outputFiles,
     });
     setActiveTask(null);
-    addLog(isTh ? `✅ [Protobuf] สร้าง StarRail.proto (${typesCount} Messages, 52 Enums, 150 CmdIDs) เสร็จสมบูรณ์ใน ${timeSec}s! บันทึกที่ ${displayOutDir}` : `✅ [Protobuf] Generated StarRail.proto (${typesCount} Messages, 52 Enums, 150 CmdIDs) in ${timeSec}s! Saved to ${displayOutDir}`);
+    addLog(isTh ? `[OK] [Protobuf] สร้าง StarRail.proto (${typesCount} Messages, 52 Enums, 150 CmdIDs) เสร็จสมบูรณ์ใน ${timeSec}s! บันทึกที่ ${displayOutDir}` : `[OK] [Protobuf] Generated StarRail.proto (${typesCount} Messages, 52 Enums, 150 CmdIDs) in ${timeSec}s! Saved to ${displayOutDir}`);
   };
 
   // Action 3: Dummy DLLs & C++ Headers
@@ -199,7 +209,7 @@ export function MoraxView() {
     if (activeTask) return;
     setActiveTask('dummydlls');
     setStats(null);
-    addLog(isTh ? '📦 [3/3] กำลังสร้าง il2cpp.h และ Dummy DLLs สำหรับ IDA Pro / Ghidra / dnSpy...' : '📦 [3/3] Generating il2cpp.h and Dummy DLLs for IDA Pro / Ghidra / dnSpy...');
+    addLog(isTh ? '[*] [3/3] กำลังสร้าง il2cpp.h และ Dummy DLLs สำหรับ IDA Pro / Ghidra / dnSpy...' : '[*] [3/3] Generating il2cpp.h and Dummy DLLs for IDA Pro / Ghidra / dnSpy...');
 
     let timeSec = '0.15';
     let outputFiles = ['DummyDlls/Assembly-CSharp.dll', 'DummyDlls/il2cpp.h'];
@@ -210,7 +220,7 @@ export function MoraxView() {
         timeSec = res.timeSeconds.toString();
         outputFiles = res.files;
       } catch (e) {
-        addLog(`⚠️ ${e}`);
+        addLog(`[ERR] ${e}`);
       }
     }
 
@@ -223,7 +233,7 @@ export function MoraxView() {
       outputFiles,
     });
     setActiveTask(null);
-    addLog(isTh ? '✅ [Dummy DLLs] สร้าง DummyDlls/Assembly-CSharp.dll และ DummyDlls/il2cpp.h สำเร็จ!' : '✅ [Dummy DLLs] Generated DummyDlls/Assembly-CSharp.dll and DummyDlls/il2cpp.h successfully!');
+    addLog(isTh ? '[OK] [Dummy DLLs] สร้าง DummyDlls/Assembly-CSharp.dll และ DummyDlls/il2cpp.h สำเร็จ!' : '[OK] [Dummy DLLs] Generated DummyDlls/Assembly-CSharp.dll and DummyDlls/il2cpp.h successfully!');
   };
 
   // Action 4: 1-Click All-in-One Extraction
@@ -232,16 +242,16 @@ export function MoraxView() {
     setActiveTask('all-in-one');
     setStats(null);
 
-    addLog(isTh ? '🚀 กำลังเริ่มต้น Full 1-Click All-in-One Extraction Pipeline...' : '🚀 Initializing Full 1-Click All-in-One Extraction Pipeline...');
+    addLog(isTh ? '[*] กำลังเริ่มต้นกระบวนการถอดรหัสแบบ 1-Click ทั้งหมด...' : '[*] Initializing 1-Click All-in-One Extraction Pipeline...');
     
     // Step 1: Metadata
-    addLog(isTh ? '[1/3] วิเคราะห์ TypeDefinitions, Method RVAs (metadata/dump.cs, metadata/methods.json)...' : '[1/3] Parsing TypeDefinitions & Method RVAs (metadata/dump.cs, metadata/methods.json)...');
+    addLog(isTh ? '[*] [1/3] วิเคราะห์ TypeDefinitions, Method RVAs (metadata/dump.cs, metadata/methods.json)...' : '[*] [1/3] Parsing TypeDefinitions & Method RVAs (metadata/dump.cs, metadata/methods.json)...');
 
     // Step 2: Proto
-    addLog(isTh ? '[2/3] สร้าง beta/StarRail.proto (512 Messages, 52 Enums, 150 CmdIDs) & beta/packetIds.json...' : '[2/3] Building beta/StarRail.proto (512 Messages, 52 Enums, 150 CmdIDs) & beta/packetIds.json...');
+    addLog(isTh ? '[*] [2/3] สร้าง beta/StarRail.proto (512 Messages, 52 Enums, 150 CmdIDs) & beta/packetIds.json...' : '[*] [2/3] Building beta/StarRail.proto (512 Messages, 52 Enums, 150 CmdIDs) & beta/packetIds.json...');
 
     // Step 3: Dummy DLLs
-    addLog(isTh ? '[3/3] บรรจุ Dummy DLLs (DummyDlls/Assembly-CSharp.dll) & DummyDlls/il2cpp.h Headers...' : '[3/3] Generating Dummy DLLs & Headers...');
+    addLog(isTh ? '[*] [3/3] บรรจุ Dummy DLLs (DummyDlls/Assembly-CSharp.dll) & DummyDlls/il2cpp.h Headers...' : '[*] [3/3] Generating Dummy DLLs & Headers...');
 
     let timeSec = '0.45';
     let outputFiles = [
@@ -267,7 +277,7 @@ export function MoraxView() {
         timeSec = res.timeSeconds.toString();
         outputFiles = res.files;
       } catch (e) {
-        addLog(`⚠️ ${e}`);
+        addLog(`[ERR] ${e}`);
       }
     }
 
@@ -280,7 +290,7 @@ export function MoraxView() {
       outputFiles,
     });
     setActiveTask(null);
-    addLog(isTh ? `🎉 เสร็จสมบูรณ์ทุกขั้นตอนใน ${timeSec}s! ได้ไฟล์ดิบ Raw Metadata + Protobuf ครบทั้งหมดใน ./DUMP` : `🎉 All tasks completed in ${timeSec}s! Full Raw Metadata + Protobuf ready in ./DUMP`);
+    addLog(isTh ? `[OK] เสร็จสมบูรณ์ทุกขั้นตอนใน ${timeSec}s! ได้ไฟล์ดิบ Raw Metadata + Protobuf ครบทั้งหมดใน ./DUMP` : `[OK] All tasks completed in ${timeSec}s! Full Raw Metadata + Protobuf ready in ./DUMP`);
   };
 
   return (
@@ -296,7 +306,7 @@ export function MoraxView() {
               <h1 className="text-base font-bold text-white tracking-wide">
                 Morax Metadata & Proto Engine
               </h1>
-              <Badge variant="violet">Beta + Live Dual Engine</Badge>
+              <Badge variant="violet">Dual Engine</Badge>
             </div>
             <p className="text-xs text-hz-gray-400 font-medium">
               {isTh
@@ -317,7 +327,7 @@ export function MoraxView() {
         >
           {activeTask === 'all-in-one'
             ? (isTh ? 'กำลังประมวลผลทั้งหมด...' : 'Processing All...')
-            : (isTh ? '🚀 1-Click ถอดรหัสทั้งหมด' : '🚀 1-Click All-in-One Dump')}
+            : (isTh ? '1-Click ถอดรหัสทั้งหมด' : '1-Click All-in-One Dump')}
         </Button>
       </div>
 
@@ -330,7 +340,7 @@ export function MoraxView() {
               <div className="p-2 rounded-xl bg-violet-500/15 border border-violet-500/25 text-violet-400">
                 <Code2 className="h-4 w-4" />
               </div>
-              <Badge variant="violet" className="text-[10px]">Rayon Multi-thread</Badge>
+              <Badge variant="violet" className="text-[10px]">Metadata Engine</Badge>
             </div>
             <h3 className="text-xs font-bold text-white pt-1">
               {isTh ? '1. Metadata Parser' : '1. Metadata Parser'}
@@ -355,17 +365,17 @@ export function MoraxView() {
           </div>
         </Card>
 
-        {/* Action 2: Beta Static Proto */}
+        {/* Action 2: Proto Engine */}
         <Card className="p-3.5 border-hz-navy-500/50 bg-hz-navy-800/80 flex flex-col justify-between hover:border-hz-brand-400/40 transition-all">
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <div className="p-2 rounded-xl bg-amber-500/15 border border-amber-500/25 text-amber-400">
                 <Binary className="h-4 w-4" />
               </div>
-              <Badge variant="amber" className="text-[10px]">Beta 4.4+</Badge>
+              <Badge variant="amber" className="text-[10px]">Proto Engine</Badge>
             </div>
             <h3 className="text-xs font-bold text-white pt-1">
-              {isTh ? '2. Beta Proto & CmdIDs' : '2. Beta Proto & CmdIDs'}
+              {isTh ? '2. Proto & CmdIDs' : '2. Proto & CmdIDs'}
             </h3>
             <p className="text-[11px] text-hz-gray-400 leading-relaxed">
               {isTh
@@ -380,9 +390,9 @@ export function MoraxView() {
               size="xs"
               loading={activeTask === 'beta-proto'}
               onClick={handleRunBetaProtoDump}
-              icon={<Zap className="h-3 w-3 text-amber-400 fill-current" />}
+              icon={<Play className="h-3 w-3 fill-current" />}
             >
-              {isTh ? 'สร้าง Proto' : 'Build Proto'}
+              {isTh ? 'Build' : 'Build'}
             </Button>
           </div>
         </Card>
@@ -392,12 +402,12 @@ export function MoraxView() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <div className="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-400">
-                <PackageCheck className="h-4 w-4" />
+                <Code2 className="h-4 w-4" />
               </div>
-              <Badge variant="emerald" className="text-[10px]">IDA / Ghidra</Badge>
+              <Badge variant="emerald" className="text-[10px]">Dummy Engine</Badge>
             </div>
             <h3 className="text-xs font-bold text-white pt-1">
-              {isTh ? '3. Dummy DLLs & Header' : '3. Dummy DLLs & Header'}
+              {isTh ? '3. Dummy DLLs' : '3. Dummy DLLs'}
             </h3>
             <p className="text-[11px] text-hz-gray-400 leading-relaxed">
               {isTh
@@ -438,205 +448,147 @@ export function MoraxView() {
             </p>
           </div>
           <div className="pt-3 mt-2 border-t border-hz-navy-500/40 flex items-center justify-between">
-            <span className="text-[10px] font-mono text-blue-300">./DUMP/</span>
+            <span className="text-[10px] font-mono text-hz-gray-400">./DUMP</span>
             <Button
               variant="secondary"
               size="xs"
               onClick={handleOpenInExplorer}
-              icon={<FolderOpen className="h-3 w-3" />}
+              icon={<FolderDown className="h-3 w-3" />}
             >
-              {isTh ? 'เปิด Explorer' : 'Open Explorer'}
+              {isTh ? 'เปิด Explorer' : 'Explore'}
             </Button>
           </div>
         </Card>
       </div>
 
-      {/* Inputs Configuration Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Left Inputs: Binary and Metadata */}
-        <Card className="space-y-3 p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-white">
-              <FileCode className="h-4 w-4 text-hz-brand-400" />
-              <h2 className="text-xs font-bold uppercase tracking-wider text-hz-gray-400">
-                {isTh ? 'ไฟล์ GameAssembly & Metadata' : 'GameAssembly & Metadata Inputs'}
-              </h2>
-            </div>
-            <Badge variant="outline" className="text-[10px]">Auto-Resolved</Badge>
+      {/* Target Resource Configuration Form */}
+      <Card className="p-5 border-hz-navy-500/50 bg-hz-navy-800/80 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-hz-navy-500/40">
+          <div className="flex items-center gap-2 text-white">
+            <Layers className="h-4 w-4 text-hz-brand-400" />
+            <h2 className="text-xs font-bold uppercase tracking-wider">
+              {isTh ? 'การตั้งค่าไฟล์ต้นทาง (Target Inputs)' : 'Target Binary Inputs'}
+            </h2>
           </div>
+          <span className="text-[11px] text-hz-gray-400">
+            {isTh ? 'สแกนอัตโนมัติจาก Game Directory' : 'Auto-detected from Game Directory'}
+          </span>
+        </div>
 
-          <div className="space-y-2.5">
-            <div>
-              <label className="text-[11px] text-hz-gray-400 block mb-1 font-medium">
-                {isTh ? 'โฟลเดอร์ตัวเกม (Game Directory)' : 'Game Installation Folder'}
-              </label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs text-hz-gray-400 block mb-1.5 font-medium">GameAssembly.dll</label>
+            <div className="flex gap-2">
               <Input
-                value={gameDir}
-                onChange={(e) => setGameDir(e.target.value)}
-                className="font-mono text-xs"
-                placeholder="C:/Program Files/Star Rail/Games"
+                value={assemblyFile}
+                onChange={(e) => setAssemblyFile(e.target.value)}
+                className="font-mono text-xs flex-1"
+                placeholder="D:/StarRail/GameAssembly.dll"
               />
-            </div>
-
-            <div>
-              <label className="text-[11px] text-hz-gray-400 block mb-1 font-medium">
-                GameAssembly.dll (Native Binary)
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  value={assemblyFile}
-                  onChange={(e) => setAssemblyFile(e.target.value)}
-                  className="font-mono text-xs"
-                  placeholder=".../GameAssembly.dll"
-                />
-                <Button variant="secondary" size="xs" onClick={handleBrowseAssembly}>
-                  <FolderOpen className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-[11px] text-hz-gray-400 block mb-1 font-medium">
-                global-metadata.dat (IL2CPP Metadata)
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  value={metadataFile}
-                  onChange={(e) => setMetadataFile(e.target.value)}
-                  className="font-mono text-xs"
-                  placeholder=".../StarRail_Data/il2cpp_data/Metadata/global-metadata.dat"
-                />
-                <Button variant="secondary" size="xs" onClick={handleBrowseMetadata}>
-                  <FolderOpen className="h-3.5 w-3.5" />
-                </Button>
-              </div>
+              <Button variant="secondary" size="sm" onClick={handleBrowseAssembly} className="shrink-0 px-3">
+                <FolderOpen className="h-4 w-4 mr-1.5" />
+                <span>{isTh ? 'เลือกไฟล์' : 'Browse'}</span>
+              </Button>
             </div>
           </div>
-        </Card>
 
-        {/* Right Inputs: Methods JSON & Dump CS */}
-        <Card className="space-y-3 p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-white">
-              <Binary className="h-4 w-4 text-amber-400" />
-              <h2 className="text-xs font-bold uppercase tracking-wider text-hz-gray-400">
-                {isTh ? 'ไฟล์ Metadata & Static Parser Inputs' : 'Static Parser Outputs (for Proto Engine)'}
-              </h2>
-            </div>
-            <Badge variant="amber" className="text-[10px]">IL2CPP Metadata</Badge>
-          </div>
-
-          <div className="space-y-2.5">
-            <div>
-              <label className="text-[11px] text-hz-gray-400 block mb-1 font-medium">
-                {isTh ? 'โฟลเดอร์ปลายทาง (Output Directory)' : 'Output Directory'}
-              </label>
+          <div>
+            <label className="text-xs text-hz-gray-400 block mb-1.5 font-medium">global-metadata.dat</label>
+            <div className="flex gap-2">
               <Input
-                value={outputDir}
-                onChange={(e) => setOutputDir(e.target.value)}
-                className="font-mono text-xs"
-                placeholder="./DUMP"
+                value={metadataFile}
+                onChange={(e) => setMetadataFile(e.target.value)}
+                className="font-mono text-xs flex-1"
+                placeholder="D:/StarRail/StarRail_Data/il2cpp_data/Metadata/global-metadata.dat"
               />
+              <Button variant="secondary" size="sm" onClick={handleBrowseMetadata} className="shrink-0 px-3">
+                <FolderOpen className="h-4 w-4 mr-1.5" />
+                <span>{isTh ? 'เลือกไฟล์' : 'Browse'}</span>
+              </Button>
             </div>
+          </div>
+        </div>
 
-            <div>
-              <label className="text-[11px] text-hz-gray-400 block mb-1 font-medium">
-                methods.json (Method RVA & Signatures)
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  value={methodsJsonFile}
-                  onChange={(e) => setMethodsJsonFile(e.target.value)}
-                  className="font-mono text-xs"
-                  placeholder="./DUMP/metadata/methods.json"
-                />
-                <Button variant="secondary" size="xs" onClick={handleBrowseMethods}>
-                  <FolderOpen className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-[11px] text-hz-gray-400 block mb-1 font-medium">
-                dump.cs (IL2CPP C# Types)
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  value={dumpCsFile}
-                  onChange={(e) => setDumpCsFile(e.target.value)}
-                  className="font-mono text-xs"
-                  placeholder="./DUMP/metadata/dump.cs"
-                />
-                <Button variant="secondary" size="xs" onClick={handleBrowseDumpCs}>
-                  <FolderOpen className="h-3.5 w-3.5" />
-                </Button>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+          <div>
+            <label className="text-xs text-hz-gray-400 block mb-1.5 font-medium">methods.json</label>
+            <div className="flex gap-2">
+              <Input
+                value={methodsJsonFile}
+                onChange={(e) => setMethodsJsonFile(e.target.value)}
+                className="font-mono text-xs flex-1"
+                placeholder="./DUMP/Morax_Static/methods.json"
+              />
+              <Button variant="secondary" size="sm" onClick={handleBrowseMethods} className="shrink-0">
+                <FolderOpen className="h-3.5 w-3.5" />
+              </Button>
             </div>
           </div>
 
-        </Card>
-      </div>
+          <div>
+            <label className="text-xs text-hz-gray-400 block mb-1.5 font-medium">dump.cs</label>
+            <div className="flex gap-2">
+              <Input
+                value={dumpCsFile}
+                onChange={(e) => setDumpCsFile(e.target.value)}
+                className="font-mono text-xs flex-1"
+                placeholder="./DUMP/Morax_Static/dump.cs"
+              />
+              <Button variant="secondary" size="sm" onClick={handleBrowseDumpCs} className="shrink-0">
+                <FolderOpen className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
 
-      {/* Stats Cards */}
+          <div>
+            <label className="text-xs text-hz-gray-400 block mb-1.5 font-medium">
+              {isTh ? 'โฟลเดอร์บันทึก (Output Directory)' : 'Output Directory'}
+            </label>
+            <Input
+              value={outputDir}
+              onChange={(e) => setOutputDir(e.target.value)}
+              className="font-mono text-xs"
+              placeholder="./DUMP/Morax_Static"
+            />
+          </div>
+        </div>
+      </Card>
+
+      {/* Execution Results Summary (If Any) */}
       {stats && (
-        <div className="space-y-3">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in">
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="p-4 border border-hz-brand-400/30">
               <div className="text-[11px] text-hz-gray-400 flex items-center justify-between font-medium">
-                <span>
-                  {stats.mode === 'metadata'
-                    ? (isTh ? 'ประเภทข้อมูล (IL2CPP Types)' : 'IL2CPP Types')
-                    : stats.mode === 'proto'
-                    ? (isTh ? 'Protobuf Messages' : 'Proto Messages')
-                    : stats.mode === 'dummy'
-                    ? (isTh ? 'Assemblies จำลอง' : 'Dummy Assemblies')
-                    : (isTh ? 'โครงสร้างข้อมูลรวม (All Types)' : 'Total Types & Messages')}
-                </span>
-                {stats.mode === 'proto' ? (
-                  <Binary className="h-4 w-4 text-amber-400" />
-                ) : stats.mode === 'metadata' ? (
-                  <Code2 className="h-4 w-4 text-violet-400" />
-                ) : (
-                  <Layers className="h-4 w-4 text-hz-brand-400" />
-                )}
+                <span>{isTh ? 'โครงสร้างคลาส' : 'Total Types'}</span>
+                <Code2 className="h-4 w-4 text-hz-brand-400" />
               </div>
               <div className="text-xl font-bold font-mono text-white mt-1">
                 {stats.types.toLocaleString()}
               </div>
-              <Badge
-                variant={stats.mode === 'proto' ? 'amber' : stats.mode === 'metadata' ? 'violet' : 'outline'}
-                className="text-[9px] mt-1"
-              >
-                {stats.mode === 'metadata'
-                  ? (isTh ? 'IL2CPP TypeDefinitions' : 'Type Definitions')
-                  : stats.mode === 'proto'
-                  ? '52 Core Enums'
-                  : stats.mode === 'dummy'
-                  ? 'Assembly-CSharp.dll'
-                  : '1-Click All-in-One'}
-              </Badge>
+              <span className="text-[10px] text-hz-gray-400">Classes & Structs</span>
             </Card>
 
-            <Card className="p-4 border border-hz-green-400/30">
+            <Card className="p-4 border border-violet-500/30">
               <div className="text-[11px] text-hz-gray-400 flex items-center justify-between font-medium">
-                <span>{isTh ? 'เมธอดทั้งหมด (Methods)' : 'Total Methods'}</span>
-                <Code2 className="h-4 w-4 text-hz-green-400" />
+                <span>{isTh ? 'เมธอดและ RVA' : 'Methods & RVAs'}</span>
+                <FileCode className="h-4 w-4 text-violet-400" />
               </div>
-              <div className="text-xl font-bold font-mono text-white mt-1">
+              <div className="text-xl font-bold font-mono text-violet-400 mt-1">
                 {stats.methods.toLocaleString()}
               </div>
-              <Badge variant="emerald" className="text-[9px] mt-1">RVA Resolved</Badge>
+              <span className="text-[10px] text-hz-gray-400">Addresses Resolved</span>
             </Card>
 
-            <Card className="p-4 border border-hz-brand-400/30">
+            <Card className="p-4 border border-emerald-500/30">
               <div className="text-[11px] text-hz-gray-400 flex items-center justify-between font-medium">
-                <span>{isTh ? 'ฟิลด์ทั้งหมด (Fields)' : 'Total Fields'}</span>
-                <Layers className="h-4 w-4 text-hz-brand-400" />
+                <span>{isTh ? 'ฟิลด์และตัวแปร' : 'Fields & Enums'}</span>
+                <Binary className="h-4 w-4 text-emerald-400" />
               </div>
-              <div className="text-xl font-bold font-mono text-white mt-1">
+              <div className="text-xl font-bold font-mono text-emerald-400 mt-1">
                 {stats.fields.toLocaleString()}
               </div>
-              <Badge variant="violet" className="text-[9px] mt-1">Field Offsets</Badge>
+              <span className="text-[10px] text-hz-gray-400">Class Fields</span>
             </Card>
 
             <Card className="p-4 border border-hz-orange-400/30">
@@ -647,7 +599,7 @@ export function MoraxView() {
               <div className="text-xl font-bold font-mono text-hz-orange-400 mt-1">
                 {stats.timeSeconds}s
               </div>
-              <Badge variant="amber" className="text-[9px] mt-1">Native Rust Rayon/iced-x86</Badge>
+              <Badge variant="amber" className="text-[9px] mt-1">Ready</Badge>
             </Card>
           </div>
 
@@ -656,7 +608,7 @@ export function MoraxView() {
             <Card className="p-3 bg-hz-navy-800/90 border border-emerald-500/30 flex flex-wrap items-center gap-2">
               <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1 mr-1">
                 <CheckCircle2 className="h-3.5 w-3.5" />
-                {isTh ? 'ไฟล์ที่สร้างเสร็จ (รวมไฟล์ดิบ Raw Dumps):' : 'Generated Artifacts (Including Raw Dumps):'}
+                {isTh ? 'ไฟล์ที่สร้างเสร็จ:' : 'Generated Artifacts:'}
               </span>
               {stats.outputFiles.map((file, idx) => (
                 <span
@@ -677,7 +629,7 @@ export function MoraxView() {
           <div className="flex items-center gap-2 text-white">
             <Terminal className="h-4 w-4 text-hz-green-400" />
             <span className="font-bold text-xs">
-              {isTh ? 'บันทึกการทำงานของ Morax Native RE Engine' : 'Morax Native Execution Output Stream'}
+              {isTh ? 'บันทึกการทำงานของ Morax Engine' : 'Morax Execution Output Stream'}
             </span>
           </div>
 
@@ -692,12 +644,10 @@ export function MoraxView() {
               key={i}
               className={cn(
                 'break-all font-mono leading-relaxed',
-                log.includes('✅') && 'text-emerald-300 font-bold',
-                log.includes('⚡') && 'text-amber-300 font-semibold',
-                log.includes('🚀') && 'text-hz-brand-300 font-semibold',
-                log.includes('🎉') && 'text-emerald-300 font-bold',
-                log.includes('เลือกไฟล์') && 'text-violet-300',
-                !log.includes('✅') && !log.includes('⚡') && !log.includes('🚀') && !log.includes('🎉') && !log.includes('เลือกไฟล์') && 'text-zinc-300'
+                (log.includes('[OK]') || log.includes('Successfully')) && 'text-emerald-300 font-bold',
+                log.includes('[*]') && 'text-cyan-300 font-semibold',
+                log.includes('[ERR]') && 'text-rose-400 font-semibold',
+                !log.includes('[OK]') && !log.includes('[*]') && !log.includes('[ERR]') && 'text-zinc-300'
               )}
             >
               {log}

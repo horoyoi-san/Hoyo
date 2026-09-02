@@ -58,12 +58,18 @@ mod tests {
 
     #[test]
     fn test_resource_compiler() {
-        let res_dir = PathBuf::from("./Resources");
-        let out_file = PathBuf::from("../../DUMP/Morax_Static/test_res.json");
-        if res_dir.is_dir() {
-            let res = ResourceCompiler::compile_from_directory(&res_dir, &out_file).unwrap();
-            println!("Res compile result: {:?}", res);
+        let res_dir = std::env::var("RES_INPUT")
+            .map(PathBuf::from)
+            .unwrap_or_else(|_| PathBuf::from("./Resources"));
+        let out_file = std::env::var("RES_OUTPUT")
+            .map(PathBuf::from)
+            .unwrap_or_else(|_| PathBuf::from("res.json"));
+        if !res_dir.is_dir() {
+            println!("skip: Resources directory not found ({})", res_dir.display());
+            return;
         }
+        let res = ResourceCompiler::compile_from_directory(&res_dir, &out_file).unwrap();
+        println!("Res compile result: {:?}", res);
     }
 }
 

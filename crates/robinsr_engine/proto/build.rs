@@ -5,24 +5,17 @@ use std::{
 };
 
 pub fn main() {
-    let out_dir = Path::new("out");
-    let out_file = Path::new("out/_.rs");
-    let _ = fs::create_dir_all(out_dir);
+    let proto_file = "StarRail.proto";
+    if std::path::Path::new(proto_file).exists() {
+        println!("cargo:rerun-if-changed={proto_file}");
 
-    if !out_file.exists() {
-        let proto_file = "StarRail.proto";
-        if std::path::Path::new(proto_file).exists() {
-            println!("cargo:rerun-if-changed={proto_file}");
+        prost_build::Config::new()
+            .out_dir("out/")
+            .type_attribute(".", "#[derive(proto_derive::CmdID)]")
+            .compile_protos(&[proto_file], &["."])
+            .unwrap();
 
-            if prost_build::Config::new()
-                .out_dir("out/")
-                .type_attribute(".", "#[derive(proto_derive::CmdID)]")
-                .compile_protos(&[proto_file], &["."])
-                .is_ok()
-            {
-                let _ = impl_message_id(out_file);
-            }
-        }
+        impl_message_id(Path::new("out/_.rs")).unwrap();
     }
 }
 

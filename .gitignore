@@ -9,18 +9,25 @@
 **/target/
 **/*.rs.bk
 *.pdb
-*.lib
 *.exp
 *.ilk
+*.lib
+!Assets/oodle/*.lib
 persistent
 **/persistent
 upstream_robinsr/
 **/upstream_robinsr/
-*.exe
-bin/*.exe
 scratch.rs
 scratch/
 **/scratch/
+
+# Compiled Executables & Extracted Assets
+AstralOS.exe
+*.exe
+!bin/sdkserver.exe
+!bin/gameserver.exe
+Extracted_Assets/
+**/Extracted_Assets/
 
 # Python Cache
 __pycache__/
@@ -53,6 +60,9 @@ pnpm-debug.log*
 lerna-debug.log*
 *.log
 
+# Root package-lock.json (not a real npm project)
+/package-lock.json
+
 # -----------------------------------------------------------------------------
 # 3. Tauri Desktop Artifacts
 # -----------------------------------------------------------------------------
@@ -61,7 +71,20 @@ src-tauri/target/
 src-tauri/WixTools/
 
 # -----------------------------------------------------------------------------
-# 4. Game Dumps, Metadata & Reverse Engineering Outputs
+# 4. bin/ Directory — Tool Outputs & Runtime Assets
+# -----------------------------------------------------------------------------
+# Ignore compiled executables and temporary session files
+bin/*.exe
+bin/persistent
+
+# Track essential runtime server assets & proxy DLL
+!bin/version.dll
+!bin/versions.json
+!bin/res.json
+!bin/freesr-data.json
+
+# -----------------------------------------------------------------------------
+# 5. Game Dumps, Metadata & Reverse Engineering Outputs
 # -----------------------------------------------------------------------------
 DUMP/
 **/DUMP/
@@ -88,6 +111,8 @@ global-metadata.dat
 *.bytes
 
 # Backups & Restorations
+.astralos_backup/
+**/.astralos_backup/
 *.bak
 *.backup
 *.old
@@ -100,7 +125,7 @@ global-metadata.dat
 crash-dumps/
 
 # -----------------------------------------------------------------------------
-# 5. Environment & Secrets
+# 6. Environment & Secrets
 # -----------------------------------------------------------------------------
 .env
 .env.local
@@ -113,7 +138,7 @@ crash-dumps/
 *.pfx
 
 # -----------------------------------------------------------------------------
-# 6. IDEs & Editors
+# 7. IDEs & Editors
 # -----------------------------------------------------------------------------
 # Visual Studio Code
 .vscode/*
@@ -130,8 +155,6 @@ crash-dumps/
 *.iws
 *.ipr
 /out/
-!crates/robinsr_engine/proto/out/
-!crates/robinsr_engine/proto/out/**
 
 # Visual Studio
 .vs/
@@ -145,7 +168,7 @@ crash-dumps/
 *.sublime-workspace
 
 # -----------------------------------------------------------------------------
-# 7. Operating System Artifacts
+# 8. Operating System Artifacts
 # -----------------------------------------------------------------------------
 # Windows
 Thumbs.db
@@ -172,7 +195,7 @@ $RECYCLE.BIN/
 .directory
 
 # -----------------------------------------------------------------------------
-# 8. Temporary & AI Workspace Files
+# 9. Temporary & AI Workspace Files
 # -----------------------------------------------------------------------------
 tmp/
 temp/
@@ -183,4 +206,3 @@ temp/
 **/.zcode/
 .system_generated/
 **/.system_generated/
-

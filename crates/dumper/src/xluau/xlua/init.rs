@@ -22,14 +22,30 @@ pub fn init() -> Result<(), String> {
     }
 
     let dll = unsafe { GetModuleHandleW(windows::core::w!("xluau.dll")) }
+        .or_else(|_| unsafe { GetModuleHandleW(windows::core::w!("xlua.dll")) })
+        .or_else(|_| unsafe { GetModuleHandleW(windows::core::w!("lua51.dll")) })
+        .or_else(|_| unsafe { GetModuleHandleW(windows::core::w!("GameAssembly.dll")) })
         .map_err(|_| String::new())?;
+
     let addr = unsafe {
         GetProcAddress(
             dll,
             windows::core::PCSTR::from_raw(c"luau_load".as_ptr() as *const u8),
         )
     }
-    .ok_or("luau_load export not found")? as usize;
+    .or_else(|| unsafe {
+        GetProcAddress(
+            dll,
+            windows::core::PCSTR::from_raw(c"luaL_loadbuffer".as_ptr() as *const u8),
+        )
+    })
+    .or_else(|| unsafe {
+        GetProcAddress(
+            dll,
+            windows::core::PCSTR::from_raw(c"xluaL_loadbuffer".as_ptr() as *const u8),
+        )
+    })
+    .ok_or("Lua/Luau load export not found")? as usize;
 
     let xlua_loadbuffer_addr = unsafe {
         GetProcAddress(
@@ -37,6 +53,18 @@ pub fn init() -> Result<(), String> {
             windows::core::PCSTR::from_raw(c"xluaL_loadbuffer".as_ptr() as *const u8),
         )
     }
+    .or_else(|| unsafe {
+        GetProcAddress(
+            dll,
+            windows::core::PCSTR::from_raw(c"luaL_loadbuffer".as_ptr() as *const u8),
+        )
+    })
+    .or_else(|| unsafe {
+        GetProcAddress(
+            dll,
+            windows::core::PCSTR::from_raw(c"luaL_loadbufferx".as_ptr() as *const u8),
+        )
+    })
     .map(|p| p as usize);
 
     if let Some(p) = unsafe {
@@ -44,7 +72,12 @@ pub fn init() -> Result<(), String> {
             dll,
             windows::core::PCSTR::from_raw(c"lua_pcall".as_ptr() as *const u8),
         )
-    } {
+    }.or_else(|| unsafe {
+        GetProcAddress(
+            dll,
+            windows::core::PCSTR::from_raw(c"lua_pcallk".as_ptr() as *const u8),
+        )
+    }) {
         let pcall: LuaPCall = unsafe { std::mem::transmute(p) };
         let _ = PCALL_FN.set(pcall);
     }
@@ -71,7 +104,7 @@ pub fn init() -> Result<(), String> {
     }
     Box::leak(Box::new(interceptor));
     HOOK_READY.store(true, Ordering::SeqCst);
-    log::debug!("[XLua] hook installed");
+    log::debug!("[XLua] hook installed for module");
 
     Ok(())
 }

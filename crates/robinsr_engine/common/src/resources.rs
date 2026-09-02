@@ -148,13 +148,19 @@ pub struct JsonConfig {
 }
 
 pub static GAME_RES: LazyLock<JsonConfig> = LazyLock::new(|| {
-    let candidates = ["res.json", "../../res.json", "../res.json"];
-    for cand in candidates {
-        if let Ok(content) = fs::read_to_string(cand) {
-            if let Ok(cfg) = serde_json::from_str::<JsonConfig>(&content) {
-                return cfg;
-            }
+    let candidates = [
+        "res.json",
+        "bin/res.json",
+        "../bin/res.json",
+        "../../bin/res.json",
+    ];
+    let mut content = None;
+    for cand in &candidates {
+        if let Ok(s) = fs::read_to_string(cand) {
+            content = Some(s);
+            break;
         }
     }
-    panic!("Failed to load res.json from current or project root directory");
+    let raw = content.expect("Failed to locate res.json in current directory, bin/, or ../bin/");
+    serde_json::from_str::<JsonConfig>(&raw).unwrap()
 });

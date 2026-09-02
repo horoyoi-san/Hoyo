@@ -5,16 +5,19 @@ on:
     branches: [ main ]
     tags:
       - 'v*'
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release Tag (e.g. v1.0.0 or nightly)'
+        required: false
+        default: 'latest'
 
 permissions:
   contents: write
 
 jobs:
   build:
-    name: Build AstralOS (Windows x64)
+    name: Build & Package AstralOS (Windows x64)
     runs-on: windows-latest
 
     steps:
@@ -43,53 +46,88 @@ jobs:
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
 
-      - name: Install Frontend Dependencies
+      - name: Install Web Dependencies
         run: |
           cd web
-          npm ci || npm install
+          npm install
 
-      - name: Verify Cargo Workspace
+      - name: Set Release Sanitization Flags
+        shell: pwsh
         run: |
-          cargo check --workspace
+          $workspacePath = (Get-Location).Path
+          echo "RUSTFLAGS=--remap-path-prefix=$env:USERPROFILE=/user --remap-path-prefix=$workspacePath=/astralos" >> $env:GITHUB_ENV
 
       - name: Build Dumper Hook DLL (version.dll)
         run: |
           cargo build --release -p dumper
-          if (-not (Test-Path bin)) { New-Item -ItemType Directory -Path bin }
           Copy-Item target/release/version.dll bin/version.dll -Force
 
-      - name: Build Desktop Application (Tauri 2.0)
+      - name: Build RobinSR Server Binaries
+        run: |
+          cargo build --release -p robinsr
+          if (Test-Path target/release/sdkserver.exe) { Copy-Item target/release/sdkserver.exe bin/sdkserver.exe -Force }
+          if (Test-Path target/release/gameserver.exe) { Copy-Item target/release/gameserver.exe bin/gameserver.exe -Force }
+
+      - name: Build Standalone Desktop GUI (Tauri 2.0)
         run: |
           cd web
-          npx tauri build --no-bundle
+          npm run build
           cd ..
-          Copy-Item src-tauri/target/release/hsr-desktop.exe bin/hsr-desktop.exe -Force
+          cargo build --release --manifest-path src-tauri/Cargo.toml
+          Copy-Item src-tauri/target/release/hsr-desktop.exe bin/AstralOS.exe -Force
           Copy-Item src-tauri/target/release/hsr-desktop.exe AstralOS.exe -Force
 
+      - name: Download Helper Tools (hdiff-apply)
+        shell: pwsh
+        run: |
+          try {
+            Invoke-WebRequest -Uri "https://github.com/nie4/hdiff-apply/releases/latest/download/hdiff-apply.exe" -OutFile "bin/hdiff-apply.exe" -TimeoutSec 15
+            Write-Host "Downloaded hdiff-apply.exe"
+          } catch {
+            Write-Host "Could not download hdiff-apply.exe (non-fatal)"
+          }
+
+      - name: Assemble Complete Release Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist_package/bin -Force
+          Copy-Item AstralOS.exe dist_package/AstralOS.exe -Force
+          Copy-Item menu.bat dist_package/menu.bat -Force
+          Copy-Item README.md dist_package/README.md -Force
+          if (Test-Path LICENSE) { Copy-Item LICENSE dist_package/LICENSE -Force }
+          
+          # Copy all runtime binaries and seed data into release bin/
+          if (Test-Path bin/version.dll) { Copy-Item bin/version.dll dist_package/bin/version.dll -Force }
+          if (Test-Path bin/sdkserver.exe) { Copy-Item bin/sdkserver.exe dist_package/bin/sdkserver.exe -Force }
+          if (Test-Path bin/gameserver.exe) { Copy-Item bin/gameserver.exe dist_package/bin/gameserver.exe -Force }
+          if (Test-Path bin/res.json) { Copy-Item bin/res.json dist_package/bin/res.json -Force }
+          if (Test-Path bin/freesr-data.json) { Copy-Item bin/freesr-data.json dist_package/bin/freesr-data.json -Force }
+          if (Test-Path bin/versions.json) { Copy-Item bin/versions.json dist_package/bin/versions.json -Force }
+          if (Test-Path bin/hdiff-apply.exe) { Copy-Item bin/hdiff-apply.exe dist_package/bin/hdiff-apply.exe -Force }
+
+          Compress-Archive -Path dist_package/* -DestinationPath AstralOS-Windows-x64.zip -Force
+
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@4
+        uses: actions/upload-artifact@v4
         with:
           name: AstralOS-Windows-x64
-          path: |
-            AstralOS.exe
-            bin/version.dll
-            bin/res.json
-            bin/freesr-data.json
-            bin/versions.json
-            menu.bat
+          path: AstralOS-Windows-x64.zip
           retention-days: 14
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@2
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.release_tag || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || 'latest' }}
+          name: AstralOS ${{ github.event.inputs.release_tag || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || 'Latest Build' }}
           files: |
+            AstralOS-Windows-x64.zip
             AstralOS.exe
             bin/version.dll
             bin/res.json
             bin/freesr-data.json
             bin/versions.json
-            menu.bat
           draft: false
-          prerelease: false
+          prerelease: ${{ github.ref == 'refs/heads/main' }}
           generate_release_notes: true
+

@@ -33,20 +33,22 @@ pub async fn query_dispatch() -> String {
 
 #[derive(Deserialize, Debug, Default)]
 pub struct QueryGatewayParameters {
+    #[serde(default)]
     pub version: Option<String>,
+    #[serde(default)]
     pub dispatch_seed: Option<String>,
 }
 
 #[instrument(skip(state))]
 pub async fn query_gateway(
     State(state): State<Arc<RwLock<AppState>>>,
-    Query(parameters): Query<QueryGatewayParameters>,
+    parameters: Query<QueryGatewayParameters>,
 ) -> String {
-    let version = parameters.version.unwrap_or_else(|| "OSBETAWin4.4.55".to_string());
-    let dispatch_seed = parameters.dispatch_seed.unwrap_or_default();
     let mut lock = state.write().await;
+    let version = parameters.version.as_deref().unwrap_or("OSBETAWin4.5.51");
+    let dispatch_seed = parameters.dispatch_seed.as_deref().unwrap_or("ae62f13de6");
     let config = lock
-        .get_or_insert_hotfix(&version, &dispatch_seed)
+        .get_or_insert_hotfix(version, dispatch_seed)
         .await;
 
     let rsp = GateServer {
@@ -56,7 +58,6 @@ pub async fn query_gateway(
         asset_bundle_url_android: config.asset_bundle_url.clone(),
         ex_resource_url: config.ex_resource_url.clone(),
         lua_url: config.lua_url.clone(),
-        ifix_url: config.ifix_url.clone(),
         ifix_version: String::from("0"),
         unk1: true,
         unk2: true,

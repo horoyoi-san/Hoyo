@@ -200,4 +200,20 @@ trait_handler! {
     PlayerLoginFinish;
     GetBigDataAllRecommend;
     // SetClientPaused;
+
+    // Unlocked Features
+    GetJukeboxData;
+    GetDailyActiveInfo;
+    GetLevelRewardTakenList;
+    GetActivityScheduleConfig;
+    GetExpeditionData;
+    GetChallenge;
+    GetCurChallenge;
+    GetPlayerBoardData;
+    GetLoginActivity;
+    GetTrialActivityData;
+    SetHeadIcon;
+    SetPersonalCard;
+    SetSignature;
+    SetDisplayAvatar;
 }

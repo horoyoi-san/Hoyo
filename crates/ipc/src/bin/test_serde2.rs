@@ -1,4 +1,4 @@
-﻿use hsr_ipc::{FrontendCommand, DumperAction, ProtoDumpMode};
+use hsr_ipc::FrontendCommand;
 
 fn main() {
     let json = r#"{"type":"run_dumper","action":{"type":"proto","mode":"asm"}}"#;

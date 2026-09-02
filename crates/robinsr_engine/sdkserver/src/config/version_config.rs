@@ -6,7 +6,7 @@ use proto::GateServer;
 use serde::{Deserialize, Serialize};
 use tokio::fs;
 
-const DEFAULT_VERSIONS: &str = include_str!("../../../../../versions.json");
+const DEFAULT_VERSIONS: &str = include_str!("../../../../../bin/versions.json");
 
 #[derive(Serialize, Deserialize, Clone, Default)]
 pub struct VersionConfig {
@@ -25,14 +25,18 @@ impl VersionConfig {
     const PROXY_HOST: &str = "proxy1.neonteam.dev"; // we used this because PS users usually have a proxy enabled
 
     pub async fn load_hotfix() -> HashMap<String, VersionConfig> {
-        const CONFIG_PATH: &str = "versions.json";
-
-        let data = match fs::read_to_string(CONFIG_PATH).await {
-            Ok(data) => data,
-            Err(_) => {
-                fs::write(CONFIG_PATH, DEFAULT_VERSIONS)
-                    .await
-                    .expect("Failed to create versions file");
+        let candidates = ["versions.json", "bin/versions.json", "../bin/versions.json", "../../bin/versions.json"];
+        let mut data_opt = None;
+        for cand in &candidates {
+            if let Ok(d) = fs::read_to_string(cand).await {
+                data_opt = Some(d);
+                break;
+            }
+        }
+        let data = match data_opt {
+            Some(d) => d,
+            None => {
+                let _ = fs::write("versions.json", DEFAULT_VERSIONS).await;
                 DEFAULT_VERSIONS.to_string()
             }
         };
@@ -41,7 +45,7 @@ impl VersionConfig {
             Ok(data) => data,
             Err(_) => {
                 tracing::error!("malformed versions.json. replacing it with default one");
-                let _ = fs::write(CONFIG_PATH, DEFAULT_VERSIONS).await;
+                let _ = fs::write("versions.json", DEFAULT_VERSIONS).await;
                 serde_json::from_str(DEFAULT_VERSIONS).unwrap()
             }
         }

@@ -1,4 +1,7 @@
+pub mod battle_speed;
 pub mod censorship;
+pub mod fov;
+pub mod fps_unlock;
 pub mod hide_ui;
 pub mod keybind;
 
@@ -20,6 +23,9 @@ static GET_KEY_DOWN_VA: AtomicUsize = AtomicUsize::new(0);
 pub fn on_frame_update() {
     keybind::tick();
     hide_ui::tick();
+    fps_unlock::tick();
+    battle_speed::tick();
+    fov::tick();
 }
 
 pub(crate) fn get_key_down(key_code: i32) -> bool {

@@ -1,4 +1,4 @@
-import { Languages, Search, Settings, Zap } from 'lucide-react';
+import { Languages, Search, Settings } from 'lucide-react';
 import { useAppStore } from '../../stores/useAppStore';
 import { useT } from '../../lib/hooks';
 import { Kbd } from '../ui';
@@ -17,20 +17,11 @@ export function TitleBar({ onOpenPalette }: TitleBarProps) {
 
   return (
     <header className="h-11 w-full bg-hz-navy-800 border-b border-hz-navy-500/50 flex items-center justify-between px-4 select-none relative z-20">
-      {/* Brand & status */}
+      {/* Engine Status Badge */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-lg bg-hz-brand-400 flex items-center justify-center shadow-md shadow-hz-brand-400/20">
-            <Zap className="h-3 w-3 text-white fill-current" aria-hidden="true" />
-          </div>
-          <span className="text-xs font-bold tracking-tight text-white font-sans">
-            Astral<span className="text-hz-brand-400">OS</span>
-          </span>
-        </div>
-
         <div
           className={cn(
-            'hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border',
+            'flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border',
             backendConnected
               ? 'bg-hz-green-400/10 border-hz-green-400/20 text-hz-green-400'
               : 'bg-hz-navy-700 border-hz-navy-500 text-hz-gray-400'

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Menu, PanelLeftClose, PanelLeftOpen, X, Zap } from 'lucide-react';
+import { Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
+import appIcon from '../../assets/icon.png';
 import { useAppStore, NavigationPage } from '../../stores/useAppStore';
 import { useT } from '../../lib/hooks';
 import { StatusDot } from './StatusDot';
@@ -70,9 +71,7 @@ export function Sidebar() {
             aria-label="AstralOS — home"
             title="AstralOS"
           >
-            <div className="h-7 w-7 shrink-0 rounded-xl bg-hz-brand-400 flex items-center justify-center text-white shadow-md shadow-hz-brand-400/30">
-              <Zap className="h-4 w-4 fill-current" aria-hidden="true" />
-            </div>
+            <img src={appIcon} alt="AstralOS" className="h-7 w-7 shrink-0 rounded-xl shadow-md shadow-hz-brand-400/30 object-cover" />
             {!collapsed && (
               <div className="min-w-0 text-left">
                 <span className="text-sm font-extrabold text-white tracking-wider font-sans">

@@ -112,6 +112,47 @@ export interface LanguagePatchResult {
   message: string;
 }
 
+export interface ScannedAssetDto {
+  id: string;
+  name: string;
+  kind: string;
+  size: string;
+  path: string;
+  block: string;
+  block_full_path?: string;
+  path_id?: number;
+  class_id?: number;
+  class_name?: string;
+  extension?: string;
+}
+
+export interface AssetPreviewDto {
+  success: boolean;
+  data_url?: string;
+  width: number;
+  height: number;
+  format: string;
+  message: string;
+}
+
+export interface UnpackScanResult {
+  success: boolean;
+  total_blocks: number;
+  total_assets: number;
+  assets: ScannedAssetDto[];
+  message: string;
+}
+
+export interface UnpackExportResult {
+  success: boolean;
+  blocks_count: number;
+  extracted_count: number;
+  skipped_count: number;
+  errors_count: number;
+  output_dir: string;
+  message: string;
+}
+
 export const tauriApi = {
   checkPatch: (gamePath: string) =>
     invoke<PatchStatus>('check_patch', { gamePath }),
@@ -188,10 +229,54 @@ export const tauriApi = {
   executeApplyPatch: (gameDir: string, patchArchive: string) =>
     invoke<HDiffResult>('execute_apply_patch', { gameDir, patchArchive }),
 
+  rollbackHdiffPatch: (gameDir: string) =>
+    invoke<HDiffResult>('rollback_hdiff_patch', { gameDir }),
+
   getGameLanguages: (gameDir: string) =>
     invoke<GameLanguageState>('get_game_languages', { gameDir }),
 
   setGameLanguage: (gameDir: string, textLang: string, audioLang: string) =>
     invoke<LanguagePatchResult>('set_game_language', { gameDir, textLang, audioLang }),
+
+  rollbackGameLanguage: (gameDir: string) =>
+    invoke<boolean>('rollback_game_language', { gamePath: gameDir }),
+
+  autoProtectHookDll: (gameDir: string) =>
+    invoke<boolean>('auto_protect_hook_dll', { gamePath: gameDir }),
+
+  getSnifferPackets: (sinceId: number) =>
+    invoke<any[]>('get_sniffer_packets', { sinceId }),
+
+  clearSnifferPackets: () =>
+    invoke<void>('clear_sniffer_packets'),
+
+  executeScanGameAssets: (gamePath: string) =>
+    invoke<UnpackScanResult>('execute_scan_game_assets', { gamePath }),
+
+  getAssetImagePreview: (blockPath: string, pathId: number) =>
+    invoke<AssetPreviewDto>('get_asset_image_preview', { blockPath, pathId }),
+
+  exportSingleAsset: (blockPath: string, pathId: number, containerPath: string, outputDir: string) =>
+    invoke<string>('export_single_asset', { blockPath, pathId, containerPath, outputDir }),
+
+  showItemInFolder: (itemPath: string) =>
+    invoke<void>('show_item_in_folder', { itemPath }),
+
+  executeUnpackAssets: (
+    gamePath: string,
+    outputDir: string,
+    filter?: string,
+    textures: boolean = true,
+    text: boolean = true,
+    fonts: boolean = true
+  ) =>
+    invoke<UnpackExportResult>('execute_unpack_assets', {
+      gamePath,
+      outputDir,
+      filter,
+      textures,
+      text,
+      fonts,
+    }),
 };
 

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   ArrowDownLeft,
@@ -19,6 +19,7 @@ import { useT } from '../../lib/hooks';
 import { useDebouncedValue } from '../../lib/hooks';
 import { ipc } from '../../lib/ipc-client';
 import { formatTime, hexDump } from '../../lib/utils';
+import { isTauri, tauriApi } from '../../lib/tauri';
 
 const HEX_PREVIEW_BYTES = 4096;
 
@@ -31,6 +32,7 @@ export function SnifferView() {
   const setIsSniffing = usePacketStore((state) => state.setIsSniffing);
   const setSelectedPacket = usePacketStore((state) => state.setSelectedPacket);
   const clearPackets = usePacketStore((state) => state.clearPackets);
+  const addPackets = usePacketStore((state) => state.addPackets);
   const filterText = usePacketStore((state) => state.filterText);
   const setFilterText = usePacketStore((state) => state.setFilterText);
   const sourceFilter = usePacketStore((state) => state.sourceFilter);
@@ -38,6 +40,26 @@ export function SnifferView() {
 
   const [activeTab, setActiveTab] = useState<'proto' | 'hex'>('proto');
   const [hexExpanded, setHexExpanded] = useState(false);
+  const lastPacketIdRef = useRef<number>(0);
+
+  // Poll sniffer packets from Tauri when isSniffing is active
+  useEffect(() => {
+    if (!isSniffing) return;
+    const interval = setInterval(async () => {
+      if (isTauri()) {
+        try {
+          const newPackets = await tauriApi.getSnifferPackets(lastPacketIdRef.current);
+          if (newPackets && newPackets.length > 0) {
+            lastPacketIdRef.current = Math.max(...newPackets.map((p) => p.id), lastPacketIdRef.current);
+            addPackets(newPackets);
+          }
+        } catch (e) {
+          console.debug('Failed to poll sniffer packets:', e);
+        }
+      }
+    }, 200);
+    return () => clearInterval(interval);
+  }, [isSniffing, addPackets]);
 
   // Debounce keystrokes; filtering up to 2000 packets only re-runs after idle.
   const debouncedSearch = useDebouncedValue(filterText, 150);
@@ -73,8 +95,12 @@ export function SnifferView() {
   };
 
   const handleClear = () => {
+    if (isTauri()) {
+      tauriApi.clearSnifferPackets();
+    }
     ipc.clearSniffer();
     clearPackets();
+    lastPacketIdRef.current = 0;
   };
 
   const handleReplay = () => {

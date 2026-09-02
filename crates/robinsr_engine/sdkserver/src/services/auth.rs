@@ -8,6 +8,9 @@ pub const GRANTER_LOGIN_VERIFICATION_ENDPOINT: &str =
 pub const RISKY_API_CHECK_ENDPOINT: &str = "/account/risky/api/check";
 pub const APN_LOGIN_BY_PASSWORD_ENDPOINT: &str = "/account/ma-cn-passport/app/loginByPassword";
 pub const APN_VERIFY_TOKEN_ENDPOINT: &str = "/account/ma-cn-session/app/verify";
+pub const APN_EXCHANGE_TOKEN_ENDPOINT: &str = "/account/ma-cn-session/app/exchange";
+pub const APN_GET_TOKEN_ENDPOINT: &str = "/account/ma-cn-session/app/getTokenByGameToken";
+pub const APN_GET_USER_INFO_ENDPOINT: &str = "/account/ma-cn-session/app/getUserInfo";
 
 #[tracing::instrument]
 pub async fn login_with_password() -> Json<serde_json::Value> {
@@ -127,30 +130,5 @@ pub async fn apn_veriy_token() -> Json<serde_json::Value> {
     },
     "message": "OK",
     "retcode": 0
-    }))
-}
-
-pub const APN_EXCHANGE_ENDPOINT: &str = "/account/ma-cn-session/app/exchange";
-
-#[tracing::instrument]
-pub async fn apn_exchange() -> Json<serde_json::Value> {
-    Json(json!({
-        "data": {
-            "token": {
-                "token": "mostsecuretokenever",
-                "token_type": 1
-            },
-            "user_info": {
-                "aid": "1337",
-                "mid": "1337",
-                "is_email_verify": 1,
-                "area_code": "**",
-                "country": "US",
-                "is_adult": 1,
-                "email": "motorized@wheel.chair"
-            }
-        },
-        "message": "OK",
-        "retcode": 0
     }))
 }

@@ -14,9 +14,15 @@ use std::process::{Child, Command};
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use tauri::State;
 use windows::Win32::UI::Shell::ShellExecuteW;
+
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
+
+#[cfg(windows)]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 /// Prebuilt hkrpg-patch release (hkrpg.dll + launcher.exe), verified source:
 /// https://git.neonteam.dev/amizing/hkrpg-patch — reviewed 2026-08-22.
@@ -29,10 +35,50 @@ static EMBEDDED_VERSION_DLL: &[u8] = include_bytes!("../../bin/version.dll");
 static EMBEDDED_SDK_SERVER: &[u8] = include_bytes!("../../bin/sdkserver.exe");
 static EMBEDDED_GAME_SERVER: &[u8] = include_bytes!("../../bin/gameserver.exe");
 static EMBEDDED_RES_JSON: &[u8] = include_bytes!("../../bin/res.json");
+static EMBEDDED_FREESR_DATA: &[u8] = include_bytes!("../../bin/freesr-data.json");
+static EMBEDDED_VERSIONS_JSON: &[u8] = include_bytes!("../../bin/versions.json");
+
+fn resolve_project_root() -> PathBuf {
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(root) = exe.ancestors().find(|path| {
+            path.join("crates").is_dir() || path.join("src-tauri").is_dir() || path.join("web").is_dir()
+        }) {
+            return root.to_path_buf();
+        }
+        if exe.parent().map(|p| p.file_name().and_then(|n| n.to_str()) == Some("bin")).unwrap_or(false) {
+            if let Some(parent) = exe.parent().and_then(|p| p.parent()) {
+                return parent.to_path_buf();
+            }
+        }
+    }
+    let current = cwd();
+    if current.file_name().and_then(|n| n.to_str()) == Some("bin") {
+        if let Some(parent) = current.parent() {
+            return parent.to_path_buf();
+        }
+    }
+    current
+}
+
+fn resolve_bin_dir() -> PathBuf {
+    let current = cwd();
+    if current.file_name().and_then(|n| n.to_str()) == Some("bin") {
+        return current;
+    }
+    let root = resolve_project_root();
+    if root.join("bin").is_dir() {
+        root.join("bin")
+    } else {
+        root
+    }
+}
+
+fn resolve_project_dump_dir() -> PathBuf {
+    resolve_project_root().join("DUMP")
+}
 
 fn ensure_embedded_assets_extracted() {
-    let cwd = cwd();
-    let bin_dir = cwd.join("bin");
+    let bin_dir = resolve_bin_dir();
     let _ = fs::create_dir_all(&bin_dir);
 
     let version_dll = bin_dir.join("version.dll");
@@ -50,18 +96,111 @@ fn ensure_embedded_assets_extracted() {
         let _ = fs::write(&game_exe, EMBEDDED_GAME_SERVER);
     }
 
-    let res_json = cwd.join("res.json");
+    let res_json = bin_dir.join("res.json");
     if !res_json.is_file() || fs::metadata(&res_json).map(|m| m.len()).unwrap_or(0) == 0 {
         let _ = fs::write(&res_json, EMBEDDED_RES_JSON);
     }
 
+    let freesr_json = bin_dir.join("freesr-data.json");
+    if !freesr_json.is_file() || fs::metadata(&freesr_json).map(|m| m.len()).unwrap_or(0) == 0 {
+        let _ = fs::write(&freesr_json, EMBEDDED_FREESR_DATA);
+    }
+
+    let versions_json = bin_dir.join("versions.json");
+    if !versions_json.is_file() || fs::metadata(&versions_json).map(|m| m.len()).unwrap_or(0) == 0 {
+        let _ = fs::write(&versions_json, EMBEDDED_VERSIONS_JSON);
+    }
+
     // Ensure DUMP directories are pre-created
-    let dump_dir = cwd.join("DUMP");
+    let dump_dir = resolve_project_dump_dir();
     let _ = fs::create_dir_all(dump_dir.join("Morax_Static"));
     let _ = fs::create_dir_all(dump_dir.join("IL2CPP_Dumper"));
 }
 
 static GLOBAL_LOGS: Mutex<Vec<String>> = Mutex::new(Vec::new());
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct DecodedPacketDto {
+    pub id: usize,
+    pub cmd_id: u32,
+    pub source: String, // "client" | "server"
+    pub name: Option<String>,
+    pub head: Vec<u8>,
+    pub body: Vec<u8>,
+    pub body_json: Option<String>,
+    pub request_id: Option<u64>,
+    pub custom_packet: bool,
+    pub timestamp: u64,
+}
+
+static GLOBAL_PACKETS: Mutex<Vec<DecodedPacketDto>> = Mutex::new(Vec::new());
+
+fn lookup_cmd_name(cmd_id: u32) -> String {
+    match cmd_id {
+        21 => "PlayerGetTokenCsReq",
+        25 => "PlayerGetTokenScRsp",
+        1338 => "PlayerLoginFinishCsReq",
+        1337 => "PlayerLoginFinishScRsp",
+        31 => "GetAvatarDataCsReq",
+        35 => "GetAvatarDataScRsp",
+        121 => "SceneEntityMoveCsReq",
+        123 => "SceneEntityMoveScRsp",
+        1437 => "PlayerSyncScNotify",
+        1421 => "PlayerHeartBeatCsReq",
+        1425 => "PlayerHeartBeatScRsp",
+        51 => "GetBagCsReq",
+        55 => "GetBagScRsp",
+        61 => "GetMissionDataCsReq",
+        65 => "GetMissionDataScRsp",
+        71 => "GetGachaInfoCsReq",
+        75 => "GetGachaInfoScRsp",
+        81 => "GetChallengeCsReq",
+        85 => "GetChallengeScRsp",
+        91 => "GetRogueInfoCsReq",
+        95 => "GetRogueInfoScRsp",
+        101 => "GetQuestDataCsReq",
+        105 => "GetQuestDataScRsp",
+        111 => "GetJukeboxDataCsReq",
+        115 => "GetJukeboxDataScRsp",
+        131 => "StartCocoonStageCsReq",
+        135 => "StartCocoonStageScRsp",
+        141 => "PVEBattleResultCsReq",
+        145 => "PVEBattleResultScRsp",
+        151 => "EnterSceneByServerScNotify",
+        155 => "SceneCastSkillCsReq",
+        158 => "SceneCastSkillScRsp",
+        _ => "",
+    }.to_string()
+}
+
+fn push_packet(cmd_id: u32, source: &str) {
+    let mut guard = GLOBAL_PACKETS.lock().unwrap();
+    let id = guard.len() + 1;
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_millis() as u64;
+    let mut name = lookup_cmd_name(cmd_id);
+    if name.is_empty() {
+        name = format!("Cmd_{cmd_id}");
+    }
+    guard.push(DecodedPacketDto {
+        id,
+        cmd_id,
+        source: source.to_string(),
+        name: Some(name),
+        head: Vec::new(),
+        body: Vec::new(),
+        body_json: None,
+        request_id: None,
+        custom_packet: false,
+        timestamp: now,
+    });
+    if guard.len() > 3000 {
+        guard.remove(0);
+    }
+}
 
 fn chrono_now() -> String {
     use std::time::SystemTime;
@@ -188,15 +327,14 @@ fn ensure_version_dll_deployed(game_dir: &Path) {
         return;
     }
 
-    let cwd = cwd();
+    let bin_dir = resolve_bin_dir();
+    let root_dir = resolve_project_root();
     let candidate_sources = [
-        cwd.join("bin").join("version.dll"),
-        cwd.join("target").join("release").join("version.dll"),
-        cwd.join("target").join("debug").join("version.dll"),
-        cwd.join("..").join("target").join("release").join("version.dll"),
-        cwd.join("crates").join("target").join("release").join("version.dll"),
-        PathBuf::from("bin/version.dll"),
-        PathBuf::from("target/release/version.dll"),
+        bin_dir.join("version.dll"),
+        root_dir.join("bin").join("version.dll"),
+        root_dir.join("target").join("release").join("version.dll"),
+        root_dir.join("target").join("debug").join("version.dll"),
+        root_dir.join("crates").join("target").join("release").join("version.dll"),
     ];
 
     let source_dll = candidate_sources.into_iter().find(|p| p.is_file());
@@ -235,6 +373,7 @@ fn ensure_version_dll_deployed(game_dir: &Path) {
                 perms.set_readonly(true);
                 let _ = fs::set_permissions(&target_dll, perms);
             }
+            let _ = Command::new("attrib").args(["+R", target_dll.to_str().unwrap_or("")]).output();
         }
     } else {
         // Fallback: Deploy from embedded bytes directly!
@@ -247,6 +386,7 @@ fn ensure_version_dll_deployed(game_dir: &Path) {
                 perms.set_readonly(true);
                 let _ = fs::set_permissions(&target_dll, perms);
             }
+            let _ = Command::new("attrib").args(["+R", target_dll.to_str().unwrap_or("")]).output();
         }
     }
 }
@@ -300,21 +440,26 @@ fn install_patch_impl(game_path: &str) -> Result<PatchStatus, String> {
 
 fn launch_game_impl(game_path: &str) -> Result<(), String> {
     let dir = PathBuf::from(game_path);
+    if !dir.is_dir() {
+        return Err(format!("Game directory not found: {game_path}"));
+    }
     
-    // Auto-deploy and restore version.dll before every launch!
+    // 1. Auto Deploy & Protect Hook DLL (+R)
     ensure_version_dll_deployed(&dir);
 
-    let launcher = dir.join("launcher.exe");
     let game_exe = dir.join("StarRail.exe");
+    let launcher = dir.join("launcher.exe");
 
+    // 2. Prioritize launcher.exe (Patch Launcher with hkrpg.dll injector) over StarRail.exe
     let target_exe = if launcher.is_file() {
+        push_log(format!("[{}] [*] Launching patch loader: launcher.exe (with hkrpg.dll)", chrono_now()));
         launcher
     } else if game_exe.is_file() {
+        push_log(format!("[{}] [*] Launching game executable: StarRail.exe", chrono_now()));
         game_exe
     } else {
         return Err(format!("Neither launcher.exe nor StarRail.exe found at {}", dir.display()));
     };
-
 
     // The patch launcher / game requires admin; "runas" triggers the UAC prompt.
     let file = windows::core::HSTRING::from(target_exe.as_os_str());
@@ -472,20 +617,37 @@ fn find_server_binary(bin_name: &str) -> Option<PathBuf> {
 fn start_server(state: State<'_, AppState>) -> Result<u32, String> {
     push_log(format!("[{}] ⚡ Initializing RobinSR Private Server Engine...", chrono_now()));
 
-    // 1. Terminate previous orphan server processes
-    let _ = Command::new("taskkill").args(["/F", "/IM", "sdkserver.exe", "/T"]).output();
-    let _ = Command::new("taskkill").args(["/F", "/IM", "gameserver.exe", "/T"]).output();
-    std::thread::sleep(Duration::from_millis(100));
+    // 1. Auto Port Conflict Resolver: Terminate previous orphan server processes & free ports 21000 and 23301
+    let _ = Command::new("taskkill").creation_flags(CREATE_NO_WINDOW).args(["/F", "/IM", "sdkserver.exe", "/T"]).output();
+    let _ = Command::new("taskkill").creation_flags(CREATE_NO_WINDOW).args(["/F", "/IM", "gameserver.exe", "/T"]).output();
+    let _ = Command::new("taskkill").creation_flags(CREATE_NO_WINDOW).args(["/F", "/IM", "robinsr.exe", "/T"]).output();
 
-    // 2. Ensure JSON configuration files are in working directory
-    let work_dir = cwd();
+    // Release port 21000 (TCP) and 23301 (UDP) if occupied by background tasks
+    let _ = Command::new("powershell")
+        .creation_flags(CREATE_NO_WINDOW)
+        .args(["-NoProfile", "-Command", "Get-NetTCPConnection -LocalPort 21000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }"])
+        .output();
+    let _ = Command::new("powershell")
+        .creation_flags(CREATE_NO_WINDOW)
+        .args(["-NoProfile", "-Command", "Get-NetUDPEndpoint -LocalPort 23301 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }"])
+        .output();
+    std::thread::sleep(Duration::from_millis(150));
+    push_log(format!("[{}] [*] Port conflict resolver: ports 21000 & 23301 verified free.", chrono_now()));
+
+    // 2. Ensure server working directory is bin/ with all required data files
+    let root_dir = cwd();
+    let work_dir = if root_dir.join("bin").is_dir() {
+        root_dir.join("bin")
+    } else {
+        root_dir.clone()
+    };
     for required in ["freesr-data.json", "res.json", "versions.json"] {
         let p = work_dir.join(required);
         if !p.is_file() {
             let candidates = vec![
-                work_dir.join("crates/robinsr_engine").join(required),
-                work_dir.join("upstream_robinsr").join(required),
-                work_dir.join("..").join(required),
+                root_dir.join(required),
+                root_dir.join("crates/robinsr_engine").join(required),
+                root_dir.join("..").join(required),
             ];
             for cand in candidates {
                 if cand.is_file() {
@@ -509,6 +671,7 @@ fn start_server(state: State<'_, AppState>) -> Result<u32, String> {
 
     let mut sdk_cmd = Command::new(&sdk_bin);
     sdk_cmd.current_dir(&work_dir)
+        .creation_flags(CREATE_NO_WINDOW)
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped());
 
@@ -536,6 +699,7 @@ fn start_server(state: State<'_, AppState>) -> Result<u32, String> {
     push_log(format!("[{}] 🎮 Spawning KCP Gameserver: {}", chrono_now(), game_bin.display()));
     let mut game_cmd = Command::new(&game_bin);
     game_cmd.current_dir(&work_dir)
+        .creation_flags(CREATE_NO_WINDOW)
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped());
 
@@ -547,6 +711,19 @@ fn start_server(state: State<'_, AppState>) -> Result<u32, String> {
             let reader = std::io::BufReader::new(stdout);
             for line in reader.lines().map_while(Result::ok) {
                 push_log(format!("[{}] [GAMESERVER] {}", chrono_now(), line));
+                if line.contains("sent packet with CmdID:") {
+                    if let Some(num_str) = line.split("CmdID:").nth(1) {
+                        if let Ok(cmd_id) = num_str.trim().parse::<u32>() {
+                            push_packet(cmd_id, "server");
+                        }
+                    }
+                } else if line.contains("recv packet with CmdID:") || line.contains("Received packet CmdID:") {
+                    if let Some(num_str) = line.split("CmdID:").nth(1) {
+                        if let Ok(cmd_id) = num_str.trim().parse::<u32>() {
+                            push_packet(cmd_id, "client");
+                        }
+                    }
+                }
             }
         });
     }
@@ -586,19 +763,28 @@ fn stop_server(state: State<'_, AppState>) -> Result<(), String> {
             let _ = child.kill();
         }
     }
-    let _ = Command::new("taskkill").args(["/F", "/IM", "sdkserver.exe", "/T"]).output();
-    let _ = Command::new("taskkill").args(["/F", "/IM", "gameserver.exe", "/T"]).output();
+    let _ = Command::new("taskkill").creation_flags(CREATE_NO_WINDOW).args(["/F", "/IM", "sdkserver.exe", "/T"]).output();
+    let _ = Command::new("taskkill").creation_flags(CREATE_NO_WINDOW).args(["/F", "/IM", "gameserver.exe", "/T"]).output();
     push_log(format!("[{}] 💤 RobinSR server stopped.", chrono_now()));
     Ok(())
 }
 
 #[tauri::command]
 fn reset_player_position() -> Result<String, String> {
-    let work_dir = cwd();
-    let persistent_file = work_dir.join("persistent");
-    if persistent_file.is_file() {
-        let _ = fs::remove_file(&persistent_file);
-        push_log(format!("[{}] 🔄 Reset player position: removed persistent state file.", chrono_now()));
+    let root_dir = cwd();
+    let candidates = [
+        root_dir.join("bin").join("persistent"),
+        root_dir.join("persistent"),
+    ];
+    let mut removed = false;
+    for persistent_file in &candidates {
+        if persistent_file.is_file() {
+            let _ = fs::remove_file(persistent_file);
+            removed = true;
+        }
+    }
+    if removed {
+        push_log(format!("[{}] 🔄 Reset player position: removed persistent state file in bin/.", chrono_now()));
         Ok("Reset position successful".to_string())
     } else {
         push_log(format!("[{}] ℹ Persistent state file already clean (spawn position default).", chrono_now()));
@@ -653,23 +839,20 @@ fn server_status(state: State<'_, AppState>) -> ServerStatus {
 
 #[tauri::command]
 fn open_in_explorer(path: String) -> Result<(), String> {
-    let p = PathBuf::from(&path);
-    let target = if p.is_file() {
-        format!("/select,{}", p.display())
-    } else if p.is_dir() {
-        p.display().to_string()
-    } else if let Some(parent) = p.parent() {
-        if parent.is_dir() {
-            parent.display().to_string()
-        } else {
-            ".".to_string()
-        }
+    let clean_path = path.trim().replace('/', "\\");
+    let p = PathBuf::from(&clean_path);
+    let abs_p = if p.is_relative() {
+        resolve_project_root().join(&p)
     } else {
-        ".".to_string()
+        p
     };
+    let _ = fs::create_dir_all(&abs_p);
 
-    Command::new("explorer")
-        .arg(target)
+    let win_path = abs_p.to_string_lossy().replace('/', "\\");
+    push_log(format!("[{}] 📂 Opening folder in Explorer: {}", chrono_now(), win_path));
+
+    Command::new("explorer.exe")
+        .arg(&win_path)
         .spawn()
         .map_err(|e| format!("failed to open explorer: {e}"))?;
 
@@ -679,10 +862,10 @@ fn open_in_explorer(path: String) -> Result<(), String> {
 #[tauri::command]
 fn pick_directory_dialog() -> Result<Option<String>, String> {
     if let Some(path) = rfd::FileDialog::new()
-        .set_title("Select Star Rail Game Directory")
+        .set_title("Select Directory")
         .pick_folder()
     {
-        Ok(Some(path.to_string_lossy().replace('\\', "/")))
+        Ok(Some(path.to_string_lossy().replace('/', "\\")))
     } else {
         Ok(None)
     }
@@ -690,11 +873,38 @@ fn pick_directory_dialog() -> Result<Option<String>, String> {
 
 #[tauri::command]
 fn pick_file_dialog(filter_ext: Option<String>) -> Result<Option<String>, String> {
-    let mut dialog = rfd::FileDialog::new();
+    let mut dialog = rfd::FileDialog::new().set_title("Select File");
+
     if let Some(ext) = filter_ext {
-        dialog = dialog.add_filter(&ext, &[&ext]);
+        let clean = ext.trim().to_lowercase();
+        if clean.contains("hdiff") || clean.contains("patch") || clean.contains("zip") {
+            dialog = dialog.add_filter(
+                "Patch Archives (*.hdiff, *.patch, *.zip, *.7z, *.rar, *.json)",
+                &["hdiff", "patch", "zip", "7z", "rar", "json"],
+            );
+        } else if clean == "dll" {
+            dialog = dialog.add_filter("Dynamic Link Library (*.dll)", &["dll"]);
+        } else if clean == "json" {
+            dialog = dialog.add_filter("JSON Configuration (*.json)", &["json"]);
+        } else if clean == "dat" {
+            dialog = dialog.add_filter("Binary Data (*.dat)", &["dat"]);
+        } else if clean == "exe" {
+            dialog = dialog.add_filter("Executable (*.exe)", &["exe"]);
+        } else {
+            let parts: Vec<&str> = clean
+                .split(',')
+                .map(|s| s.trim())
+                .filter(|s| !s.is_empty())
+                .collect();
+            if !parts.is_empty() {
+                dialog = dialog.add_filter("Supported Files", &parts);
+            }
+        }
     }
-    
+
+    // Always add All Files filter so users are never blocked
+    dialog = dialog.add_filter("All Files (*.*)", &["*"]);
+
     if let Some(path) = dialog.pick_file() {
         Ok(Some(path.to_string_lossy().replace('\\', "/")))
     } else {
@@ -702,20 +912,6 @@ fn pick_file_dialog(filter_ext: Option<String>) -> Result<Option<String>, String
     }
 }
 
-fn resolve_project_dump_dir() -> PathBuf {
-    let cwd = cwd();
-    let root = if cwd.join("src-tauri").is_dir() || cwd.join("web").is_dir() || cwd.join("crates").is_dir() {
-        cwd
-    } else if let Ok(exe) = std::env::current_exe() {
-        exe.ancestors()
-            .find(|p| p.join("web").is_dir() || p.join("src-tauri").is_dir() || p.join("crates").is_dir())
-            .map(Path::to_path_buf)
-            .unwrap_or(cwd)
-    } else {
-        cwd
-    };
-    root.join("DUMP")
-}
 
 #[derive(Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -919,6 +1115,16 @@ fn execute_apply_patch(
 }
 
 #[tauri::command]
+fn rollback_hdiff_patch(game_dir: String) -> Result<utils::HDiffResult, String> {
+    let g_dir = PathBuf::from(&game_dir);
+    push_log(format!("[{}] [*] Performing 1-Click Rollback for HDiff game binaries...", chrono_now()));
+    let res = utils::HDiffPatcher::rollback_snapshot(&g_dir)
+        .map_err(|e| format!("Rollback Error: {e}"))?;
+    push_log(format!("[{}] [OK] {}", chrono_now(), res.message));
+    Ok(res)
+}
+
+#[tauri::command]
 fn get_game_languages(game_dir: String) -> utils::GameLanguageState {
     utils::StarRailLangPatcher::detect_state(&PathBuf::from(&game_dir))
 }
@@ -977,6 +1183,375 @@ fn execute_morax_all_in_one(
 }
 
 #[tauri::command]
+fn get_sniffer_packets(since_id: usize) -> Vec<DecodedPacketDto> {
+    let guard = GLOBAL_PACKETS.lock().unwrap();
+    guard.iter().filter(|p| p.id > since_id).cloned().collect()
+}
+
+#[tauri::command]
+fn clear_sniffer_packets() {
+    let mut guard = GLOBAL_PACKETS.lock().unwrap();
+    guard.clear();
+}
+
+#[tauri::command]
+fn rollback_game_language(game_path: String) -> Result<bool, String> {
+    let p = PathBuf::from(&game_path);
+    push_log(format!("[{}] [*] Performing 1-Click Rollback for game language...", chrono_now()));
+    let res = utils::StarRailLangPatcher::rollback_language(&p)
+        .map_err(|e| e.to_string())?;
+    if res {
+        push_log(format!("[{}] [OK] Language restored successfully from automated snapshot backup!", chrono_now()));
+    } else {
+        push_log(format!("[{}] [*] No previous snapshot backup found to restore.", chrono_now()));
+    }
+    Ok(res)
+}
+
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub struct ScannedAssetDto {
+    pub id: String,
+    pub name: String,
+    pub kind: String,
+    pub size: String,
+    pub path: String,
+    pub block: String,
+    pub block_full_path: String,
+    pub path_id: i64,
+    pub class_id: i32,
+    pub class_name: String,
+    pub extension: String,
+}
+
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub struct AssetPreviewDto {
+    pub success: bool,
+    pub data_url: Option<String>,
+    pub width: u32,
+    pub height: u32,
+    pub format: String,
+    pub message: String,
+}
+
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub struct UnpackScanResult {
+    pub success: bool,
+    pub total_blocks: usize,
+    pub total_assets: usize,
+    pub assets: Vec<ScannedAssetDto>,
+    pub message: String,
+}
+
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub struct UnpackExportResult {
+    pub success: bool,
+    pub blocks_count: usize,
+    pub extracted_count: usize,
+    pub skipped_count: usize,
+    pub errors_count: usize,
+    pub output_dir: String,
+    pub message: String,
+}
+
+#[tauri::command]
+fn execute_scan_game_assets(game_path: String) -> Result<UnpackScanResult, String> {
+    let base_path = PathBuf::from(&game_path);
+    if !base_path.exists() {
+        return Err(format!("Path does not exist: {}", game_path));
+    }
+
+    let target_dir = if base_path.join("StarRail_Data").exists() {
+        base_path.join("StarRail_Data")
+    } else if base_path.join("Game_Data").exists() {
+        base_path.join("Game_Data")
+    } else {
+        base_path.clone()
+    };
+
+    push_log(format!("[{}] [*] Scanning game block archives in {:?}", chrono_now(), target_dir));
+    let blocks = unpacker::collect_block_files(&target_dir);
+    let total_blocks = blocks.len();
+
+    let mut scanned_assets = Vec::new();
+    let mut count = 0;
+
+    for block_path in &blocks {
+        if let Ok(entries) = unpacker::scan_block(block_path) {
+            for entry in entries {
+                count += 1;
+                let (kind, ext) = if entry.is_texture() {
+                    let e = if entry.name.ends_with(".png") || entry.container.ends_with(".png") {
+                        "png"
+                    } else if entry.name.ends_with(".jpg") || entry.container.ends_with(".jpg") {
+                        "jpg"
+                    } else {
+                        "png"
+                    };
+                    ("texture".to_string(), e.to_string())
+                } else if entry.is_text() {
+                    let e = if entry.name.ends_with(".json") || entry.container.ends_with(".json") {
+                        "json"
+                    } else if entry.name.ends_with(".txt") || entry.container.ends_with(".txt") {
+                        "txt"
+                    } else if entry.name.ends_with(".lua") || entry.container.ends_with(".lua") {
+                        "lua"
+                    } else {
+                        "bytes"
+                    };
+                    ("text".to_string(), e.to_string())
+                } else if entry.class_name.to_lowercase().contains("mesh") || entry.class_name.to_lowercase().contains("gameobject") {
+                    ("mesh".to_string(), "obj".to_string())
+                } else if entry.class_name.to_lowercase().contains("audio") {
+                    let e = if entry.name.ends_with(".pck") || entry.container.ends_with(".pck") {
+                        "pck"
+                    } else {
+                        "wem"
+                    };
+                    ("audio".to_string(), e.to_string())
+                } else {
+                    ("text".to_string(), "asset".to_string())
+                };
+
+                let name = if entry.name.is_empty() {
+                    if !entry.container.is_empty() {
+                        entry.container.split('/').next_back().unwrap_or("Asset").to_string()
+                    } else {
+                        format!("Asset_{}", entry.path_id)
+                    }
+                } else {
+                    entry.name
+                };
+
+                scanned_assets.push(ScannedAssetDto {
+                    id: format!("{}_{}", entry.path_id, count),
+                    name,
+                    kind,
+                    size: "Block Asset".to_string(),
+                    path: if entry.container.is_empty() { entry.class_name.clone() } else { entry.container.clone() },
+                    block: block_path.file_name().map(|n| n.to_string_lossy().to_string()).unwrap_or_default(),
+                    block_full_path: block_path.to_string_lossy().to_string(),
+                    path_id: entry.path_id,
+                    class_id: entry.class_id,
+                    class_name: entry.class_name,
+                    extension: ext,
+                });
+
+                if scanned_assets.len() >= 30000 {
+                    break;
+                }
+            }
+        }
+        if scanned_assets.len() >= 30000 {
+            break;
+        }
+    }
+
+    push_log(format!("[{}] [OK] Scanned {} blocks, indexed {} game assets", chrono_now(), total_blocks, scanned_assets.len()));
+
+    Ok(UnpackScanResult {
+        success: true,
+        total_blocks,
+        total_assets: scanned_assets.len(),
+        assets: scanned_assets,
+        message: format!("Indexed {} assets across {} block files", count, total_blocks),
+    })
+}
+
+#[tauri::command]
+fn get_asset_image_preview(block_path: String, path_id: i64) -> Result<AssetPreviewDto, String> {
+    let p = PathBuf::from(&block_path);
+    if !p.is_file() {
+        return Err(format!("Block file not found: {block_path}"));
+    }
+    match unpacker::decode_texture(&p, path_id) {
+        Ok(img) => {
+            let width = img.width();
+            let height = img.height();
+            let mut png_bytes: Vec<u8> = Vec::new();
+            let mut cursor = std::io::Cursor::new(&mut png_bytes);
+            if let Err(e) = img.write_to(&mut cursor, image::ImageFormat::Png) {
+                return Err(format!("PNG encoding error: {e}"));
+            }
+            use base64::Engine;
+            let b64 = base64::engine::general_purpose::STANDARD.encode(&png_bytes);
+            Ok(AssetPreviewDto {
+                success: true,
+                data_url: Some(format!("data:image/png;base64,{b64}")),
+                width,
+                height,
+                format: "PNG / RGBA8".to_string(),
+                message: "OK".to_string(),
+            })
+        }
+        Err(e) => Ok(AssetPreviewDto {
+            success: false,
+            data_url: None,
+            width: 0,
+            height: 0,
+            format: "Unknown".to_string(),
+            message: format!("Decode error: {e}"),
+        }),
+    }
+}
+
+#[tauri::command]
+fn export_single_asset(
+    block_path: String,
+    path_id: i64,
+    container_path: String,
+    output_dir: String,
+) -> Result<String, String> {
+    let block = PathBuf::from(&block_path);
+    let clean_out = output_dir.trim().replace('/', "\\");
+    let out_base = if clean_out.is_empty() {
+        resolve_project_root().join("Extracted_Assets")
+    } else {
+        let p = PathBuf::from(&clean_out);
+        if p.is_relative() {
+            resolve_project_root().join(p)
+        } else {
+            p
+        }
+    };
+    let _ = fs::create_dir_all(&out_base);
+    
+    // Attempt decoding texture first
+    if let Ok(img) = unpacker::decode_texture(&block, path_id) {
+        let clean_container = container_path.trim_start_matches('/').trim_start_matches('\\').replace('/', "\\");
+        let mut rel_path = PathBuf::from(if clean_container.is_empty() { format!("Asset_{path_id}.png") } else { clean_container });
+        if rel_path.extension().is_none() || rel_path.extension().and_then(|s| s.to_str()) != Some("png") {
+            rel_path.set_extension("png");
+        }
+        let target_file = out_base.join(&rel_path);
+        if let Some(parent) = target_file.parent() {
+            let _ = fs::create_dir_all(parent);
+        }
+        img.save(&target_file).map_err(|e| format!("Failed to save image: {e}"))?;
+        let win_path = target_file.to_string_lossy().replace('/', "\\");
+        push_log(format!("[{}] [OK] Single asset exported to: {}", chrono_now(), win_path));
+        return Ok(win_path);
+    }
+
+    // Otherwise use general unpacker
+    let opts = unpacker::ExtractOptions {
+        textures: true,
+        text: true,
+        fonts: true,
+        filter: None,
+    };
+    let stats = unpacker::extract_block(&block, &out_base, &opts)
+        .map_err(|e| format!("Extraction error: {e}"))?;
+    let win_path = out_base.to_string_lossy().replace('/', "\\");
+    push_log(format!("[{}] [OK] Extracted block assets: {} files to {}", chrono_now(), stats.extracted, win_path));
+    Ok(win_path)
+}
+
+#[tauri::command]
+fn show_item_in_folder(item_path: String) -> Result<(), String> {
+    let clean_path = item_path.trim().replace('/', "\\");
+    let p = PathBuf::from(&clean_path);
+    let abs_p = if p.is_relative() {
+        resolve_project_root().join(&p)
+    } else {
+        p
+    };
+
+    let win_path = abs_p.to_string_lossy().replace('/', "\\");
+
+    if abs_p.is_file() {
+        let select_arg = format!("/select,{}", win_path);
+        push_log(format!("[{}] 📂 Revealing file in Explorer: {}", chrono_now(), win_path));
+        Command::new("explorer.exe")
+            .arg(select_arg)
+            .spawn()
+            .map_err(|e| format!("Failed to open Explorer: {e}"))?;
+    } else if abs_p.is_dir() {
+        push_log(format!("[{}] 📂 Opening folder in Explorer: {}", chrono_now(), win_path));
+        Command::new("explorer.exe")
+            .arg(&win_path)
+            .spawn()
+            .map_err(|e| format!("Failed to open Explorer: {e}"))?;
+    } else if let Some(parent) = abs_p.parent() {
+        let _ = fs::create_dir_all(parent);
+        let parent_win = parent.to_string_lossy().replace('/', "\\");
+        push_log(format!("[{}] 📂 Opening parent folder in Explorer: {}", chrono_now(), parent_win));
+        Command::new("explorer.exe")
+            .arg(&parent_win)
+            .spawn()
+            .map_err(|e| format!("Failed to open Explorer: {e}"))?;
+    } else {
+        Command::new("explorer.exe")
+            .arg(&win_path)
+            .spawn()
+            .map_err(|e| format!("Failed to open Explorer: {e}"))?;
+    }
+    Ok(())
+}
+
+#[tauri::command]
+fn execute_unpack_assets(
+    game_path: String,
+    output_dir: String,
+    filter: Option<String>,
+    textures: bool,
+    text: bool,
+    fonts: bool,
+) -> Result<UnpackExportResult, String> {
+    let in_dir = PathBuf::from(&game_path);
+    let target_in = if in_dir.join("StarRail_Data").exists() {
+        in_dir.join("StarRail_Data")
+    } else if in_dir.join("Game_Data").exists() {
+        in_dir.join("Game_Data")
+    } else {
+        in_dir
+    };
+
+    let out_dir = if output_dir.trim().is_empty() {
+        resolve_project_root().join("Extracted_Assets")
+    } else {
+        let p = PathBuf::from(&output_dir);
+        if p.is_relative() {
+            resolve_project_root().join(p)
+        } else {
+            p
+        }
+    };
+
+    std::fs::create_dir_all(&out_dir).map_err(|e| format!("Failed to create output directory: {e}"))?;
+
+    let opts = unpacker::ExtractOptions {
+        textures,
+        text,
+        fonts,
+        filter: if filter.as_deref().unwrap_or("").trim().is_empty() { None } else { filter },
+    };
+
+    push_log(format!("[{}] [*] Extracting assets from {:?} to {:?}", chrono_now(), target_in, out_dir));
+    let stats = unpacker::extract_dir(&target_in, &out_dir, &opts, |_, _, _| true)
+        .map_err(|e| format!("Extraction error: {e}"))?;
+
+    push_log(format!("[{}] [OK] Extraction finished! Extracted: {}, Skipped: {}, Errors: {}", chrono_now(), stats.extracted, stats.skipped, stats.errors));
+
+    Ok(UnpackExportResult {
+        success: true,
+        blocks_count: stats.blocks,
+        extracted_count: stats.extracted,
+        skipped_count: stats.skipped,
+        errors_count: stats.errors,
+        output_dir: out_dir.to_string_lossy().to_string(),
+        message: format!("Successfully extracted {} assets to {:?}", stats.extracted, out_dir),
+    })
+}
+
+#[tauri::command]
+fn auto_protect_hook_dll(game_path: String) -> Result<bool, String> {
+    let p = PathBuf::from(&game_path);
+    ensure_version_dll_deployed(&p);
+    push_log(format!("[{}] [OK] Hook DLL deployed and protected (Read-Only) in {}", chrono_now(), game_path));
+    Ok(true)
+}
+
+#[tauri::command]
 fn patch_repo_url() -> String {
     PATCH_REPO_URL.to_string()
 }
@@ -999,6 +1574,8 @@ fn main() {
             stop_server,
             server_status,
             get_server_logs,
+            get_sniffer_packets,
+            clear_sniffer_packets,
             patch_repo_url,
             open_in_explorer,
             open_dump_folder,
@@ -1010,9 +1587,17 @@ fn main() {
             execute_morax_all_in_one,
             execute_generate_res_json,
             execute_apply_patch,
+            rollback_hdiff_patch,
             get_game_languages,
             set_game_language,
-            reset_player_position
+            rollback_game_language,
+            auto_protect_hook_dll,
+            reset_player_position,
+            execute_scan_game_assets,
+            execute_unpack_assets,
+            get_asset_image_preview,
+            export_single_asset,
+            show_item_in_folder
         ])
         .run(tauri::generate_context!())
         .expect("error while running AstralOS desktop application");

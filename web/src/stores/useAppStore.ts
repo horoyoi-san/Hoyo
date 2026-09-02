@@ -24,6 +24,7 @@ export interface AppSettings {
   language: Language;
   gamePath: string;
   dumpPath: string;
+  assetOutputDir: string;
   ipcPort: string;
   dispatchPort: string;
   gameserverPort: string;
@@ -68,6 +69,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   language: 'th',
   gamePath: '',
   dumpPath: 'DUMP',
+  assetOutputDir: 'Extracted_Assets',
   ipcPort: '42857',
   dispatchPort: '21000',
   gameserverPort: '23301',
@@ -108,6 +110,7 @@ export const useAppStore = create<AppState>()(
         language: state.language,
         gamePath: state.gamePath,
         dumpPath: state.dumpPath,
+        assetOutputDir: state.assetOutputDir,
         ipcPort: state.ipcPort,
         dispatchPort: state.dispatchPort,
         gameserverPort: state.gameserverPort,

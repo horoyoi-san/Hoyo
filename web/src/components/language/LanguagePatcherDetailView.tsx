@@ -7,40 +7,41 @@ import {
   Volume2,
   Languages,
   Check,
+  RotateCcw,
 } from 'lucide-react';
 import { Badge, Button, Card, Input, SectionHeader } from '../ui';
 import { useAppStore } from '../../stores/useAppStore';
 import { useT } from '../../lib/hooks';
 import { isTauri, tauriApi, GameLanguageState, LanguagePatchResult } from '../../lib/tauri';
+import { pickDirectory } from '../../lib/filePicker';
 
 interface LangOption {
   code: string;
   name: string;
   nativeName: string;
-  flag: string;
 }
 
 const TEXT_LANGUAGES: LangOption[] = [
-  { code: 'th', name: 'Thai', nativeName: 'ภาษาไทย', flag: '🇹🇭' },
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
-  { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
-  { code: 'zh-cn', name: 'Simplified Chinese', nativeName: '简体中文', flag: '🇨🇳' },
-  { code: 'zh-tw', name: 'Traditional Chinese', nativeName: '繁體中文', flag: '🇹🇼' },
-  { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
-  { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇧🇷' },
-  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia', flag: '🇮🇩' },
-  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt', flag: '🇻🇳' },
+  { code: 'th', name: 'Thai', nativeName: 'ภาษาไทย' },
+  { code: 'en', name: 'English', nativeName: 'English' },
+  { code: 'ja', name: 'Japanese', nativeName: '日本語' },
+  { code: 'zh-cn', name: 'Simplified Chinese', nativeName: '简体中文' },
+  { code: 'zh-tw', name: 'Traditional Chinese', nativeName: '繁體中文' },
+  { code: 'ko', name: 'Korean', nativeName: '한국어' },
+  { code: 'es', name: 'Spanish', nativeName: 'Español' },
+  { code: 'fr', name: 'French', nativeName: 'Français' },
+  { code: 'de', name: 'German', nativeName: 'Deutsch' },
+  { code: 'ru', name: 'Russian', nativeName: 'Русский' },
+  { code: 'pt', name: 'Portuguese', nativeName: 'Português' },
+  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia' },
+  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt' },
 ];
 
 const VOICE_LANGUAGES: LangOption[] = [
-  { code: 'ja', name: 'Japanese Voice', nativeName: '日本語音声', flag: '🇯🇵' },
-  { code: 'en', name: 'English Voice', nativeName: 'English Voiceover', flag: '🇺🇸' },
-  { code: 'zh', name: 'Chinese Voice', nativeName: '中文配音', flag: '🇨🇳' },
-  { code: 'ko', name: 'Korean Voice', nativeName: '한국어 음성', flag: '🇰🇷' },
+  { code: 'ja', name: 'Japanese Voice', nativeName: '日本語音声' },
+  { code: 'en', name: 'English Voice', nativeName: 'English Voiceover' },
+  { code: 'zh', name: 'Chinese Voice', nativeName: '中文配音' },
+  { code: 'ko', name: 'Korean Voice', nativeName: '한국어 음성' },
 ];
 
 export function LanguagePatcherDetailView() {
@@ -53,11 +54,21 @@ export function LanguagePatcherDetailView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<LanguagePatchResult | null>(null);
 
-  const [logs, setLogs] = useState<string[]>([
-    '🌐 AstralOS Native In-Game Language Patcher v2026 Ready.',
-    '💡 รองรับภาษาข้อความ (Text) 13 ภาษา และเสียงพากย์ (Voice) 4 ภาษาหลัก',
-    '📁 แก้ไขค่า GeneralConfig.json ในตัวเกมโดยตรง ปลอดภัย และมีผลทันทีในเกม',
-  ]);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLogs([
+      isTh
+        ? '[*] ระบบจัดการภาษาตัวเกม Star Rail พร้อมทำงาน'
+        : '[*] Star Rail In-Game Language Manager Ready.',
+      isTh
+        ? '[*] ปลดล็อกเมนูเปลี่ยนภาษาข้อความในเกม (13 ภาษา) และเสียงพากย์ (4 ภาษา)'
+        : '[*] Unlocked in-game text language selector (13 texts) and voiceover (4 audios)',
+      isTh
+        ? '[*] ซิงค์ไฟล์ไบนารี DesignData, Registry และ GeneralConfig.json อัตโนมัติ'
+        : '[*] Synchronizing DesignData binaries, Windows Registry, and GeneralConfig.json',
+    ]);
+  }, [isTh]);
 
   const addLog = (msg: string) => {
     const timestamp = new Date().toTimeString().split(' ')[0];
@@ -70,7 +81,7 @@ export function LanguagePatcherDetailView() {
         const state: GameLanguageState = await tauriApi.getGameLanguages(gamePath);
         if (state.currentTextLang) setSelectedText(state.currentTextLang);
         if (state.currentAudioLang) setSelectedVoice(state.currentAudioLang);
-        addLog(isTh ? `ตรวจพบการตั้งค่าภาษาปัจจุบัน: Text=${state.currentTextLang}, Voice=${state.currentAudioLang}` : `Detected current language: Text=${state.currentTextLang}, Voice=${state.currentAudioLang}`);
+        addLog(isTh ? `[*] ตรวจพบการตั้งค่าภาษาปัจจุบัน: Text=${state.currentTextLang.toUpperCase()}, Voice=${state.currentAudioLang.toUpperCase()}` : `[*] Detected current language: Text=${state.currentTextLang.toUpperCase()}, Voice=${state.currentAudioLang.toUpperCase()}`);
       } catch (e) {
         console.debug('Failed to get game languages:', e);
       }
@@ -82,12 +93,10 @@ export function LanguagePatcherDetailView() {
   }, [loadCurrentLanguage]);
 
   const handleBrowseGamePath = async () => {
-    if (isTauri()) {
-      const p = await tauriApi.pickDirectoryDialog();
-      if (p) {
-        updateSettings({ gamePath: p });
-        addLog(isTh ? `เลือกโฟลเดอร์ตัวเกม: ${p}` : `Selected Game Directory: ${p}`);
-      }
+    const p = await pickDirectory();
+    if (p) {
+      updateSettings({ gamePath: p });
+      addLog(isTh ? `[*] เลือกโฟลเดอร์ตัวเกม: ${p}` : `[*] Selected Game Directory: ${p}`);
     }
   };
 
@@ -95,15 +104,15 @@ export function LanguagePatcherDetailView() {
     if (!gamePath) return;
     setLoading(true);
     setResult(null);
-    addLog(isTh ? `🌐 กำลังเปลี่ยนภาษาเกมเป็น Text=[${selectedText}] Voice=[${selectedVoice}]...` : `🌐 Switching language to Text=[${selectedText}] Voice=[${selectedVoice}]...`);
+    addLog(isTh ? `[*] กำลังเปลี่ยนภาษาเกมเป็น Text=[${selectedText}] Voice=[${selectedVoice}]...` : `[*] Switching language to Text=[${selectedText}] Voice=[${selectedVoice}]...`);
 
     if (isTauri()) {
       try {
         const res = await tauriApi.setGameLanguage(gamePath, selectedText, selectedVoice);
         setResult(res);
-        addLog(isTh ? `✅ เปลี่ยนภาษาสำเร็จ: ${res.message}` : `✅ Successfully switched language: ${res.message}`);
+        addLog(isTh ? `[OK] เปลี่ยนภาษาสำเร็จ: ${res.message}` : `[OK] Successfully switched language: ${res.message}`);
       } catch (e) {
-        addLog(`❌ Error: ${e}`);
+        addLog(`[ERR] Error: ${e}`);
       }
     } else {
       setTimeout(() => {
@@ -116,7 +125,7 @@ export function LanguagePatcherDetailView() {
           message: `In-game language successfully switched to Text=${selectedText}, Voice=${selectedVoice}`,
         };
         setResult(mock);
-        addLog(`✅ [Dev Mode] ${mock.message}`);
+        addLog(`[OK] [Dev Mode] ${mock.message}`);
         setLoading(false);
       }, 500);
       return;
@@ -128,12 +137,12 @@ export function LanguagePatcherDetailView() {
     <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto bg-hz-navy-900">
       <SectionHeader
         icon={<Globe className="h-5 w-5" />}
-        title={isTh ? 'ระบบเปลี่ยนภาษาในเกม (hsr-lang-patcher 2026)' : 'In-Game Language Switcher (hsr-lang-patcher 2026)'}
+        title={isTh ? 'ระบบเปลี่ยนภาษาในเกม' : 'In-Game Language Switcher'}
         badge={<Badge variant="violet">13 Texts + 4 Voices</Badge>}
         description={
           isTh
-            ? 'เปลี่ยนภาษาเมนู ซับไตเติล และเสียงพากย์ในเกม Honkai: Star Rail ได้อย่างอิสระโดยไม่ต้องโหลดข้อมูลซ้ำซ้อน'
-            : 'Effortlessly switch in-game text and audio languages with instant GeneralConfig.json synchronization.'
+            ? 'เปลี่ยนภาษาเมนู ซับไตเติล และเสียงพากย์ในเกม Honkai: Star Rail ได้อย่างอิสระ พร้อมปลดล็อกเมนูเลือกภาษาในเกม'
+            : 'Effortlessly switch in-game text and audio languages with instant DesignData and configuration synchronization.'
         }
       />
 
@@ -158,7 +167,7 @@ export function LanguagePatcherDetailView() {
             </div>
           </div>
 
-          <div className="shrink-0">
+          <div className="shrink-0 flex gap-2">
             <Button
               variant="primary"
               size="sm"
@@ -169,6 +178,29 @@ export function LanguagePatcherDetailView() {
               className="w-full sm:w-auto"
             >
               {isTh ? 'บันทึกภาษาลงตัวเกม' : 'Apply Language Settings'}
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={!gamePath || loading}
+              onClick={async () => {
+                if (!gamePath) return;
+                addLog(isTh ? '[*] กำลัง Rollback ภาษาเกมจาก Snapshot...' : '[*] Rolling back language from snapshot...');
+                if (isTauri()) {
+                  try {
+                    const ok = await tauriApi.rollbackGameLanguage(gamePath);
+                    addLog(ok
+                      ? (isTh ? '[OK] Rollback สำเร็จ! ภาษาถูกกู้คืนจาก Backup' : '[OK] Rollback successful! Language restored from backup.')
+                      : (isTh ? '[*] ไม่พบ Snapshot Backup' : '[*] No snapshot backup found.'));
+                  } catch (e) {
+                    addLog(`[ERR] Rollback failed: ${e}`);
+                  }
+                }
+              }}
+              icon={<RotateCcw className="h-4 w-4" />}
+              className="w-full sm:w-auto"
+            >
+              {isTh ? 'Rollback' : 'Rollback'}
             </Button>
           </div>
         </div>
@@ -210,7 +242,9 @@ export function LanguagePatcherDetailView() {
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-lg">{lang.flag}</span>
+                    <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-hz-navy-700 text-hz-gray-300">
+                      {lang.code.toUpperCase()}
+                    </span>
                     {isSelected && <Check className="h-3.5 w-3.5 text-hz-brand-400" />}
                   </div>
                   <div className="mt-2">
@@ -257,7 +291,9 @@ export function LanguagePatcherDetailView() {
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl">{lang.flag}</span>
+                    <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-hz-navy-700 text-emerald-300">
+                      {lang.code.toUpperCase()}
+                    </span>
                     {isSelected && <Check className="h-4 w-4 text-emerald-400" />}
                   </div>
                   <div className="mt-3">
@@ -283,7 +319,7 @@ export function LanguagePatcherDetailView() {
         <div className="flex items-center justify-between pb-2.5 border-b border-hz-navy-500/40">
           <div className="flex items-center gap-2 text-white">
             <span className="font-bold text-xs">
-              {isTh ? '🌐 บันทึกการทำงานของ Language Patcher' : '🌐 Language Patcher Output Stream'}
+              {isTh ? 'บันทึกการทำงานของ Language Patcher' : 'Language Patcher Output Stream'}
             </span>
           </div>
           <Badge variant="outline" className="text-[10px] font-mono">
@@ -296,10 +332,12 @@ export function LanguagePatcherDetailView() {
             <div
               key={i}
               className={`break-all font-mono leading-relaxed ${
-                log.includes('✅')
+                log.includes('[OK]') || log.includes('Successfully')
                   ? 'text-emerald-300 font-bold'
-                  : log.includes('🌐') || log.includes('💡')
+                  : log.includes('[*]') || log.includes('Detected')
                   ? 'text-cyan-300 font-semibold'
+                  : log.includes('[ERR]')
+                  ? 'text-rose-400 font-semibold'
                   : 'text-zinc-300'
               }`}
             >

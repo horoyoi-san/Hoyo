@@ -31,7 +31,8 @@ pub struct AssetEntry {
 
 impl AssetEntry {
     pub fn is_texture(&self) -> bool {
-        ClassIDType::try_from(self.class_id) == Ok(ClassIDType::Texture2D)
+        let cid = ClassIDType::try_from(self.class_id);
+        cid == Ok(ClassIDType::Texture2D) || cid == Ok(ClassIDType::Sprite)
     }
 
     pub fn is_text(&self) -> bool {

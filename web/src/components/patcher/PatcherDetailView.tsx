@@ -9,11 +9,13 @@ import {
   Play,
   FileArchive,
   RefreshCw,
+  RotateCcw,
 } from 'lucide-react';
 import { Badge, Button, Card, Input, SectionHeader } from '../ui';
 import { useAppStore } from '../../stores/useAppStore';
 import { useT } from '../../lib/hooks';
 import { isTauri, tauriApi, PatchStatus, HDiffResult } from '../../lib/tauri';
+import { pickDirectory, pickFile } from '../../lib/filePicker';
 
 export function PatcherDetailView() {
   const { isTh } = useT();
@@ -22,17 +24,28 @@ export function PatcherDetailView() {
 
   const [patchFile, setPatchFile] = useState<string>('');
   const [patchLoading, setPatchLoading] = useState<boolean>(false);
+  const [rollbackLoading, setRollbackLoading] = useState<boolean>(false);
   const [patchResult, setPatchResult] = useState<HDiffResult | null>(null);
 
   const [patchStatus, setPatchStatus] = useState<PatchStatus | null>(null);
   const [statusLoading, setStatusLoading] = useState<boolean>(false);
   const [deployLoading, setDeployLoading] = useState<boolean>(false);
 
-  const [logs, setLogs] = useState<string[]>([
-    '⚡ AstralOS Native HDiff Delta Patch Engine v2026 Ready.',
-    '🛡️ ระบบตรวจสอบและล็อกความปลอดภัย version.dll ป้องกันตัวเกมลบหรือเปลี่ยนชื่อไฟล์',
-    '💡 เลือกไฟล์แพทช์ .hdiff หรือ .zip แล้วกดปุ่ม "เริ่มติดตั้งแพทช์" ได้ทันที',
-  ]);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLogs([
+      isTh
+        ? '[*] ระบบจัดการแพทช์เกมและตัวควบคุม DLL พร้อมทำงาน'
+        : '[*] Game Patch Updater & DLL Manager Engine Ready.',
+      isTh
+        ? '[*] ระบบตรวจสอบและล็อกความปลอดภัย version.dll ป้องกันตัวเกมลบหรือเปลี่ยนชื่อไฟล์'
+        : '[*] Security monitor and lock system active for version.dll',
+      isTh
+        ? '[*] เลือกไฟล์แพทช์ .hdiff, .patch, .zip หรือ .7z แล้วกดปุ่ม "เริ่มติดตั้งแพทช์" ได้ทันที'
+        : '[*] Select patch archive (.hdiff, .patch, .zip, .7z) and click "Apply Patch" to proceed',
+    ]);
+  }, [isTh]);
 
   const addLog = (msg: string) => {
     const timestamp = new Date().toTimeString().split(' ')[0];
@@ -57,37 +70,33 @@ export function PatcherDetailView() {
   }, [refreshStatus]);
 
   const handleBrowseGamePath = async () => {
-    if (isTauri()) {
-      const p = await tauriApi.pickDirectoryDialog();
-      if (p) {
-        updateSettings({ gamePath: p });
-        addLog(isTh ? `เลือกโฟลเดอร์ตัวเกม: ${p}` : `Selected Game Directory: ${p}`);
-      }
+    const p = await pickDirectory();
+    if (p) {
+      updateSettings({ gamePath: p });
+      addLog(isTh ? `[*] เลือกโฟลเดอร์ตัวเกม: ${p}` : `[*] Selected Game Directory: ${p}`);
     }
   };
 
   const handleBrowsePatch = async () => {
-    if (isTauri()) {
-      const p = await tauriApi.pickFileDialog('hdiff');
-      if (p) {
-        setPatchFile(p);
-        addLog(isTh ? `เลือกไฟล์แพทช์: ${p}` : `Selected Patch File: ${p}`);
-      }
+    const p = await pickFile(['.hdiff', '.patch', '.zip', '.7z', '.rar']);
+    if (p) {
+      setPatchFile(p);
+      addLog(isTh ? `[*] เลือกไฟล์แพทช์: ${p}` : `[*] Selected Patch File: ${p}`);
     }
   };
 
   const handleDeployDll = async () => {
     if (!gamePath) return;
     setDeployLoading(true);
-    addLog(isTh ? '🛡️ กำลังติดตั้งและล็อก version.dll ในโฟลเดอร์ตัวเกม...' : '🛡️ Deploying & locking version.dll in game folder...');
+    addLog(isTh ? '[*] กำลังติดตั้งและล็อก version.dll ในโฟลเดอร์ตัวเกม...' : '[*] Deploying & locking version.dll in game folder...');
 
     if (isTauri()) {
       try {
         const res = await tauriApi.installPatch(gamePath);
         setPatchStatus(res);
-        addLog(isTh ? '✅ ติดตั้งและล็อก version.dll สำเร็จ พร้อมเข้าเล่นเกม!' : '✅ version.dll deployed & locked successfully!');
+        addLog(isTh ? '[OK] ติดตั้งและล็อก version.dll สำเร็จ พร้อมเข้าเล่นเกม!' : '[OK] version.dll deployed & locked successfully!');
       } catch (e) {
-        addLog(`❌ Error: ${e}`);
+        addLog(`[ERR] Error: ${e}`);
       }
     }
     setDeployLoading(false);
@@ -97,16 +106,16 @@ export function PatcherDetailView() {
     if (!gamePath || !patchFile) return;
     setPatchLoading(true);
     setPatchResult(null);
-    addLog(isTh ? `⚡ กำลังเริ่มกระบวนการลงแพทช์ไฟล์: ${patchFile}...` : `⚡ Applying delta patch: ${patchFile}...`);
+    addLog(isTh ? `[*] กำลังเริ่มกระบวนการลงแพทช์ไฟล์: ${patchFile}...` : `[*] Applying delta patch: ${patchFile}...`);
 
     if (isTauri()) {
       try {
         const res = await tauriApi.executeApplyPatch(gamePath, patchFile);
         setPatchResult(res);
-        addLog(isTh ? `✅ ${res.message}` : `✅ ${res.message}`);
+        addLog(isTh ? `[OK] ${res.message}` : `[OK] ${res.message}`);
         await refreshStatus();
       } catch (e) {
-        addLog(`❌ Patch Error: ${e}`);
+        addLog(`[ERR] Patch Error: ${e}`);
       }
     } else {
       setTimeout(() => {
@@ -118,7 +127,7 @@ export function PatcherDetailView() {
           message: 'Patch applied successfully: 12 file(s) processed (46.25 MB) in 1.45s',
         };
         setPatchResult(mock);
-        addLog(`✅ [Dev Mode] ${mock.message}`);
+        addLog(`[OK] [Dev Mode] ${mock.message}`);
         setPatchLoading(false);
       }, 800);
       return;
@@ -126,15 +135,46 @@ export function PatcherDetailView() {
     setPatchLoading(false);
   };
 
+  const handleRollbackPatch = async () => {
+    if (!gamePath) return;
+    setRollbackLoading(true);
+    addLog(isTh ? '[*] กำลัง Rollback ไฟล์เกมจาก Snapshot Backup ล่าสุด...' : '[*] Rolling back game binaries from latest snapshot backup...');
+    if (isTauri()) {
+      try {
+        const res = await tauriApi.rollbackHdiffPatch(gamePath);
+        setPatchResult(res);
+        addLog(isTh ? `[OK] ${res.message}` : `[OK] ${res.message}`);
+        await refreshStatus();
+      } catch (e) {
+        addLog(`[ERR] Rollback Error: ${e}`);
+      }
+    } else {
+      setTimeout(() => {
+        const mock: HDiffResult = {
+          success: true,
+          filesPatched: 5,
+          totalBytesProcessed: 125000000,
+          timeSeconds: 0.82,
+          message: 'Rollback completed: 5 file(s) restored (119.21 MB) in 0.82s',
+        };
+        setPatchResult(mock);
+        addLog(`[OK] [Dev Mode] ${mock.message}`);
+        setRollbackLoading(false);
+      }, 500);
+      return;
+    }
+    setRollbackLoading(false);
+  };
+
   const handleLaunchGame = async () => {
     if (!gamePath) return;
-    addLog(isTh ? '🚀 กำลังเปิดตัวเกม Star Rail...' : '🚀 Launching Star Rail Client...');
+    addLog(isTh ? '[*] กำลังเปิดตัวเกม Star Rail...' : '[*] Launching Star Rail Client...');
     if (isTauri()) {
       try {
         await tauriApi.launchGame(gamePath);
-        addLog(isTh ? '✅ เปิดเกมสำเร็จ พร้อมใช้งาน Dumper Hook DLL' : '✅ Game launched with active Dumper Hook DLL');
+        addLog(isTh ? '[OK] เปิดเกมสำเร็จ พร้อมใช้งาน Hook DLL' : '[OK] Game launched with active Hook DLL');
       } catch (e) {
-        addLog(`❌ Launch Error: ${e}`);
+        addLog(`[ERR] Launch Error: ${e}`);
       }
     }
   };
@@ -143,12 +183,12 @@ export function PatcherDetailView() {
     <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto bg-hz-navy-900">
       <SectionHeader
         icon={<Layers className="h-5 w-5" />}
-        title={isTh ? 'ระบบอัปเดตแพทช์เกม & ตัวจัดการ DLL (hdiff-apply 2026)' : 'Game Patch Updater & DLL Manager (hdiff-apply 2026)'}
-        badge={<Badge variant="amber">2026 Delta Stream</Badge>}
+        title={isTh ? 'ระบบอัปเดตแพทช์เกม & ตัวจัดการ DLL' : 'Game Patch Updater & DLL Manager'}
+        badge={<Badge variant="amber">Delta Stream</Badge>}
         description={
           isTh
             ? 'อัปเกรดเวอร์ชันเกมด้วยไฟล์ดิฟฟ์ขนาดเล็ก ปลอดภัย พร้อมระบบล็อกและกู้คืน version.dll อัตโนมัติ'
-            : 'High-performance HDiff binary patch applier and anticheat hook lock protector.'
+            : 'High-performance binary patch applier and anticheat hook lock protector.'
         }
       />
 
@@ -211,14 +251,14 @@ export function PatcherDetailView() {
               </div>
               <div>
                 <h2 className="text-sm font-bold text-white">
-                  {isTh ? '⚡ อัปเดตแพทช์ตัวเกม (HDiff Patch Applier)' : '⚡ HDiff Game Patch Updater'}
+                  {isTh ? 'อัปเดตแพทช์ตัวเกม (HDiff Patch Applier)' : 'HDiff Game Patch Updater'}
                 </h2>
                 <p className="text-xs text-hz-gray-400">
                   {isTh ? 'นำเข้าไฟล์ดิฟฟ์ .hdiff หรือ .zip เพื่ออัปเกรดเวอร์ชัน' : 'Import delta files to update game client.'}
                 </p>
               </div>
             </div>
-            <Badge variant="amber">hdiff-apply 2026</Badge>
+            <Badge variant="amber">HDiff Engine</Badge>
           </div>
 
           <div className="space-y-3">
@@ -264,14 +304,23 @@ export function PatcherDetailView() {
               </div>
             )}
 
-            <div className="pt-2 flex justify-between items-center border-t border-hz-navy-500/40">
-              <span className="text-[11px] text-hz-gray-400">Transactional Rollback</span>
+            <div className="pt-2 flex justify-between items-center border-t border-hz-navy-500/40 gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                loading={rollbackLoading}
+                onClick={handleRollbackPatch}
+                disabled={!gamePath || patchLoading}
+                icon={<RotateCcw className="h-3.5 w-3.5" />}
+              >
+                {isTh ? 'Rollback' : 'Rollback'}
+              </Button>
               <Button
                 variant="primary"
                 size="sm"
                 loading={patchLoading}
                 onClick={handleApplyPatch}
-                disabled={!gamePath || !patchFile}
+                disabled={!gamePath || !patchFile || rollbackLoading}
                 icon={<Zap className="h-3.5 w-3.5 fill-current" />}
               >
                 {isTh ? 'เริ่มติดตั้งแพทช์' : 'Apply Patch'}
@@ -289,7 +338,7 @@ export function PatcherDetailView() {
               </div>
               <div>
                 <h2 className="text-sm font-bold text-white">
-                  {isTh ? '🛡️ ตัวจัดการ Hook DLL & เริ่มเกม' : '🛡️ Hook DLL & Game Launcher'}
+                  {isTh ? 'ตัวจัดการ Hook DLL & เริ่มเกม' : 'Hook DLL & Game Launcher'}
                 </h2>
                 <p className="text-xs text-hz-gray-400">
                   {isTh ? 'กู้คืนและล็อก version.dll พร้อมเปิดตัวเกม Star Rail' : 'Restore, lock, and launch game client with hook.'}
@@ -334,7 +383,7 @@ export function PatcherDetailView() {
                 onClick={handleLaunchGame}
                 icon={<Play className="h-3.5 w-3.5 fill-current" />}
               >
-                {isTh ? '🚀 เปิดตัวเกมทันที' : '🚀 Launch Game'}
+                {isTh ? 'เปิดตัวเกมทันที' : 'Launch Game'}
               </Button>
             </div>
           </div>
@@ -346,7 +395,7 @@ export function PatcherDetailView() {
         <div className="flex items-center justify-between pb-2.5 border-b border-hz-navy-500/40">
           <div className="flex items-center gap-2 text-white">
             <span className="font-bold text-xs">
-              {isTh ? '⚡ บันทึกการทำงานของ Patcher & Hook Manager' : '⚡ Patcher & Hook Manager Output Stream'}
+              {isTh ? 'บันทึกการทำงานของ Patcher & Hook Manager' : 'Patcher & Hook Manager Output Stream'}
             </span>
           </div>
           <Badge variant="outline" className="text-[10px] font-mono">
@@ -359,11 +408,11 @@ export function PatcherDetailView() {
             <div
               key={i}
               className={`break-all font-mono leading-relaxed ${
-                log.includes('✅')
+                log.includes('[OK]') || log.includes('Successfully')
                   ? 'text-emerald-300 font-bold'
-                  : log.includes('⚡') || log.includes('🚀')
+                  : log.includes('[*]') || log.includes('Applying') || log.includes('Launching')
                   ? 'text-cyan-300 font-semibold'
-                  : log.includes('❌')
+                  : log.includes('[ERR]')
                   ? 'text-rose-400 font-semibold'
                   : 'text-zinc-300'
               }`}

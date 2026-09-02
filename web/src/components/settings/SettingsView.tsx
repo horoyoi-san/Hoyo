@@ -140,7 +140,6 @@ export function SettingsView() {
               </label>
               <div className="flex gap-2 items-center">
                 <div className="flex-1 px-3 py-2 rounded-lg bg-surface-1 border border-hairline font-mono text-xs text-emerald-400 flex items-center gap-2">
-                  <span>📁</span>
                   <span className="font-bold">./DUMP/</span>
                   <span className="text-[11px] text-ink-4">({t('dumper.target_dir')})</span>
                 </div>

@@ -176,12 +176,16 @@ export function RobinSrActions({
                   {isTh ? '4. ตัวเกม Star Rail' : '4. Star Rail Client'}
                 </h3>
                 <p className="text-[11px] text-hz-gray-400 truncate">
-                  {patch?.gameExePresent ? 'StarRail.exe Ready' : 'Select Game Folder'}
+                  {patch?.launcherPresent
+                    ? 'launcher.exe (hkrpg.dll Ready)'
+                    : patch?.gameExePresent
+                    ? 'StarRail.exe Ready'
+                    : (isTh ? 'เลือกโฟลเดอร์เกม' : 'Select Game Folder')}
                 </p>
               </div>
             </div>
-            <Badge variant={patch?.gameExePresent ? 'emerald' : 'neutral'}>
-              {patch?.gameExePresent ? 'READY' : 'NOT FOUND'}
+            <Badge variant={patch?.launcherPresent || patch?.gameExePresent ? 'emerald' : 'neutral'}>
+              {patch?.launcherPresent || patch?.gameExePresent ? 'READY' : 'NOT FOUND'}
             </Badge>
           </div>
           <Button

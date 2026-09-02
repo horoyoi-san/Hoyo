@@ -73,22 +73,26 @@ export function DumperView() {
   const backendConnected = useAppStore((state) => state.backendConnected);
   const setCurrentPage = useAppStore((state) => state.setCurrentPage);
 
-  const [logLines, setLogLines] = useState<string[]>([
-    isTh
-      ? '💡 เคล็ดลับ: การ Dump สดจาก Memory จำเป็นต้องเปิดตัวเกม StarRail.exe ให้โหลดเข้าเกมก่อน หรือใช้ Morax สำหรับถอดรหัสแบบออฟไลน์ทันทีโดยไม่ต้องเปิดเกม'
-      : '💡 Tip: Live Memory Dump requires StarRail.exe to be running, or use Morax for instant offline metadata decryption.',
-  ]);
+  const [logLines, setLogLines] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLogLines([
+      isTh
+        ? '[*] เคล็ดลับ: การ Dump สดจาก Memory จำเป็นต้องเปิดตัวเกม StarRail.exe ให้โหลดเข้าเกมก่อน หรือใช้ Morax สำหรับถอดรหัสแบบออฟไลน์ทันที'
+        : '[*] Tip: Live Memory Dump requires StarRail.exe to be running, or use Morax for instant offline metadata decryption.',
+    ]);
+  }, [isTh]);
   const logRef = useRef<HTMLDivElement>(null);
 
   /* Job status comes from real backend events (wired in App.tsx). */
   useEffect(() => {
     for (const [key, job] of Object.entries(dumperJobs)) {
       if (job.status === 'running') {
-        appendLog(`▶ ${key} — started`);
+        appendLog(`[*] ${key} — started`);
       } else if (job.status === 'done') {
-        appendLog(`✔ ${key} — finished in ${job.seconds ?? '?'}s`);
+        appendLog(`[OK] ${key} — finished in ${job.seconds ?? '?'}s`);
       } else if (job.status === 'failed') {
-        appendLog(`✖ ${key} — failed: ${job.error ?? 'unknown error'}`);
+        appendLog(`[ERR] ${key} — failed: ${job.error ?? 'unknown error'}`);
       }
     }
   }, [dumperJobs]);
@@ -101,16 +105,16 @@ export function DumperView() {
     if (!backendConnected) {
       appendLog(
         isTh
-          ? `⚠️ ไม่สามารถส่งคำสั่ง ${task.id}: ตัวเกม StarRail.exe ยังไม่ได้เปิด หรือยังไม่ได้ Hook dumper.dll (กำลังรอพอร์ต 42857)`
-          : `⚠️ Cannot dispatch ${task.id}: StarRail.exe is offline or dumper.dll is not hooked yet (waiting for port 42857)`
+          ? `[ERR] ไม่สามารถส่งคำสั่ง ${task.id}: ตัวเกม StarRail.exe ยังไม่ได้เปิด หรือยังไม่ได้ Hook dumper.dll (กำลังรอพอร์ต 42857)`
+          : `[ERR] Cannot dispatch ${task.id}: StarRail.exe is offline or dumper.dll is not hooked yet (waiting for port 42857)`
       );
       appendLog(
         isTh
-          ? `👉 แนะนำ: ไปที่เมนู 'Morax Cracker' เพื่อถอดรหัสไฟล์ dump.cs / proto ได้ทันที 100% แบบออฟไลน์โดยไม่ต้องเปิดเกม`
-          : `👉 Recommendation: Use 'Morax Cracker' tab to dump dump.cs & proto instantly offline without launching the game.`
+          ? `[*] แนะนำ: ไปที่เมนู 'Morax Parser' เพื่อถอดรหัสไฟล์ dump.cs / proto ได้ทันที 100% แบบออฟไลน์โดยไม่ต้องเปิดเกม`
+          : `[*] Recommendation: Use 'Morax Parser' tab to dump dump.cs & proto instantly offline without launching the game.`
       );
     } else {
-      appendLog(`▶ ${task.id} — dispatch requested to live game process`);
+      appendLog(`[*] ${task.id} — dispatch requested to live game process`);
     }
     ipc.runDumper(task.action);
   };
@@ -118,9 +122,9 @@ export function DumperView() {
   const handleOpenInExplorer = async () => {
     const opened = await openDumpFolderInExplorer();
     if (opened) {
-      appendLog('✔ opened explorer at ./DUMP');
+      appendLog('[OK] opened explorer at ./DUMP');
     } else {
-      appendLog('💡 path copied to clipboard: ./DUMP');
+      appendLog('[*] path copied to clipboard: ./DUMP');
     }
   };
 
@@ -145,7 +149,7 @@ export function DumperView() {
               onClick={() => setCurrentPage('morax')}
               icon={<Zap className="h-3.5 w-3.5 text-amber-400" />}
             >
-              {isTh ? '⚡ ถอดรหัสออฟไลน์ (Morax)' : '⚡ Offline Decrypt (Morax)'}
+              {isTh ? 'ถอดรหัสออฟไลน์ (Morax)' : 'Offline Decrypt (Morax)'}
             </Button>
             <Button
               variant="primary"
@@ -286,12 +290,10 @@ export function DumperView() {
               key={idx}
               className={cn(
                 'break-all font-mono leading-relaxed',
-                line.startsWith('✔') && 'text-hz-green-400 font-semibold',
-                line.startsWith('✖') && 'text-hz-red-400 font-semibold',
-                line.startsWith('⚠️') && 'text-hz-orange-400',
-                line.startsWith('👉') && 'text-hz-brand-300 font-semibold',
-                line.startsWith('💡') && 'text-hz-gray-400',
-                line.startsWith('▶') && 'text-hz-brand-300'
+                line.startsWith('[OK]') && 'text-hz-green-400 font-semibold',
+                line.startsWith('[ERR]') && 'text-hz-red-400 font-semibold',
+                line.startsWith('[*]') && 'text-hz-brand-300 font-medium',
+                !line.startsWith('[OK]') && !line.startsWith('[ERR]') && !line.startsWith('[*]') && 'text-hz-gray-400'
               )}
             >
               {line}

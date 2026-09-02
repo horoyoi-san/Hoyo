@@ -60,21 +60,35 @@ impl FreesrData {
 }
 
 impl FreesrData {
-    pub async fn load() -> anyhow::Result<Self> {
-        let candidates = ["freesr-data.json", "../../freesr-data.json", "../freesr-data.json"];
-        let mut raw_content = None;
-        for cand in candidates {
-            if let Ok(c) = tokio::fs::read_to_string(cand).await {
-                raw_content = Some(c);
-                break;
+    pub fn resolve_file_path(name: &str) -> std::path::PathBuf {
+        let candidates = [
+            std::path::PathBuf::from(name),
+            std::path::PathBuf::from("bin").join(name),
+            std::path::PathBuf::from("../bin").join(name),
+            std::path::PathBuf::from("../../bin").join(name),
+        ];
+        for cand in &candidates {
+            if cand.exists() {
+                return cand.clone();
             }
         }
-        let content = raw_content.ok_or_else(|| anyhow::anyhow!("failed to read freesr-data.json from any standard path"))?;
-        let mut freesr_data: FreesrData = serde_json::from_str(&content)
-            .map_err(|e| anyhow::anyhow!("freesr-data.json is broken: {e}, pls redownload"))?;
+        std::path::PathBuf::from(name)
+    }
+
+    pub async fn load() -> anyhow::Result<Self> {
+        let freesr_path = Self::resolve_file_path("freesr-data.json");
+        let persistent_path = Self::resolve_file_path("persistent");
+
+        let mut freesr_data: FreesrData = tokio::fs::read_to_string(&freesr_path)
+            .await
+            .map_err(|e| anyhow::anyhow!("failed to read freesr-data.json at {}: {e}", freesr_path.display()))
+            .and_then(|v| {
+                serde_json::from_str::<FreesrData>(&v)
+                    .map_err(|e| anyhow::anyhow!("freesr-data.json is broken: {e}, pls redownload"))
+            })?;
 
         let persistent: Persistent = serde_json::from_str(
-            &tokio::fs::read_to_string("persistent")
+            &tokio::fs::read_to_string(&persistent_path)
                 .await
                 .unwrap_or_default(),
         )
@@ -114,25 +128,6 @@ impl FreesrData {
         Ok(())
     }
 
-    // pub async fn refresh_persistent(&mut self) -> anyhow::Result<()> {
-    //     let persistent: Persistent = serde_json::from_str(
-    //         &tokio::fs::read_to_string("persistent")
-    //             .await
-    //             .unwrap_or_default(),
-    //     )
-    //     .unwrap_or_default();
-
-    //     self.lineups = persistent.lineups;
-    //     self.position = persistent.position;
-    //     self.scene = persistent.scene;
-    //     self.main_character = persistent.main_character;
-    //     self.march_type = persistent.march_type;
-    //     self.enable_sw_global = persistent.enable_sw_global;
-    //     self.enable_castorice_global = persistent.enable_castorice_global;
-
-    //     Ok(())
-    // }
-
     async fn verify_lineup(&mut self) {
         if self.lineups.is_empty() {
             self.lineups = BTreeMap::<u32, u32>::from([(0, 8001), (1, 0), (2, 0), (3, 0)])
@@ -156,8 +151,9 @@ impl FreesrData {
             // game_language: self.game_language,
             // voice_language: self.voice_langauge,
         }) {
-            let _ = tokio::fs::write("persistent", data).await;
-            tracing::info!("persistent saved");
+            let path = Self::resolve_file_path("persistent");
+            let _ = tokio::fs::write(&path, data).await;
+            tracing::info!("persistent saved to {}", path.display());
         }
     }
 }

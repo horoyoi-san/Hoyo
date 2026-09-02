@@ -107,9 +107,9 @@ export function useRobinSr() {
           for (const line of res.lines) {
             let level: LogMessage['level'] = 'info';
             let tag: LogMessage['tag'] = 'SERVER';
-            if (line.includes('❌') || line.includes('error') || line.includes('failed')) level = 'error';
-            else if (line.includes('✅') || line.includes('success')) level = 'success';
-            else if (line.includes('⚡') || line.includes('Starting') || line.includes('Launching') || line.includes('Scanning') || line.includes('🔨')) level = 'process';
+            if (line.includes('[ERR]') || line.includes('error') || line.includes('failed')) level = 'error';
+            else if (line.includes('[OK]') || line.includes('success')) level = 'success';
+            else if (line.includes('[*]') || line.includes('Starting') || line.includes('Launching') || line.includes('Scanning')) level = 'process';
 
             if (line.includes('DUMP') || line.includes('Opcode') || line.includes('proto')) tag = 'DUMP';
             else if (line.includes('Patch') || line.includes('hkrpg')) tag = 'PATCH';
@@ -143,7 +143,7 @@ export function useRobinSr() {
     if (ingestBusy) return;
     setIngestBusy(true);
 
-    addLog('process', 'DUMP', isTh ? '🔨 [DUMP INGESTION] เริ่มกระบวนการสร้าง Server Schema จาก ./DUMP...' : '🔨 [DUMP INGESTION] Starting schema build from ./DUMP...');
+    addLog('process', 'DUMP', isTh ? '[*] [DUMP INGESTION] เริ่มกระบวนการสร้าง Server Schema จาก ./DUMP...' : '[*] [DUMP INGESTION] Starting schema build from ./DUMP...');
 
     try {
       if (desktop) {
@@ -154,14 +154,14 @@ export function useRobinSr() {
           pairedRoutes: res.pairedRoutesCount,
         });
         addLog('success', 'DUMP', isTh
-          ? `✅ ทำ Server จาก DUMP สำเร็จ (${res.opcodesCount} Opcodes, ${res.pairedRoutesCount} Routes)`
-          : `✅ Server schema build complete (${res.opcodesCount} opcodes, ${res.pairedRoutesCount} paired routes)`);
+          ? `[OK] ทำ Server จาก DUMP สำเร็จ (${res.opcodesCount} Opcodes, ${res.pairedRoutesCount} Routes)`
+          : `[OK] Server schema build complete (${res.opcodesCount} opcodes, ${res.pairedRoutesCount} paired routes)`);
       } else {
-        addLog('info', 'DUMP', `📁 [DUMP SCANNER] Scanning directory: ./DUMP`);
-        addLog('success', 'DUMP', `📄 [DUMP SCANNER] Ingested 'packetIds.json' (18 opcodes mapped)`);
-        addLog('success', 'DUMP', `📄 [DUMP SCANNER] Ingested 'StarRail.proto' (18 CmdId enum definitions)`);
-        addLog('info', 'DUMP', `📄 [DUMP SCANNER] Verified 'dump.cs' C# type metadata and method RVAs`);
-        addLog('success', 'DUMP', isTh ? '✅ ทำ Server จาก DUMP สำเร็จ! โครงสร้างพร้อมเปิดใช้งาน' : '✅ Server schema build complete! Ready to start.');
+        addLog('info', 'DUMP', `[DUMP SCANNER] Scanning directory: ./DUMP`);
+        addLog('success', 'DUMP', `[DUMP SCANNER] Ingested 'packetIds.json' (18 opcodes mapped)`);
+        addLog('success', 'DUMP', `[DUMP SCANNER] Ingested 'StarRail.proto' (18 CmdId enum definitions)`);
+        addLog('info', 'DUMP', `[DUMP SCANNER] Verified 'dump.cs' C# type metadata and method RVAs`);
+        addLog('success', 'DUMP', isTh ? '[OK] ทำ Server จาก DUMP สำเร็จ! โครงสร้างพร้อมเปิดใช้งาน' : '[OK] Server schema build complete! Ready to start.');
         setDumpStatus({ synced: true, opcodesCount: 18, pairedRoutes: 9 });
       }
     } catch (err) {
@@ -178,21 +178,21 @@ export function useRobinSr() {
     const isRunning = server.managedRunning || server.portListening;
 
     if (isRunning) {
-      addLog('process', 'SERVER', isTh ? '🛑 กำลังสั่งปิดเซิร์ฟเวอร์ RobinSR...' : 'Stopping RobinSR Server...');
+      addLog('process', 'SERVER', isTh ? 'กำลังสั่งปิดเซิร์ฟเวอร์ RobinSR...' : 'Stopping RobinSR Server...');
       try {
         if (desktop) {
           await tauriApi.stopServer();
         }
         setServer({ managedRunning: false, portListening: false });
-        addLog('info', 'SERVER', isTh ? '💤 ปิดเซิร์ฟเวอร์เรียบร้อยแล้ว' : 'RobinSR Server gracefully stopped.');
+        addLog('info', 'SERVER', isTh ? 'ปิดเซิร์ฟเวอร์เรียบร้อยแล้ว' : 'RobinSR Server gracefully stopped.');
       } catch (err) {
         addLog('error', 'SERVER', `${isTh ? 'ปิดเซิร์ฟเวอร์ไม่สำเร็จ' : 'Failed to stop server'}: ${err}`);
       }
     } else {
-      addLog('process', 'SERVER', isTh ? `⚡ กำลังเริ่มต้นเซิร์ฟเวอร์ RobinSR...` : `Starting RobinSR Private Server...`);
-      addLog('info', 'SERVER', `📁 Scanning ./DUMP for dynamic opcodes & StarRail.proto...`);
-      addLog('info', 'SERVER', `🌐 [DISPATCH GATEWAY] HTTP Gateway listening on http://0.0.0.0:${dispatchPort}`);
-      addLog('info', 'SERVER', `🎮 [GAMESERVER KCP] UDP Socket bound to 0.0.0.0:${gameserverPort}`);
+      addLog('process', 'SERVER', isTh ? `[*] กำลังเริ่มต้นเซิร์ฟเวอร์ RobinSR...` : `Starting RobinSR Private Server...`);
+      addLog('info', 'SERVER', `Scanning ./DUMP for dynamic opcodes & StarRail.proto...`);
+      addLog('info', 'SERVER', `[DISPATCH GATEWAY] HTTP Gateway listening on http://0.0.0.0:${dispatchPort}`);
+      addLog('info', 'SERVER', `[GAMESERVER KCP] UDP Socket bound to 0.0.0.0:${gameserverPort}`);
 
       try {
         if (desktop) {
@@ -208,7 +208,7 @@ export function useRobinSr() {
         } else {
           setServer({ managedRunning: true, portListening: true });
         }
-        addLog('success', 'SERVER', isTh ? `✅ HTTP Dispatch Gateway (:${dispatchPort}) & KCP Gameserver (:${gameserverPort}) listening.` : `✅ HTTP Dispatch Gateway (:${dispatchPort}) & KCP Gameserver (:${gameserverPort}) listening.`);
+        addLog('success', 'SERVER', isTh ? `[OK] HTTP Dispatch Gateway (:${dispatchPort}) & KCP Gameserver (:${gameserverPort}) listening.` : `[OK] HTTP Dispatch Gateway (:${dispatchPort}) & KCP Gameserver (:${gameserverPort}) listening.`);
       } catch (err) {
         addLog('error', 'SERVER', `${isTh ? 'เปิดเซิร์ฟเวอร์ไม่สำเร็จ' : 'Failed to start server'}: ${err}`);
       }
@@ -223,7 +223,7 @@ export function useRobinSr() {
       if (desktop) {
         await tauriApi.resetPlayerPosition();
       }
-      addLog('info', 'SERVER', isTh ? '🔄 รีเซ็ตตำแหน่งตัวละคร (ลบ persistent) เรียบร้อยแล้ว' : 'Reset player position (removed persistent file).');
+      addLog('info', 'SERVER', isTh ? 'รีเซ็ตตำแหน่งตัวละคร (ลบ persistent) เรียบร้อยแล้ว' : 'Reset player position (removed persistent file).');
     } catch (err) {
       addLog('error', 'SERVER', `${err}`);
     }
@@ -233,24 +233,24 @@ export function useRobinSr() {
     if (patchBusy) return;
     setPatchBusy(true);
 
-    addLog('process', 'PATCH', isTh ? `🧩 [ขั้นตอน 1/2] กำลังตรวจสอบโฟลเดอร์เกม: ${gamePath}` : `[Step 1/2] Verifying game path: ${gamePath}`);
+    addLog('process', 'PATCH', isTh ? `[*] [ขั้นตอน 1/2] กำลังตรวจสอบโฟลเดอร์เกม: ${gamePath}` : `[Step 1/2] Verifying game path: ${gamePath}`);
 
     try {
       if (desktop) {
         const pStatus = await tauriApi.checkPatch(gamePath);
         if (!pStatus.gameExePresent) {
-          addLog('error', 'PATCH', isTh ? `❌ ไม่พบ StarRail.exe ใน: ${gamePath}` : `❌ StarRail.exe not found in: ${gamePath}`);
+          addLog('error', 'PATCH', isTh ? `[ERR] ไม่พบ StarRail.exe ใน: ${gamePath}` : `[ERR] StarRail.exe not found in: ${gamePath}`);
           setPatchBusy(false);
           return;
         }
 
-        addLog('process', 'PATCH', isTh ? '🧩 [ขั้นตอน 2/2] กำลังติดตั้ง Redirect Patch (hkrpg.dll)...' : '[Step 2/2] Installing hkrpg.dll & launcher.exe...');
+        addLog('process', 'PATCH', isTh ? '[*] [ขั้นตอน 2/2] กำลังติดตั้ง Redirect Patch (hkrpg.dll)...' : '[Step 2/2] Installing hkrpg.dll & launcher.exe...');
         const updatedStatus = await tauriApi.installPatch(gamePath);
         setPatch(updatedStatus);
-        addLog('success', 'PATCH', isTh ? '✅ ติดตั้ง Patch (hkrpg.dll & launcher.exe) สำเร็จ' : '✅ Patch (hkrpg.dll & launcher.exe) successfully installed.');
+        addLog('success', 'PATCH', isTh ? '[OK] ติดตั้ง Patch (hkrpg.dll & launcher.exe) สำเร็จ' : '[OK] Patch (hkrpg.dll & launcher.exe) successfully installed.');
       } else {
-        addLog('process', 'PATCH', `🧩 Installing hkrpg.dll & launcher.exe redirect patch to ${gamePath}...`);
-        addLog('success', 'PATCH', `✅ Patch (hkrpg.dll & launcher.exe) successfully installed.`);
+        addLog('process', 'PATCH', `[*] Installing hkrpg.dll & launcher.exe redirect patch to ${gamePath}...`);
+        addLog('success', 'PATCH', `[OK] Patch (hkrpg.dll & launcher.exe) successfully installed.`);
         setPatch({ dllPresent: true, launcherPresent: true, dllModifiedSecs: Date.now() / 1000, launcherModifiedSecs: Date.now() / 1000, gameExePresent: true });
       }
     } catch (err) {
@@ -265,22 +265,22 @@ export function useRobinSr() {
     if (launchBusy) return;
     setLaunchBusy(true);
 
-    addLog('process', 'LAUNCH', isTh ? `🚀 กำลังสั่งเปิดตัวเกม Star Rail ใน: ${gamePath}` : `Spawning Star Rail game client in: ${gamePath}`);
+    addLog('process', 'LAUNCH', isTh ? `[*] กำลังสั่งเปิดตัวเกม Star Rail ใน: ${gamePath}` : `Spawning Star Rail game client in: ${gamePath}`);
 
     try {
       if (desktop) {
         const pStatus = await tauriApi.checkPatch(gamePath);
         if (!pStatus.gameExePresent) {
-          addLog('error', 'LAUNCH', isTh ? `❌ ไม่พบ StarRail.exe ใน: ${gamePath}` : `❌ StarRail.exe not found in: ${gamePath}`);
+          addLog('error', 'LAUNCH', isTh ? `[ERR] ไม่พบ StarRail.exe ใน: ${gamePath}` : `[ERR] StarRail.exe not found in: ${gamePath}`);
           setLaunchBusy(false);
           return;
         }
 
         addLog('process', 'LAUNCH', isTh ? 'กำลังขอสิทธิ์ Admin (UAC Elevation)...' : 'Requesting administrative UAC elevation...');
         await tauriApi.launchGame(gamePath);
-        addLog('success', 'LAUNCH', isTh ? '🎮 Game process launched (UAC Elevation granted).' : '🎮 Game process launched (UAC Elevation granted).');
+        addLog('success', 'LAUNCH', isTh ? 'Game process launched (UAC Elevation granted).' : 'Game process launched (UAC Elevation granted).');
       } else {
-        addLog('success', 'LAUNCH', isTh ? '🎮 Game process launched (UAC Elevation granted).' : '🎮 Game process launched (UAC Elevation granted).');
+        addLog('success', 'LAUNCH', isTh ? 'Game process launched (UAC Elevation granted).' : 'Game process launched (UAC Elevation granted).');
       }
     } catch (err) {
       addLog('error', 'LAUNCH', `${isTh ? 'เปิดเกมไม่สำเร็จ' : 'Failed to launch game'}: ${err}`);
@@ -293,7 +293,7 @@ export function useRobinSr() {
     if (comboBusy) return;
     setComboBusy(true);
 
-    addLog('process', 'SYSTEM', isTh ? '⚡ เริ่มต้นกระบวนการ 1-Click All-in-One ครบวงจร...' : '⚡ Starting 1-Click All-in-One sequence...');
+    addLog('process', 'SYSTEM', isTh ? '[*] เริ่มต้นกระบวนการ 1-Click All-in-One ครบวงจร...' : '[*] Starting 1-Click All-in-One sequence...');
 
     await handleIngestDump();
     if (!server.portListening) {

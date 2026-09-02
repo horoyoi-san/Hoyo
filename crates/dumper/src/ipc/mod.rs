@@ -488,10 +488,16 @@ fn send_custom_packets_on_game_thread(
 fn handle_cheat(responder: &Responder, command: CheatCommand) {
     match command {
         CheatCommand::SetEnabled { name, enabled } => {
-            if name == "hkrpg.hide_ui" {
+            if name == "hkrpg.hide_ui" || name == "hide_ui" {
                 cheat::set_hide_ui_enabled(enabled);
-            } else if name == "hkrpg.censorship" {
+            } else if name == "hkrpg.censorship" || name == "dither_patch" || name == "censorship" {
                 cheat::set_censorship_enabled(enabled);
+            } else if name == "fov_unlock" || name == "hkrpg.fov" {
+                cheat::set_fov_unlock_enabled(enabled);
+            } else if name == "fps_unlock" || name == "hkrpg.fps" {
+                cheat::set_fps_unlock_enabled(enabled);
+            } else if name == "battle_speed" || name == "hkrpg.battle_speed" {
+                cheat::set_battle_speed_enabled(enabled);
             }
             responder.reply(BackendEvent::CheatStatus { name, enabled });
         }

@@ -412,7 +412,7 @@ async fn load_scene(
     scene_info.entity_group_list.push(SceneEntityGroupInfo {
         state: 0,
         group_id: 0,
-        banbecdcdhg: HashMap::with_capacity(0),
+        property_map: HashMap::with_capacity(0),
         entity_list: json
             .lineups
             .iter()

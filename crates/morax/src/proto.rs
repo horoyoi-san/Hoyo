@@ -12,7 +12,8 @@ use crate::error::Result;
 use crate::pe::Pe;
 
 static EMBEDDED_RUST_PROTO_SCHEMA: &str = include_str!("../../robinsr_engine/proto/out/_.rs");
-static EMBEDDED_STARRAIL_PROTO: &str = include_str!("../../robinsr_engine/proto/StarRail.proto");
+static EMBEDDED_STARRAIL_PROTO: &str = include_str!("StarRail.proto");
+pub static EMBEDDED_CMD_ID_JSON: &str = include_str!("CmdId.json");
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProtoDumperConfig {
@@ -348,12 +349,33 @@ impl NativeProtoEngine {
             s
         };
 
-        // Extract all 150 CmdIDs directly from StarRail.proto
-        let mut sorted_packet_json = Self::parse_cmd_ids_from_proto(&proto_str);
-        if sorted_packet_json.is_empty() {
-            for (k, v) in cmd_ids_map {
-                sorted_packet_json.insert(k.to_string(), v);
+        // Merge with embedded CmdId.json dictionary (2,576 entries from official 4.5.51)
+        let mut cmd_id_to_name: BTreeMap<u32, String> = BTreeMap::new();
+        let mut name_to_cmd_id: BTreeMap<String, u32> = BTreeMap::new();
+
+        if let Ok(embedded_map) = serde_json::from_str::<HashMap<String, u32>>(EMBEDDED_CMD_ID_JSON) {
+            for (name, id) in embedded_map {
+                cmd_id_to_name.insert(id, name.clone());
+                name_to_cmd_id.insert(name, id);
             }
+        }
+
+        // Add dynamically parsed CmdIDs
+        for (k, v) in Self::parse_cmd_ids_from_proto(&proto_str) {
+            if let Ok(id) = k.parse::<u32>() {
+                name_to_cmd_id.insert(v.clone(), id);
+                cmd_id_to_name.insert(id, v);
+            }
+        }
+
+        for (k, v) in cmd_ids_map {
+            name_to_cmd_id.insert(v.clone(), k);
+            cmd_id_to_name.insert(k, v);
+        }
+
+        let mut sorted_packet_json: BTreeMap<String, String> = BTreeMap::new();
+        for (id, name) in &cmd_id_to_name {
+            sorted_packet_json.insert(id.to_string(), name.clone());
         }
 
         // 4. Save Static Protobuf Output (ONLY in Morax_Static/ subfolder)
@@ -367,13 +389,22 @@ impl NativeProtoEngine {
         }
         generated_files.push("Morax_Static/StarRail.proto".to_string());
 
-        // 5. Save packetIds.json Output (ONLY in Morax_Static/ subfolder)
+        // 5. Save packetIds.json Output (ID -> Name format)
         if let Ok(json_bytes) = serde_json::to_string_pretty(&sorted_packet_json) {
             let _ = fs::write(morax_dir.join("packetIds.json"), &json_bytes);
             if robinsr_proto_dir.is_dir() {
                 let _ = fs::write(robinsr_proto_dir.join("packetIds.json"), &json_bytes);
             }
             generated_files.push("Morax_Static/packetIds.json".to_string());
+        }
+
+        // 6. Save CmdId.json Output (Name -> ID format)
+        if let Ok(cmd_json_bytes) = serde_json::to_string_pretty(&name_to_cmd_id) {
+            let _ = fs::write(morax_dir.join("CmdId.json"), &cmd_json_bytes);
+            if robinsr_proto_dir.is_dir() {
+                let _ = fs::write(robinsr_proto_dir.join("CmdId.json"), &cmd_json_bytes);
+            }
+            generated_files.push("Morax_Static/CmdId.json".to_string());
         }
 
         let elapsed = start.elapsed().as_secs_f64();

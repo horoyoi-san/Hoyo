@@ -12,7 +12,6 @@ use reflection::{
     runtime_type::RuntimeType,
 };
 
-use crate::script::METADATA_METHODS;
 
 #[allow(unused)]
 pub fn dump(debug: bool) -> std::io::Result<()> {

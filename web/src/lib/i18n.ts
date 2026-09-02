@@ -8,7 +8,7 @@ type TranslationMap = Record<string, string>;
 const en: TranslationMap = {
   // Navigation Sections
   'nav.cat.server': 'Server & Runtime',
-  'nav.cat.new_2026': '2026 Native Suite',
+  'nav.cat.new_2026': 'Core Utilities',
   'nav.cat.re': 'Reverse Engineering',
   'nav.cat.mod': 'Game Modifiers',
   'nav.cat.tools': 'Player Analytics',
@@ -16,13 +16,13 @@ const en: TranslationMap = {
 
   // Navigation Items
   'nav.robinsr': 'RobinSR Server',
-  'nav.robinsr.sub': 'Auto-Beta & Emulation',
+  'nav.robinsr.sub': 'Local Private Server',
   'nav.rescompiler': 'Resource Compiler',
-  'nav.rescompiler.sub': 'Automated res.json Generator',
+  'nav.rescompiler.sub': 'Resource Bundler',
   'nav.patcher': 'Game Patcher',
-  'nav.patcher.sub': 'hdiff-apply & Hook Lock',
+  'nav.patcher.sub': 'Delta Patch & DLL Manager',
   'nav.langpatcher': 'Language Patcher',
-  'nav.langpatcher.sub': '13 Texts & 4 Audio Packs',
+  'nav.langpatcher.sub': 'Text & Voice Selector',
   'nav.sniffer': 'Packet Sniffer',
   'nav.sniffer.sub': 'Live MITM & Decryption',
   'nav.dumper': 'IL2CPP Dumper',
@@ -149,7 +149,7 @@ const en: TranslationMap = {
 
   // Gacha
   'gacha.kpi.pity': 'Character Pity',
-  'gacha.kpi.avg': 'Avg Pulls / 5★',
+  'gacha.kpi.avg': 'Avg Pulls / 5-Star',
   'gacha.kpi.win5050': '50/50 Win Rate',
   'gacha.kpi.jades': 'Jade Equivalent',
   'gacha.history': 'Warp History',
@@ -266,7 +266,7 @@ const en: TranslationMap = {
   // Morax
   'morax.title': 'Morax IL2CPP Metadata Cracker',
   'morax.desc': 'Ultra-fast offline IL2CPP metadata decryptor & dummy DLL assembly generator for dnSpy/ILSpy.',
-  'morax.badge': 'Rayon Multi-threaded',
+  'morax.badge': 'Metadata Engine',
   'morax.run_btn': 'Execute Morax Crack',
   'morax.processing': 'Decrypting Metadata...',
   'morax.paths_title': 'Target File Paths',
@@ -368,7 +368,7 @@ const en: TranslationMap = {
 const th: TranslationMap = {
   // Navigation Sections
   'nav.cat.server': 'เซิร์ฟเวอร์ & รันไทม์',
-  'nav.cat.new_2026': 'ฟีเจอร์ใหม่ 2026',
+  'nav.cat.new_2026': 'เครื่องมือระบบ',
   'nav.cat.re': 'วิศวกรรมย้อนกลับ (RE)',
   'nav.cat.mod': 'ม็อด & ปรับแต่งเกม',
   'nav.cat.tools': 'สถิติ & สุ่มกาชา',
@@ -380,7 +380,7 @@ const th: TranslationMap = {
   'nav.rescompiler': 'ตัวสร้าง res.json',
   'nav.rescompiler.sub': 'รวมไฟล์ฉาก & Config อัตโนมัติ',
   'nav.patcher': 'อัปเดตแพทช์เกม',
-  'nav.patcher.sub': 'hdiff-apply & ล็อก Hook DLL',
+  'nav.patcher.sub': 'Delta Patch & ล็อก DLL',
   'nav.langpatcher': 'เปลี่ยนภาษาในเกม',
   'nav.langpatcher.sub': '13 ภาษา & 4 เสียงพากย์',
   'nav.sniffer': 'Packet Sniffer',
@@ -626,7 +626,7 @@ const th: TranslationMap = {
   // Morax
   'morax.title': 'Morax Metadata Cracker',
   'morax.desc': 'โปรแกรมถอดรหัส global-metadata.dat ความเร็วสูง และสร้าง Dummy DLL สำหรับเปิดใน dnSpy/ILSpy',
-  'morax.badge': 'Rayon มัลติเธรด',
+  'morax.badge': 'ระบบถอดรหัส Metadata',
   'morax.run_btn': 'เริ่มการถอดรหัส Morax',
   'morax.processing': 'กำลังถอดรหัส Metadata...',
   'morax.paths_title': 'ตำแหน่งไฟล์เป้าหมาย',
