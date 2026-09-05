@@ -31,6 +31,10 @@ namespace Core
             {(Region.CNREL, GameType.hk4e), new[] { "1Z8W5NHUQb" }},
             {(Region.OSREL, GameType.bh3), new[] { "5TIVvvcwtM" }},
             {(Region.CNREL, GameType.bh3), new[] { "osvnlOc0S8" }},
+            {(Region.OSREL, GameType.abc), new[] { "yneO4yGc4x" }},
+            {(Region.CNREL, GameType.abc), new[] { "m8TGERqknS" }},
+            {(Region.OSREL, GameType.hyg), new[] { "viiywh5G2H" }},
+            {(Region.CNREL, GameType.hyg), new[] { "ERYDdvf0w8" }},
 
             {(Region.OSBETA, GameType.abc), new[] { "4qvmDrMwKS", "IWISpEcDbC" }}, //abc 0.3.0, abc 0.6.0
             {(Region.CNBETA, GameType.abc), new[] { "j7rlly0oYR", "lgyIM35mz8" }}, //abc 0.3.0, abc 0.6.0
