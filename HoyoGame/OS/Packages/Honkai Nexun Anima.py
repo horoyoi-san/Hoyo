@@ -62,7 +62,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=XXXXXX&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=yneO4yGc4x&launcher_id=VYTpXlbWo8",
 ]
 
 # =========================================================

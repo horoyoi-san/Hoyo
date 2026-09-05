@@ -10,7 +10,11 @@
     Nap, // Zenless Zone Zero
     Abc, // Honkai: Nexus Anima
     Hyg, // Petit Planet 
-
+# API 
+| Version | Name Game | Download link|
+| :--- | :--- | :--- |
+| OS | Hoyoplay | https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameConfigs?launcher_id=VYTpXlbWo8 |
+| CN | Hoyoplay | https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameConfigs?launcher_id=jGHBHlcOq1 |
 
 # API HSR
 | Version | Name Game | Download link|

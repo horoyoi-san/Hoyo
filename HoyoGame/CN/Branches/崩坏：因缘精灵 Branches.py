@@ -62,18 +62,18 @@ CHANNELS = [
 # =========================================================
 
 BRANCH_API_URL = (
-    "https://hyp-api-beta.mihoyo.com/"
+    "https://hyp-api.mihoyo.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=lgyIM35mz8&launcher_id=WBjNy0hOrG"
+    "game_ids[]=m8TGERqknS&launcher_id=jGHBHlcOq1"
 )
 
 GAME_INFO_URL = (
-    "https://hyp-api-beta.mihoyo.com/"
+    "https://hyp-api.mihoyo.com/"
     "hyp/hyp-connect/api/getGames?"
-    "launcher_id=WBjNy0hOrG"
+    "launcher_id=jGHBHlcOq1"
 )
 
-GAME_ID = "lgyIM35mz8"
+GAME_ID = "m8TGERqknS"
 
 GAME_NAME = "abcBranches"
 

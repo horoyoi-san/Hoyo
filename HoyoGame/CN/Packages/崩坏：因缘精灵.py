@@ -62,7 +62,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://hyp-api-beta.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=lgyIM35mz8&launcher_id=WBjNy0hOrG",
+    "https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=m8TGERqknS&launcher_id=jGHBHlcOq1",
 ]
 
 # =========================================================
@@ -317,9 +317,9 @@ async def main():
             # =================================================
 
             game_info_url = (
-                "https://hyp-api-beta.mihoyo.com/"
+                "https://hyp-api.mihoyo.com/"
                 "hyp/hyp-connect/api/getGames?"
-                "launcher_id=WBjNy0hOrG"
+                "launcher_id=jGHBHlcOq1"
             )
 
             try:
@@ -333,7 +333,7 @@ async def main():
                 return
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "lgyIM35mz8"
+                g for g in resp["data"]["games"] if g["id"] == "m8TGERqknS"
             )
 
             display_name = game_data["display"]["name"]

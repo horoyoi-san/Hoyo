@@ -62,7 +62,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=679gqJWz4L&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=viiywh5G2H&launcher_id=VYTpXlbWo8",
 ]
 
 # =========================================================
@@ -333,7 +333,7 @@ async def main():
                 return
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "679gqJWz4L"
+                g for g in resp["data"]["games"] if g["id"] == "viiywh5G2H"
             )
 
             display_name = game_data["display"]["name"]
