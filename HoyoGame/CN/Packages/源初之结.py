@@ -44,7 +44,7 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "TheWeavers PROD"
+BOT_NAME = "源初之结 PROD"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"

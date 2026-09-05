@@ -3,6 +3,7 @@ import asyncio
 import time
 
 import requests
+import certifi
 from datetime import datetime, timezone
 
 import os
@@ -27,11 +28,14 @@ adapter = HTTPAdapter(max_retries=retry)
 session.mount("https://", adapter)
 session.mount("http://", adapter)
 
+session = requests.Session()
+session.verify = certifi.where()
 # =========================================================
 # Discord
 # =========================================================
 
 TOKEN = os.environ.get("DISCORD_TOKEN")
+
 intents = discord.Intents.default()
 
 bot = discord.Client(intents=intents)
@@ -40,11 +44,11 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "Honkai Nexus Anima PROD"
+BOT_NAME = "Nodusfall PROD"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/hyg_global.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/kl_cn.png"
 )
 
 # =========================================================
@@ -62,7 +66,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=679gqJWz4L&launcher_id=VYTpXlbWo8",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=xxxxxx&launcher_id=VYTpXlbWo8",
 ]
 
 # =========================================================
@@ -89,7 +93,7 @@ async def send_embed_message(
     embed = discord.Embed(
         title=title,
         description=description,
-        color=0x00FF88,
+        color=0x252525,
         timestamp=datetime.now(timezone.utc),
     )
 
@@ -212,7 +216,7 @@ def has_changed(api_url, game_name):
     # Log Path
     # =====================================================
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Packages", game_name)
+    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "Packages", game_name)
 
     os.makedirs(log_dir, exist_ok=True)
 
@@ -294,7 +298,7 @@ async def main():
 
     for api_url in api_urls:
 
-        game_name = "hyg"
+        game_name = "kl"
 
         try:
 
@@ -333,7 +337,7 @@ async def main():
                 return
 
             game_data = next(
-                g for g in resp["data"]["games"] if g["id"] == "679gqJWz4L"
+                g for g in resp["data"]["games"] if g["id"] == "pkMBmK7jxJ"
             )
 
             display_name = game_data["display"]["name"]

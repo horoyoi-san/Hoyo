@@ -3,6 +3,7 @@ import asyncio
 import time
 
 import requests
+import certifi
 from datetime import datetime, timezone
 
 import os
@@ -27,6 +28,8 @@ adapter = HTTPAdapter(max_retries=retry)
 session.mount("https://", adapter)
 session.mount("http://", adapter)
 
+session = requests.Session()
+session.verify = certifi.where()
 # =========================================================
 # Discord
 # =========================================================
@@ -40,11 +43,11 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "Petit Planet Branches"
+BOT_NAME = "Nodusfall Branches"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
-    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/hyg_global.png"
+    "horoyoi-san/Hoyo/refs/heads/Webhook/assets/kl_cn.png"
 )
 
 # =========================================================
@@ -64,7 +67,7 @@ CHANNELS = [
 BRANCH_API_URL = (
     "https://sg-hyp-api.hoyoverse.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=XXXXXX&launcher_id=VYTpXlbWo8"
+    "game_ids[]=xxxxxx&launcher_id=VYTpXlbWo8"
 )
 
 GAME_INFO_URL = (
@@ -73,9 +76,9 @@ GAME_INFO_URL = (
     "launcher_id=VYTpXlbWo8"
 )
 
-GAME_ID = "679gqJWz4L"
+GAME_ID = "xxxxxx"
 
-GAME_NAME = "hygBranches"
+GAME_NAME = "klBranches"
 
 # =========================================================
 # Utils
@@ -115,7 +118,7 @@ async def send_embed_message(
     embed = discord.Embed(
         title=title,
         description=description,
-        color=0x00FF88,
+        color=0x252525,
         timestamp=datetime.now(timezone.utc),
     )
 
@@ -198,7 +201,7 @@ async def split_and_send(channel_id, title, lines, icon_url, bg_url, footer_text
 
 def has_changed(api_url, log_name):
 
-    log_dir = os.path.join(os.getcwd(), "log", "OSHoyo", "Branches", log_name)
+    log_dir = os.path.join(os.getcwd(), "log", "CNHoyo", "Branches", log_name)
 
     os.makedirs(log_dir, exist_ok=True)
 
@@ -301,7 +304,7 @@ def extract_game_branches(data):
     if main:
 
         lines += [
-            "**Main Branch**",
+            "## Main Branch",
             f"Tag: `{main['tag']}`",
             f"Package ID: `{main['package_id']}`",
             f"Diff from: `{', '.join(main.get('diff_tags', []))}`",
@@ -398,7 +401,7 @@ async def main():
 
         else:
 
-            print("[hyg_BRANCH] No change")
+            print("[kl_BRANCH] No change")
 
     except Exception as e:
 

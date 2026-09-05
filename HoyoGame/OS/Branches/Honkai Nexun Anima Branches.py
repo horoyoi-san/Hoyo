@@ -62,18 +62,18 @@ CHANNELS = [
 # =========================================================
 
 BRANCH_API_URL = (
-    "https://sg-hyp-api-beta.hoyoverse.com/"
+    "https://sg-hyp-api.hoyoverse.com/"
     "hyp/hyp-connect/api/getGameBranches?"
-    "game_ids[]=IWISpEcDbC&launcher_id=KAGKS3zS99"
+    "game_ids[]=XXXXXX&launcher_id=VYTpXlbWo8"
 )
 
 GAME_INFO_URL = (
-    "https://sg-hyp-api-beta.hoyoverse.com/"
+    "https://sg-hyp-api.hoyoverse.com/"
     "hyp/hyp-connect/api/getGames?"
-    "launcher_id=KAGKS3zS99"
+    "launcher_id=VYTpXlbWo8"
 )
 
-GAME_ID = "IWISpEcDbC"
+GAME_ID = "XXXXXX"
 
 GAME_NAME = "abcBranches"
 

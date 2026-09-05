@@ -43,7 +43,7 @@ bot = discord.Client(intents=intents)
 # Branding
 # =========================================================
 
-BOT_NAME = "TheWeavers Branches"
+BOT_NAME = "源初之结 Branches"
 
 BOT_ICON = (
     "https://raw.githubusercontent.com/"
@@ -118,7 +118,7 @@ async def send_embed_message(
     embed = discord.Embed(
         title=title,
         description=description,
-        color=0xFFFFFF,
+        color=0x252525,
         timestamp=datetime.now(timezone.utc),
     )
 

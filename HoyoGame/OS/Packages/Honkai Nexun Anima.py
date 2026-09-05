@@ -62,7 +62,7 @@ CHANNELS = [
 # =========================================================
 
 api_urls = [
-    "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=IWISpEcDbC&launcher_id=KAGKS3zS99",
+    "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGamePackages?game_ids[]=XXXXXX&launcher_id=VYTpXlbWo8",
 ]
 
 # =========================================================
@@ -317,7 +317,7 @@ async def main():
             # =================================================
 
             game_info_url = (
-                "https://sg-hyp-api-beta.hoyoverse.com/"
+                "https://sg-hyp-api.hoyoverse.com/"
                 "hyp/hyp-connect/api/getGames?"
                 "launcher_id=VYTpXlbWo8"
             )
