@@ -401,12 +401,12 @@ async def main():
 
     except Exception as e:
 
-        print(f"❌ Branch Error: {e}")
+        print(f"Not Package: {e}")
 
         for channel_id in CHANNELS:
 
             await split_and_send(
-                channel_id, "❌ Error", [f"[{GAME_NAME}] error: {e}"], "", "", ""
+                channel_id, "Not Package", [f"[{GAME_NAME}] error: {e}"], "", "", ""
             )
 
     # =====================================================

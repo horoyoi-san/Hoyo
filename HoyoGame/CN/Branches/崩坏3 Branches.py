@@ -247,7 +247,7 @@ def has_changed(api_url, log_name):
 
     except Exception as e:
 
-        print(f"❌ Error writing raw log: {e}")
+        print(f"Not Package writing raw log: {e}")
 
     current_hash = hashlib.md5(data_text.encode()).hexdigest()
 
@@ -410,13 +410,13 @@ async def main():
 
         except Exception as e:
 
-            print(f"❌ Branch Error [{region}]: {e}")
+            print(f"Not Package [{region}]: {e}")
 
             for channel_id in CHANNELS:
 
                 await split_and_send(
                     channel_id,
-                    "❌ Branch Error",
+                    "Not Package",
                     [f"Region: {region}", f"Error: {e}"],
                     "",
                     "",

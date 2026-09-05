@@ -184,7 +184,7 @@ def has_changed(api_url, game_name):
 
     except Exception as e:
 
-        print(f"❌ Error fetching API {game_name}: {e}")
+        print(f"Not Package fetching API {game_name}: {e}")
 
         return False
 
@@ -226,7 +226,7 @@ def has_changed(api_url, game_name):
 
     except Exception as e:
 
-        print(f"❌ Error writing log file for {game_name}: {e}")
+        print(f"Not Package writing log file for {game_name}: {e}")
 
     # =====================================================
     # Last Hash
@@ -300,7 +300,7 @@ async def main():
 
             except Exception as e:
 
-                print(f"❌ Error parsing API response for {game_name}: {e}")
+                print(f"Not Package parsing API response for {game_name}: {e}")
 
                 continue
 
@@ -338,7 +338,7 @@ async def main():
 
             except Exception as e:
 
-                print(f"❌ Error fetching display info for {game_name}: {e}")
+                print(f"Not Package fetching display info for {game_name}: {e}")
 
                 display_name = game_name
 
@@ -455,7 +455,7 @@ async def main():
 
                 await split_and_send(
                     channel_id,
-                    "❌ Error",
+                    "Not Package",
                     [f"[{game_name}] unexpected error: {e}"],
                     "",
                     "",

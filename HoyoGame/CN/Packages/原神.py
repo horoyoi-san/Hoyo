@@ -203,7 +203,7 @@ def has_changed(api_url, game_name):
 
             print(f"❌ Failed to write error log: {log_error}")
 
-        print(f"❌ Error fetching API: {e}")
+        print(f"Not Package fetching API: {e}")
 
         return False
 
@@ -249,7 +249,7 @@ def has_changed(api_url, game_name):
 
     except Exception as e:
 
-        print(f"❌ Error writing log file: {e}")
+        print(f"Not Package writing log file: {e}")
 
     # =====================================================
     # Last Hash
@@ -449,7 +449,7 @@ async def main():
             for channel_id in CHANNELS:
 
                 await split_and_send(
-                    channel_id, "❌ Error", [f"[{game_name}] error: {e}"], "", "", ""
+                    channel_id, "Not Package", [f"[{game_name}] error: {e}"], "", "", ""
                 )
 
 
