@@ -81,11 +81,42 @@ namespace Core
                 return 0;
             }
 
-            if (!silent) Console.WriteLine($"Sophon.Downloader v{Assembly.GetExecutingAssembly().GetName().Version} - Made with love by Horoyoi-san <3");
+            if (!silent)
+            {
+                var colors = new[]
+                {
+                    ConsoleColor.Red,
+                    ConsoleColor.Green,
+                    ConsoleColor.Yellow,
+                    ConsoleColor.Blue,
+                    ConsoleColor.Magenta,
+                    ConsoleColor.Cyan,
+                    ConsoleColor.White
+                };
+
+                var random = new Random();
+                Console.ForegroundColor = colors[random.Next(colors.Length)];
+
+                Console.WriteLine(@"
+            ██╗  ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗ ██████╗ ██╗      ███████╗ █████╗ ███╗   ██╗
+            ██║  ██║██╔═══██╗██╔══██╗██╔═══██╗╚██╗ ██╔╝██╔═══██╗██║      ██╔════╝██╔══██╗████╗  ██║
+            ███████║██║   ██║██████╔╝██║   ██║ ╚████╔╝ ██║   ██║██║█████╗███████╗███████║██╔██╗ ██║
+            ██╔══██║██║   ██║██╔══██╗██║   ██║  ╚██╔╝  ██║   ██║██║╚════╝╚════██║██╔══██║██║╚██╗██║
+            ██║  ██║╚██████╔╝██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║      ███████║██║  ██║██║ ╚████║
+            ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝      ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+            ");
+
+                Console.ResetColor();
+
+                Console.WriteLine(
+                    $"Sophon.Downloader v{Assembly.GetExecutingAssembly().GetName().Version} - Made with love by Horoyoi-san <3"
+                );
+            }
 
             if (showHelp)
             {
                 string exeName = Process.GetCurrentProcess().ProcessName + ".exe";
+
                 Console.WriteLine($"""
                     Usage:
                         {exeName} full <gameId> <package> <version> <outputDir> [options]                     Download full game assets
@@ -125,7 +156,8 @@ namespace Core
                         | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
                         | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
                         | TheWeavers |0.7.0|Sophon.Downloader.exe full pkMBmK7jxJ game 0.7.0 output --region=CNBETA |
-                 """);
+                """);
+
                 return 0;
             }
 

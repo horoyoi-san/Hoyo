@@ -81,16 +81,16 @@ Options:
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full j7rlly0oYR game 0.3.0 output --region=CNBETA |
 | Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full IWISpEcDbC game 0.6.0 output --region=OSBETA |
 | Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full lgyIM35mz8 game 0.6.0 output --region=CNBETA |
-| Honkai: Nexus anima |Version|Sophon.Downloader.exe full yneO4yGc4x game Version output --region=OSBETA |
-| Honkai: Nexus anima |Version|Sophon.Downloader.exe full m8TGERqknS game Version output --region=CNBETA |
+| Honkai: Nexus anima |Version|Sophon.Downloader.exe full yneO4yGc4x game 1.0 output --region=OSREL |
+| Honkai: Nexus anima |Version|Sophon.Downloader.exe full m8TGERqknS game Version output --region=CNREL |
 
 # Petit Planet
 | Game | Version | Downloader |
 | Petit Planet |0.83.6|Sophon.Downloader.exe full 0fijU7nET7 game 0.83.6 output --region=CNBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
-| Petit Planet |Version|Sophon.Downloader.exe full viiywh5G2H game Version output --region=OSBETA |
-| Petit Planet |Version|Sophon.Downloader.exe full ERYDdvf0w8 game Version output --region=CNBETA |
+| Petit Planet |Version|Sophon.Downloader.exe full viiywh5G2H game 1.0 output --region=OSREL |
+| Petit Planet |Version|Sophon.Downloader.exe full ERYDdvf0w8 game 1.0 output --region=CNREL |
 
 # TheWeavers
 | Game | Version | Downloader |
