@@ -1,0 +1,199 @@
+{
+  "AbilityList": [
+    {
+      "Name": "StageAbility_MazeProp_BossArea",
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "StageAbility_MazeProp_BossArea_Modifier"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "OnRemove": [
+        {
+          "$type": "RPG.GameCore.RemoveModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Custom": false,
+            "Value": "StageAbility_MazeProp_BossArea_Modifier"
+          },
+          "OnlyRemoveCasterAdded": false,
+          "RemoveAllInstance": false,
+          "RemoveToBeAdded": false,
+          "MuteVisualStateRecover": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "Modifiers": {
+        "StageAbility_MazeProp_BossArea_Modifier": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterCreate",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MCommon_DOT_Poison"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "LifeTime": {
+                        "fixedValue": {
+                          "Value": 6.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicValues": {
+                        "MDF_PropertyValue": {
+                          "fixedValue": {
+                            "Value": 1.0000000009313226
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        }
+      },
+      "ServantWhiteList": false
+    }
+  ]
+}

@@ -1,0 +1,1817 @@
+{
+  "AbilityList": [
+    {
+      "Name": "Avatar_GridFight_HimekoNova_00_SkillPC01",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "MAvatar_GridFight_HimekoNova_00_SkillPC01_Listener"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "MAvatar_GridFight_HimekoNova_00_SetAI"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "Modifiers": {
+        "MAvatar_GridFight_HimekoNova_00_SetAI": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "DynamicValues": {},
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -80,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareWaveCount",
+                        "CompareType": "Equal",
+                        "CompareWithMax": false,
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 2.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "LevelEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "MGridFight_Origin_3007_Type01_LE_Basic"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "TaskEnabled": true,
+                      "Name": "T_GridFight_2011_SetBPAITag",
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        },
+        "MAvatar_GridFight_HimekoNova_00_SkillPC01_Listener": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "ReplaceByCaster",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "BehaviorFlagList": [
+            "RemoveWhenCasterDead"
+          ],
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnEnterBattle",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "HimekoNova_00_Field"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 2.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "TaskEnabled": true,
+                      "Name": "T_GridFight_HimekoNova_SkillPC01_ApplyBackendAssist",
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnModifierAdd",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCheckModifierCallBackName",
+                    "ModifierName": "MAvatar_HimekoNova_00_SpecialBattleArea",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "TaskEnabled": true,
+                      "Name": "T_GridFight_HimekoNova_SkillPC01_ApplyBackendAssist",
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnListenBattleEventCreate",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "HimekoNova_00_Field"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 2.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "TaskEnabled": true,
+                      "Name": "T_GridFight_HimekoNova_SkillPC01_SetAssistOnParam",
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        }
+      },
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Avatar_GridFight_HimekoNova_00_Skill02_Phase01",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.PlayTimeline",
+          "TimelineName": "Effects/Eff_Prefab/Eff_Avatar/Eff_HimekoNova_00/Eff_Avatar_HimekoNova_00_Skill02_Timeline.playable",
+          "Type": "BattleEffect",
+          "ReleaseVolume": false,
+          "WrapMode": "None",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Partners"
+          },
+          "Visible": true,
+          "MuteColliderWhenInvisible": true,
+          "MuteTriggerWhenInvisible": false,
+          "SetAudio": false,
+          "Reason": "Task",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "AbilityTargetEntity",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AlignFaceDir": false,
+          "UseNormalFormation": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "IsRevert": false,
+          "IsDurable": false,
+          "TargetIntensity": 0.75,
+          "FadeDuration": 0.25,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.HideLevelStage",
+          "IsHide": true,
+          "Duration": 0.0,
+          "HideFieldEffect": true,
+          "FieldHideMode": "All",
+          "HiendExcluded": false,
+          "DisableLoopTowerShake": true,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamUnknow",
+          "FormationTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllLightTeam - Caster"
+          },
+          "FormationType": "None",
+          "ServantState": "Default",
+          "RemoveDying": false,
+          "CustomFormationName": "1510_Skill02_TeamPos",
+          "UseLevelAreaRoot": false,
+          "CustomCenterTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "CustomFormationIgnoreDying": true,
+          "ImmediatelyStopHeadLookAt": false,
+          "RefreshFormationCenter": false,
+          "TeamMemberCountingOption": "IgnoreTempLeave",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Avatar_HimekoNova_00_Skill02_Camera"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Avatar_GridFight_HimekoNova_00_Skill02_Phase02"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "SkillUse",
+          "AnimStateName": "Skill02",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": false,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Partners"
+          },
+          "AnimLogicState": "SkillUse",
+          "AnimStateName": "Skill02",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": false,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 1.8000000016763806
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "IsRevert": true,
+          "IsDurable": false,
+          "TargetIntensity": 0.0,
+          "FadeDuration": 0.33000001311302185,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.HideLevelStage",
+          "IsHide": false,
+          "Duration": 0.0,
+          "HideFieldEffect": true,
+          "FieldHideMode": "All",
+          "HiendExcluded": false,
+          "DisableLoopTowerShake": true,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Partners"
+          },
+          "AnimLogicState": "Idle",
+          "AnimStateName": "StandBy",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": true,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.MoveToTargetPosition",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "TeamFormation"
+          },
+          "IgnoreRadius": true,
+          "OffsetTargetDistance": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MovePercentage": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "OffsetCoord": "SourceToTarget",
+          "ApplyTargetPosY": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Avatar_GridFight_HimekoNova_00_Skill02_Phase02",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.8600000008009374
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllLightTeam"
+          },
+          "IsAttachToTargetEntity": false,
+          "IsAttachToTimeline": false,
+          "IsActiveLevelUpOverride": false,
+          "IsHideTargetEntityWhenLoading": false,
+          "AliveOnly": true,
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_HimekoNova_00/Eff_Avatar_HimekoNova_00_Skill02_Buff01.prefab",
+          "PositionOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "RotationOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "Scale": {
+            "x": -1.0,
+            "y": -1.0,
+            "z": -1.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 1.7320507764816284,
+            "sqrMagnitude": 3.0
+          },
+          "ScaleAdaptType": "None",
+          "Delay": 0.0,
+          "IsNeedFadeIn": true,
+          "IsEnableReplay": false,
+          "ForceSimulateImmediately": false,
+          "AddColliderHeightOffset": false,
+          "ParamEntityUsage": "LookAt",
+          "TowardRotatePitchOnly": false,
+          "TowardMaxPitchAngle": 90.0,
+          "IsAttachToCaster": false,
+          "ExecuteOnSkip": false,
+          "MinMutexTime": 0.0,
+          "MinMutexType": "None",
+          "MaxMutexCount": 1,
+          "IgnoreFadeOutMutexError": false,
+          "SyncPropState": false,
+          "FollowCasterTimeSlow": false,
+          "ForbidLod": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 1.0000000009313226
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRankActivated",
+            "TriggerKey": {
+              "Hash": 523552506,
+              "IsEmpty": false
+            },
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": false
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AliveOnly": true,
+              "ModifierName": {
+                "Custom": false,
+                "Value": "MAvatar_GridFight_HimekoNova_00_Skill02_OnListen"
+              },
+              "LifeStepImmediately": false,
+              "StackingFlag": "Default",
+              "Chance": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MaxTargetCount": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "LifeTime": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "DynamicValues": {
+                "MDF_PropertyValue": {
+                  "fixedValue": {
+                    "Value": -69412.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": true
+                },
+                "MDF_AssistAddCount": {
+                  "fixedValue": {
+                    "Value": 4.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                }
+              },
+              "InheritCaster": "Inherit",
+              "IsShowUIMessageFromModel": true,
+              "IsShowUIMessageOnUpdate": true,
+              "ShowUIMessageDelayTime": 0.0,
+              "ShowUIMessageInternalTime": -1.0,
+              "ShowUIMessageCanMerge": true,
+              "CustomOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "ForceVisible": false,
+              "UseFixedPosition": true,
+              "ScreenSpaceFloatMsg": false,
+              "RefreshBuffUIDelayTime": 0.0,
+              "IsSilenceAddAndStack": false,
+              "AsSubModifier": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AliveOnly": true,
+              "ModifierName": {
+                "Custom": false,
+                "Value": "MAvatar_GridFight_HimekoNova_00_Skill02_OnListen"
+              },
+              "LifeStepImmediately": false,
+              "StackingFlag": "Default",
+              "Chance": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MaxTargetCount": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "LifeTime": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "DynamicValues": {
+                "MDF_PropertyValue": {
+                  "fixedValue": {
+                    "Value": -69412.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": true
+                },
+                "MDF_AssistAddCount": {
+                  "fixedValue": {
+                    "Value": 2.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                }
+              },
+              "InheritCaster": "Inherit",
+              "IsShowUIMessageFromModel": true,
+              "IsShowUIMessageOnUpdate": true,
+              "ShowUIMessageDelayTime": 0.0,
+              "ShowUIMessageInternalTime": -1.0,
+              "ShowUIMessageCanMerge": true,
+              "CustomOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "ForceVisible": false,
+              "UseFixedPosition": true,
+              "ScreenSpaceFloatMsg": false,
+              "RefreshBuffUIDelayTime": 0.0,
+              "IsSilenceAddAndStack": false,
+              "AsSubModifier": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ],
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.ModifySPNew",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AddRatio": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "IgnoreBlock": false,
+          "SyncToSummoner": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsContainModifier",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "ModifierName": {
+              "Custom": false,
+              "Value": "MAvatar_GridFight_HimekoNova_00_Maze"
+            },
+            "AddedOrAlive": false,
+            "IncludeRecordBeforeDeathrattle": false,
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": false
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.ModifySkillPropertyByName",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "SkillTriggerKeyList": [
+                "Skill02"
+              ],
+              "Properties": [
+                {
+                  "PropertyType": "BPNeed",
+                  "OperatorType": "Unset",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  }
+                }
+              ],
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ],
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish",
+          "SkipAttackSettlement": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Avatar_GridFight_HimekoNova_00_SkillMazeInLevel",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "MAvatar_GridFight_HimekoNova_00_Maze"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "Modifiers": {
+        "MAvatar_GridFight_HimekoNova_00_Maze": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "ReplaceByCaster",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnStack",
+              "Priority": 0,
+              "CallbackConfig": []
+            },
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -55,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ModifierName": {
+                    "Custom": false,
+                    "Value": "MAvatar_GridFight_HimekoNova_00_Skill02_OnListen"
+                  },
+                  "OnlyRemoveCasterAdded": false,
+                  "RemoveAllInstance": false,
+                  "RemoveToBeAdded": false,
+                  "MuteVisualStateRecover": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.ModifySkillPropertyByName",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "SkillTriggerKeyList": [
+                    "Skill02"
+                  ],
+                  "Properties": [
+                    {
+                      "PropertyType": "BPNeed",
+                      "OperatorType": "Mul",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 0.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      }
+                    }
+                  ],
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.TurnInsertAction",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "InsertActionPriority": "PROG_Default",
+                  "SkillType": "ControlSkill02",
+                  "PlayReadyCamera": false,
+                  "PlayReadyAnim": true,
+                  "CancelPrepareAbilityIfDelayed": false,
+                  "PlayReadyAnimIfPrepareAbilityCancel": false,
+                  "CanInsertUltraSkill": false,
+                  "IsSilence": false,
+                  "SkillTypeWhenDelayed": "_Count",
+                  "AutoCast": true,
+                  "CanRunAfterFightFinish": true,
+                  "CopyAbortContext": false,
+                  "IgnoreBPDec": false,
+                  "IgnoreSPDec": false,
+                  "OverrideElationPoint": {
+                    "fixedValue": {
+                      "Value": -2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "FollowSameTagNormalAction": false,
+                  "IgnoreUltraButtonEffect": false,
+                  "OverrideCutIn": "Keep",
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        }
+      },
+      "ServantWhiteList": false
+    }
+  ],
+  "GlobalModifiers": {
+    "MAvatar_GridFight_HimekoNova_00_Skill02_OnListen": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {},
+      "LifeTime": -1,
+      "MaxLayer": 99,
+      "LayerAddWhenStack": {
+        "fixedValue": {
+          "Value": 0.0
+        },
+        "postfixExpr": {},
+        "IsDynamic": false
+      },
+      "WorkingTurn": "OwnerTurn",
+      "LifeStepMoment": "ModifierPhase1End",
+      "TargetSelectRestrictType": "Unknow",
+      "ApplyBehaviorFlagBindEffects": true,
+      "BehaviorFlagList": [
+        "ForceStanceDamage"
+      ],
+      "UseSnapshotEntity": false,
+      "UIConfig": {
+        "UIPosition": "None",
+        "ModifierUIPriority": "DealDamageBlackSwan",
+        "IsShowInAvatarPanel": false,
+        "IsShowNumInAvatarPanel": true,
+        "IsShowInHUD": false
+      },
+      "_CallbackList": [
+        {
+          "Event": "OnListenAllowAction",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareTarget",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "CompareType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "TargetAlias_HimekoNova"
+                    },
+                    "AliveStateMask": "Mask_AliveOrLimbo",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  }
+                ],
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByRankActivated",
+                    "TriggerKey": {
+                      "Hash": 523552506,
+                      "IsEmpty": false
+                    },
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "ANNAJHLHKLD",
+                      "HILNFHCPEAD": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "IKGOAIEHFJD": {
+                        "fixedValue": {
+                          "Value": 0.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "AJHHCOHFIFA": {
+                        "fixedValue": {
+                          "Value": 4.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "NFCPJINGLGA": "Add",
+                      "OPILAJBILKM": "Add",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "ANNAJHLHKLD",
+                      "HILNFHCPEAD": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "IKGOAIEHFJD": {
+                        "fixedValue": {
+                          "Value": 0.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "AJHHCOHFIFA": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "NFCPJINGLGA": "Add",
+                      "OPILAJBILKM": "Add",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "TaskEnabled": true,
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ContextScope": "Context",
+              "Value": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "DynamicKey": {
+                "Custom": false,
+                "Value": "MDF_HaloAllDamageRatio"
+              },
+              "SkipInCharmAction": true,
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "TaskEnabled": true,
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ContextScope": "Context",
+              "Value": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "DynamicKey": {
+                "Custom": false,
+                "Value": "MDF_PropertyValue"
+              },
+              "SkipInCharmAction": true,
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "AllDamageTypeAddedRatio",
+              "PropertyValue": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "Silence": false,
+              "IsRefresh": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            },
+            {
+              "$type": "ANNAJHLHKLD",
+              "HILNFHCPEAD": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "IKGOAIEHFJD": {
+                "fixedValue": {
+                  "Value": 0.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "AJHHCOHFIFA": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "NFCPJINGLGA": "Add",
+              "OPILAJBILKM": "Add",
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Property": "ForceStanceBreakRatio",
+              "PropertyValue": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "Silence": false,
+              "IsRefresh": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ]
+        }
+      ],
+      "AdditionConfig": {
+        "FilterMask": "None",
+        "SubModifierList": [
+          {
+            "Name": "MAvatar_GridFight_HimekoNova_00_Skill02_Disable",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "IncludeBattleEvent": false,
+            "IsHaloStatus": true,
+            "SyncLayerFromParent": false,
+            "AliveOnly": "False",
+            "AutoDetectWhenRevive": false
+          },
+          {
+            "Name": "MAvatar_HimekoNova_00_Skill02_Buff_Flag",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "IncludeBattleEvent": false,
+            "IsHaloStatus": true,
+            "SyncLayerFromParent": false,
+            "AliveOnly": "False",
+            "AutoDetectWhenRevive": false
+          },
+          {
+            "Name": "MAvatar_GridFight_HimekoNova_00_Skill02_TeamBuff",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllTeamMemberWithUnselectable + GridFight_AllBackEnd - Caster"
+            },
+            "IncludeBattleEvent": true,
+            "DynamicValues": {
+              "MDF_AllDamageTypeAddedRatio": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              }
+            },
+            "IsHaloStatus": true,
+            "SyncLayerFromParent": false,
+            "AliveOnly": "False",
+            "AutoDetectWhenRevive": false
+          },
+          {
+            "Name": "MAvatar_HimekoNova_00_Skill01_StancePreview",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "IncludeBattleEvent": false,
+            "IsHaloStatus": true,
+            "SyncLayerFromParent": false,
+            "AliveOnly": "False",
+            "AutoDetectWhenRevive": false
+          },
+          {
+            "Name": "MAvatar_HimekoNova_00_Skill03_StancePreview",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "IncludeBattleEvent": false,
+            "IsHaloStatus": true,
+            "SyncLayerFromParent": false,
+            "AliveOnly": "False",
+            "AutoDetectWhenRevive": false
+          }
+        ],
+        "InfectAddSubModifier": false
+      },
+      "IsGlobalModifier": false
+    },
+    "MAvatar_GridFight_HimekoNova_00_Skill02_TeamBuff": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Unique",
+      "DynamicValues": {},
+      "LifeTime": -1,
+      "MaxLayer": 99,
+      "LayerAddWhenStack": {
+        "fixedValue": {
+          "Value": 0.0
+        },
+        "postfixExpr": {},
+        "IsDynamic": false
+      },
+      "WorkingTurn": "OwnerTurn",
+      "LifeStepMoment": "ModifierPhase2End",
+      "TargetSelectRestrictType": "Unknow",
+      "ApplyBehaviorFlagBindEffects": true,
+      "UseSnapshotEntity": false,
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "AllDamageTypeAddedRatio",
+              "PropertyValue": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "Silence": false,
+              "IsRefresh": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ]
+        }
+      ],
+      "IsGlobalModifier": false
+    },
+    "MAvatar_GridFight_HimekoNova_00_Skill02_Disable": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Unique",
+      "LifeTime": -1,
+      "MaxLayer": 99,
+      "LayerAddWhenStack": {
+        "fixedValue": {
+          "Value": 0.0
+        },
+        "postfixExpr": {},
+        "IsDynamic": false
+      },
+      "WorkingTurn": "OwnerTurn",
+      "LifeStepMoment": "ModifierPhase2End",
+      "TargetSelectRestrictType": "Unknow",
+      "ApplyBehaviorFlagBindEffects": true,
+      "BehaviorFlagList": [
+        "RemoveWhenCasterDead"
+      ],
+      "UseSnapshotEntity": false,
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AttachSkillTypeDisable",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Types": [
+                "Skill"
+              ],
+              "TextmapID": {
+                "Hash": 0,
+                "Hash64": 0
+              },
+              "Tip": {
+                "Hash": 0,
+                "Hash64": 0
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ]
+        }
+      ],
+      "IsGlobalModifier": false
+    }
+  },
+  "GlobalTemplates": [
+    {
+      "Name": "T_GridFight_HimekoNova_SkillPC01_SetAssistOnParam",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsInCharacterIDGroup",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ParamEntity"
+            },
+            "Group": "AstralExpress_Model_01",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": false
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "CMFFNNENPNL",
+              "HMHJNMGOCLC": {
+                "JsonValueStr": "AssistSkill2"
+              },
+              "KBFPDJJLDFA": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "HDHCKOKMAGF": "GridFight_HimekoNova_AssistSkill",
+              "HILNFHCPEAD": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "OFLNJBCADMN": "Skill52Fake",
+              "NALMBOOCCIN": 1,
+              "ICADPILMFPK": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsInCharacterIDGroup",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "Group": "AstralExpress_Model_02",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "CMFFNNENPNL",
+                  "HMHJNMGOCLC": {
+                    "JsonValueStr": "AssistSkill3"
+                  },
+                  "KBFPDJJLDFA": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "HDHCKOKMAGF": "GridFight_HimekoNova_AssistSkill",
+                  "HILNFHCPEAD": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "OFLNJBCADMN": "Skill53Fake",
+                  "NALMBOOCCIN": 1,
+                  "ICADPILMFPK": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ],
+          "IsClientOnly": false
+        }
+      ]
+    },
+    {
+      "Name": "T_GridFight_HimekoNova_SkillPC01_ApplyBackendAssist",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.Retarget",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "GridFight_AllBackEnd"
+          },
+          "ByRandom": false,
+          "IncludeLimbo": false,
+          "MaxNumber": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.IncludeTaskListTemplate",
+              "TaskEnabled": true,
+              "Name": "T_GridFight_HimekoNova_SkillPC01_SetAssistOnParam",
+              "IsClientOnly": false
+            }
+          ],
+          "IgnoreParallelWarning": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ]
+    }
+  ]
+}

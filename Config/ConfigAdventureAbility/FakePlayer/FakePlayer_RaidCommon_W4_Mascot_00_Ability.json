@@ -1,0 +1,594 @@
+{
+  "AbilityList": [
+    {
+      "Name": "FakePlayer_Mascot_Stealth",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddAdventureModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": "Modifier_FakePlayer_Mascot_Stealth",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "Modifiers": {
+        "Modifier_FakePlayer_Mascot_Stealth": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "LifeTime": -1.0,
+          "Level": 1,
+          "LevelMax": 1,
+          "IsCountDownAfterBattle": true,
+          "ApplyBehaviorFlagBindEffects": true,
+          "BehaviorFlagList": [
+            "Stealth"
+          ],
+          "HolyShieldPriority": 0,
+          "TickInterval": 1.0,
+          "MazeBuffType": "None"
+        }
+      },
+      "ManualTriggerType": "None"
+    },
+    {
+      "Name": "FakePlayer_Mascot_ShootAtk",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntityOrNone",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.BySwitchMascotCanShootTarget",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "DynamicKey": {
+                  "Custom": false,
+                  "Value": "AbilityPara_FastBullet"
+                },
+                "ContextScope": "Context",
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "fixedValue": {
+                    "Value": -69412.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": true
+                },
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SwitchMascotAddPickupCount",
+                  "AddCount": {
+                    "Custom": false,
+                    "Value": "-1"
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.SwitchMascotTriggerUIShootEffect",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.VCameraConfigChange",
+                  "WaitCloseupShotFinish": false,
+                  "CameraConfig": {
+                    "ConfigType": "NormalConfig",
+                    "CameraState": "Unknow",
+                    "ShakeTemplateName": "Punch_Light",
+                    "Priority": 0,
+                    "LockRelatedTarget": false,
+                    "DontOverrideLastShowEntityConfig": false
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_MascotMonster_02_Bullet02_Lod0.prefab",
+                  "AttachPoint": "EffectPoint",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": 2.0,
+                    "y": 2.0,
+                    "z": 2.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 3.464101552963257,
+                    "sqrMagnitude": 12.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.NewAdventureFireProjectile",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AbilityTargetEntity"
+                  },
+                  "OnProjectileHit": [
+                    {
+                      "$type": "RPG.GameCore.SwitchMascotBulletTriggerAttack",
+                      "AttackTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "AttackRootTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ProjectileHitEntity"
+                      },
+                      "AttackDetectConfig": {
+                        "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                        "Offset": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "FaceDir": 0.0,
+                        "MinRadius": 0.0,
+                        "MaxRadius": 1.0,
+                        "FanAngle": 360.0,
+                        "Hight": 1.0
+                      },
+                      "HitConfig": {
+                        "HitAnimation": "Hit",
+                        "HitAngleHorizontal": 0.0,
+                        "RandomHitAngleHorizontal": 0.0,
+                        "HitAngleVertical": 0.0,
+                        "HitEffectHeight": 0.0
+                      },
+                      "AttackDetectCollision": true,
+                      "HitDecalEffectRandomRadius": 1.0,
+                      "HitDecalEffectFollowHitTarget": true,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "WaitProjectileFinish": false,
+                  "NewProjectile": {
+                    "$type": "RPG.GameCore.TraceWithDetectProjectileData",
+                    "FlySpeed": {
+                      "fixedValue": {
+                        "Value": 60.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "FlyTime": {
+                      "fixedValue": {
+                        "Value": -2.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "ExtraRetainTime": 0.0,
+                    "ExtraRetainAlongLastVelocity": false,
+                    "SpeedEaseType": "Linear",
+                    "HitEffect": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_MascotMonster_02_Bullet01_Lod0.prefab",
+                    "AlignHitEffect": true,
+                    "AttachHitEffectToTargetEntity": false,
+                    "CorrectedWhenTargetFormationChange": false,
+                    "InitDirection": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 1.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 1.0,
+                      "sqrMagnitude": 1.0
+                    },
+                    "AttachPoint": "EffectPoint",
+                    "AttachOffset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 0.0,
+                      "sqrMagnitude": 0.0
+                    },
+                    "StartFromLastHitPos": false,
+                    "FreezeRotation": false,
+                    "TargetAttachPoint": "SelectRoot",
+                    "TargetAttachPoint2": "Root",
+                    "TargetOffset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 0.0,
+                      "sqrMagnitude": 0.0
+                    },
+                    "UseLookat": false,
+                    "UseLastHitVelocity": false,
+                    "AlignWithAttachPoint": false,
+                    "AttachPointAxis": "X",
+                    "IgnoreTargetHitbox": false,
+                    "IgnoreCasterWallCheck": true,
+                    "ColliderTemplate": "CapsuleZ_MiniHeroBullet",
+                    "EnableRayCast": true,
+                    "FlyEffect": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_MascotMonster_02_Bullet_Lod0.prefab",
+                    "FlyEffectFadeOut": false,
+                    "TriggerHitCallback": true,
+                    "WriteProgressToEffectAnimator": false,
+                    "LinearPitchAngle": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "CollisionEnableDelay": 0.0,
+                    "MaxLifeTime": 5.0,
+                    "TraceDelay": 0.009999999776482582,
+                    "TurnSpeed": 2000.0,
+                    "TraceAttachPoint": true,
+                    "MuteTraceIfTargetNotAlive": true,
+                    "DelayMoveOneFrame": true
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SwitchMascotAddPickupCount",
+                  "AddCount": {
+                    "Custom": false,
+                    "Value": "-1"
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.SwitchMascotTriggerUIShootEffect",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.VCameraConfigChange",
+                  "WaitCloseupShotFinish": false,
+                  "CameraConfig": {
+                    "ConfigType": "NormalConfig",
+                    "CameraState": "Unknow",
+                    "ShakeTemplateName": "Punch_Light",
+                    "Priority": 0,
+                    "LockRelatedTarget": false,
+                    "DontOverrideLastShowEntityConfig": false
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_MascotMonster_02_Bullet02_Lod0.prefab",
+                  "AttachPoint": "EffectPoint",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": 2.0,
+                    "y": 2.0,
+                    "z": 2.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 3.464101552963257,
+                    "sqrMagnitude": 12.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.NewAdventureFireProjectile",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AbilityTargetEntity"
+                  },
+                  "OnProjectileHit": [
+                    {
+                      "$type": "RPG.GameCore.SwitchMascotBulletTriggerAttack",
+                      "AttackTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "AttackRootTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ProjectileHitEntity"
+                      },
+                      "AttackDetectConfig": {
+                        "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                        "Offset": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "FaceDir": 0.0,
+                        "MinRadius": 0.0,
+                        "MaxRadius": 3.0,
+                        "FanAngle": 360.0,
+                        "Hight": 3.0
+                      },
+                      "HitConfig": {
+                        "HitAnimation": "Hit",
+                        "HitAngleHorizontal": 0.0,
+                        "RandomHitAngleHorizontal": 0.0,
+                        "HitAngleVertical": 0.0,
+                        "HitEffectHeight": 0.0
+                      },
+                      "AttackDetectCollision": true,
+                      "HitDecalEffectRandomRadius": 1.0,
+                      "HitDecalEffectFollowHitTarget": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "WaitProjectileFinish": false,
+                  "NewProjectile": {
+                    "$type": "RPG.GameCore.TraceWithDetectProjectileData",
+                    "FlySpeed": {
+                      "fixedValue": {
+                        "Value": 30.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "FlyTime": {
+                      "fixedValue": {
+                        "Value": -2.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "ExtraRetainTime": 0.0,
+                    "ExtraRetainAlongLastVelocity": false,
+                    "SpeedEaseType": "Linear",
+                    "HitEffect": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_MascotMonster_02_Bullet01_Lod0.prefab",
+                    "AlignHitEffect": true,
+                    "AttachHitEffectToTargetEntity": false,
+                    "CorrectedWhenTargetFormationChange": false,
+                    "InitDirection": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 1.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 1.0,
+                      "sqrMagnitude": 1.0
+                    },
+                    "AttachPoint": "EffectPoint",
+                    "AttachOffset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 0.0,
+                      "sqrMagnitude": 0.0
+                    },
+                    "StartFromLastHitPos": false,
+                    "FreezeRotation": false,
+                    "TargetAttachPoint": "SelectRoot",
+                    "TargetAttachPoint2": "Root",
+                    "TargetOffset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 0.0,
+                      "sqrMagnitude": 0.0
+                    },
+                    "UseLookat": false,
+                    "UseLastHitVelocity": false,
+                    "AlignWithAttachPoint": false,
+                    "AttachPointAxis": "X",
+                    "IgnoreTargetHitbox": false,
+                    "IgnoreCasterWallCheck": true,
+                    "ColliderTemplate": "CapsuleZ_MiniHeroBullet",
+                    "EnableRayCast": true,
+                    "FlyEffect": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_MascotMonster_02_Bullet_Lod0.prefab",
+                    "FlyEffectFadeOut": false,
+                    "TriggerHitCallback": true,
+                    "WriteProgressToEffectAnimator": false,
+                    "LinearPitchAngle": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "CollisionEnableDelay": 0.0,
+                    "MaxLifeTime": 5.0,
+                    "TraceDelay": 0.009999999776482582,
+                    "TurnSpeed": 400.0,
+                    "TraceAttachPoint": true,
+                    "MuteTraceIfTargetNotAlive": true,
+                    "DelayMoveOneFrame": true
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ],
+          "FailedTaskList": [],
+          "IsClientOnly": false
+        }
+      ],
+      "OnAbort": [
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "HiendOnly": false,
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Active": false,
+          "Duration": -1.0,
+          "BlurX": 0.5,
+          "BlurY": 0.5,
+          "BlurRadius": 0.5,
+          "Iteration": 6,
+          "BlurStart": 0.20000000298023224,
+          "BlurFeather": 0.10000000149011612,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    }
+  ]
+}

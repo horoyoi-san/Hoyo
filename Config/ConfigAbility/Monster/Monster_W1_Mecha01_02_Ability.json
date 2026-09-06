@@ -1,0 +1,3778 @@
+{
+  "AbilityList": [
+    {
+      "Name": "Monster_W1_Mecha01_02_PassiveSkill02",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_PassiveSkill02_AttackListener"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_PassiveSkill02_Deathrattle"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "Modifiers": {
+        "Monster_W1_Mecha01_02_PassiveSkill02_AttackListener": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnListenTurnEnd",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "DeathType"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnAfterBeingHitAll",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByAttackType",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "AttackTypes": [
+                          "Insert",
+                          "BPSkill",
+                          "Servant"
+                        ],
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 4.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 4.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByAttackType",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "AttackTypes": [
+                          "Ultra"
+                        ],
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 6.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 6.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByAttackType",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "AttackTypes": [
+                          "Normal"
+                        ],
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 2.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByAttackType",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "AttackTypes": [
+                          "DOT"
+                        ],
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 2.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnBeingLimbo",
+              "Priority": 0,
+              "CallbackConfig": []
+            },
+            {
+              "Event": "OnAfterBeingAttacked",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCurrentSkillType",
+                        "SkillType": "Normal",
+                        "AccessClientActiveSkill": false,
+                        "CheckRegardAsSkillType": true,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 2.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByAny",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByCurrentSkillType",
+                            "SkillType": "Skill",
+                            "AccessClientActiveSkill": false,
+                            "CheckRegardAsSkillType": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          },
+                          {
+                            "$type": "RPG.GameCore.ByCurrentSkillType",
+                            "SkillType": "Servant",
+                            "AccessClientActiveSkill": false,
+                            "CheckRegardAsSkillType": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          }
+                        ],
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 4.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 4.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByAny",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByCurrentSkillType",
+                            "SkillType": "Ultra",
+                            "AccessClientActiveSkill": false,
+                            "CheckRegardAsSkillType": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          }
+                        ],
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DeathType"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 6.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 6.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnAfterBeingAttackedEnd",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "DeathFlag"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": 0.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DeathType"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "FailedTaskList": [],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "AttackCheckFlag"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        },
+        "Monster_W1_Mecha01_02_PassiveSkill02_Deathrattle": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Replace",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "BehaviorFlagList": [
+            "Deathrattle",
+            "KeepOnDeathrattle"
+          ],
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnDeathrattle",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "DeathType"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 2.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Custom": false,
+                        "Value": "Monster_W1_Mecha01_02_Skill01_Insert_Phase01"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AbilityTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "InsertAbilityPriority": "MonsterDeathRattle",
+                      "OwnerAliveState": "Mask_AliveOrLimbo",
+                      "TargetAliveState": "Mask_AliveOnly",
+                      "CanRunOnUnselectableTarget": true,
+                      "ShowInActionBar": false,
+                      "CanRunAfterFightFinish": false,
+                      "AutoStandbyOnAbilityFinish": true,
+                      "Silence": false,
+                      "IgnoreMuteAction": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "DeathType"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 4.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Custom": false,
+                        "Value": "Monster_W1_Mecha01_02_Skill02_Insert_Phase01"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AbilityTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "InsertAbilityPriority": "MonsterDeathRattle",
+                      "OwnerAliveState": "Mask_AliveOrLimbo",
+                      "TargetAliveState": "Mask_AliveOnly",
+                      "CanRunOnUnselectableTarget": true,
+                      "ShowInActionBar": false,
+                      "CanRunAfterFightFinish": false,
+                      "AutoStandbyOnAbilityFinish": true,
+                      "Silence": false,
+                      "IgnoreMuteAction": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "DeathType"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 6.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Custom": false,
+                        "Value": "Monster_W1_Mecha01_02_Skill03_Insert_Phase01"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AbilityTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "InsertAbilityPriority": "MonsterDeathRattle",
+                      "OwnerAliveState": "Mask_AliveOrLimbo",
+                      "TargetAliveState": "Mask_AliveOnly",
+                      "CanRunOnUnselectableTarget": true,
+                      "ShowInActionBar": false,
+                      "CanRunAfterFightFinish": false,
+                      "AutoStandbyOnAbilityFinish": true,
+                      "Silence": false,
+                      "IgnoreMuteAction": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "DeathType"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Custom": false,
+                        "Value": "Monster_W1_Mecha01_02_Skill03_Death"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AbilityTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "InsertAbilityPriority": "MonsterDeathRattle",
+                      "OwnerAliveState": "Mask_AliveOrLimbo",
+                      "TargetAliveState": "Mask_AliveOnly",
+                      "CanRunOnUnselectableTarget": true,
+                      "ShowInActionBar": false,
+                      "CanRunAfterFightFinish": false,
+                      "AutoStandbyOnAbilityFinish": true,
+                      "Silence": false,
+                      "IgnoreMuteAction": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        }
+      },
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Monster_W1_Mecha01_02_Skill03_Death",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "ShowEntityConfig": {
+              "ExportToJson": false,
+              "ShowTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeamWithAllDarkTeam"
+              },
+              "IsTargetIgnoreCameraDither": true,
+              "IsForbidHugeMonsterHalfDither": false,
+              "IsAliveOnly": true,
+              "HideFieldEffect": false,
+              "FieldHideMode": "All",
+              "RayHitDitherCheckInterval": 0.0
+            },
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Monster_W1_Mecha01_02_Skill04_Phase01",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_Skill04_Phase02"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_Skill04_Camera"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "AbilityTargetEntity",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 0.20000000018626451
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.MoveToTargetList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "SkillUse",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.3000000002793968
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MovingRangeList": [
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "IsBehindTarget": false,
+              "IgnoreRadius": true,
+              "ApplyTargetPosY": false,
+              "Speed": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "OffsetTargetDistance": {
+                "fixedValue": {
+                  "Value": 4.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "OffsetCoord": "SourceToTarget",
+              "NormalizedTimeStart": {
+                "fixedValue": {
+                  "Value": 0.6579999993555248
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "NormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.6939999996684492
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MovePercentage": {
+                "fixedValue": {
+                  "Value": 2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "DefaultMoveDistance": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              }
+            },
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "TeamFormation"
+              },
+              "IsBehindTarget": false,
+              "IgnoreRadius": true,
+              "ApplyTargetPosY": false,
+              "Speed": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "OffsetTargetDistance": {
+                "fixedValue": {
+                  "Value": 0.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "OffsetCoord": "SourceToTarget",
+              "NormalizedTimeStart": {
+                "fixedValue": {
+                  "Value": 1.3260000008158386
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "NormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 1.7400000016205013
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MovePercentage": {
+                "fixedValue": {
+                  "Value": 2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "DefaultMoveDistance": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              }
+            }
+          ],
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "Idle",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": false,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Monster_W1_Mecha01_02_Skill04_Phase02",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SkillExecutionStart",
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.6000000005587935
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.MakeCharacterHUDVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Visible": false,
+          "IndependentControl": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.7080000001005828
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_StandBy_Light.prefab",
+          "Unbind": false,
+          "IsNeedFadeOut": true,
+          "ForceImmediateFadeOut": false,
+          "FadeOutRegionStart": -1.0,
+          "FadeOutRegionEnd": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "DamageType": {
+              "SourceType": "Specify",
+              "DamageType": "Physical"
+            },
+            "FormulaType": "ByAttack",
+            "DamagePercentage": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "DamageValue": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "ExtraFormulaType": "Unknown",
+            "ExtraDamagePercentage": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "StanceValue": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "HitSplitRatio": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "DamageMulRatio": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "IsIndirect": false,
+            "IsNotHit": false,
+            "IntegerizeCategory": "None",
+            "SPHitRatio": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "ForceMatchStanceWeakness": false,
+            "AttackType": "Unknown",
+            "DoNotTriggerBreak": false,
+            "BreakDamagePercentage": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "ElationDamagePercentage": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "FinalFormulaType": "ByDefault",
+            "IsMortallyWonded": false,
+            "IsNonlethal": false,
+            "FrameHalt": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "FrameHaltActiveNextFrame": false,
+            "IsFaceToHitDir": false,
+            "HitAnimation": "Hit",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill01_Hit01.prefab",
+            "HitEffectMinMutexTime": {
+              "fixedValue": {
+                "Value": 0.10000000149011612
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "HitEffectMaxMutexCount": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "HitEffectHeight": -1.0,
+            "IsHitEffectOffsetByScale": false,
+            "HitEffectOffsetAngle": 0.0,
+            "HitTimeSlowType": "Impact",
+            "HitTimeSlowIntensity": "Light",
+            "HitPosHeight": 1.0,
+            "HitAngleHorizontal": 0.0,
+            "RandomHitAngleHorizontal": 0.0,
+            "HitAngleVertical": 0.0,
+            "TriggerHPBarAnimation": false,
+            "ScreenSpaceFloatMsg": false,
+            "InheritDamageType": false,
+            "InheritHitEffect": false,
+            "InheritHitAnimation": false,
+            "InheritHitPos": false
+          },
+          "TriggerHitSound": false,
+          "CanTriggerLastKill": false,
+          "IsConvert": false,
+          "AttackType": "Unknown",
+          "DisplayData": {
+            "UIMessageHeight": 0.0,
+            "HorizontalOffset": 0.0,
+            "DitherRangeX": 0.019999999552965164,
+            "DitherRangeY": 0.019999999552965164,
+            "AttachPoint": "SelectRoot",
+            "Duration": 1.5,
+            "Scale": 1.0,
+            "FixedPosition": true,
+            "ForceVisible": false,
+            "ExtraDesc": {
+              "Hash": 0,
+              "Hash64": 0
+            },
+            "ElementDamageType": "Normal",
+            "SkipAttachPointXZOffset": false
+          },
+          "CanOverkill": true,
+          "PerformanceDelay": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "IsHitAnimPerformanceDelay": true,
+          "DealAfterRootHitEnd": false,
+          "EqualSplitInTargets": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.DamagePerformFinish",
+          "SkipDeathSettlement": false,
+          "IsFakeAvatarAttack": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 1.3140000002458692
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "IsAttachToTargetEntity": false,
+          "IsAttachToTimeline": false,
+          "IsActiveLevelUpOverride": false,
+          "IsHideTargetEntityWhenLoading": false,
+          "AliveOnly": false,
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_StandBy_Light.prefab",
+          "PositionOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "RotationOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "Scale": {
+            "x": -1.0,
+            "y": -1.0,
+            "z": -1.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 1.7320507764816284,
+            "sqrMagnitude": 3.0
+          },
+          "ScaleAdaptType": "None",
+          "Delay": 0.0,
+          "IsNeedFadeIn": true,
+          "IsEnableReplay": false,
+          "ForceSimulateImmediately": false,
+          "AddColliderHeightOffset": false,
+          "ParamEntityUsage": "LookAt",
+          "TowardRotatePitchOnly": false,
+          "TowardMaxPitchAngle": 90.0,
+          "IsAttachToCaster": false,
+          "ExecuteOnSkip": false,
+          "MinMutexTime": -1.0,
+          "MinMutexType": "Entity",
+          "MaxMutexCount": 1,
+          "IgnoreFadeOutMutexError": false,
+          "SyncPropState": false,
+          "FollowCasterTimeSlow": false,
+          "ForbidLod": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish",
+          "SkipAttackSettlement": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Monster_W1_Mecha01_02_Skill01_Insert_Phase01",
+      "TargetInfo": {
+        "TargetType": "AllEnemy",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamLight",
+          "FormationType": "LightTeamNormal",
+          "ServantState": "DefaultFollow",
+          "RemoveDying": false,
+          "UseLevelAreaRoot": false,
+          "CustomCenterTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "None"
+          },
+          "CustomFormationIgnoreDying": false,
+          "ImmediatelyStopHeadLookAt": false,
+          "RefreshFormationCenter": false,
+          "TeamMemberCountingOption": "IgnoreTempLeave",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "TeamFormation",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ParameterName": "TriggerLuckyDraw",
+          "ParameterType": "Trigger",
+          "Value": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityInherentTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_Insert_Camera"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "SkillUse",
+          "AnimStateName": "Skill02",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "EventList": [
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 0.3000000002793968
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowUIPage",
+                  "TaskEnabled": true,
+                  "AssetPath": "UI/Common/Widget/BattleSelfStatusHint.prefab",
+                  "WaitShowPageFinish": false,
+                  "UITextNodes": [
+                    {
+                      "TextPath": "AreaInfoPanel/Title/Text",
+                      "TextContent": {
+                        "Hash": 770654157,
+                        "Hash64": 1052667015375323254
+                      }
+                    }
+                  ],
+                  "LifeTime": 2.0,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 0.6096773762255907
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize01.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize05.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 1.712000000756234
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Hit01.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize01.prefab",
+                  "Unbind": false,
+                  "IsNeedFadeOut": true,
+                  "ForceImmediateFadeOut": false,
+                  "FadeOutRegionStart": -1.0,
+                  "FadeOutRegionEnd": -1.0,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 1.834000000730157
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.ModifyTeamBoostPoint",
+                  "Team": "TeamLight",
+                  "ModifyFunction": "Add",
+                  "ModifyValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "IsSilence": false,
+                  "AllowDarkTeamModifyToNegative": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": true,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Buff_Common_RecoverBP.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Death.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityVisible",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Visible": false,
+                  "MuteColliderWhenInvisible": true,
+                  "MuteTriggerWhenInvisible": false,
+                  "SetAudio": false,
+                  "Reason": "Task",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            }
+          ],
+          "ForceStart": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 0.40000000037252903
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "Die",
+          "AnimStateName": "Die",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.6000000005587935
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": false,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "TeamFormation",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Monster_W1_Mecha01_02_Skill02_Insert_Phase01",
+      "TargetInfo": {
+        "TargetType": "AllEnemy",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamLight",
+          "FormationType": "LightTeamNormal",
+          "ServantState": "DefaultFollow",
+          "RemoveDying": false,
+          "UseLevelAreaRoot": false,
+          "CustomCenterTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "None"
+          },
+          "CustomFormationIgnoreDying": false,
+          "ImmediatelyStopHeadLookAt": false,
+          "RefreshFormationCenter": false,
+          "TeamMemberCountingOption": "IgnoreTempLeave",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "TeamFormation",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ParameterName": "TriggerLuckyDraw",
+          "ParameterType": "Trigger",
+          "Value": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityInherentTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_Insert_Camera"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "SkillUse",
+          "AnimStateName": "Skill02",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "EventList": [
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 0.3000000002793968
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowUIPage",
+                  "TaskEnabled": true,
+                  "AssetPath": "UI/Common/Widget/BattleSelfStatusHint.prefab",
+                  "WaitShowPageFinish": false,
+                  "UITextNodes": [
+                    {
+                      "TextPath": "AreaInfoPanel/Title/Text",
+                      "TextContent": {
+                        "Hash": 367369630,
+                        "Hash64": 12268998297143133065
+                      }
+                    }
+                  ],
+                  "LifeTime": 2.0,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 0.6096773762255907
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize02.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize05.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 1.712000000756234
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Hit02.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize02.prefab",
+                  "Unbind": false,
+                  "IsNeedFadeOut": true,
+                  "ForceImmediateFadeOut": false,
+                  "FadeOutRegionStart": -1.0,
+                  "FadeOutRegionEnd": -1.0,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 1.834000000730157
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.ModifySPNew",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeamOnlyAddSPOnceForServant"
+                  },
+                  "AddValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "IgnoreBlock": false,
+                  "SyncToSummoner": true,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeamOnlyAddSPOnceForServant"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": true,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MAZ_RecoverSP.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Death.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityVisible",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Visible": false,
+                  "MuteColliderWhenInvisible": true,
+                  "MuteTriggerWhenInvisible": false,
+                  "SetAudio": false,
+                  "Reason": "Task",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            }
+          ],
+          "ForceStart": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 0.40000000037252903
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "Die",
+          "AnimStateName": "Die",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.6000000005587935
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": false,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "TeamFormation",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Monster_W1_Mecha01_02_Skill03_Insert_Phase01",
+      "TargetInfo": {
+        "TargetType": "AllEnemy",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamLight",
+          "FormationType": "LightTeamNormal",
+          "ServantState": "DefaultFollow",
+          "RemoveDying": false,
+          "UseLevelAreaRoot": false,
+          "CustomCenterTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "None"
+          },
+          "CustomFormationIgnoreDying": false,
+          "ImmediatelyStopHeadLookAt": false,
+          "RefreshFormationCenter": false,
+          "TeamMemberCountingOption": "IgnoreTempLeave",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "TeamFormation",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ParameterName": "TriggerLuckyDraw",
+          "ParameterType": "Trigger",
+          "Value": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityInherentTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "AbilityName": {
+            "Custom": false,
+            "Value": "Monster_W1_Mecha01_02_Insert_Camera"
+          },
+          "IsSkillPerform": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "SkillUse",
+          "AnimStateName": "Skill02",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "EventList": [
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 0.3000000002793968
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowUIPage",
+                  "TaskEnabled": true,
+                  "AssetPath": "UI/Common/Widget/BattleSelfStatusHint.prefab",
+                  "WaitShowPageFinish": false,
+                  "UITextNodes": [
+                    {
+                      "TextPath": "AreaInfoPanel/Title/Text",
+                      "TextContent": {
+                        "Hash": 1933453571,
+                        "Hash64": 3544199079763669597
+                      }
+                    }
+                  ],
+                  "LifeTime": 2.0,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 0.6096773762255907
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize03.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize04.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "AliveOnly": false,
+                  "ModifierName": {
+                    "Custom": false,
+                    "Value": "W1_Mecha01_02_BattleScore1"
+                  },
+                  "LifeStepImmediately": false,
+                  "StackingFlag": "Default",
+                  "Chance": {
+                    "fixedValue": {
+                      "Value": -2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "MaxTargetCount": {
+                    "fixedValue": {
+                      "Value": -2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "InheritCaster": "Inherit",
+                  "IsShowUIMessageFromModel": true,
+                  "IsShowUIMessageOnUpdate": true,
+                  "ShowUIMessageDelayTime": 0.0,
+                  "ShowUIMessageInternalTime": -1.0,
+                  "ShowUIMessageCanMerge": true,
+                  "CustomOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "ForceVisible": false,
+                  "UseFixedPosition": true,
+                  "ScreenSpaceFloatMsg": false,
+                  "RefreshBuffUIDelayTime": 0.0,
+                  "IsSilenceAddAndStack": false,
+                  "AsSubModifier": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 1.712000000756234
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Hit03.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Prize03.prefab",
+                  "Unbind": false,
+                  "IsNeedFadeOut": true,
+                  "ForceImmediateFadeOut": false,
+                  "FadeOutRegionStart": -1.0,
+                  "FadeOutRegionEnd": -1.0,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            },
+            {
+              "NormalizedTime": {
+                "fixedValue": {
+                  "Value": 1.834000000730157
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_Skill02_Death.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MAZ_RecoverAll.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "None",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": false,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.ModifyTeamBoostPoint",
+                  "Team": "TeamLight",
+                  "ModifyFunction": "Add",
+                  "ModifyValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "IsSilence": false,
+                  "AllowDarkTeamModifyToNegative": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.ModifySPNew",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeamOnlyAddSPOnceForServant"
+                  },
+                  "AddValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "IgnoreBlock": false,
+                  "SyncToSummoner": true,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityVisible",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Visible": false,
+                  "MuteColliderWhenInvisible": true,
+                  "MuteTriggerWhenInvisible": false,
+                  "SetAudio": false,
+                  "Reason": "Task",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ]
+            }
+          ],
+          "ForceStart": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 0.40000000037252903
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "Die",
+          "AnimStateName": "Die",
+          "NormalizedTimeStart": {
+            "fixedValue": {
+              "Value": 0.6000000005587935
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTimeWait": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "NormalizedTransitionDuration": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "ForceStart": false,
+          "RandomHitAngle": false,
+          "WaitAnimState": true,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "TeamFormation",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ServantWhiteList": false
+    }
+  ],
+  "GlobalModifiers": {
+    "W1_Mecha01_02_BattleScore1": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Unique",
+      "LifeTime": -1,
+      "MaxLayer": 99,
+      "LayerAddWhenStack": {
+        "fixedValue": {
+          "Value": 0.0
+        },
+        "postfixExpr": {},
+        "IsDynamic": false
+      },
+      "WorkingTurn": "OwnerTurn",
+      "LifeStepMoment": "ModifierPhase2End",
+      "TargetSelectRestrictType": "Unknow",
+      "ApplyBehaviorFlagBindEffects": true,
+      "UseSnapshotEntity": false,
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetBattleAchievement",
+              "AchievementID": 30118,
+              "ModifyFunction": "Add",
+              "ModifyValue": {
+                "fixedValue": {
+                  "Value": 2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TagMatch": false,
+              "ClientAuthority": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ]
+        }
+      ],
+      "IsGlobalModifier": false
+    }
+  }
+}

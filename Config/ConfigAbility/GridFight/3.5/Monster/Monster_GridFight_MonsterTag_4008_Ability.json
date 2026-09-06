@@ -1,0 +1,3622 @@
+{
+  "AbilityList": [
+    {
+      "Name": "Monster_GridFight_MonsterTag_4008_PassiveSkillInitiate",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShieldController"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "DynamicValues": {
+            "MDF_MaxLayer": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "MDF_DamageAddedRatio": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "MDF_CrackedDamage": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "MDF_DamageResistance": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "MDF_CrackedDamageAfter": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "MDF_ModifySP": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            }
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    }
+  ],
+  "GlobalModifiers": {
+    "MGridFight_MonsterTag_4008_Heaven_StoneShieldController": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Unique",
+      "DynamicValues": {},
+      "LifeTime": -1,
+      "MaxLayer": 99,
+      "LayerAddWhenStack": {
+        "fixedValue": {
+          "Value": 0.0
+        },
+        "postfixExpr": {},
+        "IsDynamic": false
+      },
+      "WorkingTurn": "OwnerTurn",
+      "LifeStepMoment": "ModifierPhase2End",
+      "TargetSelectRestrictType": "Unknow",
+      "ApplyBehaviorFlagBindEffects": true,
+      "BehaviorFlagList": [
+        "KeepOnDeathrattle"
+      ],
+      "UseSnapshotEntity": false,
+      "_CallbackList": [
+        {
+          "Event": "OnPhase2",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "Flag": "STAT_CTRL",
+                    "ContainType": "Or",
+                    "AddedOrAlive": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "Flag": "DisableAction",
+                    "ContainType": "Or",
+                    "AddedOrAlive": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "Flag": "Break",
+                    "ContainType": "Or",
+                    "AddedOrAlive": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": {
+                      "Custom": false,
+                      "Value": "OneMore"
+                    },
+                    "AddedOrAlive": false,
+                    "IncludeRecordBeforeDeathrattle": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  }
+                ],
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": {
+                      "Custom": false,
+                      "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                    },
+                    "AddedOrAlive": false,
+                    "IncludeRecordBeforeDeathrattle": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "Monster_W4_Nikadory_00_EnhanceShield"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": true,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxLayer": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "LayerAddWhenStack": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicValues": {
+                            "MDF_DamageResistance": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "MDF_DamageAddedRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "MDF_CrackedDamage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByAnd",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByCompareModifierValue",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                            "ValueType": "Layer",
+                            "CompareType": "Greater",
+                            "CompareValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "Logic": "Or",
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          },
+                          {
+                            "$type": "RPG.GameCore.ByCompareModifierValue",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                            "ValueType": "Layer",
+                            "CompareType": "Less",
+                            "CompareValue": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "Logic": "Or",
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          }
+                        ],
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "TaskEnabled": true,
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByIsContainModifier",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": {
+                              "Custom": false,
+                              "Value": "Monster_W4_Nikadory_00_EnhanceShield"
+                            },
+                            "AddedOrAlive": false,
+                            "IncludeRecordBeforeDeathrattle": false,
+                            "TaskEnabled": true,
+                            "Inverse": true,
+                            "IsClientOnly": false
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AddModifier",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "AliveOnly": true,
+                              "ModifierName": {
+                                "Custom": false,
+                                "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                              },
+                              "LifeStepImmediately": false,
+                              "StackingFlag": "Default",
+                              "Chance": {
+                                "fixedValue": {
+                                  "Value": -2.0
+                                },
+                                "postfixExpr": {},
+                                "IsDynamic": false
+                              },
+                              "MaxTargetCount": {
+                                "fixedValue": {
+                                  "Value": -2.0
+                                },
+                                "postfixExpr": {},
+                                "IsDynamic": false
+                              },
+                              "MaxLayer": {
+                                "fixedValue": {
+                                  "Value": -69412.0
+                                },
+                                "postfixExpr": {},
+                                "IsDynamic": true
+                              },
+                              "LayerAddWhenStack": {
+                                "fixedValue": {
+                                  "Value": -69412.0
+                                },
+                                "postfixExpr": {},
+                                "IsDynamic": true
+                              },
+                              "DynamicValues": {
+                                "MDF_DamageResistance": {
+                                  "fixedValue": {
+                                    "Value": -69412.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": true
+                                },
+                                "MDF_DamageAddedRatio": {
+                                  "fixedValue": {
+                                    "Value": -69412.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": true
+                                },
+                                "MDF_CrackedDamage": {
+                                  "fixedValue": {
+                                    "Value": -69412.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": true
+                                }
+                              },
+                              "InheritCaster": "Inherit",
+                              "IsShowUIMessageFromModel": true,
+                              "IsShowUIMessageOnUpdate": true,
+                              "ShowUIMessageDelayTime": 0.0,
+                              "ShowUIMessageInternalTime": -1.0,
+                              "ShowUIMessageCanMerge": true,
+                              "CustomOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "ForceVisible": false,
+                              "UseFixedPosition": true,
+                              "ScreenSpaceFloatMsg": false,
+                              "RefreshBuffUIDelayTime": 0.0,
+                              "IsSilenceAddAndStack": false,
+                              "AsSubModifier": false,
+                              "TaskEnabled": true,
+                              "IsClientOnly": false
+                            }
+                          ],
+                          "IsClientOnly": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "TaskEnabled": true,
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByIsContainModifier",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": {
+                              "Custom": false,
+                              "Value": "Monster_GridFight_Nikadory_00_Passive"
+                            },
+                            "AddedOrAlive": false,
+                            "IncludeRecordBeforeDeathrattle": false,
+                            "TaskEnabled": true,
+                            "Inverse": true,
+                            "IsClientOnly": false
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.RemoveEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Strongman_00/Eff_Monster_W4_Strongman_00_Common_StoneShield_Hit.prefab",
+                              "Unbind": false,
+                              "IsNeedFadeOut": false,
+                              "ForceImmediateFadeOut": true,
+                              "FadeOutRegionStart": -1.0,
+                              "FadeOutRegionEnd": -1.0,
+                              "TaskEnabled": true,
+                              "IsClientOnly": true
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "IsAttachToTargetEntity": false,
+                              "IsAttachToTimeline": false,
+                              "IsActiveLevelUpOverride": false,
+                              "IsHideTargetEntityWhenLoading": false,
+                              "AliveOnly": false,
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Strongman_00/Eff_Monster_W4_Strongman_00_Common_StoneShield_Hit.prefab",
+                              "PositionOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "RotationOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "Scale": {
+                                "x": -1.0,
+                                "y": -1.0,
+                                "z": -1.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 1.7320507764816284,
+                                "sqrMagnitude": 3.0
+                              },
+                              "ScaleAdaptType": "None",
+                              "Delay": 0.0,
+                              "IsNeedFadeIn": true,
+                              "IsEnableReplay": false,
+                              "ForceSimulateImmediately": true,
+                              "AddColliderHeightOffset": false,
+                              "ParamEntityUsage": "LookAt",
+                              "TowardRotatePitchOnly": false,
+                              "TowardMaxPitchAngle": 90.0,
+                              "IsAttachToCaster": false,
+                              "ExecuteOnSkip": false,
+                              "MinMutexTime": 0.0,
+                              "MinMutexType": "Entity",
+                              "MaxMutexCount": 1,
+                              "IgnoreFadeOutMutexError": false,
+                              "SyncPropState": false,
+                              "FollowCasterTimeSlow": false,
+                              "ForbidLod": false,
+                              "TaskEnabled": true,
+                              "IsClientOnly": true
+                            }
+                          ],
+                          "IsClientOnly": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "TaskEnabled": true,
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByIsContainModifier",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": {
+                              "Custom": false,
+                              "Value": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance"
+                            },
+                            "AddedOrAlive": false,
+                            "IncludeRecordBeforeDeathrattle": false,
+                            "TaskEnabled": true,
+                            "Inverse": true,
+                            "IsClientOnly": false
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.RemoveEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Strongman_00/Eff_Monster_W4_Strongman_00_Common_StoneShield_OutSideColor.prefab",
+                              "Unbind": false,
+                              "IsNeedFadeOut": false,
+                              "ForceImmediateFadeOut": true,
+                              "FadeOutRegionStart": -1.0,
+                              "FadeOutRegionEnd": -1.0,
+                              "TaskEnabled": true,
+                              "IsClientOnly": true
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "IsAttachToTargetEntity": false,
+                              "IsAttachToTimeline": false,
+                              "IsActiveLevelUpOverride": false,
+                              "IsHideTargetEntityWhenLoading": false,
+                              "AliveOnly": false,
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Strongman_00/Eff_Monster_W4_Strongman_00_Common_StoneShield_OutSideColor.prefab",
+                              "PositionOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "RotationOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "Scale": {
+                                "x": -1.0,
+                                "y": -1.0,
+                                "z": -1.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 1.7320507764816284,
+                                "sqrMagnitude": 3.0
+                              },
+                              "ScaleAdaptType": "None",
+                              "Delay": 0.0,
+                              "IsNeedFadeIn": true,
+                              "IsEnableReplay": false,
+                              "ForceSimulateImmediately": true,
+                              "AddColliderHeightOffset": false,
+                              "ParamEntityUsage": "LookAt",
+                              "TowardRotatePitchOnly": false,
+                              "TowardMaxPitchAngle": 90.0,
+                              "IsAttachToCaster": false,
+                              "ExecuteOnSkip": false,
+                              "MinMutexTime": 0.0,
+                              "MinMutexType": "Entity",
+                              "MaxMutexCount": 1,
+                              "IgnoreFadeOutMutexError": false,
+                              "SyncPropState": false,
+                              "FollowCasterTimeSlow": false,
+                              "ForbidLod": false,
+                              "TaskEnabled": true,
+                              "IsClientOnly": true
+                            }
+                          ],
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "TaskEnabled": true,
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareModifierValue",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                            "ValueType": "Layer",
+                            "CompareType": "Equal",
+                            "CompareValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "Logic": "Or",
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "TaskEnabled": true,
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByIsContainModifier",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetAlias",
+                                  "Alias": "ModifierOwnerEntity"
+                                },
+                                "ModifierName": {
+                                  "Custom": false,
+                                  "Value": "Monster_W4_Nikadory_00_EnhanceShield"
+                                },
+                                "AddedOrAlive": false,
+                                "IncludeRecordBeforeDeathrattle": false,
+                                "TaskEnabled": true,
+                                "Inverse": true,
+                                "IsClientOnly": false
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.AddModifier",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ModifierOwnerEntity"
+                                  },
+                                  "AliveOnly": true,
+                                  "ModifierName": {
+                                    "Custom": false,
+                                    "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                                  },
+                                  "LifeStepImmediately": false,
+                                  "StackingFlag": "Default",
+                                  "Chance": {
+                                    "fixedValue": {
+                                      "Value": -2.0
+                                    },
+                                    "postfixExpr": {},
+                                    "IsDynamic": false
+                                  },
+                                  "MaxTargetCount": {
+                                    "fixedValue": {
+                                      "Value": -2.0
+                                    },
+                                    "postfixExpr": {},
+                                    "IsDynamic": false
+                                  },
+                                  "MaxLayer": {
+                                    "fixedValue": {
+                                      "Value": -69412.0
+                                    },
+                                    "postfixExpr": {},
+                                    "IsDynamic": true
+                                  },
+                                  "LayerAddWhenStack": {
+                                    "fixedValue": {
+                                      "Value": -69412.0
+                                    },
+                                    "postfixExpr": {},
+                                    "IsDynamic": true
+                                  },
+                                  "DynamicValues": {
+                                    "MDF_DamageResistance": {
+                                      "fixedValue": {
+                                        "Value": -69412.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": true
+                                    },
+                                    "MDF_DamageAddedRatio": {
+                                      "fixedValue": {
+                                        "Value": -69412.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": true
+                                    },
+                                    "MDF_CrackedDamage": {
+                                      "fixedValue": {
+                                        "Value": -69412.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": true
+                                    }
+                                  },
+                                  "InheritCaster": "Inherit",
+                                  "IsShowUIMessageFromModel": true,
+                                  "IsShowUIMessageOnUpdate": true,
+                                  "ShowUIMessageDelayTime": 0.0,
+                                  "ShowUIMessageInternalTime": -1.0,
+                                  "ShowUIMessageCanMerge": true,
+                                  "CustomOffset": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0,
+                                    "IsNaN": false,
+                                    "IsInfinity": false,
+                                    "IsPositiveInfinity": false,
+                                    "IsNegativeInfinity": false,
+                                    "magnitude": 0.0,
+                                    "sqrMagnitude": 0.0
+                                  },
+                                  "ForceVisible": false,
+                                  "UseFixedPosition": true,
+                                  "ScreenSpaceFloatMsg": false,
+                                  "RefreshBuffUIDelayTime": 0.0,
+                                  "IsSilenceAddAndStack": false,
+                                  "AsSubModifier": false,
+                                  "TaskEnabled": true,
+                                  "IsClientOnly": false
+                                }
+                              ],
+                              "IsClientOnly": false
+                            }
+                          ],
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "AliveOnly": true,
+              "ModifierName": {
+                "Custom": false,
+                "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+              },
+              "LifeStepImmediately": false,
+              "StackingFlag": "Default",
+              "Chance": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MaxTargetCount": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MaxLayer": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "LayerAddWhenStack": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "DynamicValues": {
+                "MDF_DamageResistance": {
+                  "fixedValue": {
+                    "Value": -69412.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": true
+                },
+                "MDF_DamageAddedRatio": {
+                  "fixedValue": {
+                    "Value": -69412.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": true
+                },
+                "MDF_CrackedDamage": {
+                  "fixedValue": {
+                    "Value": -69412.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": true
+                }
+              },
+              "InheritCaster": "Inherit",
+              "IsShowUIMessageFromModel": true,
+              "IsShowUIMessageOnUpdate": true,
+              "ShowUIMessageDelayTime": 0.0,
+              "ShowUIMessageInternalTime": -1.0,
+              "ShowUIMessageCanMerge": true,
+              "CustomOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "ForceVisible": false,
+              "UseFixedPosition": true,
+              "ScreenSpaceFloatMsg": false,
+              "RefreshBuffUIDelayTime": 0.0,
+              "IsSilenceAddAndStack": false,
+              "AsSubModifier": false,
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            }
+          ]
+        },
+        {
+          "Event": "OnBeforeDying",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Strongman_00/Eff_Monster_W4_Strongman_00_Common_StoneShield_Hit.prefab",
+              "Unbind": false,
+              "IsNeedFadeOut": false,
+              "ForceImmediateFadeOut": true,
+              "FadeOutRegionStart": -1.0,
+              "FadeOutRegionEnd": -1.0,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ]
+        },
+        {
+          "Event": "OnAfterBeingAttacked",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": {
+                      "Custom": false,
+                      "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                    },
+                    "AddedOrAlive": false,
+                    "IncludeRecordBeforeDeathrattle": false,
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareModifierValue",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                    "ValueType": "Layer",
+                    "CompareType": "Greater",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "Logic": "Or",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  }
+                ],
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareModifierValue",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                    "ValueType": "Layer",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 2.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "Logic": "Or",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ModifySPNew",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "AddMaxSPRatio": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "IgnoreBlock": false,
+                      "SyncToSummoner": true,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByTargetAliveState",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "AliveStateMask": "Mask_AliveOnly",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PerformDelayExecute",
+                          "PerformTaskList": [
+                            {
+                              "$type": "RPG.GameCore.ShowEntityFloatMessage",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity"
+                              },
+                              "AliveOnly": true,
+                              "ContentID": {
+                                "Hash": 516026617,
+                                "Hash64": 15577724510652899517
+                              },
+                              "IsShowUIMessageFromModel": true,
+                              "MessageType": "Default",
+                              "ShowUIMessageDelayTime": 0.0,
+                              "ShowUIMessageInternalTime": -1.0,
+                              "CustomOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "ForceVisible": false,
+                              "UseFixedPosition": true,
+                              "ScreenSpaceFloatMsg": false,
+                              "TaskEnabled": true,
+                              "IsClientOnly": true
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity"
+                              },
+                              "IsAttachToTargetEntity": false,
+                              "IsAttachToTimeline": false,
+                              "IsActiveLevelUpOverride": false,
+                              "IsHideTargetEntityWhenLoading": false,
+                              "AliveOnly": true,
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MAZ_RecoverSP.prefab",
+                              "PositionOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "RotationOffset": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 0.0,
+                                "sqrMagnitude": 0.0
+                              },
+                              "Scale": {
+                                "x": -1.0,
+                                "y": -1.0,
+                                "z": -1.0,
+                                "IsNaN": false,
+                                "IsInfinity": false,
+                                "IsPositiveInfinity": false,
+                                "IsNegativeInfinity": false,
+                                "magnitude": 1.7320507764816284,
+                                "sqrMagnitude": 3.0
+                              },
+                              "ScaleAdaptType": "None",
+                              "Delay": 0.0,
+                              "IsNeedFadeIn": true,
+                              "IsEnableReplay": false,
+                              "ForceSimulateImmediately": true,
+                              "AddColliderHeightOffset": false,
+                              "ParamEntityUsage": "LookAt",
+                              "TowardRotatePitchOnly": false,
+                              "TowardMaxPitchAngle": 90.0,
+                              "IsAttachToCaster": false,
+                              "ExecuteOnSkip": false,
+                              "MinMutexTime": 0.0,
+                              "MinMutexType": "None",
+                              "MaxMutexCount": 1,
+                              "IgnoreFadeOutMutexError": false,
+                              "SyncPropState": false,
+                              "FollowCasterTimeSlow": false,
+                              "ForbidLod": false,
+                              "TaskEnabled": true,
+                              "IsClientOnly": true
+                            }
+                          ],
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": false,
+                          "Delay": {
+                            "fixedValue": {
+                              "Value": 1.0000000009313226
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "TaskEnabled": true,
+                          "IsClientOnly": true
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.ShowEntityFloatMessage",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ContentID": {
+                            "Hash": 516026617,
+                            "Hash64": 15577724510652899517
+                          },
+                          "IsShowUIMessageFromModel": true,
+                          "MessageType": "Default",
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": true
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffect",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "IsAttachToTargetEntity": false,
+                          "IsAttachToTimeline": false,
+                          "IsActiveLevelUpOverride": false,
+                          "IsHideTargetEntityWhenLoading": false,
+                          "AliveOnly": true,
+                          "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MAZ_RecoverSP.prefab",
+                          "PositionOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "RotationOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "Scale": {
+                            "x": -1.0,
+                            "y": -1.0,
+                            "z": -1.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 1.7320507764816284,
+                            "sqrMagnitude": 3.0
+                          },
+                          "ScaleAdaptType": "None",
+                          "Delay": 0.0,
+                          "IsNeedFadeIn": true,
+                          "IsEnableReplay": false,
+                          "ForceSimulateImmediately": true,
+                          "AddColliderHeightOffset": false,
+                          "ParamEntityUsage": "LookAt",
+                          "TowardRotatePitchOnly": false,
+                          "TowardMaxPitchAngle": 90.0,
+                          "IsAttachToCaster": false,
+                          "ExecuteOnSkip": false,
+                          "MinMutexTime": 0.0,
+                          "MinMutexType": "None",
+                          "MaxMutexCount": 1,
+                          "IgnoreFadeOutMutexError": false,
+                          "SyncPropState": false,
+                          "FollowCasterTimeSlow": false,
+                          "ForbidLod": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": true
+                        }
+                      ],
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "TaskEnabled": true,
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByIsContainModifier",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "ModifierName": {
+                              "Custom": false,
+                              "Value": "MModifier_Monster_AML_Minion03_01_Halo"
+                            },
+                            "AddedOrAlive": false,
+                            "IncludeRecordBeforeDeathrattle": false,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.ShowUIPage",
+                              "TaskEnabled": true,
+                              "AssetPath": "UI/Common/Widget/BattleSelfStatusHint.prefab",
+                              "WaitShowPageFinish": false,
+                              "UITextNodes": [
+                                {
+                                  "TextPath": "AreaInfoPanel/Title/Text",
+                                  "TextContent": {
+                                    "Hash": -94969513,
+                                    "Hash64": 2093662370958685260
+                                  }
+                                }
+                              ],
+                              "LifeTime": 2.0,
+                              "DisplayTarget": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity"
+                              },
+                              "IsClientOnly": true
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.ShowUIPage",
+                              "TaskEnabled": true,
+                              "AssetPath": "UI/Common/Widget/BattleSelfStatusHint.prefab",
+                              "WaitShowPageFinish": false,
+                              "UITextNodes": [
+                                {
+                                  "TextPath": "AreaInfoPanel/Title/Text",
+                                  "TextContent": {
+                                    "Hash": -1543786167,
+                                    "Hash64": 15636326861219585152
+                                  }
+                                }
+                              ],
+                              "LifeTime": 2.0,
+                              "DisplayTarget": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity"
+                              },
+                              "IsClientOnly": true
+                            }
+                          ],
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "True",
+                      "EnableSelectedState": "Keep",
+                      "State": "CoolDown",
+                      "CenterStyle": 10,
+                      "OuterState": 0,
+                      "CurrentCount": {
+                        "fixedValue": {
+                          "Value": 0.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Keep",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByProperty",
+                      "DynamicKey": "MDF_MaxHP",
+                      "ContextScope": "Context",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Value": "MaxHP",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareMonsterRank",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "CompareType": "Less",
+                        "CompareValue": 3,
+                        "ResultWhenNotMonster": true,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.DamageByAttackProperty",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AttackProperty": {
+                            "DamageType": {
+                              "SourceType": "Specify",
+                              "DamageType": "Imaginary"
+                            },
+                            "FormulaType": "ByMaxHP",
+                            "DamagePercentage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "DamageValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ExtraFormulaType": "Unknown",
+                            "ExtraDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "StanceValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitSplitRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "DamageMulRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "IsIndirect": false,
+                            "IsNotHit": false,
+                            "IntegerizeCategory": "None",
+                            "SPHitRatio": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ForceMatchStanceWeakness": false,
+                            "AttackType": "Pursued",
+                            "DoNotTriggerBreak": false,
+                            "BreakDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ElationDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FinalFormulaType": "ByBaseDamage",
+                            "IsMortallyWonded": false,
+                            "IsNonlethal": false,
+                            "FrameHalt": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FrameHaltActiveNextFrame": false,
+                            "IsFaceToHitDir": false,
+                            "HitAnimation": "Hit_H",
+                            "HitEffectMinMutexTime": {
+                              "fixedValue": {
+                                "Value": 0.10000000149011612
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectMaxMutexCount": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectHeight": -1.0,
+                            "IsHitEffectOffsetByScale": false,
+                            "HitEffectOffsetAngle": 0.0,
+                            "HitTimeSlowType": "None",
+                            "HitTimeSlowIntensity": "Light",
+                            "HitPosHeight": 0.75,
+                            "HitAngleHorizontal": 0.0,
+                            "RandomHitAngleHorizontal": 0.0,
+                            "HitAngleVertical": 0.0,
+                            "TriggerHPBarAnimation": false,
+                            "ScreenSpaceFloatMsg": false,
+                            "InheritDamageType": false,
+                            "InheritHitEffect": false,
+                            "InheritHitAnimation": false,
+                            "InheritHitPos": false
+                          },
+                          "TriggerHitSound": false,
+                          "CanTriggerLastKill": true,
+                          "IsConvert": false,
+                          "AttackType": "Pursued",
+                          "DisplayData": {
+                            "UIMessageHeight": 1.5,
+                            "HorizontalOffset": 0.0,
+                            "DitherRangeX": 0.05000000074505806,
+                            "DitherRangeY": 0.05000000074505806,
+                            "AttachPoint": "SelectRoot",
+                            "Duration": 1.5,
+                            "Scale": 2.0,
+                            "FixedPosition": true,
+                            "ForceVisible": false,
+                            "ExtraDesc": {
+                              "Hash": 0,
+                              "Hash64": 0
+                            },
+                            "ElementDamageType": "Normal",
+                            "SkipAttachPointXZOffset": false
+                          },
+                          "CanOverkill": true,
+                          "PerformanceDelay": {
+                            "fixedValue": {
+                              "Value": 1.0000000009313226
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "IsHitAnimPerformanceDelay": true,
+                          "DealAfterRootHitEnd": false,
+                          "EqualSplitInTargets": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.DamageByAttackProperty",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AttackProperty": {
+                            "DamageType": {
+                              "SourceType": "Specify",
+                              "DamageType": "Imaginary"
+                            },
+                            "FormulaType": "ByMaxHP",
+                            "DamagePercentage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "DamageValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ExtraFormulaType": "Unknown",
+                            "ExtraDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "StanceValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitSplitRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "DamageMulRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "IsIndirect": false,
+                            "IsNotHit": false,
+                            "IntegerizeCategory": "None",
+                            "SPHitRatio": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ForceMatchStanceWeakness": false,
+                            "AttackType": "Pursued",
+                            "DoNotTriggerBreak": false,
+                            "BreakDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ElationDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FinalFormulaType": "ByBaseDamage",
+                            "IsMortallyWonded": false,
+                            "IsNonlethal": false,
+                            "FrameHalt": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FrameHaltActiveNextFrame": false,
+                            "IsFaceToHitDir": false,
+                            "HitAnimation": "Hit_H",
+                            "HitEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Claymore_00/Eff_Monster_W4_Claymore_00_Common_StoneShield_Break.prefab",
+                            "HitEffectMinMutexTime": {
+                              "fixedValue": {
+                                "Value": 0.10000000149011612
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectMaxMutexCount": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectHeight": -1.0,
+                            "IsHitEffectOffsetByScale": false,
+                            "HitEffectOffsetAngle": 0.0,
+                            "HitTimeSlowType": "None",
+                            "HitTimeSlowIntensity": "Light",
+                            "HitPosHeight": 0.75,
+                            "HitAngleHorizontal": 0.0,
+                            "RandomHitAngleHorizontal": 0.0,
+                            "HitAngleVertical": 0.0,
+                            "TriggerHPBarAnimation": false,
+                            "ScreenSpaceFloatMsg": false,
+                            "InheritDamageType": false,
+                            "InheritHitEffect": false,
+                            "InheritHitAnimation": false,
+                            "InheritHitPos": false
+                          },
+                          "TriggerHitSound": false,
+                          "CanTriggerLastKill": true,
+                          "IsConvert": false,
+                          "AttackType": "Pursued",
+                          "DisplayData": {
+                            "UIMessageHeight": 1.5,
+                            "HorizontalOffset": 0.0,
+                            "DitherRangeX": 0.05000000074505806,
+                            "DitherRangeY": 0.05000000074505806,
+                            "AttachPoint": "SelectRoot",
+                            "Duration": 1.5,
+                            "Scale": 2.0,
+                            "FixedPosition": true,
+                            "ForceVisible": false,
+                            "ExtraDesc": {
+                              "Hash": 0,
+                              "Hash64": 0
+                            },
+                            "ElementDamageType": "Normal",
+                            "SkipAttachPointXZOffset": false
+                          },
+                          "CanOverkill": true,
+                          "PerformanceDelay": {
+                            "fixedValue": {
+                              "Value": 1.0000000009313226
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "IsHitAnimPerformanceDelay": true,
+                          "DealAfterRootHitEnd": false,
+                          "EqualSplitInTargets": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareModifierValue",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                        "ValueType": "Layer",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "Logic": "Or",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareModifierValue",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                    "ValueType": "Layer",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "Logic": "Or",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareMonsterRank",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "CompareType": "Less",
+                        "CompareValue": 3,
+                        "ResultWhenNotMonster": true,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.DamageByAttackProperty",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AttackProperty": {
+                            "DamageType": {
+                              "SourceType": "Specify",
+                              "DamageType": "Imaginary"
+                            },
+                            "FormulaType": "ByMaxHP",
+                            "DamagePercentage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "DamageValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ExtraFormulaType": "Unknown",
+                            "ExtraDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "StanceValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitSplitRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "DamageMulRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "IsIndirect": false,
+                            "IsNotHit": false,
+                            "IntegerizeCategory": "None",
+                            "SPHitRatio": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ForceMatchStanceWeakness": false,
+                            "AttackType": "Pursued",
+                            "DoNotTriggerBreak": false,
+                            "BreakDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ElationDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FinalFormulaType": "ByBaseDamage",
+                            "IsMortallyWonded": false,
+                            "IsNonlethal": false,
+                            "FrameHalt": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FrameHaltActiveNextFrame": false,
+                            "IsFaceToHitDir": false,
+                            "HitAnimation": "Hit_H",
+                            "HitEffectMinMutexTime": {
+                              "fixedValue": {
+                                "Value": 0.10000000149011612
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectMaxMutexCount": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectHeight": -1.0,
+                            "IsHitEffectOffsetByScale": false,
+                            "HitEffectOffsetAngle": 0.0,
+                            "HitTimeSlowType": "None",
+                            "HitTimeSlowIntensity": "Light",
+                            "HitPosHeight": 0.75,
+                            "HitAngleHorizontal": 0.0,
+                            "RandomHitAngleHorizontal": 0.0,
+                            "HitAngleVertical": 0.0,
+                            "TriggerHPBarAnimation": false,
+                            "ScreenSpaceFloatMsg": false,
+                            "InheritDamageType": false,
+                            "InheritHitEffect": false,
+                            "InheritHitAnimation": false,
+                            "InheritHitPos": false
+                          },
+                          "TriggerHitSound": false,
+                          "CanTriggerLastKill": true,
+                          "IsConvert": false,
+                          "AttackType": "Pursued",
+                          "DisplayData": {
+                            "UIMessageHeight": 1.5,
+                            "HorizontalOffset": 0.0,
+                            "DitherRangeX": 0.05000000074505806,
+                            "DitherRangeY": 0.05000000074505806,
+                            "AttachPoint": "SelectRoot",
+                            "Duration": 1.5,
+                            "Scale": 2.0,
+                            "FixedPosition": true,
+                            "ForceVisible": false,
+                            "ExtraDesc": {
+                              "Hash": 0,
+                              "Hash64": 0
+                            },
+                            "ElementDamageType": "Normal",
+                            "SkipAttachPointXZOffset": false
+                          },
+                          "CanOverkill": true,
+                          "PerformanceDelay": {
+                            "fixedValue": {
+                              "Value": 1.0000000009313226
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "IsHitAnimPerformanceDelay": true,
+                          "DealAfterRootHitEnd": false,
+                          "EqualSplitInTargets": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.DamageByAttackProperty",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AttackProperty": {
+                            "DamageType": {
+                              "SourceType": "Specify",
+                              "DamageType": "Imaginary"
+                            },
+                            "FormulaType": "ByMaxHP",
+                            "DamagePercentage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "DamageValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ExtraFormulaType": "Unknown",
+                            "ExtraDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "StanceValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitSplitRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "DamageMulRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "IsIndirect": false,
+                            "IsNotHit": false,
+                            "IntegerizeCategory": "None",
+                            "SPHitRatio": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ForceMatchStanceWeakness": false,
+                            "AttackType": "Pursued",
+                            "DoNotTriggerBreak": false,
+                            "BreakDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ElationDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FinalFormulaType": "ByBaseDamage",
+                            "IsMortallyWonded": false,
+                            "IsNonlethal": false,
+                            "FrameHalt": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FrameHaltActiveNextFrame": false,
+                            "IsFaceToHitDir": false,
+                            "HitAnimation": "Hit_H",
+                            "HitEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Claymore_00/Eff_Monster_W4_Claymore_00_Common_StoneShield_Break02.prefab",
+                            "HitEffectMinMutexTime": {
+                              "fixedValue": {
+                                "Value": 0.10000000149011612
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectMaxMutexCount": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectHeight": -1.0,
+                            "IsHitEffectOffsetByScale": false,
+                            "HitEffectOffsetAngle": 0.0,
+                            "HitTimeSlowType": "None",
+                            "HitTimeSlowIntensity": "Light",
+                            "HitPosHeight": 0.75,
+                            "HitAngleHorizontal": 0.0,
+                            "RandomHitAngleHorizontal": 0.0,
+                            "HitAngleVertical": 0.0,
+                            "TriggerHPBarAnimation": false,
+                            "ScreenSpaceFloatMsg": false,
+                            "InheritDamageType": false,
+                            "InheritHitEffect": false,
+                            "InheritHitAnimation": false,
+                            "InheritHitPos": false
+                          },
+                          "TriggerHitSound": false,
+                          "CanTriggerLastKill": true,
+                          "IsConvert": false,
+                          "AttackType": "Pursued",
+                          "DisplayData": {
+                            "UIMessageHeight": 1.5,
+                            "HorizontalOffset": 0.0,
+                            "DitherRangeX": 0.05000000074505806,
+                            "DitherRangeY": 0.05000000074505806,
+                            "AttachPoint": "SelectRoot",
+                            "Duration": 1.5,
+                            "Scale": 2.0,
+                            "FixedPosition": true,
+                            "ForceVisible": false,
+                            "ExtraDesc": {
+                              "Hash": 0,
+                              "Hash64": 0
+                            },
+                            "ElementDamageType": "Normal",
+                            "SkipAttachPointXZOffset": false
+                          },
+                          "CanOverkill": true,
+                          "PerformanceDelay": {
+                            "fixedValue": {
+                              "Value": 1.0000000009313226
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "IsHitAnimPerformanceDelay": true,
+                          "DealAfterRootHitEnd": false,
+                          "EqualSplitInTargets": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ]
+        },
+        {
+          "Event": "OnModifierRemove",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAny",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCheckModifierCallBackName",
+                    "ModifierName": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCheckModifierCallBackName",
+                    "ModifierName": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance_Nikadory",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  }
+                ],
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_MaxLayer"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareModifierValue",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                        "ValueType": "Layer",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "Logic": "Or",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                      "OperationType": "First",
+                      "ValueType": "Layer",
+                      "Multiplier": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": "MDF_CurLayer",
+                      "ContextScope": "Context",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "MDF_AddMaxLayer"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Less",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxLayer": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "LayerAddWhenStack": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicValues": {
+                            "MDF_DamageResistance": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "MDF_DamageAddedRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "MDF_CrackedDamage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxLayer": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "LayerAddWhenStack": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicValues": {
+                            "MDF_DamageResistance": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "MDF_DamageAddedRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "MDF_CrackedDamage": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "Keep",
+                      "EnableSelectedState": "Keep",
+                      "State": "Keep",
+                      "CenterStyle": -1,
+                      "OuterState": -1,
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Normal",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "Monster_W4_Nikadory_00_EnhanceShield"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": true,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "Active": "Keep",
+                          "EnableSelectedState": "Keep",
+                          "State": "Keep",
+                          "CenterStyle": 10,
+                          "OuterState": 2,
+                          "IconPath": "SpriteOutput/BuffIcon/Inlevel/IconMonster_Common_StoneShield.png",
+                          "MaxCount": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "EnergyBarType": "Normal",
+                          "BossDotStyle": -1,
+                          "NumColor": "Normal",
+                          "TaskEnabled": true,
+                          "IsClientOnly": true
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ]
+        },
+        {
+          "Event": "OnModifierOnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckModifierCallBackName",
+                "ModifierName": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_OriginalMaxLayer"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByCopying",
+                  "TaskEnabled": true,
+                  "FromTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "FromDynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_AddMaxLayer"
+                  },
+                  "FromModifierName": {
+                    "Custom": false,
+                    "Value": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance"
+                  },
+                  "ToTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ToDynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_AddMaxLayer"
+                  },
+                  "TargetContextScope": "Context",
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_MaxLayer"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareModifierValue",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                        "ValueType": "Layer",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "Logic": "Or",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxLayer": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "LayerAddWhenStack": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicValues": {
+                        "MDF_DamageResistance": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "MDF_DamageAddedRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "MDF_CrackedDamage": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "Keep",
+                      "EnableSelectedState": "Keep",
+                      "State": "Keep",
+                      "CenterStyle": -1,
+                      "OuterState": -1,
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Golden",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "Keep",
+                      "EnableSelectedState": "Keep",
+                      "State": "Keep",
+                      "CenterStyle": 10,
+                      "OuterState": 2,
+                      "IconPath": "SpriteOutput/BuffIcon/Inlevel/IconMonster_Common_StoneShield.png",
+                      "MaxCount": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Golden",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckModifierCallBackName",
+                "ModifierName": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance_Nikadory",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_OriginalMaxLayer"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByCopying",
+                  "TaskEnabled": true,
+                  "FromTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "FromDynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_AddMaxLayer"
+                  },
+                  "FromModifierName": {
+                    "Custom": false,
+                    "Value": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance_Nikadory"
+                  },
+                  "ToTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ToDynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_AddMaxLayer"
+                  },
+                  "TargetContextScope": "Context",
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "MDF_MaxLayer"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareModifierValue",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                        "ValueType": "Layer",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "Logic": "Or",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_MonsterTag_4008_Heaven_StoneShield"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxLayer": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "LayerAddWhenStack": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicValues": {
+                        "MDF_DamageResistance": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "MDF_DamageAddedRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "MDF_CrackedDamage": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "Keep",
+                      "EnableSelectedState": "Keep",
+                      "State": "Keep",
+                      "CenterStyle": -1,
+                      "OuterState": -1,
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Golden",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "Monster_W4_Nikadory_00_EnhanceShield"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": true,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "Active": "Keep",
+                          "EnableSelectedState": "Keep",
+                          "State": "Keep",
+                          "CenterStyle": 10,
+                          "OuterState": 2,
+                          "IconPath": "SpriteOutput/BuffIcon/Inlevel/IconMonster_Common_StoneShield.png",
+                          "MaxCount": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "EnergyBarType": "Normal",
+                          "BossDotStyle": -1,
+                          "NumColor": "Golden",
+                          "TaskEnabled": true,
+                          "IsClientOnly": true
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ]
+        }
+      ],
+      "IsGlobalModifier": false
+    },
+    "MGridFight_MonsterTag_4008_Heaven_StoneShield": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Replace",
+      "DynamicValues": {},
+      "LifeTime": -1,
+      "MaxLayer": 99,
+      "LayerAddWhenStack": {
+        "fixedValue": {
+          "Value": -2.0
+        },
+        "postfixExpr": {},
+        "IsDynamic": false
+      },
+      "WorkingTurn": "OwnerTurn",
+      "LifeStepMoment": "ModifierPhase2End",
+      "TargetSelectRestrictType": "Unknow",
+      "ApplyBehaviorFlagBindEffects": true,
+      "UseSnapshotEntity": false,
+      "_CallbackList": [
+        {
+          "Event": "OnDestroy",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AudioSetRTPCValueByRatio",
+              "RTPCName": "Param_Battle_Monster_Stance_Count_TianJie",
+              "MaxValue": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "CurValue": {
+                "fixedValue": {
+                  "Value": 0.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "Priority": 0,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "OperationType": "First",
+              "ValueType": "Layer",
+              "Multiplier": {
+                "fixedValue": {
+                  "Value": 2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "DynamicKey": "MDF_Layer",
+              "ContextScope": "Context",
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "OperationType": "First",
+              "ValueType": "MaxLayer",
+              "Multiplier": {
+                "fixedValue": {
+                  "Value": 2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "DynamicKey": "MDF_MaxLayer",
+              "ContextScope": "Context",
+              "TaskEnabled": true,
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.AudioSetRTPCValueByRatio",
+              "RTPCName": "Param_Battle_Monster_Stance_Count_TianJie",
+              "MaxValue": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "CurValue": {
+                "fixedValue": {
+                  "Value": -69412.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": true
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareModifierValue",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                "ValueType": "Layer",
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "fixedValue": {
+                    "Value": 0.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "Logic": "Or",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Property": "AllDamageReduce",
+                  "PropertyValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "Silence": false,
+                  "IsRefresh": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Property": "AllDamageTypeAddedRatio",
+                  "PropertyValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "Silence": false,
+                  "IsRefresh": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "ModifierName": {
+                  "Custom": false,
+                  "Value": "MModifier_Monster_GridFight_Minion03_01_StoneShieldEnhance"
+                },
+                "AddedOrAlive": false,
+                "IncludeRecordBeforeDeathrattle": false,
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Active": "True",
+                  "EnableSelectedState": "Keep",
+                  "State": "Active",
+                  "CenterStyle": 10,
+                  "OuterState": 2,
+                  "IconPath": "SpriteOutput/BuffIcon/Inlevel/IconMonster_Common_StoneShield.png",
+                  "MaxCount": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "CurrentCount": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "EnergyBarType": "Normal",
+                  "BossDotStyle": -1,
+                  "NumColor": "Keep",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareModifierValue",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": "MGridFight_MonsterTag_4008_Heaven_StoneShield",
+                    "ValueType": "Layer",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "Logic": "Or",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "True",
+                      "EnableSelectedState": "Keep",
+                      "State": "CoolDown",
+                      "CenterStyle": 10,
+                      "OuterState": 0,
+                      "IconPath": "SpriteOutput/BuffIcon/Inlevel/IconMonster_Common_StoneShield.png",
+                      "MaxCount": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "CurrentCount": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Keep",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetMonsterEnergyBarState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Active": "True",
+                      "EnableSelectedState": "Keep",
+                      "State": "Active",
+                      "CenterStyle": 10,
+                      "OuterState": 2,
+                      "IconPath": "SpriteOutput/BuffIcon/Inlevel/IconMonster_Common_StoneShield.png",
+                      "MaxCount": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "CurrentCount": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "EnergyBarType": "Normal",
+                      "BossDotStyle": -1,
+                      "NumColor": "Keep",
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ]
+        }
+      ],
+      "IsGlobalModifier": false
+    }
+  }
+}

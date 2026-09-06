@@ -1,0 +1,1915 @@
+{
+  "AbilityList": [
+    {
+      "Name": "LocalPlayer_SilverWolf999_00_NormalAtk01",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntityOrNone",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "Freelook3rdConfig": {
+              "ExportToJson": false,
+              "DampChangeParam": {
+                "ExportToJson": false,
+                "TargetValue": {
+                  "x": 1.0,
+                  "y": 1.0,
+                  "z": 1.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 1.7320507764816284,
+                  "sqrMagnitude": 3.0
+                },
+                "Time": 0.10000000149011612,
+                "Duration": 0.0,
+                "ChangeCurvePath": "Camera/BlendCurve/AttackDampCurve.asset",
+                "RecoveryTime": 0.25,
+                "RecoveryCurvePath": "Camera/BlendCurve/AttackDampRecoverCurve.asset",
+                "IsWorldOffset": false,
+                "UsePlayerToLookAtTargetForward": false,
+                "RecoveryToDefaultValue": false
+              },
+              "DampChangeParamPriority": 0
+            },
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByHaveAbilityTarget",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": false
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.LookAt",
+              "PerformerType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "TargetType": "AbilityTargetEntity",
+              "ToTargetRatio": 1.0,
+              "AngleOffset": 0.0,
+              "Duration": 0.25,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AdvLocalPlayer"
+              },
+              "AnimLogicState": "NormalAtk",
+              "AnimStateName": "Attack_1",
+              "NormalizedTimeStart": 0.0,
+              "TransitionDuration": 0.05000000074505806,
+              "StopWhenHitOthers": true,
+              "ForbidCrossfade": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "Attack_1",
+              "NormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.07599999895319343
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "SkipWhenStateChange": false,
+              "IgnoreStateChangeCheck": false,
+              "WaitForFrameEnd": false,
+              "SyncVCameraTime": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.NewAdventureFireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "WaitProjectileFinish": false,
+              "NewProjectile": {
+                "$type": "RPG.GameCore.StaticProjectileData",
+                "FlySpeed": {
+                  "fixedValue": {
+                    "Value": 0.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "FlyTime": {
+                  "fixedValue": {
+                    "Value": -2.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "ExtraRetainTime": 0.0,
+                "ExtraRetainAlongLastVelocity": false,
+                "SpeedEaseType": "Linear",
+                "AlignHitEffect": false,
+                "AttachHitEffectToTargetEntity": false,
+                "CorrectedWhenTargetFormationChange": false,
+                "InitDirection": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "AttachOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "StartFromLastHitPos": false,
+                "FreezeRotation": false,
+                "TargetOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "UseLookat": false,
+                "UseLastHitVelocity": false,
+                "AlignWithAttachPoint": false,
+                "AttachPointAxis": "X",
+                "IgnoreTargetHitbox": false,
+                "IgnoreCasterWallCheck": false,
+                "EnableRayCast": true,
+                "FlyEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeAttack_01.prefab",
+                "FlyEffectFadeOut": false,
+                "TriggerHitCallback": true,
+                "WriteProgressToEffectAnimator": false,
+                "StaticProjectileCanPassAirWall": true,
+                "StaticExtraRadius": 0.0,
+                "StaticProjectileKeepHigh": false,
+                "MaxLifeTime": 2.5
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.NewAdventureFireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "OnProjectileLifetimeFinish": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAttack",
+                  "AttackTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "AttackRootTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ProjectileHitEntity"
+                  },
+                  "TriggerBattle": true,
+                  "TriggerBattleDelay": 0.10000000149011612,
+                  "AttackDetectConfig": {
+                    "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                    "Offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 0.0,
+                      "sqrMagnitude": 0.0
+                    },
+                    "FaceDir": 0.0,
+                    "MinRadius": 0.0,
+                    "MaxRadius": 2.0,
+                    "FanAngle": 360.0,
+                    "Hight": 2.0
+                  },
+                  "HitConfig": {
+                    "HitAnimation": "Hit",
+                    "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeAttack_Hit.prefab",
+                    "HitAngleHorizontal": 0.0,
+                    "RandomHitAngleHorizontal": 0.0,
+                    "HitAngleVertical": 0.0,
+                    "HitEffectHeight": 0.0
+                  },
+                  "IncludeProps": true,
+                  "HitTargetFaceToAttacker": false,
+                  "TriggerBattleByAllHitTarget": false,
+                  "AttackDetectCollision": true,
+                  "FilterAllHitTargetByCurrentMP": false,
+                  "EnterBattleSelectTargetType": "Normal",
+                  "CostMP": 0,
+                  "CostMpPhaseType": "OnHitEnemy",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "WaitProjectileFinish": false,
+              "NewProjectile": {
+                "$type": "RPG.GameCore.StaticProjectileData",
+                "FlySpeed": {
+                  "fixedValue": {
+                    "Value": 0.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "FlyTime": {
+                  "fixedValue": {
+                    "Value": -2.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "ExtraRetainTime": 0.0,
+                "ExtraRetainAlongLastVelocity": false,
+                "SpeedEaseType": "Linear",
+                "AlignHitEffect": false,
+                "AttachHitEffectToTargetEntity": false,
+                "CorrectedWhenTargetFormationChange": false,
+                "InitDirection": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "AttachOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "StartFromLastHitPos": false,
+                "FreezeRotation": false,
+                "TargetOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "UseLookat": false,
+                "UseLastHitVelocity": false,
+                "AlignWithAttachPoint": false,
+                "AttachPointAxis": "X",
+                "IgnoreTargetHitbox": false,
+                "IgnoreCasterWallCheck": false,
+                "EnableRayCast": true,
+                "FlyEffectFadeOut": false,
+                "TriggerHitCallback": true,
+                "WriteProgressToEffectAnimator": false,
+                "StaticProjectileCanPassAirWall": true,
+                "StaticExtraRadius": 0.0,
+                "StaticProjectileKeepHigh": false,
+                "MaxLifeTime": 0.10000000149011612
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.AdventureByInMotionState",
+                "MotionFlag": "FastRun",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "AnimLogicState": "NormalAtk",
+                  "AnimStateName": "Attack_1",
+                  "NormalizedTimeStart": 0.0,
+                  "TransitionDuration": 0.05000000074505806,
+                  "StopWhenHitOthers": true,
+                  "ForbidCrossfade": false,
+                  "MovingRangeList": [
+                    {
+                      "IgnoreRadius": false,
+                      "NormalizedTimeStart": {
+                        "fixedValue": {
+                          "Value": 0.013999999035149813
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "NormalizedTimeEnd": {
+                        "fixedValue": {
+                          "Value": 0.060000000055879354
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DefaultMoveDistance": {
+                        "fixedValue": {
+                          "Value": 5.000000000931323
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "OnlyMoveForward": false,
+                      "MaxSpeed": {
+                        "fixedValue": {
+                          "Value": 600.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "SteerNormalizedTimeStart": {
+                        "fixedValue": {
+                          "Value": 0.013999999035149813
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "SteerNormalizedTimeEnd": {
+                        "fixedValue": {
+                          "Value": 0.060000000055879354
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      }
+                    }
+                  ],
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.AdventureByInMotionState",
+                    "MotionFlag": "Run",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "IsClientOnly": true
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AnimLogicState": "NormalAtk",
+                      "AnimStateName": "Attack_1",
+                      "NormalizedTimeStart": 0.0,
+                      "TransitionDuration": 0.05000000074505806,
+                      "StopWhenHitOthers": true,
+                      "ForbidCrossfade": false,
+                      "MovingRangeList": [
+                        {
+                          "IgnoreRadius": false,
+                          "NormalizedTimeStart": {
+                            "fixedValue": {
+                              "Value": 0.013999999035149813
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "NormalizedTimeEnd": {
+                            "fixedValue": {
+                              "Value": 0.060000000055879354
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "DefaultMoveDistance": {
+                            "fixedValue": {
+                              "Value": 3.0000000009313226
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "OnlyMoveForward": false,
+                          "MaxSpeed": {
+                            "fixedValue": {
+                              "Value": 600.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "SteerNormalizedTimeStart": {
+                            "fixedValue": {
+                              "Value": 0.013999999035149813
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "SteerNormalizedTimeEnd": {
+                            "fixedValue": {
+                              "Value": 0.060000000055879354
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          }
+                        }
+                      ],
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AdvLocalPlayer"
+                      },
+                      "AnimLogicState": "NormalAtk",
+                      "AnimStateName": "Attack_1",
+                      "NormalizedTimeStart": 0.0,
+                      "TransitionDuration": 0.0,
+                      "StopWhenHitOthers": true,
+                      "ForbidCrossfade": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ],
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "Attack_1",
+              "NormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.07599999895319343
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "SkipWhenStateChange": false,
+              "IgnoreStateChangeCheck": false,
+              "WaitForFrameEnd": false,
+              "SyncVCameraTime": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.NewAdventureFireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "None"
+              },
+              "WaitProjectileFinish": false,
+              "NewProjectile": {
+                "$type": "RPG.GameCore.StaticProjectileData",
+                "FlySpeed": {
+                  "fixedValue": {
+                    "Value": 0.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "FlyTime": {
+                  "fixedValue": {
+                    "Value": -2.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "ExtraRetainTime": 0.0,
+                "ExtraRetainAlongLastVelocity": false,
+                "SpeedEaseType": "Linear",
+                "AlignHitEffect": false,
+                "AttachHitEffectToTargetEntity": false,
+                "CorrectedWhenTargetFormationChange": false,
+                "InitDirection": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "AttachOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 6.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 6.0,
+                  "sqrMagnitude": 36.0
+                },
+                "StartFromLastHitPos": false,
+                "FreezeRotation": false,
+                "TargetOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "UseLookat": false,
+                "UseLastHitVelocity": false,
+                "AlignWithAttachPoint": false,
+                "AttachPointAxis": "X",
+                "IgnoreTargetHitbox": false,
+                "IgnoreCasterWallCheck": false,
+                "EnableRayCast": true,
+                "FlyEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeAttack_01.prefab",
+                "FlyEffectFadeOut": false,
+                "TriggerHitCallback": true,
+                "WriteProgressToEffectAnimator": false,
+                "StaticProjectileCanPassAirWall": true,
+                "StaticExtraRadius": 0.0,
+                "StaticProjectileKeepHigh": false,
+                "MaxLifeTime": 2.5
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.NewAdventureFireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "None"
+              },
+              "OnProjectileLifetimeFinish": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAttack",
+                  "AttackTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "AttackRootTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ProjectileHitEntity"
+                  },
+                  "TriggerBattle": true,
+                  "TriggerBattleDelay": 0.10000000149011612,
+                  "AttackDetectConfig": {
+                    "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                    "Offset": {
+                      "x": 0.0,
+                      "y": 0.0,
+                      "z": 0.0,
+                      "IsNaN": false,
+                      "IsInfinity": false,
+                      "IsPositiveInfinity": false,
+                      "IsNegativeInfinity": false,
+                      "magnitude": 0.0,
+                      "sqrMagnitude": 0.0
+                    },
+                    "FaceDir": 0.0,
+                    "MinRadius": 0.0,
+                    "MaxRadius": 2.0,
+                    "FanAngle": 360.0,
+                    "Hight": 2.0
+                  },
+                  "HitConfig": {
+                    "HitAnimation": "Hit",
+                    "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeAttack_Hit.prefab",
+                    "HitAngleHorizontal": 0.0,
+                    "RandomHitAngleHorizontal": 0.0,
+                    "HitAngleVertical": 0.0,
+                    "HitEffectHeight": 0.0
+                  },
+                  "IncludeProps": true,
+                  "HitTargetFaceToAttacker": false,
+                  "TriggerBattleByAllHitTarget": false,
+                  "AttackDetectCollision": true,
+                  "FilterAllHitTargetByCurrentMP": false,
+                  "EnterBattleSelectTargetType": "Normal",
+                  "CostMP": 0,
+                  "CostMpPhaseType": "OnHitEnemy",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "WaitProjectileFinish": false,
+              "NewProjectile": {
+                "$type": "RPG.GameCore.StaticProjectileData",
+                "FlySpeed": {
+                  "fixedValue": {
+                    "Value": 0.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "FlyTime": {
+                  "fixedValue": {
+                    "Value": -2.0
+                  },
+                  "postfixExpr": {},
+                  "IsDynamic": false
+                },
+                "ExtraRetainTime": 0.0,
+                "ExtraRetainAlongLastVelocity": false,
+                "SpeedEaseType": "Linear",
+                "AlignHitEffect": false,
+                "AttachHitEffectToTargetEntity": false,
+                "CorrectedWhenTargetFormationChange": false,
+                "InitDirection": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "AttachOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 6.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 6.0,
+                  "sqrMagnitude": 36.0
+                },
+                "StartFromLastHitPos": false,
+                "FreezeRotation": false,
+                "TargetOffset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "UseLookat": false,
+                "UseLastHitVelocity": false,
+                "AlignWithAttachPoint": false,
+                "AttachPointAxis": "X",
+                "IgnoreTargetHitbox": false,
+                "IgnoreCasterWallCheck": false,
+                "EnableRayCast": true,
+                "FlyEffectFadeOut": false,
+                "TriggerHitCallback": true,
+                "WriteProgressToEffectAnimator": false,
+                "StaticProjectileCanPassAirWall": true,
+                "StaticExtraRadius": 0.0,
+                "StaticProjectileKeepHigh": false,
+                "MaxLifeTime": 0.10000000149011612
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack_1",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.10000000009313226
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "ShakeTemplateName": "Impact_Heavy",
+            "OverrideShakeConfigV2": {
+              "ShakeScale": 1.0,
+              "ShakeTime": 0.800000011920929,
+              "LoopTime": 1.0,
+              "ShakeDir": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 1.0,
+                "sqrMagnitude": 1.0
+              },
+              "RangeAttenuationDelay": -1.0,
+              "RangeAttenuationTarget": -1.0,
+              "RangeAttenuationDuration": -1.0,
+              "OnlyApplyInFreelook3rd": false
+            },
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack_1",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.18000000016763806
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    },
+    {
+      "Name": "LocalPlayer_SilverWolf999_00_MazeSkill",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntityOrNone",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareCarryMazebuff",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "BuffID": 150601,
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.DestroySummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchSummonUnit",
+                "Summoner": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "SummonUnitID": 15061,
+                "FetchType": "All"
+              },
+              "Immediately": false,
+              "SyncToServer": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.AdventureSubmitSkill",
+              "Caster": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByHaveAbilityTarget",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.LookAt",
+                  "PerformerType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "TargetType": "AbilityTargetEntity",
+                  "ToTargetRatio": 1.0,
+                  "AngleOffset": 0.0,
+                  "Duration": 0.10000000149011612,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "IsClientOnly": false
+            },
+            {
+              "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AdvLocalPlayer"
+              },
+              "AnimLogicState": "MazeSkill",
+              "AnimStateName": "MazeSkill",
+              "NormalizedTimeStart": 0.0,
+              "TransitionDuration": 0.05000000074505806,
+              "StopWhenHitOthers": true,
+              "ForbidCrossfade": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "MazeSkill",
+              "NormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.18999999947845936
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "SkipWhenStateChange": false,
+              "IgnoreStateChangeCheck": false,
+              "WaitForFrameEnd": false,
+              "SyncVCameraTime": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.CreateSummonUnit",
+              "Summoner": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "SummonUnitID": 15061,
+              "PosTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Distance": {
+                "fixedValue": {
+                  "Value": 3.4640000010840595
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "OffsetX": {
+                "fixedValue": {
+                  "Value": 3.4640000010840595
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "OffsetY": {
+                "fixedValue": {
+                  "Value": 0.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "YawAngle": {
+                "fixedValue": {
+                  "Value": 0.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "Duration": {
+                "fixedValue": {
+                  "Value": -2.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "PosAdaption": {
+                "Option": "CharacterDefault",
+                "GroundCheckUp": 2.5,
+                "GroundCheckDown": 2.5,
+                "NavMeshCheckRadius": 2.0,
+                "PathFindMaxLengthLimit": 10.0,
+                "AvoidanceRadius": 0.30000001192092896,
+                "StepGroundCheckDist": 0.5,
+                "StepGroundCheckHeight": 1.0,
+                "StepGroundCheckDown": 10.0,
+                "NavMeshEdgeAvoidanceRadius": 0.30000001192092896,
+                "SmoothTime": 0.0,
+                "NavMeshSomatoType": "Normal"
+              },
+              "ForbidSkillMsg": true,
+              "OnCreate": [
+                {
+                  "$type": "RPG.GameCore.EnableAdvEntityDitherWithPlayer",
+                  "SourceType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "Enable": true,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.AddAdventureModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ModifierName": "ADV_GlobalSkill_Maze_SilverWolf999_00_ListenMazeSkillPoint",
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.AdventureSubmitSkill",
+              "Caster": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "MazeSkill",
+              "NormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.3119999994523823
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "SkipWhenStateChange": false,
+              "IgnoreStateChangeCheck": false,
+              "WaitForFrameEnd": false,
+              "SyncVCameraTime": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "IsClientOnly": false
+        }
+      ],
+      "ManualTriggerType": "None"
+    },
+    {
+      "Name": "LocalPlayer_SilverWolf999_00_MazeSkill_TriggerHitMonster",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntityOrNone",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AdventureTriggerAttack",
+          "AttackTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackRootTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TriggerBattle": true,
+          "TriggerBattleDelay": 0.0,
+          "SummonUnitTriggerAttackDetectConfig": {
+            "SummonUnitID": 15061,
+            "DetectSummonUnitTriggerName": "HitNpcMonsterTrigger"
+          },
+          "AttackDetectConfig": {
+            "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+            "Offset": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 4.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 4.0,
+              "sqrMagnitude": 16.0
+            },
+            "FaceDir": 0.0,
+            "MinRadius": 0.0,
+            "MaxRadius": 2.0,
+            "FanAngle": 360.0,
+            "Hight": 2.0
+          },
+          "OnAttack": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAllowInstantKill",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "IsAttachToTargetEntity": false,
+                  "IsAttachToTimeline": false,
+                  "IsActiveLevelUpOverride": false,
+                  "IsHideTargetEntityWhenLoading": false,
+                  "AliveOnly": false,
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill_Die_01.prefab",
+                  "PositionOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "RotationOffset": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.0,
+                    "sqrMagnitude": 0.0
+                  },
+                  "Scale": {
+                    "x": -1.0,
+                    "y": -1.0,
+                    "z": -1.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 1.7320507764816284,
+                    "sqrMagnitude": 3.0
+                  },
+                  "ScaleAdaptType": "AdaptBattleEffectInMaze",
+                  "Delay": 0.0,
+                  "IsNeedFadeIn": true,
+                  "IsEnableReplay": false,
+                  "ForceSimulateImmediately": true,
+                  "AddColliderHeightOffset": false,
+                  "ParamEntityUsage": "LookAt",
+                  "TowardRotatePitchOnly": false,
+                  "TowardMaxPitchAngle": 90.0,
+                  "IsAttachToCaster": false,
+                  "ExecuteOnSkip": false,
+                  "MinMutexTime": 0.0,
+                  "MinMutexType": "None",
+                  "MaxMutexCount": 1,
+                  "IgnoreFadeOutMutexError": false,
+                  "SyncPropState": false,
+                  "FollowCasterTimeSlow": false,
+                  "ForbidLod": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.AdventureSetAttackTargetMonsterDie",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "IsServerSimulateBattle": true,
+                  "DyingStyleParam": {
+                    "DyingStyle": "Freeze",
+                    "FreezeDuration": 0.05000000074505806
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ],
+          "FilterHitTarget": {
+            "$type": "RPG.GameCore.ByAnd",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByTargetEntityType",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "EntityTypeMask": "NPCMonster",
+                "AliveStateMask": "Mask_AliveOrLimbo",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": false
+              },
+              {
+                "$type": "RPG.GameCore.ByAllowInstantKill",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "TaskEnabled": true,
+                "Inverse": true,
+                "IsClientOnly": true
+              }
+            ],
+            "IsClientOnly": false
+          },
+          "IncludeProps": true,
+          "HitTargetFaceToAttacker": false,
+          "TriggerBattleByAllHitTarget": false,
+          "AttackDetectCollision": true,
+          "FilterAllHitTargetByCurrentMP": false,
+          "EnterBattleSelectTargetType": "FirstHitTarget",
+          "CostMP": 1,
+          "CostMpPhaseType": "OnHitEnemy",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.AdventureByCompareMP",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "CompareType": "LessEqual",
+                "CompareValue": 0.0,
+                "IsClientOnly": true
+              },
+              {
+                "$type": "RPG.GameCore.ByCanAutoUseItemToRecoverMP",
+                "TaskEnabled": true,
+                "Inverse": true,
+                "IsClientOnly": true
+              }
+            ],
+            "IsClientOnly": false
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddAdventureModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": "ADV_GlobalSkill_Maze_SilverWolf999_00_TimeOutRemoveSummonUnit",
+              "LifeTime": {
+                "fixedValue": {
+                  "Value": 0.06799999950453639
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "IsClientOnly": false
+        }
+      ],
+      "ManualTriggerType": "BySummonUnit"
+    }
+  ],
+  "GlobalModifiers": {
+    "ADV_GlobalSkill_Maze_SilverWolf999_00": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Replace",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnCreate": [],
+      "MazeBuffType": "None"
+    },
+    "ADV_GlobalSkill_Maze_SilverWolf999_00_TimeOutRemoveSummonUnit": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Unique",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.DestroySummonUnit",
+          "SummonUnit": {
+            "$type": "RPG.GameCore.TargetFetchSummonUnit",
+            "Summoner": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "SummonUnitID": 15061,
+            "FetchType": "All"
+          },
+          "Immediately": false,
+          "SyncToServer": true,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "MazeBuffType": "None"
+    },
+    "ADV_GlobalSkill_Maze_SilverWolf999_00_ListenMazeSkillPoint": {
+      "Priority": 0,
+      "Count": -1,
+      "Stacking": "Replace",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnMPChange": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.AdventureByCompareMP",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "CompareType": "LessEqual",
+            "CompareValue": 0.0,
+            "IsClientOnly": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "TaskEnabled": true,
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCanAutoUseItemToRecoverMP",
+                "TaskEnabled": true,
+                "Inverse": false,
+                "IsClientOnly": true
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.AddAdventureModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ModifierName": "ADV_GlobalSkill_Maze_SilverWolf999_00_TimeOutRemoveSummonUnit",
+                  "LifeTime": {
+                    "fixedValue": {
+                      "Value": 0.06799999950453639
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                }
+              ],
+              "IsClientOnly": false
+            }
+          ],
+          "IsClientOnly": false
+        }
+      ],
+      "MazeBuffType": "None"
+    },
+    "ADV_StageAbility_Maze_SilverWolf999_00_KillFlag": {
+      "Priority": 0,
+      "Count": 1,
+      "Stacking": "Refresh",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "BehaviorFlagList": [
+        "NoAlert"
+      ],
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_DouZi.prefab",
+          "Unbind": false,
+          "IsNeedFadeOut": true,
+          "ForceImmediateFadeOut": false,
+          "FadeOutRegionStart": -1.0,
+          "FadeOutRegionEnd": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "OnStack": [
+        {
+          "$type": "RPG.GameCore.ModifierAttachEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_DouZi.prefab",
+          "AttachPoint": "HeadPoint",
+          "PositionOffset": {
+            "x": 0.0,
+            "y": 0.10000000149011612,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.10000000149011612,
+            "sqrMagnitude": 0.010000000707805157
+          },
+          "Delay": 0.0,
+          "AddColliderHeightOffset": false,
+          "ColliderHeightRatio": 0.0,
+          "MinMutexTime": -1.0,
+          "MutexType": "Entity",
+          "MaxMutexCount": 1,
+          "UniqueEffectName": "SilverWolf999_KillFlag",
+          "AutoHideInSkill": false,
+          "IgnoreFadeOutMutexError": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "MazeBuffType": "None"
+    },
+    "ADV_StageAbility_Maze_SilverWolf999_00_Enemy_Fear": {
+      "Priority": 0,
+      "Count": 1,
+      "Stacking": "Refresh",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "BehaviorFlagList": [
+        "Fear"
+      ],
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnCreate": [
+        {
+          "$type": "RPG.GameCore.AdventureStackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          },
+          "Property": "MoveSpeedAttenuationRatio",
+          "PropertyValue": {
+            "fixedValue": {
+              "Value": 1.0000000009313226
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "MazeBuffType": "None"
+    },
+    "ADV_StageAbility_Maze_SilverWolf999_00": {
+      "Priority": 0,
+      "Count": 1,
+      "Stacking": "Refresh",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnStage": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.AdventureByCompareMP",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "CompareType": "LessEqual",
+            "CompareValue": 0.0,
+            "IsClientOnly": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.DestroySummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchSummonUnit",
+                "Summoner": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "SummonUnitID": 15061,
+                "FetchType": "All"
+              },
+              "Immediately": false,
+              "SyncToServer": true,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "IsClientOnly": false
+        }
+      ],
+      "OnUnstage": [
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchSummonUnit",
+            "Summoner": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AdvLocalPlayer"
+            },
+            "SummonUnitID": 15061,
+            "FetchType": "All"
+          },
+          "Visible": false,
+          "MuteColliderWhenInvisible": true,
+          "MuteTriggerWhenInvisible": false,
+          "SetAudio": false,
+          "Reason": "Task",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.DestroySummonUnit",
+          "SummonUnit": {
+            "$type": "RPG.GameCore.TargetFetchSummonUnit",
+            "Summoner": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AdvLocalPlayer"
+            },
+            "SummonUnitID": 15061,
+            "FetchType": "All"
+          },
+          "Immediately": false,
+          "SyncToServer": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "OnSkillReset": [
+        {
+          "$type": "RPG.GameCore.DestroySummonUnit",
+          "SummonUnit": {
+            "$type": "RPG.GameCore.TargetFetchSummonUnit",
+            "Summoner": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AdvLocalPlayer"
+            },
+            "SummonUnitID": 15061,
+            "FetchType": "All"
+          },
+          "Immediately": false,
+          "SyncToServer": true,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "MazeBuffType": "None"
+    },
+    "ADV_StageAbility_Maze_SilverWolf999_00_Visual": {
+      "Priority": 0,
+      "Count": 1,
+      "Stacking": "Unique",
+      "LifeTime": -1.0,
+      "Level": 1,
+      "LevelMax": 1,
+      "IsCountDownAfterBattle": true,
+      "ApplyBehaviorFlagBindEffects": true,
+      "HolyShieldPriority": 0,
+      "TickInterval": 1.0,
+      "OnCreate": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "TaskEnabled": true,
+          "Predicate": {
+            "$type": "RPG.GameCore.ByTargetAliveState",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "AliveStateMask": "Mask_AliveOrLimbo",
+            "TaskEnabled": true,
+            "Inverse": false,
+            "IsClientOnly": false
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+              "IsRevert": false,
+              "IsDurable": false,
+              "TargetIntensity": 0.30000001192092896,
+              "FadeDuration": 1.0,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "IsAttachToTargetEntity": false,
+              "IsAttachToTimeline": false,
+              "IsActiveLevelUpOverride": false,
+              "IsHideTargetEntityWhenLoading": false,
+              "AliveOnly": false,
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_Domain_01.prefab",
+              "PositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "RotationOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "Scale": {
+                "x": -1.0,
+                "y": -1.0,
+                "z": -1.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 1.7320507764816284,
+                "sqrMagnitude": 3.0
+              },
+              "ScaleAdaptType": "None",
+              "Delay": 0.0,
+              "IsNeedFadeIn": true,
+              "IsEnableReplay": false,
+              "ForceSimulateImmediately": true,
+              "AddColliderHeightOffset": false,
+              "ParamEntityUsage": "LookAt",
+              "TowardRotatePitchOnly": false,
+              "TowardMaxPitchAngle": 90.0,
+              "IsAttachToCaster": false,
+              "ExecuteOnSkip": false,
+              "MinMutexTime": -1.0,
+              "MinMutexType": "None",
+              "MaxMutexCount": 1,
+              "IgnoreFadeOutMutexError": false,
+              "SyncPropState": false,
+              "FollowCasterTimeSlow": false,
+              "ForbidLod": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "IsAttachToTargetEntity": false,
+              "IsAttachToTimeline": false,
+              "IsActiveLevelUpOverride": false,
+              "IsHideTargetEntityWhenLoading": false,
+              "AliveOnly": false,
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_Domain_02.prefab",
+              "PositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "RotationOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "Scale": {
+                "x": -1.0,
+                "y": -1.0,
+                "z": -1.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 1.7320507764816284,
+                "sqrMagnitude": 3.0
+              },
+              "ScaleAdaptType": "None",
+              "Delay": 0.0,
+              "IsNeedFadeIn": true,
+              "IsEnableReplay": false,
+              "ForceSimulateImmediately": true,
+              "AddColliderHeightOffset": false,
+              "ParamEntityUsage": "LookAt",
+              "TowardRotatePitchOnly": false,
+              "TowardMaxPitchAngle": 90.0,
+              "IsAttachToCaster": false,
+              "ExecuteOnSkip": false,
+              "MinMutexTime": -1.0,
+              "MinMutexType": "None",
+              "MaxMutexCount": 1,
+              "IgnoreFadeOutMutexError": false,
+              "SyncPropState": false,
+              "FollowCasterTimeSlow": false,
+              "ForbidLod": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "IsAttachToTargetEntity": false,
+              "IsAttachToTimeline": false,
+              "IsActiveLevelUpOverride": false,
+              "IsHideTargetEntityWhenLoading": false,
+              "AliveOnly": false,
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_Domain_03.prefab",
+              "PositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "RotationOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "Scale": {
+                "x": -1.0,
+                "y": -1.0,
+                "z": -1.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 1.7320507764816284,
+                "sqrMagnitude": 3.0
+              },
+              "ScaleAdaptType": "None",
+              "Delay": 0.0,
+              "IsNeedFadeIn": true,
+              "IsEnableReplay": false,
+              "ForceSimulateImmediately": true,
+              "AddColliderHeightOffset": false,
+              "ParamEntityUsage": "LookAt",
+              "TowardRotatePitchOnly": false,
+              "TowardMaxPitchAngle": 90.0,
+              "IsAttachToCaster": false,
+              "ExecuteOnSkip": false,
+              "MinMutexTime": -1.0,
+              "MinMutexType": "None",
+              "MaxMutexCount": 1,
+              "IgnoreFadeOutMutexError": false,
+              "SyncPropState": false,
+              "FollowCasterTimeSlow": false,
+              "ForbidLod": false,
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.LevelAudioState",
+              "TaskEnabled": true,
+              "GroupName": "State_Battle_Avatar_SilverWolf999_Maze",
+              "StateName": {
+                "Custom": false,
+                "Value": "Inside"
+              },
+              "SaveToCustomString": true,
+              "IsClientOnly": true
+            }
+          ],
+          "IsClientOnly": false
+        }
+      ],
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "IsRevert": true,
+          "IsDurable": false,
+          "TargetIntensity": 0.0,
+          "FadeDuration": 1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_Domain_01.prefab",
+          "Unbind": false,
+          "IsNeedFadeOut": true,
+          "ForceImmediateFadeOut": true,
+          "FadeOutRegionStart": -1.0,
+          "FadeOutRegionEnd": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_Domain_02.prefab",
+          "Unbind": false,
+          "IsNeedFadeOut": true,
+          "ForceImmediateFadeOut": true,
+          "FadeOutRegionStart": -1.0,
+          "FadeOutRegionEnd": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_SilverWolf999_00/Eff_Avatar_SilverWolf999_00_MazeSkill01_Domain_03.prefab",
+          "Unbind": false,
+          "IsNeedFadeOut": true,
+          "ForceImmediateFadeOut": true,
+          "FadeOutRegionStart": -1.0,
+          "FadeOutRegionEnd": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LevelAudioState",
+          "TaskEnabled": true,
+          "GroupName": "State_Battle_Avatar_SilverWolf999_Maze",
+          "StateName": {
+            "Custom": false,
+            "Value": "Outside"
+          },
+          "SaveToCustomString": true,
+          "IsClientOnly": true
+        }
+      ],
+      "MazeBuffType": "None"
+    }
+  }
+}

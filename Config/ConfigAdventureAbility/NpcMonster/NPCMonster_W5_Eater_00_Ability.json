@@ -1,0 +1,370 @@
+{
+  "AbilityList": [
+    {
+      "Name": "MazeMonster_W5_Eater_00_MazePassive",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetAttachmentVisibility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AttachPoints": [
+            {
+              "Name": "Hair",
+              "OverridePrefabAttachPoint": false,
+              "FollowFirstFrameOnLateTick": false
+            }
+          ],
+          "Visibility": false,
+          "VisibilityApplyDelay": 0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    },
+    {
+      "Name": "MazeMonster_W5_Eater_00_MazeAttack",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntity",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "NormalAtk",
+          "AnimStateName": "Attack",
+          "NormalizedTimeStart": 0.0,
+          "TransitionDuration": 0.05000000074505806,
+          "StopWhenHitOthers": true,
+          "ForbidCrossfade": false,
+          "MovingRangeList": [
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "IgnoreRadius": false,
+              "OnlyMoveForward": false,
+              "SteerNormalizedTimeStart": {
+                "fixedValue": {
+                  "Value": 0.02000000001862645
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "SteerNormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.14000000013038516
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MaxSteerSpeed": {
+                "fixedValue": {
+                  "Value": 600.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              }
+            }
+          ],
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.3979999991133809
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "IsAttachToTargetEntity": false,
+          "IsAttachToTimeline": false,
+          "IsActiveLevelUpOverride": false,
+          "IsHideTargetEntityWhenLoading": false,
+          "AliveOnly": false,
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Eater_00/Eff_Monster_W5_Eater_00_MazeAttack.prefab",
+          "PositionOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "RotationOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "Scale": {
+            "x": -1.0,
+            "y": -1.0,
+            "z": -1.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 1.7320507764816284,
+            "sqrMagnitude": 3.0
+          },
+          "ScaleAdaptType": "None",
+          "Delay": 0.0,
+          "IsNeedFadeIn": true,
+          "IsEnableReplay": false,
+          "ForceSimulateImmediately": true,
+          "AddColliderHeightOffset": false,
+          "ParamEntityUsage": "LookAt",
+          "TowardRotatePitchOnly": false,
+          "TowardMaxPitchAngle": 90.0,
+          "IsAttachToCaster": false,
+          "ExecuteOnSkip": false,
+          "MinMutexTime": 0.0,
+          "MinMutexType": "None",
+          "MaxMutexCount": 1,
+          "IgnoreFadeOutMutexError": false,
+          "SyncPropState": false,
+          "FollowCasterTimeSlow": false,
+          "ForbidLod": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.5400000005029142
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AdventureTriggerAttack",
+          "AttackTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "AttackRootTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TriggerBattle": true,
+          "TriggerBattleDelay": 0.10000000149011612,
+          "AttackDetectConfig": {
+            "$type": "RPG.GameCore.AdventureAttackDetectBoxConfig",
+            "Offset": {
+              "x": 0.0,
+              "y": 0.699999988079071,
+              "z": 1.5,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 1.6552945375442505,
+              "sqrMagnitude": 2.740000009536743
+            },
+            "FaceDir": 0.0,
+            "Size": {
+              "x": 0.4000000059604645,
+              "y": 0.5,
+              "z": 3.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 3.0675723552703857,
+              "sqrMagnitude": 9.40999984741211
+            }
+          },
+          "HitConfig": {
+            "HitAnimation": "Hit",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Eater_00/Eff_Monster_W5_Eater_00_MazeAttack_Hit.prefab",
+            "HitAngleHorizontal": 0.0,
+            "RandomHitAngleHorizontal": 0.0,
+            "HitAngleVertical": 0.0,
+            "HitEffectHeight": 0.0
+          },
+          "IncludeProps": true,
+          "HitTargetFaceToAttacker": false,
+          "TriggerBattleByAllHitTarget": false,
+          "AttackDetectCollision": true,
+          "FilterAllHitTargetByCurrentMP": false,
+          "EnterBattleSelectTargetType": "Normal",
+          "CostMP": 0,
+          "CostMpPhaseType": "OnHitEnemy",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "ShakeTemplateName": "Impact_Middle",
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    },
+    {
+      "Name": "MazeMonster_W5_Eater_00_EnhanceEffect",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "IsAttachToTargetEntity": false,
+          "IsAttachToTimeline": false,
+          "IsActiveLevelUpOverride": false,
+          "IsHideTargetEntityWhenLoading": false,
+          "Flags": [
+            "Resident"
+          ],
+          "AliveOnly": false,
+          "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_Rogue_EliteEnhance.prefab",
+          "PositionOffset": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.20000000298023224,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 1.0198038816452026,
+            "sqrMagnitude": 1.0399999618530273
+          },
+          "RotationOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "Scale": {
+            "x": -1.0,
+            "y": -1.0,
+            "z": -1.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 1.7320507764816284,
+            "sqrMagnitude": 3.0
+          },
+          "ScaleAdaptType": "None",
+          "Delay": 0.0,
+          "IsNeedFadeIn": true,
+          "IsEnableReplay": false,
+          "ForceSimulateImmediately": false,
+          "AddColliderHeightOffset": false,
+          "ParamEntityUsage": "LookAt",
+          "TowardRotatePitchOnly": false,
+          "TowardMaxPitchAngle": 90.0,
+          "IsAttachToCaster": false,
+          "ExecuteOnSkip": false,
+          "MinMutexTime": 0.0,
+          "MinMutexType": "None",
+          "MaxMutexCount": 1,
+          "IgnoreFadeOutMutexError": false,
+          "SyncPropState": false,
+          "FollowCasterTimeSlow": false,
+          "ForbidLod": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    }
+  ]
+}

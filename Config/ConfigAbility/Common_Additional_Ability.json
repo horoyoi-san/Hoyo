@@ -1,0 +1,735 @@
+{
+  "AbilityList": [
+    {
+      "Name": "Common_Servant_Forcekill",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.ForceKill",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "DeathSource": "KilledBySelf",
+          "AbortUnusedInsertAbility": true,
+          "CanOverkill": true,
+          "MuteHpChange": false,
+          "MuteTriggerDeath": false,
+          "MuteAllTriggerDeath": false,
+          "AllowRevive": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "Common_LockHP",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "MCommon_LockHP"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    },
+    {
+      "Name": "CommonActiveSkill_Fire_Single_Phase02",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.ShowUIPage",
+          "TaskEnabled": true,
+          "AssetPath": "UI/Battle/Widget/SkillNameHUD.prefab",
+          "WaitShowPageFinish": false,
+          "UITextNodes": [
+            {
+              "TextPath": "Frame/Text",
+              "TextContent": {
+                "Hash": 1821071446,
+                "Hash64": 3775451657981424034
+              }
+            }
+          ],
+          "LifeTime": 0.0,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill_Cast",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.001999999862164259
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "AbilityTargetEntity",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": -1.0,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "NormalConfig": {
+              "ExportToJson": false,
+              "CameraState": "CasterToTargetPerform",
+              "TemplateName": "Monster_Common_SoloRangeAttack",
+              "AttackType": "Unknow",
+              "AnchorTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "IsLocalOffset": false,
+              "UseLightTeamOffsetByTeamWidth": false,
+              "UseDarkTeamOffsetByTeamWidth": false,
+              "AnchorOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "AnchorRatio": 0.0,
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "SkillTargetEntityList"
+              },
+              "AimOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "AimRatio": 0.0,
+              "FollowPoleAngle": 0.0,
+              "FollowElevationAngle": 0.0,
+              "FollowRadius": 0.0,
+              "AnchorToAimAngle": 0.0,
+              "FollowDamp": 0.0,
+              "AimDamp": 0.0,
+              "Dutch": 0.0,
+              "FOV": 0.0,
+              "MoveForwardDis": 0.0,
+              "NearClipping": 0.10000000149011612,
+              "ForbidDynamicOffset": true,
+              "NeedCutBlending": false,
+              "ResetToDefault": false,
+              "ForbidChangeOffset": false,
+              "CalTargetPositionWhenPlay": false,
+              "AvatarToMonsterOffsetScaleByCameraDistance": false,
+              "UseSkillPerformIgnoreDynamicOffset": true,
+              "UseSkillPerformEnableCommonTeamWidthOffset": false,
+              "UseAimTargetToCameraFocus": true,
+              "UseSkillPerformIgnoreDynamicOffsetAtUltraDistance": true,
+              "EnableDampAtUltraDistance": false,
+              "DampTimeAtUltraDistance": 0.0
+            },
+            "BlendConfig": {
+              "ExportToJson": false,
+              "BlendType": "Cut",
+              "UseDefaultBlendCurve": false,
+              "BlendTime": 0.0,
+              "FOVSmoothDampTime": -1.0,
+              "FrameBlendSwitch": false,
+              "FrameBlendDelay": 0.0,
+              "FrameBlendWeightStart": 1.0,
+              "FrameBlendDuration": 1.0,
+              "RadialAimAndLinearDistance": false,
+              "DisableCinemachineFoVBlendAdjust": false
+            },
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "NormalConfig": {
+              "ExportToJson": false,
+              "CameraState": "CameraMotion",
+              "AttackType": "Unknow",
+              "AnchorTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "IsLocalOffset": false,
+              "UseLightTeamOffsetByTeamWidth": false,
+              "UseDarkTeamOffsetByTeamWidth": false,
+              "AnchorOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "AnchorRatio": 0.0,
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "SkillTargetEntityList"
+              },
+              "AimOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.0,
+                "sqrMagnitude": 0.0
+              },
+              "AimRatio": 0.0,
+              "FollowPoleAngle": 0.0,
+              "FollowElevationAngle": 0.0,
+              "FollowRadius": 0.0,
+              "AnchorToAimAngle": 0.0,
+              "FollowDamp": 0.0,
+              "AimDamp": 0.0,
+              "Dutch": 0.0,
+              "FOV": 0.0,
+              "MoveForwardDis": 0.0,
+              "NearClipping": 0.10000000149011612,
+              "ForbidDynamicOffset": true,
+              "NeedCutBlending": false,
+              "ResetToDefault": false,
+              "ForbidChangeOffset": false,
+              "CalTargetPositionWhenPlay": false,
+              "AvatarToMonsterOffsetScaleByCameraDistance": false,
+              "UseSkillPerformIgnoreDynamicOffset": true,
+              "UseSkillPerformEnableCommonTeamWidthOffset": false,
+              "UseAimTargetToCameraFocus": true,
+              "UseSkillPerformIgnoreDynamicOffsetAtUltraDistance": true,
+              "EnableDampAtUltraDistance": false,
+              "DampTimeAtUltraDistance": 0.0
+            },
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill_Cast",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 1.526000001002103
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "IsAttachToTargetEntity": false,
+          "IsAttachToTimeline": false,
+          "IsActiveLevelUpOverride": false,
+          "IsHideTargetEntityWhenLoading": false,
+          "AliveOnly": false,
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha02_00/Eff_Monster_W1_Mecha02_00_Skill01_Hit.prefab",
+          "PositionOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "RotationOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "Scale": {
+            "x": -1.0,
+            "y": -1.0,
+            "z": -1.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 1.7320507764816284,
+            "sqrMagnitude": 3.0
+          },
+          "ScaleAdaptType": "None",
+          "Delay": 0.0,
+          "IsNeedFadeIn": true,
+          "IsEnableReplay": false,
+          "ForceSimulateImmediately": false,
+          "AddColliderHeightOffset": false,
+          "ParamEntityUsage": "LookAt",
+          "TowardRotatePitchOnly": false,
+          "TowardMaxPitchAngle": 90.0,
+          "IsAttachToCaster": false,
+          "ExecuteOnSkip": false,
+          "MinMutexTime": 0.0,
+          "MinMutexType": "None",
+          "MaxMutexCount": 1,
+          "IgnoreFadeOutMutexError": false,
+          "SyncPropState": false,
+          "FollowCasterTimeSlow": false,
+          "ForbidLod": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 0.6000000005587935
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "DamageType": {
+              "SourceType": "Specify",
+              "DamageType": "Fire"
+            },
+            "FormulaType": "ByAttack",
+            "DamagePercentage": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "DamageValue": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "ExtraFormulaType": "Unknown",
+            "ExtraDamagePercentage": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "StanceValue": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "HitSplitRatio": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "DamageMulRatio": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "IsIndirect": false,
+            "IsNotHit": false,
+            "IntegerizeCategory": "None",
+            "SPHitRatio": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "ForceMatchStanceWeakness": false,
+            "AttackType": "Unknown",
+            "DoNotTriggerBreak": false,
+            "BreakDamagePercentage": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "ElationDamagePercentage": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "FinalFormulaType": "ByDefault",
+            "IsMortallyWonded": false,
+            "IsNonlethal": false,
+            "FrameHalt": {
+              "fixedValue": {
+                "Value": 0.20000000018626451
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "FrameHaltActiveNextFrame": false,
+            "IsFaceToHitDir": false,
+            "HitAnimation": "Hit_H",
+            "HitEffectMinMutexTime": {
+              "fixedValue": {
+                "Value": 0.10000000149011612
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "HitEffectMaxMutexCount": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "HitEffectHeight": -1.0,
+            "IsHitEffectOffsetByScale": false,
+            "HitEffectOffsetAngle": 0.0,
+            "HitTimeSlowType": "None",
+            "HitTimeSlowIntensity": "Light",
+            "HitPosHeight": 0.75,
+            "HitAngleHorizontal": 0.0,
+            "RandomHitAngleHorizontal": 0.0,
+            "HitAngleVertical": 0.0,
+            "TriggerHPBarAnimation": false,
+            "ScreenSpaceFloatMsg": false,
+            "InheritDamageType": false,
+            "InheritHitEffect": false,
+            "InheritHitAnimation": false,
+            "InheritHitPos": false
+          },
+          "TriggerHitSound": true,
+          "CanTriggerLastKill": false,
+          "IsConvert": false,
+          "AttackType": "Unknown",
+          "CanOverkill": true,
+          "PerformanceDelay": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "IsHitAnimPerformanceDelay": true,
+          "DealAfterRootHitEnd": false,
+          "EqualSplitInTargets": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "WaitCloseupShotFinish": false,
+          "CameraConfig": {
+            "ConfigType": "NormalConfig",
+            "CameraState": "Unknow",
+            "ShakeConfigV2": {
+              "ExportToJson": false,
+              "DontAddOnCameraPause": false,
+              "ShakeScale": 1.0,
+              "ShakeRange": 0.20999999344348907,
+              "PositionAmplitude": 1.0,
+              "ShakeTime": 0.20000000298023224,
+              "LoopTime": 1.0,
+              "IsUseFullPeriod": false,
+              "HalfPeriodCorrection": false,
+              "ShakeDistance": 20.0,
+              "ShakeSpaceType": "CameraSpace",
+              "ShakeDir": {
+                "x": 0.15000000596046448,
+                "y": 0.15000000596046448,
+                "z": 0.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.2121320366859436,
+                "sqrMagnitude": 0.04500000178813934
+              },
+              "BaseOnCamera": true,
+              "LerpBackAfterShake": true,
+              "BaseCycle": 0.2800000011920929,
+              "CycleDamping": 0.0,
+              "RangeAttenuation": 0.949999988079071,
+              "RangeAttenuationDelay": 999.0,
+              "RangeAttenuationTarget": 0.0,
+              "RangeAttenuationDuration": -1.0,
+              "PerlinNoiseAmplitude": {
+                "x": 0.10000000149011612,
+                "y": 0.10000000149011612,
+                "z": 0.10000000149011612,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 0.17320507764816284,
+                "sqrMagnitude": 0.030000001192092896
+              },
+              "PerlinNoiseFreq": {
+                "x": 16.0,
+                "y": 14.0,
+                "z": 12.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 24.413110733032227,
+                "sqrMagnitude": 596.0
+              },
+              "IsUseFullPeriodNoise": false,
+              "IsUseFullSampleRangeNoise": false,
+              "IsUsePositionNoise": true,
+              "IsUseRotationNoise": true,
+              "RotationalAmplitude": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 3.5,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 3.5,
+                "sqrMagnitude": 12.25
+              },
+              "RotationalFreq": 0.0,
+              "RotationFreqV3": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": 8.0,
+                "IsNaN": false,
+                "IsInfinity": false,
+                "IsPositiveInfinity": false,
+                "IsNegativeInfinity": false,
+                "magnitude": 8.9442720413208,
+                "sqrMagnitude": 80.0
+              },
+              "MaxAttenuationProtect": false
+            },
+            "Priority": 0,
+            "LockRelatedTarget": false,
+            "DontOverrideLastShowEntityConfig": false
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 0.10000000009313226
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.GlobalTimeSlow",
+          "TimeScale": {
+            "fixedValue": {
+              "Value": 1.8000000016763806
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "Infinite": false,
+          "ActiveNextFrame": false,
+          "UnscaledDuration": {
+            "fixedValue": {
+              "Value": 0.8000000007450581
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "FadeInTime": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "FadeOutTime": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "Curve": "None",
+          "IgnoreEntityTypeMask": "None",
+          "RemoveOnLockPlayerControl": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "TaskEnabled": true,
+          "WaitTime": {
+            "fixedValue": {
+              "Value": 4.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxAdvencePerTick": -1.0,
+          "IsRealtime": false,
+          "UseRealtime": false,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish",
+          "SkipAttackSettlement": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "ServantWhiteList": false
+    }
+  ]
+}

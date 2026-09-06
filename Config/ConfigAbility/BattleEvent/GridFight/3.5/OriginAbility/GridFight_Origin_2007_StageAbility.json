@@ -1,0 +1,3847 @@
+{
+  "AbilityList": [
+    {
+      "Name": "StageAbility_GridFight_Origin_2007",
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AliveOnly": true,
+          "ModifierName": {
+            "Custom": false,
+            "Value": "MGridFight_Origin_2007"
+          },
+          "LifeStepImmediately": false,
+          "StackingFlag": "Default",
+          "Chance": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "MaxTargetCount": {
+            "fixedValue": {
+              "Value": -2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "DynamicValues": {
+            "DebuffLimit": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "FatigueRatio": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "TrueDamageRatio": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "EffectMaxLayer": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            },
+            "EffectMaxLayerNew": {
+              "fixedValue": {
+                "Value": -69412.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": true
+            }
+          },
+          "InheritCaster": "Inherit",
+          "IsShowUIMessageFromModel": true,
+          "IsShowUIMessageOnUpdate": true,
+          "ShowUIMessageDelayTime": 0.0,
+          "ShowUIMessageInternalTime": -1.0,
+          "ShowUIMessageCanMerge": true,
+          "CustomOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "ForceVisible": false,
+          "UseFixedPosition": true,
+          "ScreenSpaceFloatMsg": false,
+          "RefreshBuffUIDelayTime": 0.0,
+          "IsSilenceAddAndStack": false,
+          "AsSubModifier": false,
+          "TaskEnabled": true,
+          "IsClientOnly": false
+        }
+      ],
+      "Modifiers": {
+        "MGridFight_Origin_2007": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterCreate",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByAny",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByGridFightHasTrait",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity"
+                            },
+                            "TeamTrait": {
+                              "Custom": false,
+                              "Value": "Origin_2007"
+                            },
+                            "IncludeOtherEffect": true,
+                            "IncludeInactiveTrait": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          },
+                          {
+                            "$type": "RPG.GameCore.ByGridFightHasTrait",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity.GetSummoner"
+                            },
+                            "TeamTrait": {
+                              "Custom": false,
+                              "Value": "Origin_2007"
+                            },
+                            "IncludeOtherEffect": true,
+                            "IncludeInactiveTrait": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          }
+                        ],
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "EffectMaxLayerNew"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Bonus"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "DynamicValues": {
+                            "DebuffLimit": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Bonus"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "DynamicValues": {
+                            "DebuffLimit": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnListenBattleEventCreate",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamLight",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByAny",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByGridFightHasTrait",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity"
+                            },
+                            "TeamTrait": {
+                              "Custom": false,
+                              "Value": "Origin_2007"
+                            },
+                            "IncludeOtherEffect": true,
+                            "IncludeInactiveTrait": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          },
+                          {
+                            "$type": "RPG.GameCore.ByGridFightHasTrait",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity.GetSummoner"
+                            },
+                            "TeamTrait": {
+                              "Custom": false,
+                              "Value": "Origin_2007"
+                            },
+                            "IncludeOtherEffect": true,
+                            "IncludeInactiveTrait": true,
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "IsClientOnly": false
+                          }
+                        ],
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "EffectMaxLayerNew"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Bonus"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "DynamicValues": {
+                            "DebuffLimit": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Bonus"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "DynamicValues": {
+                            "DebuffLimit": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        },
+        "MGridFight_Origin_2007_Bonus": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "DynamicValues": {},
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnBeforeAction",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "DebuffCount"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "_isInAction"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnAfterAction",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "_isInAction"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnAddModifierSuc",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "EffectMaxLayer"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "_isInAction"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 2.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "DebuffCount"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Less",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCheckModifierCallBackStatusType",
+                        "TargetStatusType": "Debuff",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamDark",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.Retarget",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllDarkTeam"
+                      },
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByIsContainModifier",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "ModifierName": {
+                          "Custom": false,
+                          "Value": "StageAbility_GridFight_Origin_2007_Debuff_MaxFlag"
+                        },
+                        "AddedOrAlive": false,
+                        "IncludeRecordBeforeDeathrattle": false,
+                        "TaskEnabled": true,
+                        "Inverse": true,
+                        "IsClientOnly": false
+                      },
+                      "ByRandom": true,
+                      "IncludeLimbo": false,
+                      "MaxNumber": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "TaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Debuff"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxLayer": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicValues": {
+                            "DebuffLimit": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetDynamicValue",
+                          "TaskEnabled": true,
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "ContextScope": "Context",
+                          "Value": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicKey": {
+                            "Custom": false,
+                            "Value": "DebuffCount"
+                          },
+                          "SkipInCharmAction": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IgnoreParallelWarning": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        },
+        "MGridFight_Origin_2007_Debuff": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Replace",
+          "DynamicValues": {},
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "BehaviorFlagList": [
+            "KeepOnDeathrattle",
+            "STAT_Fatigue"
+          ],
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnAfterBeingHitAll",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAny",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "TrueDamageRatio"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByIsHitAllCallBackStack",
+                        "TaskEnabled": true,
+                        "Inverse": true,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByDamageDataProperty",
+                      "DynamicKey": "_TempDamageValue",
+                      "ContextScope": "Context",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "Property": "Result_FinalDamageBase",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "DamageValue"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnStack",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                  "ReadTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "OperationType": "First",
+                  "ValueType": "Layer",
+                  "Multiplier": {
+                    "fixedValue": {
+                      "Value": 2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": "_Layer",
+                  "ContextScope": "Context",
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "_Layer"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "GreaterEqual",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": -69412.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": true
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "StageAbility_GridFight_Origin_2007_Debuff_MaxFlag"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_01.prefab",
+                  "Unbind": false,
+                  "IsNeedFadeOut": true,
+                  "ForceImmediateFadeOut": true,
+                  "FadeOutRegionStart": -1.0,
+                  "FadeOutRegionEnd": -1.0,
+                  "TaskEnabled": true,
+                  "IsClientOnly": true
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "_LoopCount"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.LoopExecuteTaskListWithInterval",
+                  "PreciseTime": false,
+                  "MaxLoopCount": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "IsAttachToTargetEntity": true,
+                      "IsAttachToTimeline": false,
+                      "IsActiveLevelUpOverride": false,
+                      "IsHideTargetEntityWhenLoading": false,
+                      "AliveOnly": false,
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_01.prefab",
+                      "AttachPoint": "SelectRoot",
+                      "PositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "RotationOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "Scale": {
+                        "x": 0.30000001192092896,
+                        "y": 0.30000001192092896,
+                        "z": 0.30000001192092896,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.5196152329444885,
+                        "sqrMagnitude": 0.27000001072883606
+                      },
+                      "ScaleAdaptType": "None",
+                      "Delay": 0.0,
+                      "IsNeedFadeIn": true,
+                      "IsEnableReplay": false,
+                      "ForceSimulateImmediately": true,
+                      "AddColliderHeightOffset": false,
+                      "DynamicYaw": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "ParamEntityUsage": "LookAt",
+                      "TowardRotatePitchOnly": false,
+                      "TowardMaxPitchAngle": 90.0,
+                      "IsAttachToCaster": false,
+                      "ExecuteOnSkip": false,
+                      "MinMutexTime": 0.0,
+                      "MinMutexType": "None",
+                      "MaxMutexCount": 1,
+                      "IgnoreFadeOutMutexError": false,
+                      "SyncPropState": false,
+                      "FollowCasterTimeSlow": false,
+                      "ForbidLod": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "TaskEnabled": true,
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ContextScope": "Context",
+                      "Value": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicKey": {
+                        "Custom": false,
+                        "Value": "_LoopCount"
+                      },
+                      "SkipInCharmAction": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Property": "FatigueRatio",
+                  "PropertyValue": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "Silence": false,
+                  "IsRefresh": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnBeforeDying",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.Retarget",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllDarkTeam"
+                  },
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ModifierName": {
+                      "Custom": false,
+                      "Value": "StageAbility_GridFight_Origin_2007_Debuff_MaxFlag"
+                    },
+                    "AddedOrAlive": false,
+                    "IncludeRecordBeforeDeathrattle": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  },
+                  "ByRandom": true,
+                  "IncludeLimbo": false,
+                  "MaxNumber": {
+                    "fixedValue": {
+                      "Value": 2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "OperationType": "First",
+                      "ValueType": "Layer",
+                      "Multiplier": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": "_Layer",
+                      "ContextScope": "Context",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_01.prefab",
+                      "Unbind": false,
+                      "IsNeedFadeOut": true,
+                      "ForceImmediateFadeOut": true,
+                      "FadeOutRegionStart": -1.0,
+                      "FadeOutRegionEnd": -1.0,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "IsAttachToTargetEntity": true,
+                      "IsAttachToTimeline": false,
+                      "IsActiveLevelUpOverride": false,
+                      "IsHideTargetEntityWhenLoading": false,
+                      "AliveOnly": false,
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_Hit.prefab",
+                      "AttachPoint": "SelectRoot",
+                      "PositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "RotationOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "Scale": {
+                        "x": -1.0,
+                        "y": -1.0,
+                        "z": -1.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 1.7320507764816284,
+                        "sqrMagnitude": 3.0
+                      },
+                      "ScaleAdaptType": "None",
+                      "Delay": 0.0,
+                      "IsNeedFadeIn": true,
+                      "IsEnableReplay": false,
+                      "ForceSimulateImmediately": true,
+                      "AddColliderHeightOffset": false,
+                      "ParamEntityUsage": "LookAt",
+                      "TowardRotatePitchOnly": false,
+                      "TowardMaxPitchAngle": 90.0,
+                      "IsAttachToCaster": false,
+                      "ExecuteOnSkip": false,
+                      "MinMutexTime": 0.0,
+                      "MinMutexType": "None",
+                      "MaxMutexCount": 1,
+                      "IgnoreFadeOutMutexError": false,
+                      "SyncPropState": false,
+                      "FollowCasterTimeSlow": false,
+                      "ForbidLod": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "IsAttachToTargetEntity": true,
+                      "IsAttachToTimeline": false,
+                      "IsActiveLevelUpOverride": false,
+                      "IsHideTargetEntityWhenLoading": false,
+                      "AliveOnly": false,
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_02.prefab",
+                      "UniqueEffectName": "FlyBall",
+                      "AttachPoint": "SelectRoot",
+                      "PositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "RotationOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 1.7320507764816284,
+                        "sqrMagnitude": 3.0
+                      },
+                      "ScaleAdaptType": "None",
+                      "Delay": 0.0,
+                      "IsNeedFadeIn": true,
+                      "IsEnableReplay": false,
+                      "ForceSimulateImmediately": true,
+                      "AddColliderHeightOffset": false,
+                      "ParamEntityUsage": "LookAt",
+                      "TowardRotatePitchOnly": false,
+                      "TowardMaxPitchAngle": 90.0,
+                      "IsAttachToCaster": false,
+                      "ExecuteOnSkip": false,
+                      "MinMutexTime": 0.0,
+                      "MinMutexType": "None",
+                      "MaxMutexCount": 1,
+                      "IgnoreFadeOutMutexError": false,
+                      "SyncPropState": false,
+                      "FollowCasterTimeSlow": false,
+                      "ForbidLod": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.FireProjectile",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "TargetAliveState": "Mask_AliveOrLimbo",
+                      "TargetMaxHitCount": -1,
+                      "MaxNumber": -1,
+                      "ResetAllHitCount": false,
+                      "WaitProjectileFinish": false,
+                      "Projectile": {
+                        "Behavior": "Linear",
+                        "FlySpeed": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "EnableRayCast": false,
+                        "FlyTime": {
+                          "fixedValue": {
+                            "Value": 1.4000000013038516
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "SpeedEaseType": "Linear",
+                        "Gravity": -9.800000190734863,
+                        "MaxLifeTime": 10.0,
+                        "CollisionEnableDelay": 0.0,
+                        "StartFromLastHitPos": false,
+                        "UseLastHitVelocity": false,
+                        "AlignWithAttachPoint": false,
+                        "AttachPointAxis": "X",
+                        "AttachOffset": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "TargetAttachPoint": "SelectRoot",
+                        "TargetOffset": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "UseLookat": false,
+                        "TargetDistanceOffset": 0.0,
+                        "HitEffectDistanceOffset": 0.0,
+                        "IgnoreTargetHitbox": true,
+                        "FlyEffectUniqueName": "FlyBall",
+                        "HitEffect": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_Hit.prefab",
+                        "FlyEffectFadeOut": false,
+                        "AlignHitEffect": false,
+                        "AttachHitEffectToTargetEntity": false,
+                        "CorrectedWhenTargetFormationChange": false,
+                        "LinearPitchAngle": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "BoomerangEccentricity": {
+                          "fixedValue": {
+                            "Value": 1.0000000009313226
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "BoomerangAngleRoll": {
+                          "fixedValue": {
+                            "Value": -90.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "WriteProgressToEffectAnimator": true,
+                        "TriggerHitCallback": true,
+                        "StaticProjectileCanPassAirWall": true,
+                        "StaticExtraRadius": 0.0,
+                        "StaticProjectileKeepHigh": false,
+                        "StartDirction": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "StartOffsetRange": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "TargetOffsetRange": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "TraceDelay": 0.0,
+                        "TurnSpeed": 0.0,
+                        "ArriveDistance": 0.0,
+                        "ParabolaHeightRatio": 0.0,
+                        "ParabolaRoll": 0.0,
+                        "ParabolaUseWorldSpaceUp": true,
+                        "Bounciness": 0.0,
+                        "InitDirection": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "FreezeRotation": false,
+                        "SubCurveIndex": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        }
+                      },
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_Origin_2007_Debuff"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxLayer": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "LayerAddWhenStack": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicValues": {
+                        "FatigueRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "TrueDamageRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "EffectMaxLayer": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveSelfModifier",
+                      "MuteVisualStateRecover": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "OperationType": "First",
+                      "ValueType": "Layer",
+                      "Multiplier": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": "_Layer",
+                      "ContextScope": "Context",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_01.prefab",
+                      "Unbind": false,
+                      "IsNeedFadeOut": true,
+                      "ForceImmediateFadeOut": true,
+                      "FadeOutRegionStart": -1.0,
+                      "FadeOutRegionEnd": -1.0,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_Origin_2007_Debuff_Level"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "LayerAddWhenStack": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicValues": {
+                        "FatigueRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "TrueDamageRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "EffectMaxLayer": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "_LevelEntityLayerAdd": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveSelfModifier",
+                      "MuteVisualStateRecover": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IgnoreParallelWarning": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnBeforeDeathrattle",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.Retarget",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllDarkTeam"
+                  },
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ModifierName": {
+                      "Custom": false,
+                      "Value": "StageAbility_GridFight_Origin_2007_Debuff_MaxFlag"
+                    },
+                    "AddedOrAlive": false,
+                    "IncludeRecordBeforeDeathrattle": false,
+                    "TaskEnabled": true,
+                    "Inverse": true,
+                    "IsClientOnly": false
+                  },
+                  "ByRandom": true,
+                  "IncludeLimbo": false,
+                  "MaxNumber": {
+                    "fixedValue": {
+                      "Value": 2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "OperationType": "First",
+                      "ValueType": "Layer",
+                      "Multiplier": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": "_Layer",
+                      "ContextScope": "Context",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_01.prefab",
+                      "Unbind": false,
+                      "IsNeedFadeOut": true,
+                      "ForceImmediateFadeOut": true,
+                      "FadeOutRegionStart": -1.0,
+                      "FadeOutRegionEnd": -1.0,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "IsAttachToTargetEntity": true,
+                      "IsAttachToTimeline": false,
+                      "IsActiveLevelUpOverride": false,
+                      "IsHideTargetEntityWhenLoading": false,
+                      "AliveOnly": false,
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_Hit.prefab",
+                      "AttachPoint": "SelectRoot",
+                      "PositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "RotationOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "Scale": {
+                        "x": -1.0,
+                        "y": -1.0,
+                        "z": -1.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 1.7320507764816284,
+                        "sqrMagnitude": 3.0
+                      },
+                      "ScaleAdaptType": "None",
+                      "Delay": 0.0,
+                      "IsNeedFadeIn": true,
+                      "IsEnableReplay": false,
+                      "ForceSimulateImmediately": true,
+                      "AddColliderHeightOffset": false,
+                      "ParamEntityUsage": "LookAt",
+                      "TowardRotatePitchOnly": false,
+                      "TowardMaxPitchAngle": 90.0,
+                      "IsAttachToCaster": false,
+                      "ExecuteOnSkip": false,
+                      "MinMutexTime": 0.0,
+                      "MinMutexType": "None",
+                      "MaxMutexCount": 1,
+                      "IgnoreFadeOutMutexError": false,
+                      "SyncPropState": false,
+                      "FollowCasterTimeSlow": false,
+                      "ForbidLod": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "IsAttachToTargetEntity": true,
+                      "IsAttachToTimeline": false,
+                      "IsActiveLevelUpOverride": false,
+                      "IsHideTargetEntityWhenLoading": false,
+                      "AliveOnly": false,
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_02.prefab",
+                      "UniqueEffectName": "FlyBall",
+                      "AttachPoint": "SelectRoot",
+                      "PositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "RotationOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "Scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 1.7320507764816284,
+                        "sqrMagnitude": 3.0
+                      },
+                      "ScaleAdaptType": "None",
+                      "Delay": 0.0,
+                      "IsNeedFadeIn": true,
+                      "IsEnableReplay": false,
+                      "ForceSimulateImmediately": true,
+                      "AddColliderHeightOffset": false,
+                      "ParamEntityUsage": "LookAt",
+                      "TowardRotatePitchOnly": false,
+                      "TowardMaxPitchAngle": 90.0,
+                      "IsAttachToCaster": false,
+                      "ExecuteOnSkip": false,
+                      "MinMutexTime": 0.0,
+                      "MinMutexType": "None",
+                      "MaxMutexCount": 1,
+                      "IgnoreFadeOutMutexError": false,
+                      "SyncPropState": false,
+                      "FollowCasterTimeSlow": false,
+                      "ForbidLod": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.FireProjectile",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "TargetAliveState": "Mask_AliveOrLimbo",
+                      "TargetMaxHitCount": -1,
+                      "MaxNumber": -1,
+                      "ResetAllHitCount": false,
+                      "WaitProjectileFinish": false,
+                      "Projectile": {
+                        "Behavior": "Linear",
+                        "FlySpeed": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "EnableRayCast": false,
+                        "FlyTime": {
+                          "fixedValue": {
+                            "Value": 1.4000000013038516
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "SpeedEaseType": "Linear",
+                        "Gravity": -9.800000190734863,
+                        "MaxLifeTime": 10.0,
+                        "CollisionEnableDelay": 0.0,
+                        "StartFromLastHitPos": false,
+                        "UseLastHitVelocity": false,
+                        "AlignWithAttachPoint": false,
+                        "AttachPointAxis": "X",
+                        "AttachOffset": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "TargetAttachPoint": "SelectRoot",
+                        "TargetOffset": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "UseLookat": false,
+                        "TargetDistanceOffset": 0.0,
+                        "HitEffectDistanceOffset": 0.0,
+                        "IgnoreTargetHitbox": true,
+                        "FlyEffectUniqueName": "FlyBall",
+                        "HitEffect": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_Hit.prefab",
+                        "FlyEffectFadeOut": false,
+                        "AlignHitEffect": false,
+                        "AttachHitEffectToTargetEntity": false,
+                        "CorrectedWhenTargetFormationChange": false,
+                        "LinearPitchAngle": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "BoomerangEccentricity": {
+                          "fixedValue": {
+                            "Value": 1.0000000009313226
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "BoomerangAngleRoll": {
+                          "fixedValue": {
+                            "Value": -90.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "WriteProgressToEffectAnimator": true,
+                        "TriggerHitCallback": true,
+                        "StaticProjectileCanPassAirWall": true,
+                        "StaticExtraRadius": 0.0,
+                        "StaticProjectileKeepHigh": false,
+                        "StartDirction": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "StartOffsetRange": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "TargetOffsetRange": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "TraceDelay": 0.0,
+                        "TurnSpeed": 0.0,
+                        "ArriveDistance": 0.0,
+                        "ParabolaHeightRatio": 0.0,
+                        "ParabolaRoll": 0.0,
+                        "ParabolaUseWorldSpaceUp": true,
+                        "Bounciness": 0.0,
+                        "InitDirection": {
+                          "x": 0.0,
+                          "y": 0.0,
+                          "z": 0.0,
+                          "IsNaN": false,
+                          "IsInfinity": false,
+                          "IsPositiveInfinity": false,
+                          "IsNegativeInfinity": false,
+                          "magnitude": 0.0,
+                          "sqrMagnitude": 0.0
+                        },
+                        "FreezeRotation": false,
+                        "SubCurveIndex": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        }
+                      },
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_Origin_2007_Debuff"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxLayer": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "LayerAddWhenStack": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicValues": {
+                        "FatigueRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "TrueDamageRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "EffectMaxLayer": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveSelfModifier",
+                      "MuteVisualStateRecover": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "OperationType": "First",
+                      "ValueType": "Layer",
+                      "Multiplier": {
+                        "fixedValue": {
+                          "Value": 2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "DynamicKey": "_Layer",
+                      "ContextScope": "Context",
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_GridFight/Eff_Origin/Eff_Debuff/Eff_GridFight_Origin_Debuff_ElfFire_01.prefab",
+                      "Unbind": false,
+                      "IsNeedFadeOut": true,
+                      "ForceImmediateFadeOut": true,
+                      "FadeOutRegionStart": -1.0,
+                      "FadeOutRegionEnd": -1.0,
+                      "TaskEnabled": true,
+                      "IsClientOnly": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AliveOnly": true,
+                      "ModifierName": {
+                        "Custom": false,
+                        "Value": "MGridFight_Origin_2007_Debuff_Level"
+                      },
+                      "LifeStepImmediately": false,
+                      "StackingFlag": "Default",
+                      "Chance": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "MaxTargetCount": {
+                        "fixedValue": {
+                          "Value": -2.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": false
+                      },
+                      "LayerAddWhenStack": {
+                        "fixedValue": {
+                          "Value": -69412.0
+                        },
+                        "postfixExpr": {},
+                        "IsDynamic": true
+                      },
+                      "DynamicValues": {
+                        "FatigueRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "TrueDamageRatio": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "EffectMaxLayer": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "_LevelEntityLayerAdd": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        }
+                      },
+                      "InheritCaster": "Inherit",
+                      "IsShowUIMessageFromModel": true,
+                      "IsShowUIMessageOnUpdate": true,
+                      "ShowUIMessageDelayTime": 0.0,
+                      "ShowUIMessageInternalTime": -1.0,
+                      "ShowUIMessageCanMerge": true,
+                      "CustomOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "IsNaN": false,
+                        "IsInfinity": false,
+                        "IsPositiveInfinity": false,
+                        "IsNegativeInfinity": false,
+                        "magnitude": 0.0,
+                        "sqrMagnitude": 0.0
+                      },
+                      "ForceVisible": false,
+                      "UseFixedPosition": true,
+                      "ScreenSpaceFloatMsg": false,
+                      "RefreshBuffUIDelayTime": 0.0,
+                      "IsSilenceAddAndStack": false,
+                      "AsSubModifier": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveSelfModifier",
+                      "MuteVisualStateRecover": false,
+                      "TaskEnabled": true,
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IgnoreParallelWarning": false,
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnBeforeBeingAttacked",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": 0.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "DamageValue"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnAfterBeingAttacked",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                  "ReadTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "OperationType": "First",
+                  "ValueType": "Layer",
+                  "Multiplier": {
+                    "fixedValue": {
+                      "Value": 2.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": false
+                  },
+                  "DynamicKey": "_Layer",
+                  "ContextScope": "Context",
+                  "TaskEnabled": true,
+                  "IsClientOnly": false
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "DynamicKey": {
+                      "Custom": false,
+                      "Value": "DamageValue"
+                    },
+                    "ContextScope": "Context",
+                    "CompareType": "Greater",
+                    "CompareValue": {
+                      "fixedValue": {
+                        "Value": 0.0
+                      },
+                      "postfixExpr": {},
+                      "IsDynamic": false
+                    },
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByContainCustomString",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "LevelEntity"
+                        },
+                        "Key": {
+                          "Hash": -1062074946,
+                          "IsEmpty": false
+                        },
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "TaskEnabled": true,
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByAny",
+                            "TaskEnabled": true,
+                            "Inverse": false,
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByGridFightHasTrait",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetAlias",
+                                  "Alias": "ParamEntity"
+                                },
+                                "TeamTrait": {
+                                  "Custom": false,
+                                  "Value": "Origin_2007"
+                                },
+                                "IncludeOtherEffect": true,
+                                "IncludeInactiveTrait": true,
+                                "TaskEnabled": true,
+                                "Inverse": false,
+                                "IsClientOnly": false
+                              },
+                              {
+                                "$type": "RPG.GameCore.ByGridFightHasTrait",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetAlias",
+                                  "Alias": "ParamEntity.GetSummoner"
+                                },
+                                "TeamTrait": {
+                                  "Custom": false,
+                                  "Value": "Origin_2007"
+                                },
+                                "IncludeOtherEffect": true,
+                                "IncludeInactiveTrait": true,
+                                "TaskEnabled": true,
+                                "Inverse": false,
+                                "IsClientOnly": false
+                              }
+                            ],
+                            "IsClientOnly": false
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "TaskEnabled": true,
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCurrentSkillType",
+                                "SkillType": "Ultra",
+                                "AccessClientActiveSkill": false,
+                                "CheckRegardAsSkillType": true,
+                                "TaskEnabled": true,
+                                "Inverse": false,
+                                "IsClientOnly": false
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.DamageByAttackProperty",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ModifierOwnerEntity"
+                                  },
+                                  "AttackProperty": {
+                                    "DamageType": {
+                                      "SourceType": "Specify",
+                                      "DamageType": "Physical"
+                                    },
+                                    "FormulaType": "ByAttack",
+                                    "DamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "DamageValue": {
+                                      "fixedValue": {
+                                        "Value": -69412.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": true
+                                    },
+                                    "ExtraFormulaType": "Unknown",
+                                    "ExtraDamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "StanceValue": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "HitSplitRatio": {
+                                      "fixedValue": {
+                                        "Value": 2.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "DamageMulRatio": {
+                                      "fixedValue": {
+                                        "Value": 2.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "IsIndirect": false,
+                                    "IsNotHit": false,
+                                    "IntegerizeCategory": "None",
+                                    "SPHitRatio": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "ForceMatchStanceWeakness": false,
+                                    "AttackType": "TrueDamage",
+                                    "DoNotTriggerBreak": false,
+                                    "BreakDamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "ElationDamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "FinalFormulaType": "ByBaseDamage",
+                                    "IsMortallyWonded": false,
+                                    "IsNonlethal": false,
+                                    "FrameHalt": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "FrameHaltActiveNextFrame": false,
+                                    "IsFaceToHitDir": false,
+                                    "HitEffectMinMutexTime": {
+                                      "fixedValue": {
+                                        "Value": 0.10000000149011612
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "HitEffectMaxMutexCount": {
+                                      "fixedValue": {
+                                        "Value": 2.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "HitEffectHeight": -1.0,
+                                    "IsHitEffectOffsetByScale": false,
+                                    "HitEffectOffsetAngle": 0.0,
+                                    "HitTimeSlowType": "None",
+                                    "HitTimeSlowIntensity": "Light",
+                                    "HitPosHeight": 0.75,
+                                    "HitAngleHorizontal": 0.0,
+                                    "RandomHitAngleHorizontal": 0.0,
+                                    "HitAngleVertical": 0.0,
+                                    "TriggerHPBarAnimation": false,
+                                    "ScreenSpaceFloatMsg": false,
+                                    "InheritDamageType": false,
+                                    "InheritHitEffect": false,
+                                    "InheritHitAnimation": false,
+                                    "InheritHitPos": false
+                                  },
+                                  "TriggerHitSound": false,
+                                  "CanTriggerLastKill": false,
+                                  "IsConvert": true,
+                                  "AttackType": "Unknown",
+                                  "DisplayData": {
+                                    "UIMessageHeight": 0.25,
+                                    "HorizontalOffset": 0.0,
+                                    "DitherRangeX": 0.05000000074505806,
+                                    "DitherRangeY": 0.05000000074505806,
+                                    "AttachPoint": "SelectRoot",
+                                    "Duration": 1.5,
+                                    "Scale": 1.0,
+                                    "FixedPosition": true,
+                                    "ForceVisible": false,
+                                    "ExtraDesc": {
+                                      "Hash": 0,
+                                      "Hash64": 0
+                                    },
+                                    "ElementDamageType": "Normal",
+                                    "SkipAttachPointXZOffset": false
+                                  },
+                                  "CanOverkill": true,
+                                  "PerformanceDelay": {
+                                    "fixedValue": {
+                                      "Value": 0.20000000018626451
+                                    },
+                                    "postfixExpr": {},
+                                    "IsDynamic": false
+                                  },
+                                  "IsHitAnimPerformanceDelay": false,
+                                  "OverrideAttacker": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ParamEntity"
+                                  },
+                                  "DealAfterRootHitEnd": false,
+                                  "EqualSplitInTargets": false,
+                                  "TaskEnabled": true,
+                                  "IsClientOnly": false
+                                }
+                              ],
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.DamageByAttackProperty",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ModifierOwnerEntity"
+                                  },
+                                  "AttackProperty": {
+                                    "DamageType": {
+                                      "SourceType": "Specify",
+                                      "DamageType": "Physical"
+                                    },
+                                    "FormulaType": "ByAttack",
+                                    "DamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "DamageValue": {
+                                      "fixedValue": {
+                                        "Value": -69412.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": true
+                                    },
+                                    "ExtraFormulaType": "Unknown",
+                                    "ExtraDamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "StanceValue": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "HitSplitRatio": {
+                                      "fixedValue": {
+                                        "Value": 2.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "DamageMulRatio": {
+                                      "fixedValue": {
+                                        "Value": 2.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "IsIndirect": false,
+                                    "IsNotHit": false,
+                                    "IntegerizeCategory": "None",
+                                    "SPHitRatio": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "ForceMatchStanceWeakness": false,
+                                    "AttackType": "TrueDamage",
+                                    "DoNotTriggerBreak": false,
+                                    "BreakDamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "ElationDamagePercentage": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "FinalFormulaType": "ByBaseDamage",
+                                    "IsMortallyWonded": false,
+                                    "IsNonlethal": false,
+                                    "FrameHalt": {
+                                      "fixedValue": {
+                                        "Value": 0.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "FrameHaltActiveNextFrame": false,
+                                    "IsFaceToHitDir": false,
+                                    "HitEffectMinMutexTime": {
+                                      "fixedValue": {
+                                        "Value": 0.10000000149011612
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "HitEffectMaxMutexCount": {
+                                      "fixedValue": {
+                                        "Value": 2.0
+                                      },
+                                      "postfixExpr": {},
+                                      "IsDynamic": false
+                                    },
+                                    "HitEffectHeight": -1.0,
+                                    "IsHitEffectOffsetByScale": false,
+                                    "HitEffectOffsetAngle": 0.0,
+                                    "HitTimeSlowType": "None",
+                                    "HitTimeSlowIntensity": "Light",
+                                    "HitPosHeight": 0.75,
+                                    "HitAngleHorizontal": 0.0,
+                                    "RandomHitAngleHorizontal": 0.0,
+                                    "HitAngleVertical": 0.0,
+                                    "TriggerHPBarAnimation": false,
+                                    "ScreenSpaceFloatMsg": false,
+                                    "InheritDamageType": false,
+                                    "InheritHitEffect": false,
+                                    "InheritHitAnimation": false,
+                                    "InheritHitPos": false
+                                  },
+                                  "TriggerHitSound": false,
+                                  "CanTriggerLastKill": false,
+                                  "IsConvert": true,
+                                  "AttackType": "Unknown",
+                                  "DisplayData": {
+                                    "UIMessageHeight": 0.25,
+                                    "HorizontalOffset": 0.0,
+                                    "DitherRangeX": 0.05000000074505806,
+                                    "DitherRangeY": 0.05000000074505806,
+                                    "AttachPoint": "SelectRoot",
+                                    "Duration": 1.5,
+                                    "Scale": 1.0,
+                                    "FixedPosition": true,
+                                    "ForceVisible": false,
+                                    "ExtraDesc": {
+                                      "Hash": 0,
+                                      "Hash64": 0
+                                    },
+                                    "ElementDamageType": "Normal",
+                                    "SkipAttachPointXZOffset": false
+                                  },
+                                  "CanOverkill": true,
+                                  "PerformanceDelay": {
+                                    "fixedValue": {
+                                      "Value": 0.20000000018626451
+                                    },
+                                    "postfixExpr": {},
+                                    "IsDynamic": false
+                                  },
+                                  "IsHitAnimPerformanceDelay": false,
+                                  "OverrideAttacker": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ParamEntity"
+                                  },
+                                  "DealAfterRootHitEnd": false,
+                                  "EqualSplitInTargets": false,
+                                  "TaskEnabled": true,
+                                  "IsClientOnly": false
+                                }
+                              ],
+                              "IsClientOnly": false
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.DamageByAttackProperty",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "AttackProperty": {
+                                "DamageType": {
+                                  "SourceType": "Specify",
+                                  "DamageType": "Physical"
+                                },
+                                "FormulaType": "ByAttack",
+                                "DamagePercentage": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "DamageValue": {
+                                  "fixedValue": {
+                                    "Value": -69412.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": true
+                                },
+                                "ExtraFormulaType": "Unknown",
+                                "ExtraDamagePercentage": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "StanceValue": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "HitSplitRatio": {
+                                  "fixedValue": {
+                                    "Value": 2.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "DamageMulRatio": {
+                                  "fixedValue": {
+                                    "Value": 2.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "IsIndirect": false,
+                                "IsNotHit": false,
+                                "IntegerizeCategory": "None",
+                                "SPHitRatio": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "ForceMatchStanceWeakness": false,
+                                "AttackType": "TrueDamage",
+                                "DoNotTriggerBreak": false,
+                                "BreakDamagePercentage": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "ElationDamagePercentage": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "FinalFormulaType": "ByBaseDamage",
+                                "IsMortallyWonded": false,
+                                "IsNonlethal": false,
+                                "FrameHalt": {
+                                  "fixedValue": {
+                                    "Value": 0.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "FrameHaltActiveNextFrame": false,
+                                "IsFaceToHitDir": false,
+                                "HitEffectMinMutexTime": {
+                                  "fixedValue": {
+                                    "Value": 0.10000000149011612
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "HitEffectMaxMutexCount": {
+                                  "fixedValue": {
+                                    "Value": 2.0
+                                  },
+                                  "postfixExpr": {},
+                                  "IsDynamic": false
+                                },
+                                "HitEffectHeight": -1.0,
+                                "IsHitEffectOffsetByScale": false,
+                                "HitEffectOffsetAngle": 0.0,
+                                "HitTimeSlowType": "None",
+                                "HitTimeSlowIntensity": "Light",
+                                "HitPosHeight": 0.75,
+                                "HitAngleHorizontal": 0.0,
+                                "RandomHitAngleHorizontal": 0.0,
+                                "HitAngleVertical": 0.0,
+                                "TriggerHPBarAnimation": false,
+                                "ScreenSpaceFloatMsg": false,
+                                "InheritDamageType": false,
+                                "InheritHitEffect": false,
+                                "InheritHitAnimation": false,
+                                "InheritHitPos": false
+                              },
+                              "TriggerHitSound": false,
+                              "CanTriggerLastKill": false,
+                              "IsConvert": true,
+                              "AttackType": "Unknown",
+                              "DisplayData": {
+                                "UIMessageHeight": 0.25,
+                                "HorizontalOffset": 0.0,
+                                "DitherRangeX": 0.05000000074505806,
+                                "DitherRangeY": 0.05000000074505806,
+                                "AttachPoint": "SelectRoot",
+                                "Duration": 1.5,
+                                "Scale": 1.0,
+                                "FixedPosition": true,
+                                "ForceVisible": false,
+                                "ExtraDesc": {
+                                  "Hash": 0,
+                                  "Hash64": 0
+                                },
+                                "ElementDamageType": "Normal",
+                                "SkipAttachPointXZOffset": false
+                              },
+                              "CanOverkill": true,
+                              "PerformanceDelay": {
+                                "fixedValue": {
+                                  "Value": 0.20000000018626451
+                                },
+                                "postfixExpr": {},
+                                "IsDynamic": false
+                              },
+                              "IsHitAnimPerformanceDelay": false,
+                              "OverrideAttacker": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity"
+                              },
+                              "DealAfterRootHitEnd": false,
+                              "EqualSplitInTargets": false,
+                              "TaskEnabled": true,
+                              "IsClientOnly": false
+                            }
+                          ],
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.DamageByAttackProperty",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "AttackProperty": {
+                            "DamageType": {
+                              "SourceType": "Specify",
+                              "DamageType": "Physical"
+                            },
+                            "FormulaType": "ByAttack",
+                            "DamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "DamageValue": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "ExtraFormulaType": "Unknown",
+                            "ExtraDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "StanceValue": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitSplitRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "DamageMulRatio": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "IsIndirect": false,
+                            "IsNotHit": false,
+                            "IntegerizeCategory": "None",
+                            "SPHitRatio": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ForceMatchStanceWeakness": false,
+                            "AttackType": "TrueDamage",
+                            "DoNotTriggerBreak": false,
+                            "BreakDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "ElationDamagePercentage": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FinalFormulaType": "ByBaseDamage",
+                            "IsMortallyWonded": false,
+                            "IsNonlethal": false,
+                            "FrameHalt": {
+                              "fixedValue": {
+                                "Value": 0.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "FrameHaltActiveNextFrame": false,
+                            "IsFaceToHitDir": false,
+                            "HitEffectMinMutexTime": {
+                              "fixedValue": {
+                                "Value": 0.10000000149011612
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectMaxMutexCount": {
+                              "fixedValue": {
+                                "Value": 2.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": false
+                            },
+                            "HitEffectHeight": -1.0,
+                            "IsHitEffectOffsetByScale": false,
+                            "HitEffectOffsetAngle": 0.0,
+                            "HitTimeSlowType": "None",
+                            "HitTimeSlowIntensity": "Light",
+                            "HitPosHeight": 0.75,
+                            "HitAngleHorizontal": 0.0,
+                            "RandomHitAngleHorizontal": 0.0,
+                            "HitAngleVertical": 0.0,
+                            "TriggerHPBarAnimation": false,
+                            "ScreenSpaceFloatMsg": false,
+                            "InheritDamageType": false,
+                            "InheritHitEffect": false,
+                            "InheritHitAnimation": false,
+                            "InheritHitPos": false
+                          },
+                          "TriggerHitSound": false,
+                          "CanTriggerLastKill": false,
+                          "IsConvert": true,
+                          "AttackType": "Unknown",
+                          "DisplayData": {
+                            "UIMessageHeight": 0.25,
+                            "HorizontalOffset": 0.0,
+                            "DitherRangeX": 0.05000000074505806,
+                            "DitherRangeY": 0.05000000074505806,
+                            "AttachPoint": "SelectRoot",
+                            "Duration": 1.5,
+                            "Scale": 1.0,
+                            "FixedPosition": true,
+                            "ForceVisible": false,
+                            "ExtraDesc": {
+                              "Hash": 0,
+                              "Hash64": 0
+                            },
+                            "ElementDamageType": "Normal",
+                            "SkipAttachPointXZOffset": false
+                          },
+                          "CanOverkill": true,
+                          "PerformanceDelay": {
+                            "fixedValue": {
+                              "Value": 0.20000000018626451
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "IsHitAnimPerformanceDelay": false,
+                          "OverrideAttacker": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "DealAfterRootHitEnd": false,
+                          "EqualSplitInTargets": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        },
+        "MGridFight_Origin_2007_Debuff_Level": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Replace",
+          "DynamicValues": {},
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "_CallbackList": [
+            {
+              "Event": "OnStack",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TaskEnabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ContextScope": "Context",
+                  "Value": {
+                    "fixedValue": {
+                      "Value": -69412.0
+                    },
+                    "postfixExpr": {},
+                    "IsDynamic": true
+                  },
+                  "DynamicKey": {
+                    "Custom": false,
+                    "Value": "_LevelEntityLayer"
+                  },
+                  "SkipInCharmAction": true,
+                  "IsClientOnly": false
+                }
+              ]
+            },
+            {
+              "Event": "OnListenCharacterCreate",
+              "Priority": 0,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "TaskEnabled": true,
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "TaskEnabled": true,
+                    "Inverse": false,
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamDark",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareTarget",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "CompareType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "AliveStateMask": "Mask_AliveOrLimbo",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "IsClientOnly": false
+                      }
+                    ],
+                    "IsClientOnly": false
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "_LevelEntityLayer"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "Less",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": -69412.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": true
+                        },
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Debuff"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxLayer": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "LayerAddWhenStack": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicValues": {
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetDynamicValue",
+                          "TaskEnabled": true,
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "ContextScope": "Context",
+                          "Value": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicKey": {
+                            "Custom": false,
+                            "Value": "_LevelEntityLayer"
+                          },
+                          "SkipInCharmAction": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": true,
+                          "ModifierName": {
+                            "Custom": false,
+                            "Value": "MGridFight_Origin_2007_Debuff"
+                          },
+                          "LifeStepImmediately": false,
+                          "StackingFlag": "Default",
+                          "Chance": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxTargetCount": {
+                            "fixedValue": {
+                              "Value": -2.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": false
+                          },
+                          "MaxLayer": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "LayerAddWhenStack": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicValues": {
+                            "FatigueRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "TrueDamageRatio": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            },
+                            "EffectMaxLayer": {
+                              "fixedValue": {
+                                "Value": -69412.0
+                              },
+                              "postfixExpr": {},
+                              "IsDynamic": true
+                            }
+                          },
+                          "InheritCaster": "Inherit",
+                          "IsShowUIMessageFromModel": true,
+                          "IsShowUIMessageOnUpdate": true,
+                          "ShowUIMessageDelayTime": 0.0,
+                          "ShowUIMessageInternalTime": -1.0,
+                          "ShowUIMessageCanMerge": true,
+                          "CustomOffset": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "IsNaN": false,
+                            "IsInfinity": false,
+                            "IsPositiveInfinity": false,
+                            "IsNegativeInfinity": false,
+                            "magnitude": 0.0,
+                            "sqrMagnitude": 0.0
+                          },
+                          "ForceVisible": false,
+                          "UseFixedPosition": true,
+                          "ScreenSpaceFloatMsg": false,
+                          "RefreshBuffUIDelayTime": 0.0,
+                          "IsSilenceAddAndStack": false,
+                          "AsSubModifier": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetDynamicValue",
+                          "TaskEnabled": true,
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "ContextScope": "Context",
+                          "Value": {
+                            "fixedValue": {
+                              "Value": -69412.0
+                            },
+                            "postfixExpr": {},
+                            "IsDynamic": true
+                          },
+                          "DynamicKey": {
+                            "Custom": false,
+                            "Value": "_LevelEntityLayer"
+                          },
+                          "SkipInCharmAction": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "TaskEnabled": true,
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TaskEnabled": true,
+                        "Inverse": false,
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "DynamicKey": {
+                          "Custom": false,
+                          "Value": "_LevelEntityLayer"
+                        },
+                        "ContextScope": "Context",
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "fixedValue": {
+                            "Value": 0.0
+                          },
+                          "postfixExpr": {},
+                          "IsDynamic": false
+                        },
+                        "IsClientOnly": false
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RemoveSelfModifier",
+                          "MuteVisualStateRecover": false,
+                          "TaskEnabled": true,
+                          "IsClientOnly": false
+                        }
+                      ],
+                      "IsClientOnly": false
+                    }
+                  ],
+                  "IsClientOnly": false
+                }
+              ]
+            }
+          ],
+          "IsGlobalModifier": false
+        },
+        "StageAbility_GridFight_Origin_2007_Debuff_MaxFlag": {
+          "Priority": 0,
+          "Count": -1,
+          "Stacking": "Unique",
+          "LifeTime": -1,
+          "MaxLayer": 99,
+          "LayerAddWhenStack": {
+            "fixedValue": {
+              "Value": 0.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "WorkingTurn": "OwnerTurn",
+          "LifeStepMoment": "ModifierPhase2End",
+          "TargetSelectRestrictType": "Unknow",
+          "ApplyBehaviorFlagBindEffects": true,
+          "UseSnapshotEntity": false,
+          "IsGlobalModifier": false
+        }
+      },
+      "ServantWhiteList": false
+    }
+  ],
+  "GlobalModifiers": {},
+  "GlobalTemplates": []
+}

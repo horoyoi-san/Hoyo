@@ -1,0 +1,410 @@
+{
+  "AbilityList": [
+    {
+      "Name": "MazeMonster_W4_Shooter_00_MazeAttack",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntity",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "PerformerType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TargetType": "AbilityTargetEntity",
+          "ToTargetRatio": 1.0,
+          "AngleOffset": 0.0,
+          "Duration": 0.44999998807907104,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "NormalAtk",
+          "AnimStateName": "Attack",
+          "NormalizedTimeStart": 0.0,
+          "TransitionDuration": 0.05000000074505806,
+          "StopWhenHitOthers": true,
+          "ForbidCrossfade": false,
+          "MovingRangeList": [
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "IgnoreRadius": false,
+              "OnlyMoveForward": false,
+              "SteerNormalizedTimeStart": {
+                "fixedValue": {
+                  "Value": 0.009999999310821295
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "SteerNormalizedTimeEnd": {
+                "fixedValue": {
+                  "Value": 0.62000000057742
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              },
+              "MaxSteerSpeed": {
+                "fixedValue": {
+                  "Value": 600.0
+                },
+                "postfixExpr": {},
+                "IsDynamic": false
+              }
+            }
+          ],
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.StartAim",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "TargetAttachPoint": "Head",
+          "TargetOffset": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "IsNaN": false,
+            "IsInfinity": false,
+            "IsPositiveInfinity": false,
+            "IsNegativeInfinity": false,
+            "magnitude": 0.0,
+            "sqrMagnitude": 0.0
+          },
+          "TransitTime": 0.10000000149011612,
+          "VerticalAlpha": 1.0,
+          "HorizontalAlpha": 0.4000000059604645,
+          "IsEffect": false,
+          "TraceTarget": true,
+          "LimitTargetRange": {
+            "x": 4.0,
+            "y": 1.0,
+            "magnitude": 4.123105525970459,
+            "sqrMagnitude": 17.0
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 0.6899999999441206
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.AdventureFireProjectile",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "None"
+          },
+          "OnProjectileHit": [
+            {
+              "$type": "RPG.GameCore.AdventureTriggerAttack",
+              "AttackTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllEnemy"
+              },
+              "AttackRootTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ProjectileHitEntity"
+              },
+              "TriggerBattle": true,
+              "TriggerBattleDelay": 0.10000000149011612,
+              "AttackDetectConfig": {
+                "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                "Offset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "IsNaN": false,
+                  "IsInfinity": false,
+                  "IsPositiveInfinity": false,
+                  "IsNegativeInfinity": false,
+                  "magnitude": 0.0,
+                  "sqrMagnitude": 0.0
+                },
+                "FaceDir": 0.0,
+                "MinRadius": 0.0,
+                "MaxRadius": 0.10000000149011612,
+                "FanAngle": 360.0,
+                "Hight": 1.0
+              },
+              "HitConfig": {
+                "HitAnimation": "Hit",
+                "HitEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Shooter_00/Eff_Monster_W4_Shooter_00_MazeAttack_Hit.prefab",
+                "HitAngleHorizontal": 0.0,
+                "RandomHitAngleHorizontal": 0.0,
+                "HitAngleVertical": 0.0,
+                "HitEffectHeight": 0.0
+              },
+              "IncludeProps": true,
+              "HitTargetFaceToAttacker": false,
+              "TriggerBattleByAllHitTarget": false,
+              "AttackDetectCollision": true,
+              "FilterAllHitTargetByCurrentMP": false,
+              "EnterBattleSelectTargetType": "Normal",
+              "CostMP": 0,
+              "CostMpPhaseType": "OnHitEnemy",
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            },
+            {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "WaitCloseupShotFinish": false,
+              "CameraConfig": {
+                "ConfigType": "NormalConfig",
+                "CameraState": "Unknow",
+                "ShakeTemplateName": "Punch_Middle",
+                "OverrideShakeConfigV2": {
+                  "ShakeScale": 0.4000000059604645,
+                  "ShakeTime": 0.20000000298023224,
+                  "LoopTime": 1.0,
+                  "ShakeDir": {
+                    "x": 0.0,
+                    "y": 0.10000000149011612,
+                    "z": 0.0,
+                    "IsNaN": false,
+                    "IsInfinity": false,
+                    "IsPositiveInfinity": false,
+                    "IsNegativeInfinity": false,
+                    "magnitude": 0.10000000149011612,
+                    "sqrMagnitude": 0.010000000707805157
+                  },
+                  "RangeAttenuationDelay": 999.0,
+                  "RangeAttenuationTarget": 0.0,
+                  "RangeAttenuationDuration": -1.0,
+                  "OnlyApplyInFreelook3rd": false
+                },
+                "Priority": 0,
+                "LockRelatedTarget": false,
+                "DontOverrideLastShowEntityConfig": false
+              },
+              "TaskEnabled": true,
+              "IsClientOnly": true
+            }
+          ],
+          "WaitProjectileFinish": false,
+          "Projectile": {
+            "ColliderTemplate": "CapsuleZ_MazeCommonBullet",
+            "Behavior": "LinearWithHitDetect",
+            "FlySpeed": {
+              "fixedValue": {
+                "Value": 100.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "EnableRayCast": true,
+            "FlyTime": {
+              "fixedValue": {
+                "Value": -2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "SpeedEaseType": "Linear",
+            "Gravity": 0.0,
+            "MaxLifeTime": 5.0,
+            "CollisionEnableDelay": 0.0,
+            "StartFromLastHitPos": false,
+            "UseLastHitVelocity": false,
+            "AttachPoint": "Gun",
+            "AlignWithAttachPoint": true,
+            "AttachPointAxis": "Z",
+            "AttachOffset": {
+              "x": 0.0,
+              "y": -0.20000000298023224,
+              "z": 0.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 0.20000000298023224,
+              "sqrMagnitude": 0.04000000283122063
+            },
+            "TargetAttachPoint": "Root",
+            "TargetOffset": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 0.0,
+              "sqrMagnitude": 0.0
+            },
+            "UseLookat": false,
+            "TargetDistanceOffset": 0.0,
+            "HitEffectDistanceOffset": 0.0,
+            "IgnoreTargetHitbox": false,
+            "FlyEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Shooter_00/Eff_Monster_W4_Shooter_00_MazeAttack_Bullet_01.prefab",
+            "FlyEffectFadeOut": true,
+            "AlignHitEffect": false,
+            "AttachHitEffectToTargetEntity": false,
+            "CorrectedWhenTargetFormationChange": false,
+            "LinearPitchAngle": {
+              "fixedValue": {
+                "Value": -10.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "BoomerangEccentricity": {
+              "fixedValue": {
+                "Value": 2.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "BoomerangAngleRoll": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            },
+            "WriteProgressToEffectAnimator": false,
+            "TriggerHitCallback": true,
+            "StaticProjectileCanPassAirWall": true,
+            "StaticExtraRadius": 0.0,
+            "StaticProjectileKeepHigh": false,
+            "StartDirction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 0.0,
+              "sqrMagnitude": 0.0
+            },
+            "StartOffsetRange": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 0.0,
+              "sqrMagnitude": 0.0
+            },
+            "TargetOffsetRange": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 0.0,
+              "sqrMagnitude": 0.0
+            },
+            "TraceDelay": 0.0,
+            "TurnSpeed": 0.0,
+            "ArriveDistance": 0.0,
+            "ParabolaHeightRatio": 0.0,
+            "ParabolaRoll": 0.0,
+            "ParabolaUseWorldSpaceUp": true,
+            "Bounciness": 0.0,
+            "InitDirection": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "IsNaN": false,
+              "IsInfinity": false,
+              "IsPositiveInfinity": false,
+              "IsNegativeInfinity": false,
+              "magnitude": 0.0,
+              "sqrMagnitude": 0.0
+            },
+            "FreezeRotation": false,
+            "SubCurveIndex": {
+              "fixedValue": {
+                "Value": 0.0
+              },
+              "postfixExpr": {},
+              "IsDynamic": false
+            }
+          },
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "fixedValue": {
+              "Value": 2.0
+            },
+            "postfixExpr": {},
+            "IsDynamic": false
+          },
+          "SkipWhenStateChange": false,
+          "IgnoreStateChangeCheck": false,
+          "WaitForFrameEnd": false,
+          "SyncVCameraTime": false,
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    },
+    {
+      "Name": "MazeMonster_W4_Shooter_00_FreezeStopAim",
+      "TargetInfo": {
+        "TargetType": "Caster",
+        "AllowUnselectableTarget": false,
+        "MinTargetCount": 0
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddAdventureModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": "ADV_Monster_W4_Shooter_00_FreezeStopAim",
+          "TaskEnabled": true,
+          "IsClientOnly": true
+        }
+      ],
+      "ManualTriggerType": "None"
+    }
+  ]
+}
