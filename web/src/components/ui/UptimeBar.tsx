@@ -22,10 +22,10 @@ export function UptimeBar({
 
   return (
     <div className={cn('space-y-1.5', className)}>
-      <div className="flex items-center justify-between text-[11px] text-zinc-400">
-        <span className="font-mono text-zinc-500">{days} days ago</span>
+      <div className="flex items-center justify-between text-[11px] text-hz-gray-400">
+        <span className="font-mono text-hz-gray-500">{days} days ago</span>
         <span className="font-mono font-medium text-emerald-400">{uptimePercentage}% uptime</span>
-        <span className="font-mono text-zinc-500">Today</span>
+        <span className="font-mono text-hz-gray-500">Today</span>
       </div>
 
       <div className="flex items-center gap-[3px] h-6">

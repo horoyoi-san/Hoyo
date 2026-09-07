@@ -1,0 +1,107 @@
+name: Release AstralOS
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag (e.g. v1.0.0)'
+        required: false
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Frontend Dependencies
+        run: npm --prefix web install
+
+      - name: Build Frontend (Vite)
+        run: npm --prefix web run build
+
+      - name: Build RobinSR Server Engines (sdkserver & gameserver)
+        run: |
+          cargo build --release --manifest-path crates/robinsr_engine/Cargo.toml --bin sdkserver --bin gameserver
+          if (!(Test-Path -Path "bin")) { New-Item -ItemType Directory -Path "bin" }
+          Copy-Item "crates/robinsr_engine/target/release/sdkserver.exe" "bin/sdkserver.exe" -Force
+          Copy-Item "crates/robinsr_engine/target/release/gameserver.exe" "bin/gameserver.exe" -Force
+
+      - name: Build Rust Workspace (Dumper DLL & Tools)
+        run: |
+          cargo build --release --workspace
+          if (Test-Path -Path "target/release/version.dll") {
+            Copy-Item "target/release/version.dll" "bin/version.dll" -Force
+          }
+
+      - name: Build Standalone Tauri Desktop Application
+        run: |
+          npx --prefix web tauri build --no-bundle
+          if (Test-Path -Path "src-tauri/target/release/hsr-desktop.exe") {
+            Copy-Item "src-tauri/target/release/hsr-desktop.exe" "bin/AstralOS.exe" -Force
+          }
+
+      - name: Package Release ZIP Archive
+        shell: pwsh
+        run: |
+          $ReleaseDir = "AstralOS-Release"
+          New-Item -ItemType Directory -Path $ReleaseDir -Force
+          
+          # Copy Main App and Runner
+          Copy-Item "bin/AstralOS.exe" "$ReleaseDir/AstralOS.exe" -Force
+          Copy-Item "menu.bat" "$ReleaseDir/menu.bat" -Force
+          if (Test-Path "README.md") { Copy-Item "README.md" "$ReleaseDir/README.md" -Force }
+
+          # Copy Runtime bin/ Directory
+          $BinDest = "$ReleaseDir/bin"
+          New-Item -ItemType Directory -Path $BinDest -Force
+          Get-ChildItem -Path "bin" -File | ForEach-Object {
+            if ($_.Name -ne "AstralOS.exe") {
+              Copy-Item $_.FullName "$BinDest/$($_.Name)" -Force
+            }
+          }
+
+          # Compress to zip
+          $Tag = "${{ github.ref_name }}"
+          if ([string]::IsNullOrWhiteSpace($Tag) -or $Tag -eq "main") {
+            $Tag = "${{ github.event.inputs.tag_name }}"
+            if ([string]::IsNullOrWhiteSpace($Tag)) { $Tag = "v1.0.0" }
+          }
+          $ZipName = "AstralOS-$Tag-windows-x64.zip"
+          Compress-Archive -Path "$ReleaseDir/*" -DestinationPath $ZipName -Force
+          Write-Output "ZIP_NAME=$ZipName" >> $env:GITHUB_ENV
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.ZIP_NAME }}
+            bin/gameserver.exe
+            bin/sdkserver.exe
+            bin/version.dll
+          generate_release_notes: true
+          draft: false
+          prerelease: false

@@ -37,19 +37,19 @@ export function SectionHeader({
     );
 
   return (
-    <div className={cn('flex items-start justify-between gap-4 pb-5 border-b border-hairline', className)}>
-      <div className="flex items-start gap-4 min-w-0">
+    <div className={cn('flex items-start justify-between gap-3.5 pb-3 border-b border-hairline', className)}>
+      <div className="flex items-center gap-3.5 min-w-0">
         {icon && (
-          <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/20 to-aurora/10 border border-accent/25 text-accent-soft shadow-[0_0_24px_-8px_rgb(139_92_246/0.5)]">
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent/20 to-white/5 border border-accent/25 text-accent-soft shadow-[0_0_16px_-6px_rgb(161_161_170/0.3)]">
             {icon}
           </div>
         )}
         <div className="min-w-0">
-          <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-2xl font-bold text-white tracking-tight leading-tight">{titlePart}</h1>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h1 className="text-xl font-bold text-white tracking-tight leading-snug">{titlePart}</h1>
             {badge}
           </div>
-          {description && <p className="mt-1 text-xs text-ink-3 font-light">{description}</p>}
+          {description && <p className="mt-0.5 text-xs text-ink-3 font-normal leading-relaxed">{description}</p>}
         </div>
       </div>
       {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}

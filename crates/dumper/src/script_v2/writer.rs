@@ -22,22 +22,20 @@ impl Writer {
     }
 
     pub fn save_string_literals(&self) {
-        std::fs::write(
-            "./DUMP/stringLiterals.json",
-            serde_json::to_string_pretty(&self.scanner.type_analyzer.context.string_literals)
-                .unwrap(),
-        )
-        .unwrap();
+        let _ = std::fs::create_dir_all("./DUMP/IL2CPP_Dumper");
+        if let Ok(content) = serde_json::to_string_pretty(&self.scanner.type_analyzer.context.string_literals) {
+            let _ = std::fs::write("./DUMP/IL2CPP_Dumper/stringLiterals.json", &content);
+            let _ = std::fs::write("./DUMP/stringLiterals.json", content);
+        }
         println!("[Script Dumper] saved stringLiterals.json");
     }
 
     pub fn save_script(&self) {
-        std::fs::write(
-            "./DUMP/script.json",
-            serde_json::to_string_pretty(&self.scanner.type_analyzer.context.script_output)
-                .unwrap(),
-        )
-        .unwrap();
+        let _ = std::fs::create_dir_all("./DUMP/IL2CPP_Dumper");
+        if let Ok(content) = serde_json::to_string_pretty(&self.scanner.type_analyzer.context.script_output) {
+            let _ = std::fs::write("./DUMP/IL2CPP_Dumper/script.json", &content);
+            let _ = std::fs::write("./DUMP/script.json", content);
+        }
         println!("[Script Dumper] saved script.json");
     }
 
@@ -121,6 +119,11 @@ impl Writer {
             self.scanner.type_analyzer.context.method_info_header
         )
         .unwrap();
+        drop(out);
+
+        let _ = std::fs::create_dir_all("./DUMP/IL2CPP_Dumper");
+        let _ = std::fs::copy("./DUMP/struct.h", "./DUMP/IL2CPP_Dumper/il2cpp.h");
+        let _ = std::fs::copy("./DUMP/struct.h", "./DUMP/IL2CPP_Dumper/struct.h");
 
         println!("[Script Dumper] saved il2cpp.h");
     }

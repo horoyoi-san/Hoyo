@@ -8,8 +8,8 @@ pub mod unity;
 mod extract;
 
 pub use extract::{
-    AssetEntry, ExtractOptions, ExtractStats, collect_block_files, decode_texture, extract_block,
-    extract_dir, scan_block, scan_dir,
+    AssetEntry, ExtractOptions, ExtractStats, StarRailDataDumpResult, collect_block_files,
+    decode_texture, dump_starrail_data, extract_block, extract_dir, scan_block, scan_dir,
 };
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -37,3 +37,4 @@ impl Display for GameType {
         }
     }
 }
+

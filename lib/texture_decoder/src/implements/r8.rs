@@ -19,10 +19,6 @@ impl ImageDecoder<1> for R8 {
         let pixel_count = size.size();
         let mut out = vec![0u8; size.output_size()].into_boxed_slice();
 
-        if crate::gpu::decode_r8_gpu(img_data, size.width(), size.height(), &mut out).is_ok() {
-            return Ok(out);
-        }
-
         #[cfg(target_arch = "x86_64")]
         unsafe {
             use core::arch::x86_64::*;

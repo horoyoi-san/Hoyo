@@ -6,16 +6,22 @@ use std::{
 
 pub fn main() {
     let proto_file = "StarRail.proto";
+    let out_rs = Path::new("out/_.rs");
     if std::path::Path::new(proto_file).exists() {
         println!("cargo:rerun-if-changed={proto_file}");
 
-        prost_build::Config::new()
+        let res = prost_build::Config::new()
             .out_dir("out/")
             .type_attribute(".", "#[derive(proto_derive::CmdID)]")
-            .compile_protos(&[proto_file], &["."])
-            .unwrap();
+            .compile_protos(&[proto_file], &["."]);
 
-        impl_message_id(Path::new("out/_.rs")).unwrap();
+        if let Ok(()) = res {
+            let _ = impl_message_id(out_rs);
+        } else if out_rs.exists() {
+            println!("cargo:warning=protoc was not found or failed, using pre-generated out/_.rs");
+        } else {
+            res.expect("Failed to compile protobuf files and out/_.rs is missing");
+        }
     }
 }
 
@@ -29,7 +35,9 @@ pub fn impl_message_id(path: &Path) -> io::Result<()> {
         let line = line?;
 
         if line.contains("CmdID:") {
-            attr = Some(make_message_id_attr(&line).unwrap());
+            if let Some(attr_str) = make_message_id_attr(&line) {
+                attr = Some(attr_str);
+            }
         } else {
             output.push(line);
             if let Some(attr) = attr.take() {

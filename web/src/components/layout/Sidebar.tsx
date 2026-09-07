@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
 import appIcon from '../../assets/icon.png';
 import { useAppStore, NavigationPage } from '../../stores/useAppStore';
 import { useT } from '../../lib/hooks';
@@ -34,14 +34,14 @@ export function Sidebar() {
         aria-current={isActive ? 'page' : undefined}
         title={label}
         className={cn(
-          'w-full flex items-center text-left transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-hz-brand-400/50 rounded-xl relative group',
+          'w-full flex items-center text-left transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50 rounded-xl relative group',
           collapsed ? 'justify-center p-2.5 my-1' : 'px-3.5 py-2.5 gap-3 my-0.5',
           isActive
-            ? 'bg-hz-brand-400 text-white font-semibold shadow-lg shadow-hz-brand-400/30'
-            : 'text-hz-gray-400 hover:text-white hover:bg-hz-navy-700/60'
+            ? 'bg-zinc-800 text-white font-medium border border-zinc-700/60 shadow-sm'
+            : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50 border border-transparent'
         )}
       >
-        <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-white' : 'text-hz-gray-400 group-hover:text-white')} />
+        <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200')} />
         {!collapsed && (
           <span className="text-xs truncate font-medium">
             {label}
@@ -52,9 +52,9 @@ export function Sidebar() {
   };
 
   const sidebarContent = (
-    <div className="h-full flex flex-col justify-between overflow-hidden bg-hz-navy-800">
+    <div className="h-full flex flex-col overflow-hidden bg-hz-navy-800">
       {/* Brand header */}
-      <div>
+      <div className="shrink-0">
         <div
           className={cn(
             'border-b border-hz-navy-500/40 flex items-center h-14',
@@ -71,11 +71,11 @@ export function Sidebar() {
             aria-label="AstralOS — home"
             title="AstralOS"
           >
-            <img src={appIcon} alt="AstralOS" className="h-7 w-7 shrink-0 rounded-xl shadow-md shadow-hz-brand-400/30 object-cover" />
+            <img src={appIcon} alt="AstralOS" className="h-7 w-7 shrink-0 rounded-xl shadow-md shadow-black/40 object-cover" />
             {!collapsed && (
               <div className="min-w-0 text-left">
-                <span className="text-sm font-extrabold text-white tracking-wider font-sans">
-                  Astral<span className="font-normal text-hz-brand-400">OS</span>
+                <span className="text-sm font-bold text-white tracking-wider font-sans">
+                  Astral<span className="text-zinc-400 font-normal">OS</span>
                 </span>
               </div>
             )}
@@ -85,7 +85,7 @@ export function Sidebar() {
             <IconButton
               label="Collapse sidebar"
               variant="ghost"
-              className="hidden lg:inline-flex text-hz-gray-400 hover:text-white h-7 w-7"
+              className="text-hz-gray-400 hover:text-white h-7 w-7"
               onClick={() => updateSettings({ compactSidebar: true })}
             >
               <PanelLeftClose className="h-4 w-4" />
@@ -110,35 +110,30 @@ export function Sidebar() {
             </IconButton>
           </div>
         )}
-
-        {/* Navigation Categories */}
-        <nav
-          className={cn(
-            'p-3 space-y-3',
-            collapsed
-              ? 'overflow-hidden scrollbar-none'
-              : 'overflow-y-auto max-h-[calc(100vh-120px)] scrollbar-thin'
-          )}
-          aria-label="Main navigation"
-        >
-          {CATEGORIES.map((cat) => (
-            <div key={cat.categoryKey} className="space-y-1">
-              {!collapsed && (
-                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-hz-gray-500">
-                  {t(cat.categoryKey)}
-                </div>
-              )}
-              {collapsed && (
-                <div className="mx-auto h-px w-6 bg-hz-navy-500/50 my-2" />
-              )}
-              <div className="space-y-0.5">{cat.items.map(renderNavButton)}</div>
-            </div>
-          ))}
-        </nav>
       </div>
 
+      {/* Navigation Categories - Always scrollable */}
+      <nav
+        className="flex-1 min-h-0 overflow-y-auto p-3 space-y-3 scrollbar-thin"
+        aria-label="Main navigation"
+      >
+        {CATEGORIES.map((cat) => (
+          <div key={cat.categoryKey} className="space-y-1">
+            {!collapsed && (
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-hz-gray-500">
+                {t(cat.categoryKey)}
+              </div>
+            )}
+            {collapsed && (
+              <div className="mx-auto h-px w-6 bg-hz-navy-500/50 my-2" />
+            )}
+            <div className="space-y-0.5">{cat.items.map(renderNavButton)}</div>
+          </div>
+        ))}
+      </nav>
+
       {/* Footer status */}
-      <div className={cn('border-t border-hz-navy-500/40 bg-hz-navy-900/60', collapsed ? 'p-3 flex justify-center' : 'px-4 py-3')}>
+      <div className={cn('shrink-0 border-t border-hz-navy-500/40 bg-hz-navy-900/60', collapsed ? 'p-3 flex justify-center' : 'px-4 py-3')}>
         <StatusDot compact={collapsed} />
       </div>
     </div>
@@ -146,15 +141,6 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile hamburger */}
-      <button
-        onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-2.5 left-2.5 z-50 p-2 rounded-xl bg-hz-navy-800 border border-hz-navy-500 text-white hover:bg-hz-navy-700 transition-colors shadow-lg"
-        aria-label="Open navigation"
-      >
-        <Menu className="h-4 w-4" />
-      </button>
-
       {/* Mobile backdrop */}
       {mobileOpen && (
         <div
@@ -167,9 +153,8 @@ export function Sidebar() {
       {/* Sidebar panel */}
       <aside
         className={cn(
-          'h-full flex-col bg-hz-navy-800 border-r border-hz-navy-500/40 relative select-none transition-all duration-200 ease-in-out shrink-0 overflow-hidden shadow-xl shadow-black/20',
+          'h-full flex flex-col bg-hz-navy-800 border-r border-hz-navy-500/40 relative select-none transition-all duration-200 ease-in-out shrink-0 overflow-hidden shadow-xl shadow-black/20 z-20',
           collapsed ? 'w-18 min-w-18 max-w-18' : 'w-64 min-w-64 max-w-64',
-          'hidden lg:flex',
           mobileOpen && '!flex w-72 min-w-72 max-w-72 fixed inset-y-0 left-0 z-40 !transition-none shadow-2xl'
         )}
       >

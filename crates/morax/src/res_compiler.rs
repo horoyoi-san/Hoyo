@@ -170,6 +170,7 @@ pub struct ResCompileResult {
 // Internal structs for parsing source game data
 // ---------------------------------------------------------------------------
 
+#[allow(dead_code)]
 #[derive(Deserialize, Debug, Default)]
 struct RuntimeFloor {
     #[serde(rename = "FloorID", default)]
@@ -180,6 +181,7 @@ struct RuntimeFloor {
     group_instance_list: Vec<GroupInstanceRef>,
 }
 
+#[allow(dead_code)]
 #[derive(Deserialize, Debug, Clone, Default)]
 #[serde(rename_all = "PascalCase")]
 struct GroupCommonMeta {
@@ -436,6 +438,7 @@ impl ResourceCompiler {
         }
     }
 
+    #[allow(dead_code)]
     fn find_anchor(content: &str, anchor_id: u32) -> Option<(Vector, Vector)> {
         let (_, pos, rot) = Self::find_anchor_info(content, anchor_id)?;
         Some((pos, rot))

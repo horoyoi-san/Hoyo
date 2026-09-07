@@ -25,26 +25,9 @@ pub async fn on_get_level_reward_taken_list_cs_req(
     res: &mut GetLevelRewardTakenListScRsp,
 ) {
     res.retcode = 0;
-    res.level_reward_taken_list = Vec::new();
+    res.level_reward_taken_list = (1..=70).collect();
 }
 
-pub async fn on_get_activity_schedule_config_cs_req(
-    _session: &mut PlayerSession,
-    _req: &GetActivityScheduleConfigCsReq,
-    res: &mut GetActivityScheduleConfigScRsp,
-) {
-    res.retcode = 0;
-    // Populate all 176 exact active event panels from ActivityPanel.json and ActivityConfig.json
-    res.schedule_data = game_data::ALL_ACTIVITY_PANEL_PAIRS
-        .iter()
-        .map(|&(panel_id, activity_id)| ActivityScheduleData {
-            panel_id,
-            activity_id,
-            begin_time: 1000,
-            end_time: 2147483647,
-        })
-        .collect();
-}
 
 pub async fn on_get_expedition_data_cs_req(
     _session: &mut PlayerSession,

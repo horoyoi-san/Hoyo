@@ -38,15 +38,15 @@ export function ConfigView() {
   }, [mcpModel]);
 
   return (
-    <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto bg-hz-navy-900">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5 bg-hz-navy-900">
       <SectionHeader
         icon={<Settings className="h-5 w-5" />}
         title={isTh ? 'ตั้งค่า AI Agent & เครือข่ายระบบ' : 'AI Agent & Network Configuration'}
         badge={<Badge variant="violet">JSON-RPC & MCP</Badge>}
         description={
           isTh
-            ? 'กำหนดค่า Model สำหรับ MCP Server, พอร์ต IPC (:42857) และ Dispatch Server (:21000)'
-            : 'Configure LLM agent integration, JSON-RPC tools, and network binding ports.'
+            ? 'กำหนดค่า Model Context Protocol (MCP), เอนด์พอยต์ IPC (:42857) และการผูกพอร์ตเครือข่าย'
+            : 'Configure Model Context Protocol (MCP) toolchains, IPC endpoints, and network binding ports.'
         }
       />
 
@@ -54,7 +54,7 @@ export function ConfigView() {
         {/* AI MCP */}
         <Card className="space-y-4 p-5 border-hz-navy-500/50 bg-hz-navy-800/80">
           <div className="flex items-center gap-2.5 text-white">
-            <div className="p-2 rounded-xl bg-purple-500/15 border border-purple-500/25 text-purple-400">
+            <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200">
               <Bot className="h-4 w-4" />
             </div>
             <div>

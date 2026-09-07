@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'emerald' | 'violet' | 'amber' | 'rose' | 'gold' | 'neutral' | 'outline';
+  variant?: 'emerald' | 'violet' | 'blue' | 'amber' | 'rose' | 'gold' | 'neutral' | 'outline';
   dot?: boolean;
 }
 
@@ -14,23 +14,25 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variantStyles = {
-    emerald: 'bg-hz-green-400/10 text-hz-green-400 border-hz-green-400/25',
-    violet: 'bg-hz-brand-400/10 text-hz-brand-300 border-hz-brand-400/25',
-    amber: 'bg-hz-orange-400/10 text-hz-orange-400 border-hz-orange-400/25',
-    rose: 'bg-hz-red-400/10 text-hz-red-400 border-hz-red-400/25',
-    gold: 'bg-hz-orange-400/10 text-hz-orange-400 border-hz-orange-400/25',
-    neutral: 'bg-hz-navy-700 text-hz-gray-400 border-hz-navy-500',
-    outline: 'bg-transparent text-hz-gray-400 border-hz-navy-500',
+    emerald: 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40',
+    violet: 'bg-zinc-800 text-zinc-200 border-zinc-700/60',
+    blue: 'bg-zinc-800 text-zinc-200 border-zinc-700/60',
+    amber: 'bg-amber-950/40 text-amber-300 border-amber-800/40',
+    rose: 'bg-rose-950/40 text-rose-300 border-rose-800/40',
+    gold: 'bg-amber-950/40 text-amber-300 border-amber-800/40',
+    neutral: 'bg-zinc-800 text-zinc-300 border-zinc-700/60',
+    outline: 'bg-transparent text-zinc-400 border-zinc-800',
   };
 
   const dotColors = {
-    emerald: 'bg-hz-green-400',
-    violet: 'bg-hz-brand-400',
-    amber: 'bg-hz-orange-400',
-    rose: 'bg-hz-red-400',
-    gold: 'bg-hz-orange-400',
-    neutral: 'bg-hz-gray-500',
-    outline: 'bg-hz-navy-500',
+    emerald: 'bg-emerald-400',
+    violet: 'bg-zinc-400',
+    blue: 'bg-zinc-400',
+    amber: 'bg-amber-400',
+    rose: 'bg-rose-400',
+    gold: 'bg-amber-400',
+    neutral: 'bg-zinc-500',
+    outline: 'bg-zinc-600',
   };
 
   return (

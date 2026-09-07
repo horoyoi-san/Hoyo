@@ -38,6 +38,7 @@ pub struct ProtoDumperResult {
     pub message: String,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 struct ProtoField {
     name: String,
@@ -45,6 +46,7 @@ struct ProtoField {
     tag: u32,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 struct ProtoMessage {
     name: String,
@@ -54,6 +56,7 @@ struct ProtoMessage {
     fields: Vec<ProtoField>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 struct ProtoEnum {
     name: String,
@@ -345,7 +348,7 @@ impl NativeProtoEngine {
             EMBEDDED_STARRAIL_PROTO.to_string()
         } else {
             let mut s = String::new();
-            s.push_str("syntax = \"proto3\"; // AstralOS Native Engine | Game Version: OSBETAWin4.4.55\n\n");
+            s.push_str("syntax = \"proto3\"; // AstralOS Native Engine (Generated via Morax | Based on ProtoDumper by ex-RushiaLover) | Game Version: OSBETAWin4.4.55\n\n");
             s
         };
 

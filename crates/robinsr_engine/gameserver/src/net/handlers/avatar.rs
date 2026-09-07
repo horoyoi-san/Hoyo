@@ -39,9 +39,9 @@ pub async fn on_get_avatar_data_cs_req(
                     level: 80,
                     promotion: 6,
                     first_met_time_stamp: 1712924677,
-                    cur_multi_path_avatar_type: 0,
+                    cur_multi_path_avatar_type: id,
                     equipment_unique_id: 0,
-                    has_taken_promotion_reward_list: vec![1, 3, 5],
+                    has_taken_promotion_reward_list: vec![1, 2, 3, 4, 5, 6],
                     is_marked: false,
                     exp: 0,
                 })
@@ -63,6 +63,8 @@ pub async fn on_get_avatar_data_cs_req(
             )
         })
         .collect();
+
+    res.skin_list = vec![1100101, 1130301, 1131001, 1141501, 1140701, 1150101];
 }
 
 pub async fn on_take_promotion_reward_cs_req(
@@ -75,21 +77,118 @@ pub async fn on_take_promotion_reward_cs_req(
 }
 
 pub async fn on_set_avatar_enhanced_id_cs_req(
-    _session: &mut PlayerSession,
-    _req: &SetAvatarEnhancedIdCsReq,
-    _res: &mut SetAvatarEnhancedIdScRsp,
+    session: &mut PlayerSession,
+    req: &SetAvatarEnhancedIdCsReq,
+    res: &mut SetAvatarEnhancedIdScRsp,
 ) {
-    // let Some(json) = session.json_data.get_mut() else {
-    //     return;
-    // };
-    // let Some(avatar) = json.avatars.get_mut(&req.avatar_id) else {
-    //     return;
-    // };
-    // avatar.enhanced_id = if req.enhanced_id == 0 {
-    //     Option::<u32>::None
-    // } else {
-    //     Some(req.enhanced_id)
-    // };
-    // res.growth_avatar_id = avatar.avatar_id;
-    // res.unk_enhanced_id = req.enhanced_id;
+    {
+        let Some(json) = session.json_data.get_mut() else {
+            return;
+        };
+        if let Some(avatar) = json.avatars.get_mut(&req.avatar_id) {
+            avatar.enhanced_id = if req.enhanced_id == 0 {
+                None
+            } else {
+                Some(req.enhanced_id)
+            };
+        }
+    }
+    res.growth_avatar_id = req.avatar_id;
+    res.unk_enhanced_id = req.enhanced_id;
+    let _ = session.sync_player().await;
 }
+
+pub async fn on_set_avatar_path_cs_req(
+    session: &mut PlayerSession,
+    req: &SetAvatarPathCsReq,
+    res: &mut SetAvatarPathScRsp,
+) {
+    let (base_avatar_id, cur_path, lineup) = {
+        let Some(json) = session.json_data.get_mut() else {
+            res.retcode = 1;
+            return;
+        };
+
+        let (base_avatar_id, cur_path) = match req.avatar_id {
+            x if x == MultiPathAvatarType::Mar7thKnightType as i32 => {
+                json.march_type = common::structs::MultiPathAvatar::MarchPreservation;
+                (1001, 1001)
+            }
+            x if x == MultiPathAvatarType::Mar7thRogueType as i32 => {
+                json.march_type = common::structs::MultiPathAvatar::MarchHunt;
+                (1001, 1224)
+            }
+            other => {
+                let mp: common::structs::MultiPathAvatar = (other as u32).into();
+                json.main_character = mp;
+                (8001, other as u32)
+            }
+        };
+
+        let lineup = common::structs::AvatarJson::to_lineup_info(&json.lineups);
+        (base_avatar_id, cur_path, lineup)
+    };
+
+    res.retcode = 0;
+    res.avatar_id = req.avatar_id;
+
+    let _ = session
+        .send(AvatarPathChangedNotify {
+            base_avatar_id,
+            cur_multi_path_avatar_type: cur_path as i32,
+        })
+        .await;
+
+    // Sync avatar data
+    let _ = session.sync_player().await;
+
+    // Sync lineup with refreshed avatar
+    let _ = session
+        .send(SyncLineupNotify {
+            reason_list: Vec::new(),
+            lineup: Some(lineup),
+        })
+        .await;
+}
+
+pub async fn on_dress_avatar_skin_cs_req(
+    session: &mut PlayerSession,
+    req: &DressAvatarSkinCsReq,
+    res: &mut DressAvatarSkinScRsp,
+) {
+    {
+        let Some(json) = session.json_data.get_mut() else {
+            res.retcode = 1;
+            return;
+        };
+
+        if let Some(avatar) = json.avatars.get_mut(&req.avatar_id) {
+            avatar.dressed_skin_id = Some(req.skin_id);
+        }
+    }
+
+    res.retcode = 0;
+    let _ = session.sync_player().await;
+}
+
+pub async fn on_take_off_avatar_skin_cs_req(
+    session: &mut PlayerSession,
+    req: &TakeOffAvatarSkinCsReq,
+    res: &mut TakeOffAvatarSkinScRsp,
+) {
+    {
+        let Some(json) = session.json_data.get_mut() else {
+            res.retcode = 1;
+            return;
+        };
+
+        if let Some(avatar) = json.avatars.get_mut(&req.avatar_id) {
+            avatar.dressed_skin_id = None;
+        }
+    }
+
+    res.retcode = 0;
+    let _ = session.sync_player().await;
+}
+
+

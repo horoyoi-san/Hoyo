@@ -26,6 +26,76 @@ struct RemoteEndPoint {
     addr: SocketAddr,
 }
 
+#[derive(Debug, Clone)]
+#[allow(dead_code)]
+pub struct ActiveChallengeState {
+    pub is_in_challenge: bool,
+    pub challenge_id: u32,
+    pub challenge_mode: u32, // 0 = MoC, 1 = PF, 2 = AS, 3 = Peak, 4 = Tierce
+    pub node: u8,            // 1 = First Half, 2 = Second Half
+    pub plane_id: u32,
+    pub floor_id: u32,
+    pub entry_id: u32,
+    pub world_id: u32,
+    pub monster_id: u32,
+    pub event_id: u32,
+    pub maze_group_id: u32,
+    pub buff_id: u32,
+    pub maze_buff_id: u32,
+    pub avatar_ids: Vec<u32>,
+    pub is_peak_hard: bool,
+    pub peak_boss_buff_id: u32,
+    pub saved_peak_lineups: std::collections::HashMap<u32, Vec<u32>>,
+    pub return_entry_id: u32,
+}
+
+impl Default for ActiveChallengeState {
+    fn default() -> Self {
+        Self {
+            is_in_challenge: false,
+            challenge_id: 0,
+            challenge_mode: 0,
+            node: 1,
+            plane_id: 0,
+            floor_id: 0,
+            entry_id: 0,
+            world_id: 0,
+            monster_id: 0,
+            event_id: 0,
+            maze_group_id: 0,
+            buff_id: 0,
+            maze_buff_id: 0,
+            avatar_ids: Vec::new(),
+            is_peak_hard: true,
+            peak_boss_buff_id: 0,
+            saved_peak_lineups: std::collections::HashMap::new(),
+            return_entry_id: 100000104,
+        }
+    }
+}
+
+impl ActiveChallengeState {
+    pub fn reset(&mut self) {
+        self.is_in_challenge = false;
+        self.challenge_id = 0;
+        self.challenge_mode = 0;
+        self.plane_id = 0;
+        self.floor_id = 0;
+        self.entry_id = 0;
+        self.world_id = 0;
+        self.monster_id = 0;
+        self.event_id = 0;
+        self.maze_group_id = 0;
+        self.buff_id = 0;
+        self.maze_buff_id = 0;
+        self.avatar_ids.clear();
+        self.is_peak_hard = true;
+        self.peak_boss_buff_id = 0;
+        self.saved_peak_lineups.clear();
+        self.return_entry_id = 100000104;
+    }
+}
+
 pub struct PlayerSession {
     pub token: u32,
     kcp: Arc<Mutex<Kcp<RemoteEndPoint>>>,
@@ -34,6 +104,7 @@ pub struct PlayerSession {
     pub shutdown_rx: watch::Receiver<()>,
     pub json_data: OnceLock<FreesrData>,
     pub next_scene_save: u64,
+    pub challenge_state: ActiveChallengeState,
 }
 
 impl PlayerSession {
@@ -52,6 +123,7 @@ impl PlayerSession {
             shutdown_rx,
             shutdown_tx,
             next_scene_save: 0,
+            challenge_state: ActiveChallengeState::default(),
         }
     }
 
@@ -75,7 +147,6 @@ impl PlayerSession {
                 let _ = self.shutdown_tx.send(());
                 return Ok(());
             };
-            tracing::info!("recv packet with CmdID: {}", packet.cmd_type);
             Self::on_message(self, packet.cmd_type, packet.body).await?;
         }
 
@@ -208,8 +279,8 @@ impl PlayerSession {
     }
 }
 
-// Auto implemented
 impl CommandHandler for PlayerSession {}
+
 
 impl AsyncWrite for RemoteEndPoint {
     fn poll_write(

@@ -8,7 +8,9 @@ import { useAppStore, dumperJobKey } from './stores/useAppStore';
 import { usePacketStore } from './stores/usePacketStore';
 import { useLogStore } from './stores/useLogStore';
 import { ipc } from './lib/ipc-client';
+import { isTauri, tauriApi } from './lib/tauri';
 import { BackendEvent, LogEntry } from './lib/types';
+import autofit from 'autofit.js';
 
 /* Route-level code splitting: each view downloads on first visit. */
 const VIEWS = {
@@ -23,8 +25,6 @@ const VIEWS = {
   lua: lazy(() => import('./components/lua/LuaView').then((m) => ({ default: m.LuaView }))),
   unpacker: lazy(() => import('./components/unpacker/UnpackerView').then((m) => ({ default: m.UnpackerView }))),
   design: lazy(() => import('./components/design/DesignView').then((m) => ({ default: m.DesignView }))),
-  gacha: lazy(() => import('./components/gacha/GachaView').then((m) => ({ default: m.GachaView }))),
-  uid: lazy(() => import('./components/uid/UidView').then((m) => ({ default: m.UidView }))),
   config: lazy(() => import('./components/config/ConfigView').then((m) => ({ default: m.ConfigView }))),
   console: lazy(() => import('./components/console/ConsoleView').then((m) => ({ default: m.ConsoleView }))),
   settings: lazy(() => import('./components/settings/SettingsView').then((m) => ({ default: m.SettingsView }))),
@@ -114,22 +114,52 @@ export default function App() {
     [setDumperRunning, setDumperJob, setCheatState, clearPackets, flush]
   );
 
+  const setServerRunning = useAppStore((state) => state.setServerRunning);
+
+  const setDesktopReady = useAppStore((state) => state.setDesktopReady);
+  const setGameHookConnected = useAppStore((state) => state.setGameHookConnected);
+
   useEffect(() => {
+    // Always listen to the real game hook WebSocket (ws://127.0.0.1:42857)
     const unsubscribeStatus = ipc.onStatusChange((connected) => {
+      setGameHookConnected(connected);
       setBackendConnected(connected);
     });
+
+    if (isTauri()) {
+      setDesktopReady(true);
+      // Periodic check for RobinSR server running state
+      const checkServer = async () => {
+        try {
+          const status = await tauriApi.serverStatus();
+          setServerRunning(status.managedRunning || status.portListening);
+        } catch {
+          // ignore
+        }
+      };
+      checkServer();
+      const interval = window.setInterval(checkServer, 2000);
+      return () => {
+        unsubscribeStatus();
+        window.clearInterval(interval);
+      };
+    }
+
+    return () => unsubscribeStatus();
+  }, [setDesktopReady, setGameHookConnected, setBackendConnected, setServerRunning]);
+
+  useEffect(() => {
     const unsubscribeEvents = ipc.subscribe(enqueue);
 
     // Flush anything buffered when unmounting (e.g. StrictMode remount).
     return () => {
-      unsubscribeStatus();
       unsubscribeEvents();
       if (flushTimer.current !== null) {
         window.clearTimeout(flushTimer.current);
       }
       flush();
     };
-  }, [setBackendConnected, enqueue, flush]);
+  }, [enqueue, flush]);
 
   /* Global Ctrl+K / Cmd+K command palette */
   useEffect(() => {
@@ -143,19 +173,45 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
+  const autoScale = useAppStore((state) => state.autoScale);
+
+  // Auto-adapt layout on window resize using autofit.js (Auto-Plugin/autofit.js)
+  useEffect(() => {
+    if (!autoScale) {
+      autofit.off('#root');
+      return;
+    }
+
+    autofit.init(
+      {
+        dw: 1600,
+        dh: 900,
+        el: '#root',
+        resize: true,
+        cssMode: 'zoom',
+        allowScroll: true,
+      },
+      false
+    );
+
+    return () => {
+      autofit.off('#root');
+    };
+  }, [autoScale]);
+
   const ActiveView = VIEWS[currentPage] ?? VIEWS.robinsr;
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-base text-ink overflow-hidden relative select-none">
+    <div className="h-full w-full flex flex-col bg-base text-ink overflow-hidden relative select-none">
       <TitleBar onOpenPalette={() => setPaletteOpen(true)} />
 
-      <div className="flex-1 flex overflow-hidden relative z-10">
+      <div className="flex-1 min-h-0 flex overflow-hidden relative z-10">
         <Sidebar />
 
-        <main className="flex-1 min-w-0 h-full overflow-hidden relative" role="main">
+        <main className="flex-1 min-w-0 min-h-0 h-full overflow-y-auto overflow-x-hidden relative scrollbar-thin" role="main">
           <ErrorBoundary area={currentPage}>
             <Suspense fallback={<ViewSkeleton />}>
-              <div key={currentPage} className="w-full h-full">
+              <div key={currentPage} className="w-full min-h-full flex flex-col">
                 <ActiveView />
               </div>
             </Suspense>

@@ -6,7 +6,7 @@ import { useT } from '../../lib/hooks';
 import { cn } from '../../lib/utils';
 
 export function SettingsView() {
-  const { t } = useT();
+  const { t, isTh } = useT();
 
   // Atomic selectors — this view re-renders only for the fields it shows.
   const language = useAppStore((state) => state.language);
@@ -18,6 +18,7 @@ export function SettingsView() {
   const autoAttach = useAppStore((state) => state.autoAttach);
   const animationsEnabled = useAppStore((state) => state.animationsEnabled);
   const compactSidebar = useAppStore((state) => state.compactSidebar);
+  const autoScale = useAppStore((state) => state.autoScale);
   const updateSettings = useAppStore((state) => state.updateSettings);
   const resetSettings = useAppStore((state) => state.resetSettings);
 
@@ -48,21 +49,21 @@ export function SettingsView() {
       onClick={() => updateSettings({ language: code })}
       aria-pressed={language === code}
       className={cn(
-        'p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50',
+        'p-3.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50',
         language === code
-          ? 'bg-accent/20 border-accent/50 text-white shadow-sm'
-          : 'bg-surface-1 border-hairline text-ink-2 hover:text-ink hover:border-edge-strong'
+          ? 'bg-zinc-800 border-2 border-white/80 text-white shadow-lg shadow-black/40'
+          : 'bg-zinc-900/80 border border-zinc-800 text-ink-2 hover:text-white hover:border-zinc-700'
       )}
     >
       <div className="flex items-center justify-between">
         <span className="text-sm font-bold">{label}</span>
         {language === code && (
-          <Badge variant="violet" className="text-[10px]">
-            <CheckCircle2 className="h-2.5 w-2.5" /> ON
-          </Badge>
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/10 text-white border border-white/20 flex items-center gap-1">
+            <CheckCircle2 className="h-2.5 w-2.5" /> ACTIVE
+          </span>
         )}
       </div>
-      <span className="text-[11px] text-ink-4 mt-2">{desc}</span>
+      <span className="text-[11px] text-hz-gray-400 mt-2">{desc}</span>
     </button>
   );
 
@@ -77,7 +78,7 @@ export function SettingsView() {
   );
 
   return (
-    <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5">
       <SectionHeader
         icon={<Settings className="h-5 w-5" />}
         title={t('settings.title')}
@@ -154,7 +155,7 @@ export function SettingsView() {
         {/* Network */}
         <Card className="space-y-4">
           <div className="flex items-center gap-2 text-ink-2">
-            <Network className="h-4 w-4 text-indigo-400" aria-hidden="true" />
+            <Network className="h-4 w-4 text-zinc-300" aria-hidden="true" />
             <h2 className="text-xs font-bold uppercase tracking-wider">{t('settings.network')}</h2>
           </div>
           <p className="text-xs text-ink-3">{t('settings.network.desc')}</p>
@@ -215,6 +216,14 @@ export function SettingsView() {
             )}
             {toggleRow(t('settings.compact'), t('settings.compact.desc'), compactSidebar, (v) =>
               updateSettings({ compactSidebar: v })
+            )}
+            {toggleRow(
+              isTh ? 'ปรับขนาดอัตโนมัติตามหน้าต่าง (autofit.js)' : 'Auto-Scale Viewport (autofit.js)',
+              isTh
+                ? 'ย่อและขยายสัดส่วน UI ทั้งหมดให้พอดีหน้าต่างอัตโนมัติ ไม่ล้นหรือตกเฟรม'
+                : 'Automatically scale all UI components proportionally to fit any window size without clipping',
+              autoScale,
+              (v) => updateSettings({ autoScale: v })
             )}
           </div>
         </Card>

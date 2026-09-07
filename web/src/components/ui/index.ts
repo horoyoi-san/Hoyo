@@ -16,3 +16,4 @@ export * from './Switch';
 export * from './Tabs';
 export * from './Tooltip';
 export * from './UptimeBar';
+export * from './UnifiedLogConsole';

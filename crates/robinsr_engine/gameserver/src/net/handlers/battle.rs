@@ -59,24 +59,33 @@ pub async fn on_scene_cast_skill_cs_req(
     req: &SceneCastSkillCsReq,
     res: &mut SceneCastSkillScRsp,
 ) {
+    res.retcode = 0;
     res.cast_entity_id = req.cast_entity_id;
 
-    let targets = req
-        .hit_target_entity_id_list
-        .iter()
-        .chain(&req.assist_monster_entity_id_list)
-        .filter(|id| **id > 30_000 || **id < 1_000)
-        .collect::<Vec<_>>();
-
-    if targets.is_empty() {
-        tracing::warn!("scene cast skill target is empty!");
-        return;
+    let mut target_ids: Vec<u32> = req.assist_monster_entity_id_list.clone();
+    for &id in &req.hit_target_entity_id_list {
+        if !target_ids.contains(&id) {
+            target_ids.push(id);
+        }
     }
 
-    let battle_info = create_battle_info(session, req.attacked_by_entity_id, req.skill_index).await;
+    if !target_ids.is_empty() {
+        let monster_battle_infos: Vec<HitMonsterBattleInfo> = target_ids
+            .iter()
+            .map(|&id| HitMonsterBattleInfo {
+                target_monster_entity_id: id,
+                monster_battle_type: MonsterBattleType::Dolgjfjblni as i32, // MONSTER_BATTLE_TYPE_TRIGGER_BATTLE
+            })
+            .collect();
 
-    res.cast_entity_id = req.cast_entity_id;
-    res.battle_info = Some(battle_info);
+        res.monster_battle_info = monster_battle_infos;
+
+        let battle_info = create_battle_info(session, req.attacked_by_entity_id, req.skill_index).await;
+        res.battle_info = Some(battle_info);
+    } else {
+        res.monster_battle_info = Vec::new();
+        res.battle_info = None;
+    }
 }
 
 async fn create_battle_info(
@@ -107,10 +116,32 @@ async fn create_battle_info(
     let mut first_avatar_id = 0;
     let mut first_avatar_idx = 9999;
 
-    let lineup_uwu = if let Some(custom) = &player.battle_config.custom_battle_lineup {
-        custom.iter()
+    let challenge_lineup: Vec<(u32, u32)> = if session.challenge_state.is_in_challenge
+        && !session.challenge_state.avatar_ids.is_empty()
+    {
+        session
+            .challenge_state
+            .avatar_ids
+            .iter()
+            .enumerate()
+            .map(|(i, &id)| (i as u32, id))
+            .collect()
     } else {
-        player.lineups.iter()
+        Vec::new()
+    };
+
+    let custom_lineup: Vec<(u32, u32)> = if !challenge_lineup.is_empty() {
+        Vec::new()
+    } else if let Some(custom) = &player.battle_config.custom_battle_lineup {
+        custom.iter().map(|(&k, &v)| (k, v)).collect()
+    } else {
+        player.lineups.iter().map(|(&k, &v)| (k, v)).collect()
+    };
+
+    let lineup_uwu: &[(u32, u32)] = if !challenge_lineup.is_empty() {
+        &challenge_lineup
+    } else {
+        &custom_lineup
     };
 
     // avatars
@@ -382,7 +413,102 @@ async fn create_battle_info(
     }
 
     // Monsters
-    battle_info.monster_wave_list = Monster::to_scene_monster_waves(&player.battle_config.monsters);
+    let in_challenge = session.challenge_state.is_in_challenge || player.battle_config.battle_type == BattleType::AA;
+    let target_stage_id = if session.challenge_state.is_in_challenge && session.challenge_state.event_id != 0 {
+        session.challenge_state.event_id
+    } else {
+        player.battle_config.stage_id
+    };
+
+    if in_challenge {
+        battle_info.stage_id = target_stage_id;
+        battle_info.rounds_limit = if session.challenge_state.challenge_mode == 1 { 4 } else { player.battle_config.cycle_count.max(30) };
+
+        if let Some(stage_entry) = common::structs::CHALLENGE_RES.stages.get(&target_stage_id) {
+            let monster_waves: Vec<Vec<Monster>> = stage_entry.monster_list.iter().map(|wave| {
+                wave.iter().map(|&id| Monster {
+                    monster_id: id,
+                    level: stage_entry.level,
+                    max_hp: 0,
+                }).collect()
+            }).collect();
+            battle_info.monster_wave_list = Monster::to_scene_monster_waves(&monster_waves);
+        } else if let Some(stage_data) = challenge::CHALLENGE_DATA.stages.get(&target_stage_id) {
+            let monster_waves: Vec<Vec<Monster>> = stage_data.monsters.iter().map(|wave| {
+                wave.iter().map(|&id| Monster {
+                    monster_id: id,
+                    level: stage_data.level,
+                    max_hp: 0,
+                }).collect()
+            }).collect();
+            battle_info.monster_wave_list = Monster::to_scene_monster_waves(&monster_waves);
+        } else if !player.battle_config.monsters.is_empty() {
+            battle_info.monster_wave_list = Monster::to_scene_monster_waves(&player.battle_config.monsters);
+        }
+
+        // Add challenge blessings/buffs
+        let mut challenge_buffs = Vec::new();
+        if session.challenge_state.buff_id != 0 {
+            challenge_buffs.push(session.challenge_state.buff_id);
+        }
+        if session.challenge_state.maze_buff_id != 0 {
+            challenge_buffs.push(session.challenge_state.maze_buff_id);
+        }
+        for buff_id in challenge_buffs {
+            battle_info.buff_list.push(BattleBuff {
+                id: buff_id,
+                level: 1,
+                owner_index: 0xffffffff,
+                wave_flag: 0xffffffff,
+                target_index_list: vec![0],
+                dynamic_values: HashMap::from([(String::from("SkillIndex"), 0.0)]),
+                ..Default::default()
+            });
+        }
+
+        // Setup scoring targets for PF & AS
+        if session.challenge_state.challenge_mode == 1 {
+            let pf_target = if session.challenge_state.node == 1 {
+                BattleTarget { id: 10003, progress: 0, total_progress: 80000 }
+            } else {
+                BattleTarget { id: 10003, progress: 40000, total_progress: 80000 }
+            };
+            battle_info.battle_target_info.insert(1, BattleTargetList { battle_target_list: vec![pf_target] });
+            for i in 2..=4 {
+                battle_info.battle_target_info.insert(i, BattleTargetList::default());
+            }
+            battle_info.battle_target_info.insert(5, BattleTargetList {
+                battle_target_list: vec![
+                    BattleTarget { id: 2001, progress: 0, total_progress: 0 },
+                    BattleTarget { id: 2002, progress: 0, total_progress: 0 },
+                ],
+            });
+        } else if session.challenge_state.challenge_mode == 2 {
+            battle_info.battle_target_info.insert(1, BattleTargetList {
+                battle_target_list: vec![BattleTarget { id: 90005, progress: 2000, total_progress: 0 }],
+            });
+        }
+    } else if let Some(stage_entry) = common::structs::CHALLENGE_RES.stages.get(&target_stage_id) {
+        let monster_waves: Vec<Vec<Monster>> = stage_entry.monster_list.iter().map(|wave| {
+            wave.iter().map(|&id| Monster {
+                monster_id: id,
+                level: stage_entry.level,
+                max_hp: 0,
+            }).collect()
+        }).collect();
+        battle_info.monster_wave_list = Monster::to_scene_monster_waves(&monster_waves);
+    } else if let Some(stage_data) = challenge::CHALLENGE_DATA.stages.get(&target_stage_id) {
+        let monster_waves: Vec<Vec<Monster>> = stage_data.monsters.iter().map(|wave| {
+            wave.iter().map(|&id| Monster {
+                monster_id: id,
+                level: stage_data.level,
+                max_hp: 0,
+            }).collect()
+        }).collect();
+        battle_info.monster_wave_list = Monster::to_scene_monster_waves(&monster_waves);
+    } else {
+        battle_info.monster_wave_list = Monster::to_scene_monster_waves(&player.battle_config.monsters);
+    }
 
     // Rogue Magic
     // TODO: i dont need these shit

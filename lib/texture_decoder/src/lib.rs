@@ -1,6 +1,5 @@
 mod decoder;
 pub mod error;
-mod gpu;
 pub mod implements;
 mod pixel_info;
 mod simd_tables;

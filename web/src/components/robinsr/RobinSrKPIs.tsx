@@ -19,97 +19,105 @@ export function RobinSrKPIs({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
       {/* Card 1: HTTP Dispatch Server */}
-      <div className="bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] p-4 flex items-center gap-3.5 shadow-md shadow-black/20">
+      <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
         <div className={cn(
-          'p-3 rounded-[16px] shrink-0',
-          serverOn ? 'bg-hz-green-400/15 text-hz-green-400' : 'bg-hz-navy-600 text-hz-gray-400'
+          'p-3 rounded-xl border shrink-0',
+          serverOn
+            ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-400 shadow-sm'
+            : 'bg-zinc-800 border-zinc-700/60 text-zinc-300'
         )}>
           <Radio className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <div className="text-[11px] font-bold text-hz-gray-400 uppercase tracking-wider">
+          <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
             HTTP Dispatch
           </div>
-          <div className="text-sm font-bold text-white truncate">
+          <div className="text-sm font-bold text-white font-mono truncate">
             Port :{dispatchPort}
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span className={cn('h-2 w-2 rounded-full', serverOn ? 'bg-hz-green-400 animate-pulse' : 'bg-zinc-500')} />
-            <span className={cn('text-[11px] font-semibold', serverOn ? 'text-hz-green-400' : 'text-zinc-400')}>
-              {serverOn ? 'ONLINE' : 'OFFLINE'}
+            <span className={cn('h-1.5 w-1.5 rounded-full', serverOn ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-600')} />
+            <span className={cn('text-[11px] font-semibold', serverOn ? 'text-emerald-400' : 'text-zinc-500')}>
+              {serverOn ? 'ONLINE' : 'STANDBY'}
             </span>
           </div>
         </div>
       </div>
 
       {/* Card 2: KCP Gameserver */}
-      <div className="bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] p-4 flex items-center gap-3.5 shadow-md shadow-black/20">
+      <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
         <div className={cn(
-          'p-3 rounded-[16px] shrink-0',
-          serverOn ? 'bg-hz-brand-400/15 text-hz-brand-300' : 'bg-hz-navy-600 text-hz-gray-400'
+          'p-3 rounded-xl border shrink-0',
+          serverOn
+            ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-400 shadow-sm'
+            : 'bg-zinc-800 border-zinc-700/60 text-zinc-300'
         )}>
           <Server className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <div className="text-[11px] font-bold text-hz-gray-400 uppercase tracking-wider">
+          <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
             KCP Gameserver
           </div>
-          <div className="text-sm font-bold text-white truncate">
+          <div className="text-sm font-bold text-white font-mono truncate">
             UDP :{gameserverPort}
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span className={cn('h-2 w-2 rounded-full', serverOn ? 'bg-hz-brand-400 animate-pulse' : 'bg-zinc-500')} />
-            <span className={cn('text-[11px] font-semibold', serverOn ? 'text-hz-brand-300' : 'text-zinc-400')}>
-              {serverOn ? 'READY' : 'OFFLINE'}
+            <span className={cn('h-1.5 w-1.5 rounded-full', serverOn ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-600')} />
+            <span className={cn('text-[11px] font-semibold', serverOn ? 'text-emerald-400' : 'text-zinc-500')}>
+              {serverOn ? 'READY' : 'STANDBY'}
             </span>
           </div>
         </div>
       </div>
 
       {/* Card 3: Dynamic Opcodes */}
-      <div className="bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] p-4 flex items-center gap-3.5 shadow-md shadow-black/20">
+      <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
         <div className={cn(
-          'p-3 rounded-[16px] shrink-0',
-          dumpStatus.synced ? 'bg-hz-orange-400/15 text-hz-orange-400' : 'bg-hz-navy-600 text-hz-gray-400'
+          'p-3 rounded-xl border shrink-0',
+          dumpStatus.synced
+            ? 'bg-zinc-800 border-zinc-700/80 text-zinc-200 shadow-sm'
+            : 'bg-zinc-800/80 border-zinc-700/50 text-zinc-400'
         )}>
           <Cpu className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <div className="text-[11px] font-bold text-hz-gray-400 uppercase tracking-wider">
+          <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
             Opcode Schema
           </div>
-          <div className="text-sm font-bold text-white truncate">
+          <div className="text-sm font-bold text-white font-mono truncate">
             {dumpStatus.synced ? `${dumpStatus.opcodesCount} Opcodes` : 'Auto-Detect'}
           </div>
-          <div className="text-[11px] text-hz-gray-400 truncate">
+          <div className="text-[11px] text-zinc-400 font-mono truncate">
             {dumpStatus.synced ? `${dumpStatus.pairedRoutes} Active Routes` : 'packetIds.json'}
           </div>
         </div>
       </div>
 
       {/* Card 4: Game Patch Status */}
-      <div className="bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] p-4 flex items-center gap-3.5 shadow-md shadow-black/20">
+      <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
         <div className={cn(
-          'p-3 rounded-[16px] shrink-0',
-          patchReady ? 'bg-hz-green-400/15 text-hz-green-400' : 'bg-hz-orange-400/15 text-hz-orange-400'
+          'p-3 rounded-xl border shrink-0',
+          patchReady
+            ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-400 shadow-sm'
+            : 'bg-amber-950/40 border-amber-800/50 text-amber-300'
         )}>
           <Download className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <div className="text-[11px] font-bold text-hz-gray-400 uppercase tracking-wider">
+          <div className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
             Client Redirect
           </div>
-          <div className="text-sm font-bold text-white truncate">
+          <div className="text-sm font-bold text-white font-mono truncate">
             hkrpg.dll & launcher
           </div>
           <div className="flex items-center gap-1.5 mt-0.5">
             {patchReady ? (
-              <span className="text-[11px] font-semibold text-hz-green-400 flex items-center gap-1">
+              <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="h-3 w-3" /> READY
               </span>
             ) : (
-              <span className="text-[11px] font-semibold text-hz-orange-400 flex items-center gap-1">
-                <AlertCircle className="h-3 w-3" /> MISSING
+              <span className="text-[11px] font-semibold text-amber-300 flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" /> NOT INSTALLED
               </span>
             )}
           </div>

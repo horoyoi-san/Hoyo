@@ -605,6 +605,7 @@ impl StarRailLangPatcher {
     }
 
     /// Locates the DesignData/Windows directory inside a Star Rail game root
+    #[allow(dead_code)]
     fn find_design_data_dir(game_dir: &Path) -> Option<PathBuf> {
         let candidates = [
             game_dir.join("StarRail_Data").join("StreamingAssets").join("DesignData").join("Windows"),

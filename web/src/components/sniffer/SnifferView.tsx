@@ -121,7 +121,7 @@ export function SnifferView() {
   }, [selectedPacket, hexExpanded]);
 
   return (
-    <div className="h-full flex flex-col gap-4 p-6 overflow-hidden">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5">
       <SectionHeader
         icon={<Radio className="h-5 w-5" />}
         title={t('sniffer.title')}
@@ -148,8 +148,8 @@ export function SnifferView() {
         }
       />
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <Card className="lg:col-span-6 flex flex-col p-0 overflow-hidden" flat>
+      <div className="flex-1 min-h-[580px] grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <Card className="lg:col-span-6 flex flex-col p-0 min-h-[400px] lg:min-h-full overflow-hidden" flat>
           <div className="p-3.5 border-b border-hz-navy-500/40 bg-hz-navy-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <div className="flex-1 min-w-[140px]">
               <Input
@@ -183,7 +183,7 @@ export function SnifferView() {
             {filteredPackets.length === 0 ? (
               <EmptyState
                 className="h-full text-hz-gray-400"
-                icon={<SlidersHorizontal className="h-5 w-5 text-hz-brand-400" />}
+                icon={<SlidersHorizontal className="h-5 w-5 text-zinc-400" />}
                 title={t('sniffer.empty.title')}
                 description={t('sniffer.empty.desc')}
                 action={
@@ -220,8 +220,8 @@ export function SnifferView() {
                         className="h-full"
                       >
                         <div
-                          className={`p-1.5 rounded-xl shrink-0 ${
-                            isClient ? 'bg-hz-brand-400/15 text-hz-brand-300' : 'bg-hz-green-400/15 text-hz-green-400'
+                          className={`p-1.5 rounded-xl border shrink-0 ${
+                            isClient ? 'bg-zinc-800 border-zinc-700 text-zinc-200' : 'bg-emerald-950/30 border-emerald-800/40 text-emerald-300'
                           }`}
                         >
                           {isClient ? (
@@ -252,7 +252,7 @@ export function SnifferView() {
           </div>
         </Card>
 
-        <Card className="lg:col-span-6 flex flex-col p-4 justify-between overflow-hidden shadow-lg shadow-black/20">
+        <Card className="lg:col-span-6 flex flex-col p-4 justify-between min-h-[400px] lg:min-h-full overflow-hidden shadow-lg shadow-black/20">
           <div className="min-h-0 flex flex-col">
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-hz-navy-500/40">
               <Tabs
@@ -309,7 +309,7 @@ export function SnifferView() {
             ) : (
               <EmptyState
                 className="flex-1 text-hz-gray-400"
-                icon={<SlidersHorizontal className="h-5 w-5 text-hz-brand-400" />}
+                icon={<SlidersHorizontal className="h-5 w-5 text-zinc-400" />}
                 title={t('sniffer.select.title')}
                 description={t('sniffer.select.desc')}
               />

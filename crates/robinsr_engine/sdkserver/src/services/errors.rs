@@ -1,7 +1,13 @@
-use axum::http::{StatusCode, Uri};
-use axum::response::IntoResponse;
+use axum::http::Uri;
+use axum::response::{IntoResponse, Json};
+use serde_json::json;
 
 pub async fn not_found(uri: Uri) -> impl IntoResponse {
-    tracing::warn!("unhandled http request: {uri}");
-    StatusCode::NOT_FOUND
+    tracing::debug!("Handling unhandled SDK/telemetry endpoint: {uri}");
+    Json(json!({
+        "code": 0,
+        "retcode": 0,
+        "message": "OK",
+        "data": null
+    }))
 }

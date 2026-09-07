@@ -14,16 +14,16 @@ const SERVER_UID: u32 = 727;
 const SERVER_HEAD_ICON: u32 = 201402;
 const SERVER_CHAT_BUBBLE_ID: u32 = 220005;
 const SERVER_CHAT_HISTORY: &[&str] = &[
+    "'node' toggle challenge node between Node 1 (Half 1) and Node 2 (Half 2)",
+    "'id {group_id} floor {n} node {1/2}' select custom endgame stage",
+    "'lua {path_to_lua_script}' execute lua script",
+    "'sw {on/off}' enable/disable silver wolf global buff",
+    "'castorice {on/off}' enable/disable castorice global buff",
+    "'sync' to synchronize stats between json and in-game view",
+    "'mc {mc_id}' mc_id can be set from 8001 to 8008",
+    "'march {march_id}' march_id can be set 1001 or 1224",
     "available commands:",
-    "'help' show available commands",
-    "'heal' heal all team characters to 100% HP",
-    "'sync' synchronize inventory and player stats",
-    "'sw {on/off}' toggle Silver Wolf global buff",
-    "'castorice {on/off}' toggle Castorice global buff",
-    "'mc {dest/fire/harm/rem}' change Trailblazer path",
-    "'march {pres/hunt}' change March 7th path",
-    "'cl clear' or 'cl add {id1} {id2}...' custom battle lineup",
-    "'lua {path}' execute raw lua script",
+    "visit srtools.neonteam.dev to configure the PS! (you configure relics, equipment, monsters from there)",
 ];
 
 pub async fn on_get_friend_login_info_cs_req(
@@ -112,10 +112,11 @@ pub async fn on_send_msg_cs_req(
         .unwrap_or("");
 
     if let Some((cmd, args)) = parse_command(msg) {
-        let clean_cmd = cmd.trim_start_matches('/').to_lowercase();
-        match clean_cmd.as_str() {
-            "help" => {
-                let help_text = SERVER_CHAT_HISTORY.join("\n");
+        match cmd {
+            "node" => {
+                let current_node = session.challenge_state.node;
+                let new_node = if current_node == 1 { 2 } else { 1 };
+                session.challenge_state.node = new_node;
                 session
                     .send(create_send_message(
                         25,
@@ -125,26 +126,84 @@ pub async fn on_send_msg_cs_req(
                             .map(|v| v.message_type)
                             .unwrap_or_default(),
                         body.chat_type,
-                        help_text,
+                        format!("Challenge Node switched to Node {new_node} (Half {new_node})"),
                     ))
                     .await
                     .unwrap();
             }
-            "heal" | "hp" => {
-                let _ = session.sync_player().await;
-                session
-                    .send(create_send_message(
-                        25,
-                        SERVER_UID,
-                        body.message_datas
-                            .as_ref()
-                            .map(|v| v.message_type)
-                            .unwrap_or_default(),
-                        body.chat_type,
-                        String::from("[OK] All line-up characters healed to 100% HP & stats refreshed!"),
-                    ))
-                    .await
-                    .unwrap();
+            "id" => {
+                let text = args.join(" ");
+                let parts: Vec<&str> = text.split_whitespace().collect();
+                if parts.len() >= 5
+                    && parts[1].eq_ignore_ascii_case("floor")
+                    && parts[3].eq_ignore_ascii_case("node")
+                {
+                    if let (Ok(group_id), Ok(floor), Ok(node)) = (
+                        parts[0].parse::<u32>(),
+                        parts[2].parse::<u32>(),
+                        parts[4].parse::<u8>(),
+                    ) {
+                        session.challenge_state.node = node;
+                        if let Some(conf) = common::structs::CHALLENGE_RES
+                            .challenge_list
+                            .iter()
+                            .find(|c| c.group_id == group_id && c.floor == Some(floor))
+                        {
+                            session.challenge_state.challenge_id = conf.id;
+                            session.challenge_state.is_in_challenge = true;
+                            let mode_str = match group_id / 1000 {
+                                1 => "MoC",
+                                2 => "PF",
+                                3 => "AS",
+                                _ => "Challenge",
+                            };
+                            session
+                                .send(create_send_message(
+                                    25,
+                                    SERVER_UID,
+                                    body.message_datas
+                                        .as_ref()
+                                        .map(|v| v.message_type)
+                                        .unwrap_or_default(),
+                                    body.chat_type,
+                                    format!(
+                                        "Selected {mode_str} Challenge ID: {}, Group: {}, Floor: {}, Node: {}",
+                                        conf.id, group_id, floor, node
+                                    ),
+                                ))
+                                .await
+                                .unwrap();
+                        } else {
+                            session
+                                .send(create_send_message(
+                                    25,
+                                    SERVER_UID,
+                                    body.message_datas
+                                        .as_ref()
+                                        .map(|v| v.message_type)
+                                        .unwrap_or_default(),
+                                    body.chat_type,
+                                    format!("Could not find stage with group {group_id} floor {floor}"),
+                                ))
+                                .await
+                                .unwrap();
+                        }
+                    }
+                } else {
+                    session
+                        .send(create_send_message(
+                            25,
+                            SERVER_UID,
+                            body.message_datas
+                                .as_ref()
+                                .map(|v| v.message_type)
+                                .unwrap_or_default(),
+                            body.chat_type,
+                            String::from("Usage: /id <group_id> floor <n> node <1|2>"),
+                        ))
+                        .await
+                        .unwrap();
+                }
             }
             "sync" => {
                 let _ = session.sync_player().await;
@@ -162,22 +221,15 @@ pub async fn on_send_msg_cs_req(
                     .await
                     .unwrap();
             }
-            "sw" | "castorice" | "gb" => {
-                let (target, status) = if cmd == "gb" {
-                    let t = args.first().unwrap_or(&"cast").to_lowercase();
-                    let s = args.get(1).unwrap_or(&"on").to_lowercase();
-                    (t, s)
-                } else {
-                    (cmd.to_string(), args.first().unwrap_or(&"on").to_lowercase())
-                };
-
+            "sw" | "castorice" => {
+                let status = args.first().unwrap_or(&"on").to_lowercase();
                 let enabled = match status.as_str() {
                     "on" | "1" | "true" => true,
                     "off" | "0" | "false" => false,
                     _ => true,
                 };
 
-                if target == "sw" {
+                if cmd == "sw" {
                     json.enable_sw_global = Some(enabled);
                 } else {
                     json.enable_castorice_global = Some(enabled);
@@ -196,23 +248,20 @@ pub async fn on_send_msg_cs_req(
                         body.chat_type,
                         format!(
                             "{} Global Buff: {}",
-                            if target == "sw" { "Silver Wolf" } else { "Castorice" },
+                            if cmd == "sw" { "SW" } else { "Castorice" },
                             if enabled { "Enabled" } else { "Disabled" }
                         ),
                     ))
                     .await
                     .unwrap();
             }
-            "mc" | "tb" => {
-                let arg = args.first().unwrap_or(&"").to_lowercase();
-                let mc_id = match arg.as_str() {
-                    "destruction" | "dest" | "8001" => 8001,
-                    "preservation" | "pres" | "fire" | "8002" => 8002,
-                    "harmony" | "harm" | "imaginary" | "8003" => 8003,
-                    "remembrance" | "rem" | "ice" | "8004" => 8004,
-                    _ => arg.parse::<u32>().unwrap_or(json.main_character as u32),
-                };
-                let mc = MultiPathAvatar::from(mc_id);
+            "mc" => {
+                let mc = MultiPathAvatar::from(
+                    args.first()
+                        .unwrap_or(&"")
+                        .parse::<u32>()
+                        .unwrap_or(json.main_character as u32),
+                );
 
                 json.main_character = mc;
                 json.save_persistent().await;
@@ -236,18 +285,18 @@ pub async fn on_send_msg_cs_req(
                             .map(|v| v.message_type)
                             .unwrap_or_default(),
                         body.chat_type,
-                        format!("Success change Trailblazer path to {mc:#?}"),
+                        format!("Success change mc to {mc:#?}"),
                     ))
                     .await
                     .unwrap();
             }
-            "march" | "m7" => {
-                let arg = args.first().unwrap_or(&"").to_lowercase();
-                let mut march_type = match arg.as_str() {
-                    "preservation" | "pres" | "ice" | "1001" => MultiPathAvatar::MarchPreservation,
-                    "hunt" | "sword" | "imaginary" | "1224" => MultiPathAvatar::MarchHunt,
-                    _ => MultiPathAvatar::from(arg.parse::<u32>().unwrap_or(json.march_type as u32)),
-                };
+            "march" => {
+                let mut march_type = MultiPathAvatar::from(
+                    args.first()
+                        .unwrap_or(&"")
+                        .parse::<u32>()
+                        .unwrap_or(json.march_type as u32),
+                );
 
                 if march_type != MultiPathAvatar::MarchPreservation
                     && march_type != MultiPathAvatar::MarchHunt
@@ -275,46 +324,10 @@ pub async fn on_send_msg_cs_req(
                             .map(|v| v.message_type)
                             .unwrap_or_default(),
                         body.chat_type,
-                        format!("Success change March 7th path to {march_type:#?}"),
+                        format!("Success change march to {march_type:#?}"),
                     ))
                     .await
                     .unwrap();
-            }
-            "cl" => {
-                let subcmd = args.first().unwrap_or(&"").to_lowercase();
-                if subcmd == "clear" {
-                    json.battle_config.custom_battle_lineup = None;
-                    session
-                        .send(create_send_message(
-                            25,
-                            SERVER_UID,
-                            body.message_datas.as_ref().map(|v| v.message_type).unwrap_or_default(),
-                            body.chat_type,
-                            String::from("Custom battle lineup cleared."),
-                        ))
-                        .await
-                        .unwrap();
-                } else if subcmd == "add" {
-                    let mut lineup = std::collections::BTreeMap::new();
-                    for (idx, a) in args[1..].iter().enumerate() {
-                        if let Ok(id) = a.parse::<u32>() {
-                            lineup.insert(idx as u32, id);
-                        }
-                    }
-                    if !lineup.is_empty() {
-                        json.battle_config.custom_battle_lineup = Some(lineup.clone());
-                        session
-                            .send(create_send_message(
-                                25,
-                                SERVER_UID,
-                                body.message_datas.as_ref().map(|v| v.message_type).unwrap_or_default(),
-                                body.chat_type,
-                                format!("Custom battle lineup set with {} avatars: {:?}", lineup.len(), lineup.values().collect::<Vec<_>>()),
-                            ))
-                            .await
-                            .unwrap();
-                    }
-                }
             }
             "lua" => {
                 let path = Path::new(args.first().unwrap_or(&""));

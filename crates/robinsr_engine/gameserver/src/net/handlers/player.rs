@@ -60,12 +60,17 @@ pub async fn on_get_player_board_data_cs_req(
     res: &mut GetPlayerBoardDataScRsp,
 ) {
     res.retcode = 0;
-    res.signature = String::from("AstralOS Private Server");
-    res.current_head_icon_id = 200001; // Default head icon in AvatarPlayerIcon.json
-    res.current_personal_card_id = 253000; // Default card in PlayerPersonalCard.json
+    res.signature = String::from("RobinSR | AstralOS");
+    res.current_head_icon_id = 200001;
+    res.current_personal_card_id = 253000;
+    res.assist_avatar_id_list = vec![1308, 1310, 1309];
 
     res.display_avatar_vec = Some(DisplayAvatarVec {
-        display_avatar_list: Vec::new(),
+        display_avatar_list: vec![
+            DisplayAvatarData { pos: 0, avatar_id: 1308 },
+            DisplayAvatarData { pos: 1, avatar_id: 1310 },
+            DisplayAvatarData { pos: 2, avatar_id: 1309 },
+        ],
         is_display: true,
     });
 
@@ -74,48 +79,42 @@ pub async fn on_get_player_board_data_cs_req(
         head_frame_expire_time: 0,
     });
 
-    // Exact Unlocked Card Themes from PlayerPersonalCard.json
     res.unlocked_personal_card_list = game_data::ALL_CARD_IDS.to_vec();
-
-    // Exact 217 Unlocked Head Icons from AvatarPlayerIcon.json
     res.unlocked_head_icon_list = game_data::ALL_HEAD_ICON_IDS
         .iter()
         .map(|&id| HeadIconData { id })
         .collect();
 }
 
-pub async fn on_set_head_icon_cs_req(
+pub async fn on_get_phone_data_cs_req(
     _session: &mut PlayerSession,
-    req: &SetHeadIconCsReq,
-    res: &mut SetHeadIconScRsp,
+    _req: &GetPhoneDataCsReq,
+    res: &mut GetPhoneDataScRsp,
 ) {
     res.retcode = 0;
-    res.current_head_icon_id = req.id;
+    res.cur_phone_theme = 221000;
+    res.owned_phone_themes = game_data::OWNED_PHONE_THEMES.to_vec();
+    res.cur_chat_bubble = 220000;
+    res.owned_chat_bubbles = game_data::OWNED_CHAT_BUBBLES.to_vec();
+    res.cur_phone_case = 254000;
+    res.owned_phone_cases = game_data::OWNED_PHONE_CASES.to_vec();
 }
 
-pub async fn on_set_personal_card_cs_req(
+pub async fn on_set_client_paused_cs_req(
     _session: &mut PlayerSession,
-    req: &SetPersonalCardCsReq,
-    res: &mut SetPersonalCardScRsp,
+    req: &SetClientPausedCsReq,
+    res: &mut SetClientPausedScRsp,
 ) {
     res.retcode = 0;
-    res.current_personal_card_id = req.card_id;
+    res.paused = req.paused;
 }
 
-pub async fn on_set_signature_cs_req(
+pub async fn on_update_server_prefs_cs_req(
     _session: &mut PlayerSession,
-    req: &SetSignatureCsReq,
-    res: &mut SetSignatureScRsp,
+    _req: &UpdateServerPrefsCsReq,
+    res: &mut UpdateServerPrefsScRsp,
 ) {
     res.retcode = 0;
-    res.signature = req.signature.clone();
+    res.server_prefs_id = 1;
 }
 
-pub async fn on_set_display_avatar_cs_req(
-    _session: &mut PlayerSession,
-    req: &SetDisplayAvatarCsReq,
-    res: &mut SetDisplayAvatarScRsp,
-) {
-    res.retcode = 0;
-    res.display_avatar_vec = req.display_avatar_vec.clone();
-}

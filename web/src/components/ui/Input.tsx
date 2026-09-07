@@ -21,8 +21,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           aria-invalid={error || undefined}
           className={cn(
-            'w-full px-3.5 py-1.5 rounded-[14px] bg-hz-navy-900 border text-xs text-white placeholder:text-hz-gray-500 focus:outline-none focus:border-hz-brand-400 focus:ring-1 focus:ring-hz-brand-400 transition-all duration-150 font-sans shadow-inner',
-            error ? 'border-hz-red-400/50 focus:border-hz-red-400 focus:ring-hz-red-400/60' : 'border-hz-navy-500',
+            'w-full px-3.5 py-1.5 rounded-xl bg-zinc-950 border text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400/40 transition-all duration-150 font-sans shadow-inner',
+            error ? 'border-red-500/50 focus:border-red-400 focus:ring-red-400/40' : 'border-zinc-800 focus:border-zinc-400',
             icon && 'pl-8',
             className
           )}

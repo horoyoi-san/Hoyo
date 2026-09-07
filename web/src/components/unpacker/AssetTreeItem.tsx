@@ -41,7 +41,7 @@ export function AssetTreeItem({
           'hover:bg-hz-navy-700/60 text-hz-gray-300 hover:text-white'
         )}
       >
-        <span className="text-hz-gray-500 group-hover:text-hz-brand-400 shrink-0">
+        <span className="text-hz-gray-500 group-hover:text-white shrink-0">
           {isOpen ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
         </span>
         <span className="text-amber-400 shrink-0">
@@ -84,12 +84,12 @@ export function AssetTreeItem({
           isSelected
             ? 'bg-amber-500/30 border-amber-400/60 text-amber-300'
             : isImage
-            ? 'bg-violet-500/15 border-violet-500/30 text-violet-300'
+            ? 'bg-zinc-800 border-zinc-700/60 text-zinc-300'
             : isAudio
             ? 'bg-amber-500/15 border-amber-500/30 text-amber-300'
             : isMesh
             ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
-            : 'bg-sky-500/15 border-sky-500/30 text-sky-300'
+            : 'bg-zinc-800 border-zinc-700/60 text-zinc-300'
         )}
       >
         {isImage ? (

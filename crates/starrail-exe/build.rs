@@ -21,13 +21,28 @@ fn main() {
     .expect("failed to write exports.def");
     println!("cargo:rustc-link-arg=/DEF:{def_path}");
 
-    let icon_candidates = [
-        manifest_dir.join("..").join("..").join("src-tauri").join("icons").join("icon.ico"),
-        manifest_dir.join("..").join("..").join("src-tauri").join("icons").join("icon.png"),
-        manifest_dir.join("..").join("..").join("Assets").join("Icon").join("lunyi.png"),
-    ];
+    let icon_src = manifest_dir
+        .join("..")
+        .join("..")
+        .join("Assets")
+        .join("Icon")
+        .join("lunyi.png");
+    let tauri_ico = manifest_dir
+        .join("..")
+        .join("..")
+        .join("src-tauri")
+        .join("icons")
+        .join("icon.ico");
 
     let mut res = winres::WindowsResource::new();
+    if icon_src.exists() {
+        let icon_path = out_dir.clone() + "\\app.ico";
+        convert_to_ico(&icon_src, &icon_path);
+        res.set_icon(&icon_path);
+    } else if tauri_ico.exists() {
+        res.set_icon(&tauri_ico.to_string_lossy());
+    }
+
     res.set("CompanyName", "miHoYo Co.,Ltd.");
     res.set("FileDescription", "Star Rail");
     res.set("FileVersion", "2019.4.34.45676");
@@ -36,22 +51,6 @@ fn main() {
     res.set("ProductName", "Star Rail");
     res.set("ProductVersion", "2019.4.34.15905388");
     res.set("LegalCopyright", "© miHoYo");
-
-    for candidate in &icon_candidates {
-        if candidate.is_file() {
-            if candidate.extension().and_then(|e| e.to_str()) == Some("ico") {
-                res.set_icon(candidate.to_str().unwrap());
-                break;
-            } else {
-                let icon_path = out_dir.clone() + "\\app.ico";
-                if convert_to_ico(candidate, &icon_path) {
-                    res.set_icon(&icon_path);
-                    break;
-                }
-            }
-        }
-    }
-
     res.set_manifest(
         r#"
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
@@ -70,14 +69,11 @@ fn main() {
     println!("cargo:rerun-if-changed=build.rs");
 }
 
-fn convert_to_ico(input: &std::path::Path, output: &str) -> bool {
-    if let Ok(img) = image::open(input) {
-        let img = img.resize(256, 256, image::imageops::FilterType::Lanczos3);
-        if img.save(output).is_ok() {
-            println!("cargo:rerun-if-changed={}", input.display());
-            return true;
-        }
-    }
-    false
+fn convert_to_ico(input: &std::path::Path, output: &str) {
+    let img = image::open(input)
+        .unwrap_or_else(|e| panic!("failed to open icon {}: {e}", input.display()));
+    let img = img.resize(256, 256, image::imageops::FilterType::Lanczos3);
+    img.save(output)
+        .unwrap_or_else(|e| panic!("failed to save ico {output}: {e}"));
+    println!("cargo:rerun-if-changed={}", input.display());
 }
-

@@ -77,9 +77,9 @@ export function ConsoleView() {
   };
 
   return (
-    <div className="h-full flex flex-col gap-4 p-6 overflow-hidden bg-hz-navy-900">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5 bg-hz-navy-900">
       <SectionHeader
-        icon={<Terminal className="h-5 w-5 text-hz-brand-400" />}
+        icon={<Terminal className="h-5 w-5 text-zinc-300" />}
         title={t('console.title')}
         badge={
           <Badge variant={paused ? 'neutral' : 'emerald'} dot={!paused}>
@@ -96,7 +96,7 @@ export function ConsoleView() {
             >
               {paused ? t('btn.resume') : t('btn.pause')}
             </Button>
-            <Button variant="outline" size="sm" onClick={clearLogs} icon={<Trash2 className="h-3.5 w-3.5" />}>
+            <Button variant="ghost" size="sm" onClick={clearLogs} icon={<Trash2 className="h-3.5 w-3.5" />}>
               {t('btn.clear')}
             </Button>
             <Button
@@ -122,9 +122,9 @@ export function ConsoleView() {
               onClick={() => setSelectedLevel(lvl)}
               aria-pressed={selectedLevel === lvl}
               className={cn(
-                'px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all uppercase cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-hz-brand-400/50',
+                'px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all uppercase cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/50',
                 selectedLevel === lvl
-                  ? 'bg-hz-brand-400 text-white shadow-md shadow-hz-brand-400/25'
+                  ? 'bg-zinc-800 text-white border border-zinc-600 font-bold shadow-sm'
                   : 'bg-hz-navy-700 border border-hz-navy-500 text-hz-gray-400 hover:text-white hover:bg-hz-navy-600'
               )}
             >
@@ -145,7 +145,7 @@ export function ConsoleView() {
       </div>
 
       {/* Virtualized log feed */}
-      <Card className="flex-1 min-h-0 p-0 overflow-hidden flex flex-col font-mono text-xs shadow-lg shadow-black/25" flat>
+      <Card className="flex-1 min-h-[500px] p-0 overflow-hidden flex flex-col font-mono text-xs shadow-lg shadow-black/25" flat>
         <div
           ref={scrollRef}
           onScroll={handleScroll}
@@ -155,7 +155,7 @@ export function ConsoleView() {
           {filteredLogs.length === 0 ? (
             <EmptyState
               className="h-full text-hz-gray-400"
-              icon={<SlidersHorizontal className="h-5 w-5 text-hz-brand-400" />}
+              icon={<SlidersHorizontal className="h-5 w-5 text-zinc-400" />}
               title={t('console.empty.title')}
               description={t('console.empty.desc')}
             />
@@ -187,10 +187,10 @@ export function ConsoleView() {
                     >
                       {log.level}
                     </span>
-                    <span className="text-hz-brand-300 text-[11px] font-bold select-none shrink-0">
+                    <span className="text-zinc-300 text-[11px] font-bold select-none shrink-0 font-mono">
                       [{log.target}]
                     </span>
-                    <span className="text-hz-gray-400 text-xs flex-1 break-all selectable font-mono">{log.message}</span>
+                    <span className="text-hz-gray-300 text-xs flex-1 break-all selectable font-mono">{log.message}</span>
                   </div>
                 );
               })}

@@ -49,7 +49,9 @@ pub fn dump(debug: bool) -> std::io::Result<()> {
         for typedef_index in 0..MAX_TYPEDEFINDEX.load(Ordering::Relaxed) {
             let class = il2cpp::vm::metadata_cache::get_typeinfo_from_typedefindex(typedef_index);
 
-            let runtime_type = RuntimeType::from_class(class).unwrap();
+            let Ok(runtime_type) = RuntimeType::from_class(class) else {
+                continue;
+            };
 
             if debug {
                 log::debug!(

@@ -1,6 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
-title AstralOS - Star Rail Multi-Tool Suite (2026 Edition)
+title AstralOS - Star Rail Multi-Tool Suite
 color 0B
 chcp 65001 > nul
 cd /d "%~dp0"
@@ -30,6 +30,18 @@ if not defined GAME_DIR (
 if not defined GAME_DIR (
     if exist "E:\Star Rail\Games\StarRail.exe" (
         set "GAME_DIR=E:\Star Rail\Games"
+    )
+)
+if not defined GAME_DIR (
+    for /f "tokens=2* delims=	 " %%A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Star Rail" /v "InstallPath" 2^>nul') do (
+        if exist "%%~B\Games\StarRail.exe" set "GAME_DIR=%%~B\Games"
+        if not defined GAME_DIR if exist "%%~B\StarRail.exe" set "GAME_DIR=%%~B"
+    )
+)
+if not defined GAME_DIR (
+    for /f "tokens=2* delims=	 " %%A in ('reg query "HKCU\Software\Cognosphere\Star Rail" /v "InstallPath" 2^>nul') do (
+        if exist "%%~B\Games\StarRail.exe" set "GAME_DIR=%%~B\Games"
+        if not defined GAME_DIR if exist "%%~B\StarRail.exe" set "GAME_DIR=%%~B"
     )
 )
 
@@ -81,7 +93,7 @@ if /i "%ARG%"=="--robinsr-worker" goto robinsr_worker
 :menu
 cls
 echo ==============================================================================
-echo   [ AstralOS ] Star Rail Reverse Engineering ^& Local Server Suite (2026)
+echo   [ AstralOS ] Star Rail Reverse Engineering ^& Local Server Suite
 echo ==============================================================================
 echo.
 
@@ -424,9 +436,17 @@ if not exist "DUMP\Morax_Static" mkdir "DUMP\Morax_Static"
 if not exist "DUMP\Morax_Static\DummyDlls" mkdir "DUMP\Morax_Static\DummyDlls"
 
 echo [*] Executing Morax Native Rust Dumper Engine...
-cargo run --release -p morax
+set "MORAX_ARGS=all --raw"
+if defined GAME_DIR set "MORAX_ARGS=!MORAX_ARGS! -g \"!GAME_DIR!\""
+
+if exist "bin\morax.exe" (
+    bin\morax.exe !MORAX_ARGS!
+) else (
+    cargo run --release -p morax --bin morax -- !MORAX_ARGS!
+)
 echo.
 echo [OK] Generated StarRail.proto, dump.cs, methods.json in DUMP\Morax_Static\
+echo [OK] Preserved RAW binary metadata in DUMP\Morax_Static\RAW\
 echo.
 pause
 goto menu
@@ -560,7 +580,7 @@ goto menu
 :hdiff_patcher_menu
 echo.
 echo ==============================================================================
-echo   [AstralOS] Game Patch Updater (hdiff-apply 2026)
+echo   [AstralOS] Game Patch Updater (hdiff-apply)
 echo ==============================================================================
 echo.
 if not defined GAME_DIR (
@@ -745,13 +765,16 @@ echo.
 echo ==============================================================================
 echo   [*] Building Morax IL2CPP ^& Res Compiler Engine (crates/morax)
 echo ==============================================================================
-call cargo build --release -p morax --bin res_compiler
+call cargo build --release -p morax --bin morax --bin res_compiler
 if %errorlevel% neq 0 (
     echo [X] Morax Engine build failed!
     pause
     goto build_menu
 )
-echo [OK] Morax Engine ^& Res Compiler built successfully!
+if not exist "bin" mkdir "bin"
+if exist "target\release\morax.exe" copy /y "target\release\morax.exe" "bin\morax.exe" >nul
+if exist "target\release\res_compiler.exe" copy /y "target\release\res_compiler.exe" "bin\res_compiler.exe" >nul
+echo [OK] Morax CLI & Res Compiler built successfully: bin\morax.exe and bin\res_compiler.exe
 echo.
 pause
 goto build_menu

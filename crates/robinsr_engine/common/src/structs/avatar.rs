@@ -139,6 +139,8 @@ pub struct AvatarJson {
     #[serde(alias = "spMax")]
     pub sp_max: Option<u32>,
     pub enhanced_id: Option<u32>,
+    #[serde(default)]
+    pub dressed_skin_id: Option<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -210,7 +212,7 @@ impl AvatarJson {
             path_equipment_id: lightcone.map(|v| v.get_unique_id()).unwrap_or_default(),
             unk_enhanced_id: self.enhanced_id.unwrap_or_default(),
             unlock_timestamp: 0,
-            dressed_skin_id: 0,
+            dressed_skin_id: self.dressed_skin_id.unwrap_or_default(),
         }
     }
 
@@ -326,6 +328,36 @@ impl AvatarJson {
                     max_sp: 10_000,
                 }),
                 slot: lineup_info.avatar_list.len() as u32,
+            });
+        }
+
+        lineup_info
+    }
+
+    pub fn to_challenge_lineup_info(avatars: &[u32], extra_type: ExtraLineupType) -> LineupInfo {
+        let max_mp = if avatars.contains(&1408) || avatars.contains(&1510) { 7 } else { 5 };
+        let mut lineup_info = LineupInfo {
+            extra_lineup_type: extra_type.into(),
+            name: "Squad 1".to_string(),
+            mp: max_mp,
+            max_mp,
+            ..Default::default()
+        };
+
+        for (slot, &id) in avatars.iter().enumerate() {
+            if id == 0 {
+                continue;
+            }
+            lineup_info.avatar_list.push(LineupAvatar {
+                id,
+                hp: 10_000,
+                satiety: 0,
+                avatar_type: AvatarType::AvatarFormalType.into(),
+                sp_bar: Some(SpBarInfo {
+                    cur_sp: 10_000,
+                    max_sp: 10_000,
+                }),
+                slot: slot as u32,
             });
         }
 

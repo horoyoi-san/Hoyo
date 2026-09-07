@@ -13,7 +13,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       default:
         'border border-hz-navy-500 bg-hz-navy-700 hover:bg-hz-navy-600 text-hz-gray-400 hover:text-white shadow-sm',
       ghost: 'border border-transparent bg-transparent hover:bg-hz-navy-700 text-hz-gray-400 hover:text-white',
-      active: 'border border-hz-brand-400/50 bg-hz-brand-400/20 text-hz-brand-300',
+      active: 'border border-zinc-600 bg-zinc-800 text-white shadow-sm',
     };
 
     return (
@@ -23,7 +23,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         aria-label={label}
         title={label}
         className={cn(
-          'inline-flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95',
+          'inline-flex h-7 w-7 items-center justify-center rounded-lg transition-all duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500/50 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95',
           variants[variant],
           className
         )}

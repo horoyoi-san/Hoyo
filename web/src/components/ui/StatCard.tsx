@@ -12,7 +12,7 @@ export interface StatCardProps {
 }
 
 const tones = {
-  violet: 'bg-accent/15 border-accent/30 text-accent-soft shadow-[0_0_20px_-8px_rgb(139_92_246/0.6)]',
+  violet: 'bg-accent/15 border-accent/30 text-accent-soft shadow-[0_0_20px_-8px_rgb(161_161_170/0.35)]',
   emerald: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 shadow-[0_0_20px_-8px_rgb(16_185_129/0.5)]',
   amber: 'bg-amber-500/15 border-amber-500/30 text-amber-300',
   gold: 'bg-gold/15 border-gold/35 text-gold shadow-[0_0_20px_-8px_rgb(230_195_106/0.5)]',

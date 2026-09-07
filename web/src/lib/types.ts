@@ -65,23 +65,3 @@ export type BackendEvent =
   | { type: 'cheat_status'; name: string; enabled: boolean }
   | { type: 'sniffer_cleared' }
   | { type: 'send_packet_result'; ok: boolean; error?: string | null };
-
-export interface GachaRecord {
-  id: string;
-  item_id: string;
-  item_type: string;
-  name: string;
-  rank_type: string;
-  time: string;
-  gacha_type: string;
-}
-
-export interface GachaPityStats {
-  character_5star_pity: number;
-  lightcone_5star_pity: number;
-  standard_5star_pity: number;
-  total_pulls: number;
-  total_5stars: number;
-  total_4stars: number;
-  luck_percentage: number;
-}

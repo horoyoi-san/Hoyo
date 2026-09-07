@@ -398,6 +398,8 @@ AstralOS is built upon the collective research, tools, and pioneering reverse-en
 
 ### 🧬 Reverse Engineering, Metadata & Dumper Tools
 - **Perfare ([Perfare/Il2CppDumper](https://github.com/Perfare/Il2CppDumper)):** The legendary original IL2CPP metadata extraction tool that established the foundation for modern Unity reversing.
+- **ex-RushiaLover ([ex-RushiaLover/ProtoDumper](https://github.com/ex-RushiaLover/ProtoDumper)):** Groundbreaking research and tooling for automated IL2CPP Protobuf schema recovery and reflection dumping for Honkai: Star Rail.
+- **Dimbreath ([Dimbreath/TurnBasedGameData](https://gitlab.com/Dimbreath/turnbasedgamedata)):** Foundational canonical Excel game table structures, TextMap localization dictionaries, and reverse-engineering data reference.
 - **AzenKain ([AzenKain/Firefly-Static-Parser](https://github.com/AzenKain/Firefly-Static-Parser)):** Static IL2CPP metadata parsing, XOR decryption, and Protobuf schema reconstruction that powers the Morax suite.
 - **Kabeidon-Lee (`hsr-dumping-skull`):** In-game live IL2CPP reflection memory dumper and runtime object inspection.
 

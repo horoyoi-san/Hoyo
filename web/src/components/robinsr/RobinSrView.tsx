@@ -10,11 +10,11 @@ export function RobinSrView() {
   const { isTh, handleOpenDumpFolder, comboBusy, handleComboLaunch } = state;
 
   return (
-    <div className="h-full flex flex-col bg-hz-navy-900 text-white select-none overflow-hidden">
+    <div className="w-full min-h-full flex flex-col bg-hz-navy-900 text-white select-none">
       {/* Top Header Bar */}
-      <div className="h-14 px-6 border-b border-hz-navy-500/40 flex items-center justify-between shrink-0 bg-hz-navy-800/80 backdrop-blur-sm">
+      <div className="sticky top-0 z-20 h-14 px-6 border-b border-hz-navy-500/40 flex items-center justify-between shrink-0 bg-hz-navy-800/95 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-2xl bg-hz-brand-400/20 text-hz-brand-300 border border-hz-brand-400/30 shadow-md shadow-hz-brand-400/10">
+          <div className="p-2 rounded-2xl bg-zinc-800 text-zinc-200 border border-zinc-700/60 shadow-md shadow-black/20">
             <Server className="h-5 w-5" />
           </div>
           <div>
@@ -43,7 +43,7 @@ export function RobinSrView() {
             loading={comboBusy}
             onClick={handleComboLaunch}
             icon={<Zap className="h-3.5 w-3.5 fill-current" />}
-            className="bg-hz-brand-400 hover:bg-hz-brand-500 font-bold px-4"
+            className="font-bold px-4"
           >
             {isTh ? '1-Click เริ่มทำงาน' : '1-Click Launch'}
           </Button>
@@ -51,7 +51,7 @@ export function RobinSrView() {
       </div>
 
       {/* Main Container */}
-      <div className="flex-1 flex flex-col gap-4 p-5 overflow-y-auto overflow-x-hidden scrollbar-thin">
+      <div className="flex-1 flex flex-col gap-4 p-5">
         <RobinSrKPIs
           dispatchPort={state.dispatchPort}
           gameserverPort={state.gameserverPort}

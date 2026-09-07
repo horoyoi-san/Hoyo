@@ -6021,10 +6021,48 @@ pub struct SetPlayerInfoScRsp {
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChallengeTierceDataCsReq {}
 #[derive(proto_derive::CmdID)]
-#[cmdid(8994)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChallengeTierceStageInfo {
+    #[prost(uint32, tag = "2")]
+    pub buff_id: u32,
+    #[prost(message, repeated, tag = "6")]
+    pub lineup: ::prost::alloc::vec::Vec<AvatarLineup>,
+    #[prost(uint32, repeated, tag = "10")]
+    pub peak_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "13")]
+    pub stage_index: u32,
+}
+#[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengeTierceStageData {
+    #[prost(enumeration = "BattleEndStatus", tag = "3")]
+    pub end_status: i32,
+    #[prost(uint32, tag = "9")]
+    pub stage_index: u32,
+    #[prost(uint32, tag = "10")]
+    pub score_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChallengeTierceData {
+    #[prost(bool, tag = "1")]
+    pub is_passed: bool,
+    #[prost(message, repeated, tag = "2")]
+    pub result_list: ::prost::alloc::vec::Vec<ChallengeTierceStageData>,
+    #[prost(message, repeated, tag = "4")]
+    pub stage_info_list: ::prost::alloc::vec::Vec<ChallengeTierceStageInfo>,
+    #[prost(uint32, repeated, tag = "8")]
+    pub finished_target_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "11")]
+    pub challenge_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8994)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChallengeTierceDataScRsp {
-    #[prost(uint32, tag = "1")]
+    #[prost(message, repeated, tag = "4")]
+    pub challenge_info_list: ::prost::alloc::vec::Vec<ChallengeTierceData>,
+    #[prost(uint32, tag = "8")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
@@ -6043,11 +6081,73 @@ pub struct GetChallengeTierceControllerScRsp {
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChallengePeakDataCsReq {}
 #[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengePeakBossClearance {
+    #[prost(uint32, tag = "2")]
+    pub buff_id: u32,
+    #[prost(uint32, repeated, tag = "4")]
+    pub peak_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "6")]
+    pub best_cycle_count: u32,
+    #[prost(bool, tag = "13")]
+    pub has_passed: bool,
+    #[prost(uint32, repeated, tag = "15")]
+    pub lampcacochp: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengePeakBoss {
+    #[prost(message, optional, tag = "5")]
+    pub hard_mode: ::core::option::Option<ChallengePeakBossClearance>,
+    #[prost(message, optional, tag = "8")]
+    pub easy_mode: ::core::option::Option<ChallengePeakBossClearance>,
+    #[prost(bool, tag = "9")]
+    pub hard_mode_has_passed: bool,
+    #[prost(uint32, repeated, tag = "13")]
+    pub finished_target_list: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengePeak {
+    #[prost(uint32, repeated, tag = "3")]
+    pub finished_target_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(bool, tag = "4")]
+    pub has_passed: bool,
+    #[prost(uint32, repeated, tag = "11")]
+    pub peak_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "13")]
+    pub peak_id: u32,
+    #[prost(uint32, tag = "15")]
+    pub cycles_used: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChallengePeakGroup {
+    #[prost(uint32, tag = "2")]
+    pub obtained_stars: u32,
+    #[prost(uint32, tag = "4")]
+    pub peak_group_id: u32,
+    #[prost(uint32, repeated, tag = "5")]
+    pub taken_star_rewards: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "6")]
+    pub peaks: ::prost::alloc::vec::Vec<ChallengePeak>,
+    #[prost(bool, tag = "8")]
+    pub disable_hard_mode: bool,
+    #[prost(message, optional, tag = "9")]
+    pub peak_boss: ::core::option::Option<ChallengePeakBoss>,
+    #[prost(uint32, tag = "15")]
+    pub count_of_peaks: u32,
+}
+#[derive(proto_derive::CmdID)]
 #[cmdid(8906)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChallengePeakDataScRsp {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "2")]
     pub retcode: u32,
+    #[prost(message, repeated, tag = "5")]
+    pub challenge_peak_groups: ::prost::alloc::vec::Vec<ChallengePeakGroup>,
+    #[prost(uint32, tag = "14")]
+    pub current_peak_group_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[cmdid(8948)]
@@ -8004,6 +8104,353 @@ pub struct GetBattleCollegeDataCsReq {}
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBattleCollegeDataScRsp {
     #[prost(uint32, tag = "1")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(5152)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectPhoneThemeCsReq {
+    #[prost(uint32, tag = "9")]
+    pub theme_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(5174)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectPhoneThemeScRsp {
+    #[prost(uint32, tag = "1")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "9")]
+    pub cur_phone_theme: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(5116)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectChatBubbleCsReq {
+    #[prost(uint32, tag = "9")]
+    pub bubble_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(5188)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectChatBubbleScRsp {
+    #[prost(uint32, tag = "1")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "9")]
+    pub cur_chat_bubble: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(5167)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectPhoneCaseCsReq {
+    #[prost(uint32, tag = "9")]
+    pub phone_case_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(5128)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SelectPhoneCaseScRsp {
+    #[prost(uint32, tag = "1")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "9")]
+    pub cur_phone_case: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ServerPrefs {
+    #[prost(uint32, tag = "1")]
+    pub server_prefs_id: u32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(6134)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateServerPrefsDataCsReq {
+    #[prost(message, optional, tag = "1")]
+    pub server_prefs: ::core::option::Option<ServerPrefs>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(6125)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UpdateServerPrefsDataScRsp {
+    #[prost(uint32, tag = "1")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "2")]
+    pub server_prefs_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1721)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetChallengeGroupStatisticsCsReq {
+    #[prost(uint32, tag = "13")]
+    pub group_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1712)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetChallengeGroupStatisticsScRsp {
+    #[prost(uint32, tag = "9")]
+    pub group_id: u32,
+    #[prost(uint32, tag = "11")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1705)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartChallengeCsReq {
+    #[prost(uint32, tag = "3")]
+    pub challenge_id: u32,
+    #[prost(uint32, repeated, tag = "5")]
+    pub first_lineup: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "8")]
+    pub avatar_lineup_second: ::prost::alloc::vec::Vec<AvatarIdentifier>,
+    #[prost(message, repeated, tag = "11")]
+    pub avatar_lineup_first: ::prost::alloc::vec::Vec<AvatarIdentifier>,
+    #[prost(uint32, repeated, tag = "12")]
+    pub second_lineup: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1775)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartChallengeScRsp {
+    #[prost(uint32, tag = "7")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "3")]
+    pub lineup_list: ::prost::alloc::vec::Vec<LineupInfo>,
+    #[prost(message, optional, tag = "14")]
+    pub cur_challenge: ::core::option::Option<CurChallenge>,
+    #[prost(message, optional, tag = "15")]
+    pub scene: ::core::option::Option<SceneInfo>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1760)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1716)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeScRsp {
+    #[prost(uint32, tag = "4")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8929)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengePeakCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8932)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengePeakScRsp {
+    #[prost(uint32, tag = "10")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8998)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeTierceCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8997)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeTierceScRsp {
+    #[prost(uint32, tag = "7")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1605)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetTutorialGuideCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1675)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTutorialGuideScRsp {
+    #[prost(uint32, tag = "3")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub tutorial_guide_list: ::prost::alloc::vec::Vec<TutorialGuide>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1634)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetTutorialCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1625)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTutorialScRsp {
+    #[prost(uint32, tag = "4")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "10")]
+    pub tutorial_list: ::prost::alloc::vec::Vec<Tutorial>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1658)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UnlockTutorialGuideCsReq {
+    #[prost(enumeration = "TutorialGuideType", tag = "11")]
+    pub r#type: i32,
+    #[prost(uint32, tag = "13")]
+    pub group_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1656)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UnlockTutorialGuideScRsp {
+    #[prost(uint32, tag = "5")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "7")]
+    pub tutorial_guide: ::core::option::Option<TutorialGuide>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1660)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UnlockTutorialCsReq {
+    #[prost(uint32, tag = "12")]
+    pub tutorial_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1616)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UnlockTutorialScRsp {
+    #[prost(uint32, tag = "11")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "15")]
+    pub tutorial: ::core::option::Option<Tutorial>,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TutorialGuide {
+    #[prost(enumeration = "TutorialStatus", tag = "1")]
+    pub status: i32,
+    #[prost(enumeration = "TutorialGuideType", tag = "13")]
+    pub r#type: i32,
+    #[prost(uint32, tag = "15")]
+    pub id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Tutorial {
+    #[prost(uint32, tag = "1")]
+    pub id: u32,
+    #[prost(enumeration = "TutorialStatus", tag = "2")]
+    pub status: i32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct FirstNpcTalkInfo {
+    #[prost(uint32, tag = "1")]
+    pub npc_id: u32,
+    #[prost(bool, tag = "3")]
+    pub is_meet: bool,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct NpcMeetByPerformanceStatus {
+    #[prost(uint32, tag = "3")]
+    pub performance_id: u32,
+    #[prost(bool, tag = "6")]
+    pub is_meet: bool,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(2160)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFirstTalkNpcCsReq {
+    #[prost(uint32, repeated, tag = "4")]
+    pub npc_id_list: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(2116)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFirstTalkNpcScRsp {
+    #[prost(message, repeated, tag = "2")]
+    pub npc_meet_status_list: ::prost::alloc::vec::Vec<FirstNpcTalkInfo>,
+    #[prost(uint32, tag = "8")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(2142)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetFirstTalkByPerformanceNpcCsReq {
+    #[prost(uint32, repeated, tag = "4")]
+    pub performance_id_list: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(2139)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFirstTalkByPerformanceNpcScRsp {
+    #[prost(uint32, tag = "10")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "14")]
+    pub npc_meet_status_list: ::prost::alloc::vec::Vec<NpcMeetByPerformanceStatus>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(2134)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetNpcTakenRewardCsReq {
+    #[prost(uint32, tag = "2")]
+    pub npc_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(2125)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetNpcTakenRewardScRsp {
+    #[prost(uint32, tag = "2")]
+    pub npc_id: u32,
+    #[prost(uint32, repeated, tag = "8")]
+    pub talk_event_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "10")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1491)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SceneEntityTeleportCsReq {
+    #[prost(message, optional, tag = "3")]
+    pub entity_motion: ::core::option::Option<EntityMotion>,
+    #[prost(uint32, tag = "9")]
+    pub entry_id: u32,
+    #[prost(uint64, tag = "10")]
+    pub interact_id: u64,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1487)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SceneEntityTeleportScRsp {
+    #[prost(message, optional, tag = "3")]
+    pub entity_motion: ::core::option::Option<EntityMotion>,
+    #[prost(uint32, tag = "4")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "9")]
+    pub client_pos_version: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1450)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetUnlockTeleportCsReq {
+    #[prost(uint32, repeated, tag = "9")]
+    pub entry_id_list: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1499)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetUnlockTeleportScRsp {
+    #[prost(uint32, tag = "6")]
+    pub retcode: u32,
+    #[prost(uint32, repeated, tag = "12")]
+    pub unlocked_teleport_list: ::prost::alloc::vec::Vec<u32>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1481)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnterSectionCsReq {
+    #[prost(uint32, tag = "10")]
+    pub section_id: u32,
+    #[prost(uint64, tag = "13")]
+    pub interact_id: u64,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1451)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnterSectionScRsp {
+    #[prost(uint32, tag = "11")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
@@ -15934,6 +16381,65 @@ impl SceneGroupRefreshType {
             "SCENE_GROUP_REFRESH_TYPE_LOADED" => Some(Self::Loaded),
             "SCENE_GROUP_REFRESH_TYPE_UNLOAD" => Some(Self::Unload),
             "SCENE_GROUP_REFRESH_TYPE_AFIBFMAFNCC" => Some(Self::Afibfmafncc),
+            _ => None,
+        }
+    }
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TutorialStatus {
+    TutorialNone = 0,
+    TutorialUnlock = 1,
+    TutorialFinish = 2,
+}
+impl TutorialStatus {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::TutorialNone => "TutorialStatus_TutorialNone",
+            Self::TutorialUnlock => "TutorialStatus_TutorialUnlock",
+            Self::TutorialFinish => "TutorialStatus_TutorialFinish",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TutorialStatus_TutorialNone" => Some(Self::TutorialNone),
+            "TutorialStatus_TutorialUnlock" => Some(Self::TutorialUnlock),
+            "TutorialStatus_TutorialFinish" => Some(Self::TutorialFinish),
+            _ => None,
+        }
+    }
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TutorialGuideType {
+    TutorialGuideDefault = 0,
+    TutorialGuideSubguide = 1,
+}
+impl TutorialGuideType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::TutorialGuideDefault => "TutorialGuideType_TutorialGuideDefault",
+            Self::TutorialGuideSubguide => "TutorialGuideType_TutorialGuideSubguide",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TutorialGuideType_TutorialGuideDefault" => Some(Self::TutorialGuideDefault),
+            "TutorialGuideType_TutorialGuideSubguide" => {
+                Some(Self::TutorialGuideSubguide)
+            }
             _ => None,
         }
     }

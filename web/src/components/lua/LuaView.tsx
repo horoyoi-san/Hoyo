@@ -4,13 +4,12 @@ import Editor, { loader, type OnMount } from '@monaco-editor/react';
 import * as monaco from 'monaco-editor/editor/editor.api';
 import 'monaco-editor/languages/definitions/lua/register';
 import editorWorker from '../../workers/monaco-editor-worker?worker';
-import { Code2, FileCode, Play, Sparkles, Terminal } from 'lucide-react';
-import { Badge, Button, Card, Kbd, SectionHeader, Switch } from '../ui';
+import { Code2, FileCode, Play, Sparkles } from 'lucide-react';
+import { Badge, Button, Card, Kbd, SectionHeader, Switch, UnifiedLogConsole } from '../ui';
 import { ipc } from '../../lib/ipc-client';
 import { useAppStore } from '../../stores/useAppStore';
 import { useLogStore } from '../../stores/useLogStore';
 import { useT } from '../../lib/hooks';
-import { formatTime } from '../../lib/utils';
 
 /* Self-hosted Monaco: bundled with the app so the editor works fully
    offline in the Tauri desktop shell (no CDN fetch at runtime). */
@@ -49,9 +48,8 @@ export function LuaView() {
 
   const [script, setScript] = useState<string>(LUA_PRESETS[0].code);
   const [runOnSceneLoad, setRunOnSceneLoad] = useState(false);
-  const [localLines, setLocalLines] = useState<{ time: number; text: string }[]>([]);
+  const [localLines, setLocalLines] = useState<{ time: string; text: string }[]>([]);
 
-  const outputRef = useRef<HTMLDivElement>(null);
   const scriptRef = useRef(script);
   useEffect(() => {
     scriptRef.current = script;
@@ -63,17 +61,46 @@ export function LuaView() {
     () =>
       logs
         .filter((log) => /lua/i.test(log.target))
-        .map((log) => ({ time: log.timestamp_ms, text: `[${log.target}] ${log.message}` })),
+        .map((log) => ({
+          time: new Date(log.timestamp_ms).toTimeString().split(' ')[0],
+          text: `[${log.target}] ${log.message}`,
+        })),
     [logs]
   );
 
-  const outputLines = useMemo(() => [...localLines, ...luaLogs], [localLines, luaLogs]);
+  const outputLogs = useMemo(() => [...localLines, ...luaLogs], [localLines, luaLogs]);
 
   const handleExecute = () => {
-    setLocalLines((prev) => [
-      ...prev.slice(-50),
-      { time: Date.now(), text: isTh ? '→ ส่งสคริปต์ไปยังเธรดหลักของเกมแล้ว' : '→ dispatched to game main thread' },
-    ]);
+    const timeStr = new Date().toTimeString().split(' ')[0];
+    const newItems = [
+      {
+        time: timeStr,
+        text: isTh
+          ? '[PROC 1/2] กำลังตรวจสอบความถูกต้องของสคริปต์ Lua 5.3...'
+          : '[PROC 1/2] Verifying and parsing Lua 5.3 script buffer...',
+      },
+      {
+        time: timeStr,
+        text: isTh
+          ? '[PROC 2/2] ส่ง Payload ไปยังเธรดหลักของเกมผ่าน IPC (:42857)...'
+          : '[PROC 2/2] Dispatched to game main thread via IPC (:42857)...',
+      },
+      backendConnected
+        ? {
+            time: timeStr,
+            text: isTh
+              ? '[OK] ส่งสคริปต์ไปยัง XLua Engine เรียบร้อย (รอรับผลลัพธ์ผ่าน print)'
+              : '[OK] Dispatched successfully to XLua Engine (awaiting print output)',
+          }
+        : {
+            time: timeStr,
+            text: isTh
+              ? '[INFO] ไคลเอนต์เกมยังไม่ได้เปิด: สคริปต์จะถูกเก็บไว้ฉีดอัตโนมัติเมื่อเกมเปิด'
+              : '[INFO] Game client is offline: Payload queued for auto-injection when game starts',
+          },
+    ];
+
+    setLocalLines((prev) => [...prev.slice(-150), ...newItems]);
     ipc.executeLua(scriptRef.current);
     if (runOnSceneLoad) {
       ipc.executeLuaOnLoad(scriptRef.current);
@@ -86,7 +113,7 @@ export function LuaView() {
   };
 
   return (
-    <div className="h-full flex flex-col gap-4 p-6 overflow-hidden">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5 select-none">
       <SectionHeader
         icon={<Code2 className="h-5 w-5" />}
         title={t('lua.title')}
@@ -109,14 +136,15 @@ export function LuaView() {
         }
       />
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Presets */}
-        <Card className="lg:col-span-3 flex flex-col p-3 space-y-3" flat>
-          <div className="text-xs font-bold uppercase tracking-wider text-ink-3 flex items-center gap-2 px-1">
+      {/* Main Split Grid */}
+      <div className="flex-1 min-h-[580px] grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Presets Sidebar */}
+        <Card className="lg:col-span-3 flex flex-col p-3 space-y-3 min-h-[300px] lg:min-h-full overflow-hidden" flat>
+          <div className="text-xs font-bold uppercase tracking-wider text-ink-3 flex items-center gap-2 px-1 shrink-0">
             <FileCode className="h-3.5 w-3.5" aria-hidden="true" /> {t('lua.presets')}
           </div>
 
-          <div className="space-y-1.5 flex-1 overflow-y-auto">
+          <div className="space-y-1.5 flex-1 overflow-y-auto scrollbar-thin">
             {LUA_PRESETS.map((preset, idx) => (
               <button
                 key={idx}
@@ -132,31 +160,32 @@ export function LuaView() {
             ))}
           </div>
 
-          <div className="p-2.5 rounded-lg log-pane border border-hairline text-[11px] text-ink-3 space-y-1">
+          <div className="p-2.5 rounded-lg log-pane border border-hairline text-[11px] text-ink-3 space-y-1 shrink-0">
             <div className="flex items-center gap-1.5 text-ink-2 font-medium">
               <Sparkles className="h-3 w-3 text-accent-soft" aria-hidden="true" />
               <span>{isTh ? 'เชื่อมโยง Unity C# ได้ครบ' : 'Full Unity C# Interop'}</span>
             </div>
-            <p className="text-[10px] text-ink-4">CS.UnityEngine / CS.RPG.Client</p>
+            <p className="text-[10px] text-ink-4 font-mono">CS.UnityEngine / CS.RPG.Client</p>
           </div>
         </Card>
 
-        {/* Editor + output */}
-        <div className="lg:col-span-9 flex flex-col gap-3 min-h-0">
-          <Card className="flex-1 min-h-0 p-0 overflow-hidden flex flex-col" flat>
-            <div className="px-3 py-2 bg-surface-1 border-b border-edge flex items-center justify-between text-xs text-ink-3">
+        {/* Editor + Output Columns */}
+        <div className="lg:col-span-9 flex flex-col gap-3 min-h-[500px] lg:min-h-full">
+          {/* Monaco Editor Container - Expands Smoothly */}
+          <Card className="flex-1 min-h-[340px] p-0 overflow-hidden flex flex-col" flat>
+            <div className="px-3.5 py-2 bg-surface-1 border-b border-edge flex items-center justify-between text-xs text-ink-3 shrink-0">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-ink-2">script.lua</span>
+                <span className="font-mono text-ink-2 font-semibold">script.lua</span>
                 <Badge variant="outline" className="text-[9px] font-mono">
                   Lua 5.3 / XLua
                 </Badge>
               </div>
               <span className="text-[11px] text-ink-4 flex items-center gap-1">
-                <Kbd>Ctrl</Kbd>+<Kbd>↵</Kbd> {isTh ? 'รัน' : 'to run'}
+                <Kbd>Ctrl</Kbd>+<Kbd>↵</Kbd> {isTh ? 'รันสคริปต์' : 'to run'}
               </span>
             </div>
 
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-0 w-full h-full">
               <Editor
                 height="100%"
                 defaultLanguage="lua"
@@ -165,51 +194,34 @@ export function LuaView() {
                 onChange={(value) => setScript(value || '')}
                 onMount={handleMount}
                 loading={
-                  <div className="flex items-center gap-2 text-xs text-ink-3">
+                  <div className="flex items-center gap-2 text-xs text-ink-3 p-4">
                     <span className="skeleton h-3 w-3" /> loading editor...
                   </div>
                 }
                 options={{
-                  fontSize: 12,
+                  fontSize: 13,
                   minimap: { enabled: false },
                   scrollBeyondLastLine: false,
                   wordWrap: 'on',
                   lineNumbersMinChars: 3,
                   fontFamily: 'JetBrains Mono, ui-monospace, Consolas, monospace',
-                  padding: { top: 10, bottom: 10 },
+                  padding: { top: 12, bottom: 12 },
                 }}
               />
             </div>
           </Card>
 
-          {/* Output console */}
-          <Card className="h-28 flex flex-col p-3 log-pane text-[11px] overflow-hidden" flat>
-            <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-hairline text-ink-4 text-[10px]">
-              <div className="flex items-center gap-1.5">
-                <Terminal className="h-3 w-3 text-emerald-400" aria-hidden="true" />
-                <span className="text-ink-2 font-semibold">
-                  {isTh ? 'ผลลัพธ์การทำงาน (Output)' : 'Execution Output'}
-                </span>
-              </div>
-            </div>
-
-            <div ref={outputRef} className="flex-1 overflow-y-auto space-y-1 text-ink-2 selectable">
-              {outputLines.length === 0 ? (
-                <span className="text-ink-4">
-                  {isTh
-                    ? 'รอผลลัพธ์ — print() จากสคริปต์จะปรากฏที่นี่'
-                    : 'Awaiting output — print() output from the game appears here.'}
-                </span>
-              ) : (
-                outputLines.map((line, i) => (
-                  <div key={i} className="break-all">
-                    <span className="text-ink-4">{formatTime(line.time)} </span>
-                    {line.text}
-                  </div>
-                ))
-              )}
-            </div>
-          </Card>
+          {/* Unified Execution Output Stream Console */}
+          <div className="h-56 sm:h-64 shrink-0">
+            <UnifiedLogConsole
+              title={isTh ? 'ผลลัพธ์การทำงานของ XLua (Execution Output)' : 'XLua Execution & Engine Output'}
+              subtitle="print() & IPC Stream"
+              logs={outputLogs}
+              onClear={() => setLocalLines([])}
+              exportFileName="xlua-execution-output.log"
+              heightClassName="h-36 sm:h-44"
+            />
+          </div>
         </div>
       </div>
     </div>

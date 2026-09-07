@@ -36,7 +36,7 @@ export function Tabs<T extends string>({ items, value, onChange, className, ...p
     <div
       role="tablist"
       className={cn(
-        'inline-flex items-center p-1 rounded-2xl bg-hz-navy-900 border border-hz-navy-500/50 gap-1 shrink-0 overflow-x-auto select-none scrollbar-none',
+        'inline-flex items-center p-1 rounded-xl bg-zinc-950 border border-zinc-800 gap-1 shrink-0 overflow-x-auto select-none scrollbar-none',
         className
       )}
       {...props}
@@ -56,18 +56,18 @@ export function Tabs<T extends string>({ items, value, onChange, className, ...p
             onClick={() => onChange(item.value)}
             onKeyDown={(e) => handleKeyDown(e, i)}
             className={cn(
-              'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-150 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-hz-brand-400',
+              'px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50',
               selected
-                ? 'bg-hz-brand-400 text-white shadow-md shadow-hz-brand-400/30 font-bold'
-                : 'text-hz-gray-400 hover:text-white hover:bg-hz-navy-700/50'
+                ? 'bg-zinc-800 text-white border border-zinc-700/70 shadow-sm font-semibold'
+                : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50 border border-transparent'
             )}
           >
             <span>{item.label}</span>
             {item.count !== undefined && (
               <span
                 className={cn(
-                  'px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold',
-                  selected ? 'bg-white/20 text-white' : 'bg-hz-navy-800 text-hz-gray-500'
+                  'px-1.5 py-0.2 rounded-full text-[10px] font-mono font-medium',
+                  selected ? 'bg-zinc-700 text-zinc-200' : 'bg-zinc-900 text-zinc-500'
                 )}
               >
                 {item.count}

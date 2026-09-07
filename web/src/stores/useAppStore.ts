@@ -14,8 +14,6 @@ export type NavigationPage =
   | 'lua'
   | 'unpacker'
   | 'design'
-  | 'gacha'
-  | 'uid'
   | 'config'
   | 'console'
   | 'settings';
@@ -32,6 +30,7 @@ export interface AppSettings {
   autoAttach: boolean;
   animationsEnabled: boolean;
   compactSidebar: boolean;
+  autoScale: boolean;
 }
 
 /** Per-dumper-action job status, driven by real backend events. */
@@ -49,14 +48,20 @@ export function dumperJobKey(action: { type: string; mode?: string }): DumperJob
 
 interface AppState extends AppSettings {
   currentPage: NavigationPage;
+  desktopReady: boolean;
+  gameHookConnected: boolean;
   backendConnected: boolean;
+  serverRunning: boolean;
   dumperRunning: boolean;
   currentDumperAction: string | null;
   dumperJobs: Record<string, DumperJob>;
   cheatStates: Record<string, boolean>;
 
   setCurrentPage: (page: NavigationPage) => void;
+  setDesktopReady: (ready: boolean) => void;
+  setGameHookConnected: (connected: boolean) => void;
   setBackendConnected: (connected: boolean) => void;
+  setServerRunning: (running: boolean) => void;
   setDumperRunning: (running: boolean, action?: string | null) => void;
   setDumperJob: (key: string, job: DumperJob) => void;
   setCheatState: (name: string, enabled: boolean) => void;
@@ -77,13 +82,17 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoAttach: true,
   animationsEnabled: true,
   compactSidebar: false,
+  autoScale: true,
 };
 
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       currentPage: 'robinsr',
+      desktopReady: typeof window !== 'undefined' && ('__TAURI_INTERNALS__' in window || '__TAURI__' in window),
+      gameHookConnected: false,
       backendConnected: false,
+      serverRunning: false,
       dumperRunning: false,
       currentDumperAction: null,
       dumperJobs: {},
@@ -92,7 +101,10 @@ export const useAppStore = create<AppState>()(
       ...DEFAULT_SETTINGS,
 
       setCurrentPage: (currentPage) => set({ currentPage }),
-      setBackendConnected: (backendConnected) => set({ backendConnected }),
+      setDesktopReady: (desktopReady) => set({ desktopReady }),
+      setGameHookConnected: (gameHookConnected) => set({ gameHookConnected, backendConnected: gameHookConnected }),
+      setBackendConnected: (backendConnected) => set({ backendConnected, gameHookConnected: backendConnected }),
+      setServerRunning: (serverRunning) => set({ serverRunning }),
       setDumperRunning: (dumperRunning, currentDumperAction = null) =>
         set({ dumperRunning, currentDumperAction }),
       setDumperJob: (key, job) =>
@@ -118,8 +130,21 @@ export const useAppStore = create<AppState>()(
         autoAttach: state.autoAttach,
         animationsEnabled: state.animationsEnabled,
         compactSidebar: state.compactSidebar,
+        autoScale: state.autoScale,
         currentPage: state.currentPage,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          const validPages: NavigationPage[] = [
+            'robinsr', 'patcher', 'langpatcher', 'rescompiler', 'dumper',
+            'morax', 'sniffer', 'cheat', 'lua', 'unpacker', 'design',
+            'config', 'console', 'settings'
+          ];
+          if (!validPages.includes(state.currentPage)) {
+            state.currentPage = 'robinsr';
+          }
+        }
+      },
     }
   )
 );

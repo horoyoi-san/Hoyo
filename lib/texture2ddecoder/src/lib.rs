@@ -1,7 +1,6 @@
 mod bitreader;
 mod color;
 mod f16;
-mod gpu;
 mod macros;
 mod simd;
 

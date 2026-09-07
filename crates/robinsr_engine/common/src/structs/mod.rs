@@ -7,6 +7,7 @@ pub mod monster;
 pub mod persistent;
 pub mod relic;
 pub mod scene;
+pub mod challenge;
 
 pub use avatar::*;
 pub use battle::*;
@@ -14,6 +15,7 @@ pub use lightcone::*;
 pub use monster::*;
 pub use persistent::*;
 pub use scene::*;
+pub use challenge::*;
 
 pub fn get_item_unique_id(internal_uid: u32, item_type: ItemType) -> u32 {
     // srtools start internal_uid from 1

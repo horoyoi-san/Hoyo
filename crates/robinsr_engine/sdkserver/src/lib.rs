@@ -94,10 +94,8 @@ pub async fn start_sdkserver() -> Result<()> {
             auth::APN_LOGIN_BY_PASSWORD_ENDPOINT,
             post(auth::apn_login_with_password),
         )
-        .route(auth::APN_VERIFY_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
-        .route(auth::APN_EXCHANGE_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
-        .route(auth::APN_GET_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
-        .route(auth::APN_GET_USER_INFO_ENDPOINT, post(auth::apn_veriy_token))
+        .route(auth::APN_VERIFY_TOKEN_ENDPOINT, post(auth::apn_verify_token))
+        .route(auth::APN_EXCHANGE_ENDPOINT, post(auth::apn_exchange_token))
         .layer(
             CorsLayer::new()
                 .allow_origin(Any)

@@ -1,8 +1,8 @@
-import { Terminal, Copy, Trash2 } from 'lucide-react';
+import { Terminal, Copy, Trash2, ArrowDown, ArrowDownToLine } from 'lucide-react';
 import { Button } from '../ui';
 import { cn } from '../../lib/utils';
 import { ConsoleTab, LogMessage } from './types';
-import { RefObject } from 'react';
+import { RefObject, useRef, useState, useEffect, useCallback } from 'react';
 
 interface RobinSrConsoleProps {
   activeTab: ConsoleTab;
@@ -15,7 +15,7 @@ interface RobinSrConsoleProps {
   handleCopyLogs: () => void;
   clearLogs: () => void;
   copied: boolean;
-  terminalEndRef: RefObject<HTMLDivElement | null>;
+  terminalEndRef?: RefObject<HTMLDivElement | null>;
 }
 
 export function RobinSrConsole({
@@ -31,6 +31,43 @@ export function RobinSrConsole({
   copied,
   terminalEndRef,
 }: RobinSrConsoleProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const [autoScroll, setAutoScroll] = useState(true);
+
+  const scrollToBottom = useCallback((smooth = true) => {
+    const el = scrollContainerRef.current;
+    if (el) {
+      if (smooth) {
+        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+      } else {
+        el.scrollTop = el.scrollHeight;
+      }
+      setIsAtBottom(true);
+    }
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 50;
+    setIsAtBottom(atBottom);
+  }, []);
+
+  // Follow new logs only if auto-scroll is enabled and the user is at bottom
+  useEffect(() => {
+    if (!autoScroll || !isAtBottom) return;
+    const el = scrollContainerRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [filteredLogs, autoScroll, isAtBottom]);
+
+  // Jump to bottom immediately on tab switch
+  useEffect(() => {
+    scrollToBottom(false);
+  }, [activeTab, scrollToBottom]);
+
   return (
     <div className="flex-1 min-h-[300px] flex flex-col bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] overflow-hidden shadow-lg shadow-black/25">
       {/* Console Tabs Header */}
@@ -69,6 +106,25 @@ export function RobinSrConsole({
 
         {/* Quick Actions */}
         <div className="flex items-center gap-2 shrink-0">
+          <Button
+            variant={autoScroll ? 'outline' : 'ghost'}
+            size="xs"
+            onClick={() => {
+              const next = !autoScroll;
+              setAutoScroll(next);
+              if (next) scrollToBottom(true);
+            }}
+            className={cn(
+              'font-mono text-xs',
+              autoScroll
+                ? 'border-hz-brand-400/40 text-hz-brand-300 bg-hz-brand-400/10'
+                : 'text-hz-gray-400 hover:text-white'
+            )}
+            icon={<ArrowDownToLine className="h-3 w-3" />}
+          >
+            {autoScroll ? 'Auto-scroll' : 'Paused'}
+          </Button>
+
           <Button variant="outline" size="xs" onClick={handleCopyLogs} icon={<Copy className="h-3 w-3 text-hz-gray-400" />}>
             {copied ? 'Copied' : 'Copy'}
           </Button>
@@ -78,50 +134,71 @@ export function RobinSrConsole({
         </div>
       </div>
 
-      {/* Console Log Stream */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-1.5 font-mono text-xs select-text scrollbar-thin bg-hz-navy-900/90">
-        {filteredLogs.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-hz-gray-500 py-12">
-            <Terminal className="h-8 w-8 mb-2 opacity-40" />
-            <p className="text-xs">No events logged in [{activeTab}] stream</p>
-          </div>
-        ) : (
-          filteredLogs.map((log) => {
-            const isError = log.level === 'error';
-            const isSuccess = log.level === 'success';
-            const isProcess = log.level === 'process';
+      {/* Console Log Stream Wrapper */}
+      <div className="relative flex-1 min-h-0 flex flex-col bg-hz-navy-900/90">
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="flex-1 overflow-y-auto p-4 space-y-1.5 font-mono text-xs select-text scrollbar-thin"
+        >
+          {filteredLogs.length === 0 ? (
+            <div className="h-full flex flex-col items-center justify-center text-hz-gray-500 py-12">
+              <Terminal className="h-8 w-8 mb-2 opacity-40" />
+              <p className="text-xs">No events logged in [{activeTab}] stream</p>
+            </div>
+          ) : (
+            filteredLogs.map((log) => {
+              const isError = log.level === 'error';
+              const isSuccess = log.level === 'success';
+              const isProcess = log.level === 'process';
 
-            return (
-              <div key={log.id} className="flex items-start gap-2.5 leading-relaxed hover:bg-white/[0.02] px-2 py-0.5 rounded-lg transition-colors">
-                <span className="text-hz-gray-500 select-none text-[11px] shrink-0">[{log.time}]</span>
-                <span
-                  className={cn(
-                    'px-2 py-0.5 rounded-lg text-[10px] font-mono font-bold uppercase select-none shrink-0 border',
-                    log.tag === 'SERVER' && 'bg-hz-brand-400/15 text-hz-brand-300 border-hz-brand-400/25',
-                    log.tag === 'DUMP' && 'bg-hz-orange-400/15 text-hz-orange-400 border-hz-orange-400/25',
-                    log.tag === 'PATCH' && 'bg-hz-brand-400/15 text-hz-brand-300 border-hz-brand-400/25',
-                    log.tag === 'LAUNCH' && 'bg-hz-green-400/15 text-hz-green-400 border-hz-green-400/25',
-                    log.tag === 'SYSTEM' && 'bg-hz-navy-700 text-hz-gray-400 border-hz-navy-500'
-                  )}
-                >
-                  {log.tag}
-                </span>
-                <span
-                  className={cn(
-                    'break-all font-mono',
-                    isError && 'text-hz-red-400 font-semibold',
-                    isSuccess && 'text-hz-green-400',
-                    isProcess && 'text-hz-orange-400',
-                    !isError && !isSuccess && !isProcess && 'text-hz-gray-400'
-                  )}
-                >
-                  {log.message}
-                </span>
-              </div>
-            );
-          })
+              return (
+                <div key={log.id} className="flex items-start gap-2.5 leading-relaxed hover:bg-white/[0.02] px-2 py-0.5 rounded-lg transition-colors">
+                  <span className="text-hz-gray-500 select-none text-[11px] shrink-0">[{log.time}]</span>
+                  <span
+                    className={cn(
+                      'px-2 py-0.5 rounded-lg text-[10px] font-mono font-bold uppercase select-none shrink-0 border',
+                      log.tag === 'SERVER' && 'bg-hz-brand-400/15 text-hz-brand-300 border-hz-brand-400/25',
+                      log.tag === 'DUMP' && 'bg-hz-orange-400/15 text-hz-orange-400 border-hz-orange-400/25',
+                      log.tag === 'PATCH' && 'bg-hz-brand-400/15 text-hz-brand-300 border-hz-brand-400/25',
+                      log.tag === 'LAUNCH' && 'bg-hz-green-400/15 text-hz-green-400 border-hz-green-400/25',
+                      log.tag === 'SYSTEM' && 'bg-hz-navy-700 text-hz-gray-400 border-hz-navy-500'
+                    )}
+                  >
+                    {log.tag}
+                  </span>
+                  <span
+                    className={cn(
+                      'break-all font-mono',
+                      isError && 'text-hz-red-400 font-semibold',
+                      isSuccess && 'text-hz-green-400',
+                      isProcess && 'text-hz-orange-400',
+                      !isError && !isSuccess && !isProcess && 'text-hz-gray-400'
+                    )}
+                  >
+                    {log.message}
+                  </span>
+                </div>
+              );
+            })
+          )}
+          {terminalEndRef && <div ref={terminalEndRef} />}
+        </div>
+
+        {/* Floating Scroll-to-Bottom Button */}
+        {!isAtBottom && (
+          <button
+            type="button"
+            onClick={() => {
+              setAutoScroll(true);
+              scrollToBottom(true);
+            }}
+            className="absolute bottom-3 right-6 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-hz-brand-400 hover:bg-hz-brand-500 text-white font-mono text-xs font-semibold shadow-lg shadow-black/50 border border-white/20 backdrop-blur-sm transition-all duration-150 cursor-pointer select-none group animate-pulse hover:animate-none"
+          >
+            <ArrowDown className="h-3.5 w-3.5 transition-transform group-hover:translate-y-0.5" />
+            <span>Scroll to bottom</span>
+          </button>
         )}
-        <div ref={terminalEndRef} />
       </div>
 
       {/* Console Footer Status */}

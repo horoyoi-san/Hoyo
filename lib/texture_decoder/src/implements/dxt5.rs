@@ -8,10 +8,6 @@ impl DXT5 {
     pub fn decode(data: &[u8], width: u32, height: u32) -> io::Result<RgbaImage> {
         let mut buffer = vec![0u8; (width * height * 4) as usize];
 
-        if crate::gpu::decode_dxt5_gpu(data, width as usize, height as usize, &mut buffer).is_ok() {
-            return Ok(RgbaImage::from_raw(width, height, buffer).unwrap());
-        }
-
         let blocks_x = width.div_ceil(4);
         let block_size = 16;
 

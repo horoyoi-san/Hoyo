@@ -8,7 +8,7 @@ use anyhow::Result;
 
 use crate::{GameType, unity::classes::ClassIDType};
 
-pub use export::{extract_block, extract_dir};
+pub use export::{StarRailDataDumpResult, dump_starrail_data, extract_block, extract_dir};
 pub use preview::decode_texture;
 pub use scan::{scan_block, scan_dir};
 
@@ -46,6 +46,8 @@ pub struct ExtractOptions {
     pub text: bool,
     pub fonts: bool,
     pub filter: Option<String>,
+    pub preserve_raw: bool,
+    pub raw_dir: Option<PathBuf>,
 }
 
 impl Default for ExtractOptions {
@@ -55,6 +57,8 @@ impl Default for ExtractOptions {
             text: true,
             fonts: true,
             filter: None,
+            preserve_raw: false,
+            raw_dir: None,
         }
     }
 }

@@ -32,12 +32,18 @@ jobs:
         with:
           targets: x86_64-pc-windows-msvc
 
+      - name: Setup Protoc Compiler
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: |
             .
             src-tauri
+            crates/robinsr_engine
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -58,24 +64,54 @@ jobs:
           echo "RUSTFLAGS=--remap-path-prefix=$env:USERPROFILE=/user --remap-path-prefix=$workspacePath=/astralos" >> $env:GITHUB_ENV
 
       - name: Build Dumper Hook DLL (version.dll)
+        shell: pwsh
         run: |
           cargo build --release -p dumper
-          Copy-Item target/release/version.dll bin/version.dll -Force
+          New-Item -ItemType Directory -Path bin -Force
+          if (Test-Path target/release/version.dll) {
+            Copy-Item target/release/version.dll bin/version.dll -Force
+          }
+
+      - name: Build Native HKRPG Hook & Launcher
+        shell: pwsh
+        run: |
+          cargo build --release -p hkrpg -p launcher
+          New-Item -ItemType Directory -Path bin -Force
+          if (Test-Path target/release/hkrpg.dll) {
+            Copy-Item target/release/hkrpg.dll bin/hkrpg.dll -Force
+          }
+          if (Test-Path target/release/launcher.exe) {
+            Copy-Item target/release/launcher.exe bin/launcher.exe -Force
+          }
 
       - name: Build RobinSR Server Binaries
+        shell: pwsh
         run: |
-          cargo build --release -p robinsr
-          if (Test-Path target/release/sdkserver.exe) { Copy-Item target/release/sdkserver.exe bin/sdkserver.exe -Force }
-          if (Test-Path target/release/gameserver.exe) { Copy-Item target/release/gameserver.exe bin/gameserver.exe -Force }
+          cargo build --release --manifest-path crates/robinsr_engine/Cargo.toml
+          New-Item -ItemType Directory -Path bin -Force
+          if (Test-Path crates/robinsr_engine/target/release/sdkserver.exe) {
+            Copy-Item crates/robinsr_engine/target/release/sdkserver.exe bin/sdkserver.exe -Force
+          } elseif (Test-Path target/release/sdkserver.exe) {
+            Copy-Item target/release/sdkserver.exe bin/sdkserver.exe -Force
+          }
+          if (Test-Path crates/robinsr_engine/target/release/gameserver.exe) {
+            Copy-Item crates/robinsr_engine/target/release/gameserver.exe bin/gameserver.exe -Force
+          } elseif (Test-Path target/release/gameserver.exe) {
+            Copy-Item target/release/gameserver.exe bin/gameserver.exe -Force
+          }
 
       - name: Build Standalone Desktop GUI (Tauri 2.0)
+        shell: pwsh
         run: |
-          cd web
-          npm run build
-          cd ..
-          cargo build --release --manifest-path src-tauri/Cargo.toml
-          Copy-Item src-tauri/target/release/hsr-desktop.exe bin/AstralOS.exe -Force
-          Copy-Item src-tauri/target/release/hsr-desktop.exe AstralOS.exe -Force
+          npx --prefix web tauri build --no-bundle
+          New-Item -ItemType Directory -Path bin -Force
+          if (Test-Path src-tauri/target/release/hsr-desktop.exe) {
+            Copy-Item src-tauri/target/release/hsr-desktop.exe bin/AstralOS.exe -Force
+            Copy-Item src-tauri/target/release/hsr-desktop.exe AstralOS.exe -Force
+          } elseif (Test-Path target/release/hsr-desktop.exe) {
+            Copy-Item target/release/hsr-desktop.exe bin/AstralOS.exe -Force
+            Copy-Item target/release/hsr-desktop.exe AstralOS.exe -Force
+          }
 
       - name: Download Helper Tools (hdiff-apply)
         shell: pwsh
@@ -91,19 +127,17 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path dist_package/bin -Force
-          Copy-Item AstralOS.exe dist_package/AstralOS.exe -Force
-          Copy-Item menu.bat dist_package/menu.bat -Force
-          Copy-Item README.md dist_package/README.md -Force
+          if (Test-Path AstralOS.exe) { Copy-Item AstralOS.exe dist_package/AstralOS.exe -Force }
+          if (Test-Path menu.bat) { Copy-Item menu.bat dist_package/menu.bat -Force }
+          if (Test-Path README.md) { Copy-Item README.md dist_package/README.md -Force }
           if (Test-Path LICENSE) { Copy-Item LICENSE dist_package/LICENSE -Force }
           
           # Copy all runtime binaries and seed data into release bin/
-          if (Test-Path bin/version.dll) { Copy-Item bin/version.dll dist_package/bin/version.dll -Force }
-          if (Test-Path bin/sdkserver.exe) { Copy-Item bin/sdkserver.exe dist_package/bin/sdkserver.exe -Force }
-          if (Test-Path bin/gameserver.exe) { Copy-Item bin/gameserver.exe dist_package/bin/gameserver.exe -Force }
-          if (Test-Path bin/res.json) { Copy-Item bin/res.json dist_package/bin/res.json -Force }
-          if (Test-Path bin/freesr-data.json) { Copy-Item bin/freesr-data.json dist_package/bin/freesr-data.json -Force }
-          if (Test-Path bin/versions.json) { Copy-Item bin/versions.json dist_package/bin/versions.json -Force }
-          if (Test-Path bin/hdiff-apply.exe) { Copy-Item bin/hdiff-apply.exe dist_package/bin/hdiff-apply.exe -Force }
+          if (Test-Path bin) {
+            Get-ChildItem -Path bin | ForEach-Object {
+              Copy-Item $_.FullName dist_package/bin/$($_.Name) -Recurse -Force
+            }
+          }
 
           Compress-Archive -Path dist_package/* -DestinationPath AstralOS-Windows-x64.zip -Force
 
@@ -123,6 +157,8 @@ jobs:
           files: |
             AstralOS-Windows-x64.zip
             AstralOS.exe
+            bin/hkrpg.dll
+            bin/launcher.exe
             bin/version.dll
             bin/res.json
             bin/freesr-data.json

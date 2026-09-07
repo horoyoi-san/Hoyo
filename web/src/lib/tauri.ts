@@ -51,6 +51,20 @@ export interface MoraxDumpResult {
   message: string;
 }
 
+export interface StarRailDataDumpResult {
+  success: boolean;
+  totalExtracted: number;
+  configCount: number;
+  excelCount: number;
+  stagesCount: number;
+  storyCount: number;
+  textmapCount: number;
+  timeSeconds: number;
+  outputDir: string;
+  rawDir?: string;
+  message: string;
+}
+
 export const PATCH_REPO_URL = 'https://git.neonteam.dev/amizing/hkrpg-patch';
 
 export interface LogsResult {
@@ -141,6 +155,7 @@ export interface UnpackScanResult {
   total_assets: number;
   assets: ScannedAssetDto[];
   message: string;
+  cached?: boolean;
 }
 
 export interface UnpackExportResult {
@@ -226,6 +241,9 @@ export const tauriApi = {
   executeGenerateResJson: (resourcesPath: string, outputPath: string) =>
     invoke<ResCompileResult>('execute_generate_res_json', { resourcesPath, outputPath }),
 
+  executeDumpStarRailData: (gameDir: string, outputDir: string = '', preserveRaw: boolean = true) =>
+    invoke<StarRailDataDumpResult>('execute_dump_starrail_data', { gameDir, outputDir, preserveRaw }),
+
   executeApplyPatch: (gameDir: string, patchArchive: string) =>
     invoke<HDiffResult>('execute_apply_patch', { gameDir, patchArchive }),
 
@@ -250,8 +268,8 @@ export const tauriApi = {
   clearSnifferPackets: () =>
     invoke<void>('clear_sniffer_packets'),
 
-  executeScanGameAssets: (gamePath: string) =>
-    invoke<UnpackScanResult>('execute_scan_game_assets', { gamePath }),
+  executeScanGameAssets: (gamePath: string, forceRefresh: boolean = false) =>
+    invoke<UnpackScanResult>('execute_scan_game_assets', { gamePath, forceRefresh }),
 
   getAssetImagePreview: (blockPath: string, pathId: number) =>
     invoke<AssetPreviewDto>('get_asset_image_preview', { blockPath, pathId }),

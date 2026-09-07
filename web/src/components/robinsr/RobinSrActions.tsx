@@ -55,19 +55,19 @@ export function RobinSrActions({
         <Card className="flex flex-col justify-between gap-3 p-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-hz-orange-400/15 text-hz-orange-400">
+              <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-300">
                 <Cpu className="h-4 w-4" />
               </div>
               <div>
                 <h3 className="text-xs font-bold text-white">
-                  {isTh ? '1. ทำ Server จาก DUMP' : '1. Ingest DUMP'}
+                  {isTh ? '1. สร้างสกีมาเซิร์ฟเวอร์ (Ingest DUMP)' : '1. Ingest DUMP'}
                 </h3>
-                <p className="text-[11px] text-hz-gray-400">
+                <p className="text-[11px] text-zinc-400">
                   Opcodes & Protobuf
                 </p>
               </div>
             </div>
-            <Badge variant={dumpStatus.synced ? 'emerald' : 'amber'}>
+            <Badge variant={dumpStatus.synced ? 'emerald' : 'neutral'}>
               {dumpStatus.synced ? 'SYNCED' : 'READY'}
             </Badge>
           </div>
@@ -76,12 +76,12 @@ export function RobinSrActions({
             size="sm"
             loading={ingestBusy}
             onClick={handleIngestDump}
-            icon={<Cpu className="h-3.5 w-3.5 text-hz-orange-400" />}
+            icon={<Cpu className="h-3.5 w-3.5 text-zinc-300" />}
             className="w-full"
           >
             {dumpStatus.synced
               ? (isTh ? 'ซิงค์ DUMP อีกครั้ง' : 'Re-Sync DUMP')
-              : (isTh ? 'ทำ Server จาก DUMP' : 'Build from DUMP')}
+              : (isTh ? 'สร้างสกีมาเซิร์ฟเวอร์' : 'Ingest DUMP')}
           </Button>
         </Card>
 
@@ -89,14 +89,14 @@ export function RobinSrActions({
         <Card className="flex flex-col justify-between gap-3 p-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2.5">
-              <div className={cn('p-2 rounded-xl', serverOn ? 'bg-hz-green-400/15 text-hz-green-400' : 'bg-hz-brand-400/15 text-hz-brand-300')}>
+              <div className={cn('p-2 rounded-xl border', serverOn ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-400' : 'bg-zinc-800 border-zinc-700/60 text-zinc-300')}>
                 <Server className="h-4 w-4" />
               </div>
               <div>
                 <h3 className="text-xs font-bold text-white">
-                  {isTh ? '2. เซิร์ฟเวอร์ RobinSR' : '2. RobinSR Engine'}
+                  {isTh ? '2. รันไทม์เซิร์ฟเวอร์ RobinSR' : '2. RobinSR Server'}
                 </h3>
-                <p className="text-[11px] text-hz-gray-400">
+                <p className="text-[11px] text-zinc-400">
                   :{dispatchPort} & :{gameserverPort}
                 </p>
               </div>
@@ -107,7 +107,7 @@ export function RobinSrActions({
           </div>
           <div className="flex gap-2">
             <Button
-              variant={serverOn ? 'destructive' : 'emerald'}
+              variant={serverOn ? 'destructive' : 'primary'}
               size="sm"
               loading={serverBusy}
               onClick={handleToggleServer}
@@ -115,14 +115,14 @@ export function RobinSrActions({
               className="flex-1"
             >
               {serverOn
-                ? (isTh ? 'ปิดเซิร์ฟเวอร์' : 'Stop Server')
-                : (isTh ? 'เปิดเซิร์ฟเวอร์' : 'Start Server')}
+                ? (isTh ? 'หยุดเซิร์ฟเวอร์' : 'Stop Server')
+                : (isTh ? 'เริ่มเซิร์ฟเวอร์' : 'Start Server')}
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={handleResetPosition}
-              title={isTh ? 'รีเซ็ตตำแหน่งตัวละคร (ลบ persistent)' : 'Reset player spawn position'}
+              title={isTh ? 'รีเซ็ตตำแหน่งพิกัดผู้เล่น' : 'Reset player spawn position'}
               icon={<RotateCcw className="h-3.5 w-3.5" />}
             >
               {isTh ? 'รีเซ็ต' : 'Reset'}
@@ -134,14 +134,14 @@ export function RobinSrActions({
         <Card className="flex flex-col justify-between gap-3 p-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-hz-brand-400/15 text-hz-brand-300">
+              <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-300">
                 <Download className="h-4 w-4" />
               </div>
               <div>
                 <h3 className="text-xs font-bold text-white">
-                  {isTh ? '3. ติดตั้ง Patch' : '3. Redirect Patch'}
+                  {isTh ? '3. ติดตั้ง Redirect Patch' : '3. Redirect Patch'}
                 </h3>
-                <p className="text-[11px] text-hz-gray-400">
+                <p className="text-[11px] text-zinc-400">
                   hkrpg.dll & launcher
                 </p>
               </div>
@@ -160,7 +160,7 @@ export function RobinSrActions({
           >
             {patchReady
               ? (isTh ? 'ติดตั้ง Patch ซ้ำ' : 'Reinstall Patch')
-              : (isTh ? 'ติดตั้งไฟล์ Patch' : 'Install Patch')}
+              : (isTh ? 'ติดตั้งไฟล์แพตช์' : 'Install Patch')}
           </Button>
         </Card>
 
@@ -168,14 +168,14 @@ export function RobinSrActions({
         <Card className="flex flex-col justify-between gap-3 p-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-hz-brand-400/15 text-hz-brand-300">
+              <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-300">
                 <Gamepad2 className="h-4 w-4" />
               </div>
               <div>
                 <h3 className="text-xs font-bold text-white">
-                  {isTh ? '4. ตัวเกม Star Rail' : '4. Star Rail Client'}
+                  {isTh ? '4. เริ่มต้นไคลเอนต์เกม' : '4. Launch Game Client'}
                 </h3>
-                <p className="text-[11px] text-hz-gray-400 truncate">
+                <p className="text-[11px] text-zinc-400 truncate">
                   {patch?.launcherPresent
                     ? 'launcher.exe (hkrpg.dll Ready)'
                     : patch?.gameExePresent
@@ -198,21 +198,21 @@ export function RobinSrActions({
           >
             {launchBusy
               ? (isTh ? 'กำลังเปิดเกม...' : 'Launching...')
-              : (isTh ? 'เปิดเข้าเล่นเกม' : 'Launch Game')}
+              : (isTh ? 'เริ่มต้นโปรเซสเกม' : 'Launch Game')}
           </Button>
         </Card>
       </div>
 
       {/* Game Directory Quick Bar */}
-      <div className="bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] p-3 flex flex-col sm:flex-row items-center gap-3 shrink-0 shadow-md shadow-black/20">
-        <div className="flex items-center gap-2 text-xs font-bold text-hz-gray-400 shrink-0">
-          <FolderOpen className="h-4 w-4 text-hz-brand-400" />
+      <div className="bg-hz-navy-700 border border-zinc-800 rounded-2xl p-3 flex flex-col sm:flex-row items-center gap-3 shrink-0 shadow-md shadow-black/20">
+        <div className="flex items-center gap-2 text-xs font-medium text-zinc-400 shrink-0">
+          <FolderOpen className="h-4 w-4 text-zinc-400" />
           <span>{isTh ? 'โฟลเดอร์ตัวเกม:' : 'Game Folder:'}</span>
         </div>
         <Input
           value={gamePath}
           onChange={(e) => updateSettings({ gamePath: e.target.value })}
-          className="font-mono text-xs flex-1 h-8 bg-hz-navy-900 border-hz-navy-500"
+          className="font-mono text-xs flex-1 h-8 bg-hz-navy-900 border-zinc-800"
           placeholder="C:/Program Files/Star Rail/Games"
         />
         <div className="flex items-center gap-2 shrink-0">

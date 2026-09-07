@@ -31,68 +31,53 @@ pub fn decode_texture(block: &Path, path_id: i64) -> Result<RgbaImage> {
             // 1. Resolve Sprite PPtr to underlying Texture2D if needed
             let mut target_tex_path_id = path_id;
             for info in &serialized_file.objects {
-                if info.path_id == path_id {
-                    if let Ok(obj) = info.parse_object(&serialized_file.header, &bytes) {
-                        if let Some(sprite) = obj.downcast_ref::<crate::unity::classes::sprite::Sprite>() {
-                            target_tex_path_id = sprite.rd.texture.path_id;
-                            break;
-                        }
+                if info.path_id != path_id {
+                    continue;
+                }
+                if let Ok(obj) = info.parse_object(&serialized_file.header, &bytes) {
+                    if let Some(sprite) = obj.downcast_ref::<crate::unity::classes::sprite::Sprite>() {
+                        target_tex_path_id = sprite.rd.texture.path_id;
+                        break;
                     }
                 }
             }
 
             // 2. Decode matched Texture2D
             for info in &serialized_file.objects {
-                if info.path_id == target_tex_path_id || info.path_id == path_id {
-                    if let Ok(obj) = info.parse_object(&serialized_file.header, &bytes) {
-                        if let Some(t2d) = obj.downcast_ref::<Texture2D>() {
-                            let owned;
-                            let tex_data: &[u8] = if !t2d.stream_info.path.is_empty()
-                                && let Some(name) = t2d.stream_info.path.split('/').next_back()
-                            {
-                                owned = archive
-                                    .extract_file_range(
-                                        name,
-                                        t2d.stream_info.offset as usize,
-                                        t2d.stream_info.size as usize,
-                                    )?
-                                    .into_owned();
-                                &owned
-                            } else {
-                                &t2d.embedded_data
-                            };
+                let Ok(obj) = info.parse_object(&serialized_file.header, &bytes) else {
+                    continue;
+                };
 
-                            return t2d.decode_image(tex_data);
-                        }
+                let Some(t2d) = obj.downcast_ref::<Texture2D>() else {
+                    continue;
+                };
+
+                let owned;
+                let tex_data: &[u8] = if !t2d.stream_info.path.is_empty()
+                    && let Some(name) = t2d.stream_info.path.split('/').next_back()
+                {
+                    if let Ok(range) = archive.extract_file_range(
+                        name,
+                        t2d.stream_info.offset as usize,
+                        t2d.stream_info.size as usize,
+                    ) {
+                        owned = range.into_owned();
+                        &owned
+                    } else {
+                        &t2d.embedded_data
                     }
+                } else {
+                    &t2d.embedded_data
+                };
+
+                if info.path_id == target_tex_path_id || info.path_id == path_id {
+                    return t2d.decode_image(tex_data);
                 }
 
                 // 3. Keep first texture in block as fallback
                 if first_texture.is_none() {
-                    if let Ok(obj) = info.parse_object(&serialized_file.header, &bytes) {
-                        if let Some(t2d) = obj.downcast_ref::<Texture2D>() {
-                            let owned;
-                            let tex_data: &[u8] = if !t2d.stream_info.path.is_empty()
-                                && let Some(name) = t2d.stream_info.path.split('/').next_back()
-                            {
-                                if let Ok(range) = archive.extract_file_range(
-                                    name,
-                                    t2d.stream_info.offset as usize,
-                                    t2d.stream_info.size as usize,
-                                ) {
-                                    owned = range.into_owned();
-                                    &owned
-                                } else {
-                                    &t2d.embedded_data
-                                }
-                            } else {
-                                &t2d.embedded_data
-                            };
-
-                            if let Ok(decoded) = t2d.decode_image(tex_data) {
-                                first_texture = Some(decoded);
-                            }
-                        }
+                    if let Ok(decoded) = t2d.decode_image(tex_data) {
+                        first_texture = Some(decoded);
                     }
                 }
             }

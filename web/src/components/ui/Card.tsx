@@ -11,8 +11,8 @@ export function Card({ className, interactive = false, flat = false, children, .
   return (
     <div
       className={cn(
-        'bg-hz-navy-700 border border-hz-navy-500/40 rounded-[20px] p-5 relative overflow-hidden shadow-md shadow-black/20',
-        !flat && 'transition-all duration-200 hover:bg-hz-navy-600 hover:shadow-xl hover:shadow-black/30',
+        'bg-hz-navy-700 border border-zinc-800/80 rounded-2xl p-4 sm:p-5 relative shadow-md shadow-black/30',
+        !flat && 'transition-all duration-200 hover:border-zinc-700 hover:bg-hz-navy-600/90 hover:shadow-xl hover:shadow-black/40',
         interactive && 'cursor-pointer active:scale-[0.99]',
         className
       )}

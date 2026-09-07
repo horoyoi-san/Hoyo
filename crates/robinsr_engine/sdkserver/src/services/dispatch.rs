@@ -42,13 +42,13 @@ pub struct QueryGatewayParameters {
 #[instrument(skip(state))]
 pub async fn query_gateway(
     State(state): State<Arc<RwLock<AppState>>>,
-    parameters: Query<QueryGatewayParameters>,
+    Query(parameters): Query<QueryGatewayParameters>,
 ) -> String {
+    let ver = parameters.version.as_deref().unwrap_or("OSBETAWin4.5.51");
+    let seed = parameters.dispatch_seed.as_deref().unwrap_or("");
     let mut lock = state.write().await;
-    let version = parameters.version.as_deref().unwrap_or("OSBETAWin4.5.51");
-    let dispatch_seed = parameters.dispatch_seed.as_deref().unwrap_or("ae62f13de6");
     let config = lock
-        .get_or_insert_hotfix(version, dispatch_seed)
+        .get_or_insert_hotfix(ver, seed)
         .await;
 
     let rsp = GateServer {

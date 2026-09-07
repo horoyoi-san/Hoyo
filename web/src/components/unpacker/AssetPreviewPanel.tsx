@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Download,
   FolderOpen,
@@ -41,7 +41,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
   const [exportMessage, setExportMessage] = useState<string | null>(null);
 
   // High-performance LRU memory cache for decoded textures (max 150 items)
-  const [cache] = useState(() => new Map<string, { dataUrl: string; width: number; height: number; format: string }>());
+  const cacheRef = useRef<Map<string, { dataUrl: string; width: number; height: number; format: string }>>(new Map());
 
   // Fetch live image decode whenever selected asset changes with cancellation
   useEffect(() => {
@@ -67,8 +67,8 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
     const assetKey = `${selected.block_full_path || selected.block}_${selected.path_id || 0}`;
 
     // Instant cache hit
-    if (cache.has(assetKey)) {
-      const cached = cache.get(assetKey)!;
+    if (cacheRef.current.has(assetKey)) {
+      const cached = cacheRef.current.get(assetKey)!;
       setPreview({
         loading: false,
         dataUrl: cached.dataUrl,
@@ -105,11 +105,11 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
           .then((res) => {
             if (!active) return;
             if (res.success && res.data_url) {
-              if (cache.size > 150) {
-                const firstKey = cache.keys().next().value;
-                if (firstKey) cache.delete(firstKey);
+              if (cacheRef.current.size > 150) {
+                const firstKey = cacheRef.current.keys().next().value;
+                if (firstKey) cacheRef.current.delete(firstKey);
               }
-              cache.set(assetKey, {
+              cacheRef.current.set(assetKey, {
                 dataUrl: res.data_url,
                 width: res.width,
                 height: res.height,
@@ -160,7 +160,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
         showCheckerboard: false,
       });
     }
-  }, [selected, cache]);
+  }, [selected]);
 
   const handleExportSingle = async () => {
     if (!selected || !isTauri()) return;
@@ -215,7 +215,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
   }
 
   return (
-    <Card className="h-full flex flex-col p-4 overflow-hidden border-hz-navy-500/40 bg-hz-navy-800/90 shadow-xl gap-3">
+    <Card className="h-full flex flex-col p-4 overflow-y-auto border-hz-navy-500/40 bg-hz-navy-800/90 shadow-xl gap-3 scrollbar-thin">
       {/* Header */}
       <div className="flex items-start justify-between gap-2 shrink-0 border-b border-hz-navy-500/40 pb-3">
         <div className="min-w-0 flex-1">
@@ -232,7 +232,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
       </div>
 
       {/* Main Preview Box */}
-      <div className="flex-1 min-h-[220px] rounded-2xl bg-hz-navy-950 border border-hz-navy-500/50 relative overflow-hidden flex flex-col items-center justify-center select-none group">
+      <div className="relative w-full max-h-[340px] min-h-[200px] aspect-[4/3] rounded-2xl bg-hz-navy-950 border border-hz-navy-500/50 overflow-hidden flex flex-col items-center justify-center select-none group mx-auto shrink-0 shadow-inner">
         {selected.kind === 'texture' ? (
           <>
             {/* Checkerboard transparency background */}
@@ -241,7 +241,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
                 className="absolute inset-0 opacity-20 pointer-events-none"
                 style={{
                   backgroundImage:
-                    'linear-gradient(45deg, #3b4261 25%, transparent 25%), linear-gradient(-45deg, #3b4261 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #3b4261 75%), linear-gradient(-45deg, transparent 75%, #3b4261 75%)',
+                    'linear-gradient(45deg, #52525b 25%, transparent 25%), linear-gradient(-45deg, #52525b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #52525b 75%), linear-gradient(-45deg, transparent 75%, #52525b 75%)',
                   backgroundSize: '16px 16px',
                   backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
                 }}
@@ -249,8 +249,8 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
             )}
 
             {preview.loading ? (
-              <div className="flex flex-col items-center gap-2 text-hz-brand-300">
-                <Sparkles className="h-6 w-6 animate-spin text-hz-brand-400" />
+              <div className="flex flex-col items-center gap-2 text-zinc-200">
+                <Sparkles className="h-6 w-6 animate-spin text-zinc-200" />
                 <span className="text-xs font-mono">{isTh ? 'กำลังถอดรหัส ASTC/BC7...' : 'Decoding Texture2D...'}</span>
               </div>
             ) : preview.dataUrl ? (
@@ -312,7 +312,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
                 <button
                   type="button"
                   onClick={() => setPreview((p) => ({ ...p, showCheckerboard: !p.showCheckerboard }))}
-                  className={cn('p-1 transition-colors', preview.showCheckerboard ? 'text-hz-brand-400' : 'text-hz-gray-500')}
+                  className={cn('p-1 transition-colors', preview.showCheckerboard ? 'text-white' : 'text-hz-gray-500')}
                   title="Toggle Checkerboard Background"
                   aria-label="Toggle Checkerboard"
                 >
@@ -339,7 +339,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 p-6 text-center">
-            <div className="p-4 rounded-3xl bg-sky-500/10 text-sky-300">
+            <div className="p-4 rounded-3xl bg-zinc-800 text-zinc-300 border border-zinc-700/60">
               <FileText className="h-10 w-10" />
             </div>
             <div className="text-xs font-bold text-white font-mono">{selected.name}</div>
@@ -402,7 +402,7 @@ export function AssetPreviewPanel({ isTh, selected, outputDir }: AssetPreviewPan
             variant="secondary"
             size="sm"
             onClick={handleRevealInExplorer}
-            icon={<FolderOpen className="h-3.5 w-3.5 text-hz-brand-400" />}
+            icon={<FolderOpen className="h-3.5 w-3.5 text-zinc-300" />}
             title={isTh ? 'เปิดโฟลเดอร์และชี้ไปที่ไฟล์' : 'Open in Explorer & Reveal'}
           >
             {isTh ? 'เปิดโฟลเดอร์' : 'Reveal'}

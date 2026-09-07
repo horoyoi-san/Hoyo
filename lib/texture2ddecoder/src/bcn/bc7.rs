@@ -167,11 +167,6 @@ pub unsafe fn decode_bc7(
         return Err("Image buffer is too small!");
     }
 
-    // GPU/OpenCL decode (fast path). Silent CPU fallback on any error.
-    if crate::gpu::decode_bc7_gpu(data, width, height, image).is_ok() {
-        return Ok(());
-    }
-
     decode_bc7_cpu(data, width, height, image)
 }
 

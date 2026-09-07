@@ -3,7 +3,6 @@ import {
   Code2,
   Cpu,
   Database,
-  Globe,
   Languages,
   Layers,
   Package,
@@ -11,7 +10,6 @@ import {
   Server,
   Settings,
   ShieldCheck,
-  Sparkle,
   Sparkles,
   Terminal,
 } from 'lucide-react';
@@ -53,13 +51,6 @@ export const CATEGORIES: NavCategory[] = [
       { id: 'cheat', translationKey: 'nav.cheat', icon: Sparkles },
       { id: 'lua', translationKey: 'nav.lua', icon: Code2 },
       { id: 'design', translationKey: 'nav.design', icon: Layers },
-    ],
-  },
-  {
-    categoryKey: 'nav.cat.tools',
-    items: [
-      { id: 'gacha', translationKey: 'nav.gacha', icon: Sparkle },
-      { id: 'uid', translationKey: 'nav.uid', icon: Globe },
     ],
   },
   {

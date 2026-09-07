@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   FolderOpen,
   Zap,
@@ -12,7 +12,7 @@ import {
   Sparkles,
   AlertCircle,
 } from 'lucide-react';
-import { Badge, Button, Card, Input, SectionHeader } from '../ui';
+import { Badge, Button, Card, Input, SectionHeader, UnifiedLogConsole } from '../ui';
 import { useAppStore } from '../../stores/useAppStore';
 import { useT } from '../../lib/hooks';
 import { isTauri, tauriApi, ResCompileResult } from '../../lib/tauri';
@@ -33,19 +33,7 @@ export function ResCompilerView() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [logs, setLogs] = useState<string[]>([]);
 
-  useEffect(() => {
-    setLogs([
-      isTh
-        ? '[*] ระบบรวมทรัพยากรเกม (Resource Compiler) พร้อมทำงาน'
-        : '[*] Automated Resource Compiler Engine Ready.',
-      isTh
-        ? '[*] ประมวลผลไฟล์ Config/LevelOutput และ ExcelOutput เป็น res.json'
-        : '[*] Compile raw Config/LevelOutput & ExcelOutput data into unified res.json',
-      isTh
-        ? '[*] กำหนดโฟลเดอร์ Resources ต้นทาง แล้วกดปุ่ม "เริ่มประมวลผล res.json" ได้ทันที'
-        : '[*] Specify the source Resources directory and click "Compile res.json Now"',
-    ]);
-  }, [isTh]);
+
 
   const addLog = (msg: string) => {
     const timestamp = new Date().toTimeString().split(' ')[0];
@@ -76,16 +64,18 @@ export function ResCompilerView() {
     setLoading(true);
     setStats(null);
     setErrorMessage('');
-    addLog(isTh ? `[*] กำลังตรวจสอบและอ่านไฟล์จาก: ${resourcesDir}...` : `[*] Verifying & reading files from: ${resourcesDir}...`);
+    addLog(isTh ? `[PROC 1/4] กำลังตรวจสอบโฟลเดอร์ Resources และอ่านไฟล์ Config: ${resourcesDir}...` : `[PROC 1/4] Verifying and reading Config files from: ${resourcesDir}...`);
 
     if (isTauri()) {
       try {
+        addLog(isTh ? '[PROC 2/4] สแกน Config/LevelOutput (Floor/Group) และจับคู่ GroupID กับ SceneID...' : '[PROC 2/4] Scanning Config/LevelOutput and correlating GroupIDs with SceneIDs...');
+        addLog(isTh ? '[PROC 3/4] อ่านตาราง ExcelOutput (AvatarConfig, StageConfig, MapEntranceConfig)...' : '[PROC 3/4] Parsing ExcelOutput tables (AvatarConfig, StageConfig, MapEntranceConfig)...');
         const res = await tauriApi.executeGenerateResJson(resourcesDir, outputFile);
         if (res && res.success) {
           setStats(res);
+          addLog(isTh ? `[PROC 4/4] เขียนไฟล์และซิงค์ JSON ไปยัง ./res.json และ ./bin/res.json สำเร็จ` : `[PROC 4/4] Serialized JSON and synced to ./res.json and ./bin/res.json`);
           addLog(isTh ? `[OK] สร้างสำเร็จ: ${res.outputFile} (${res.fileSizeMb} MB) ในเวลา ${res.timeSeconds}s` : `[OK] Successfully generated ${res.outputFile} (${res.fileSizeMb} MB) in ${res.timeSeconds}s`);
           addLog(isTh ? `[INFO] สรุป: ฉากทั้งหมด ${res.sceneGroupsCount} แมพ, ตัวละคร ${res.avatarsCount} ตัว, จุดวาร์ป ${res.mapEntrancesCount} จุด` : `[INFO] Summary: ${res.sceneGroupsCount} scenes, ${res.avatarsCount} avatars, ${res.mapEntrancesCount} map entrances`);
-          addLog(isTh ? '[*] ไฟล์ถูกซิงค์ไปยัง ./res.json และ ./bin/res.json พร้อมให้เซิร์ฟเวอร์ RobinSR ใช้งานทันที' : '[*] Automatically synced to ./res.json and ./bin/res.json for RobinSR server.');
         } else {
           const err = res.message || 'Unknown compile error';
           setErrorMessage(err);
@@ -124,95 +114,97 @@ export function ResCompilerView() {
   };
 
   return (
-    <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto bg-hz-navy-900">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5 bg-hz-navy-900">
       <SectionHeader
         icon={<Database className="h-5 w-5" />}
-        title={isTh ? 'ระบบสร้าง res.json อัตโนมัติ' : 'Automated Resource Compiler'}
+        title={isTh ? 'Resource Dataset Compiler' : 'Resource Dataset Compiler'}
         description={
           isTh
-            ? 'รวบรวมไฟล์ดิบจากโฟลเดอร์ Resources (Config & ExcelOutput) รวมเป็นไฟล์ res.json (~13MB) ในคลิกเดียวด้วยความเร็วระดับ Sub-second'
-            : 'Compile raw game resources into a production res.json dataset with multi-threaded pure-Rust parser.'
+            ? 'คอมไพล์และจัดโครงสร้างข้อมูลดิบ (Config & ExcelOutput) เป็นดาต้าเซ็ต res.json ผ่านเอนจินคู่ขนาน'
+            : 'Compile raw resource trees (Config and ExcelOutput) into an indexed res.json dataset.'
         }
       />
 
       {/* KPI Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-4 bg-hz-navy-800/80 border-hz-navy-500/50 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium text-hz-gray-400">
+        <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
+          <div className="p-3 rounded-xl border shrink-0 bg-zinc-800 border-zinc-700/60 text-zinc-200">
+            <MapPin className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">
               {isTh ? 'จำนวนแผนที่ฉาก' : 'Scene Maps'}
             </span>
-            <div className="p-1.5 rounded-lg bg-blue-500/15 text-blue-400">
-              <MapPin className="h-4 w-4" />
+            <div className="text-xl font-bold font-mono text-white mt-0.5 truncate">
+              {stats ? stats.sceneGroupsCount.toLocaleString() : '0'}{' '}
+              <span className="text-xs font-normal text-zinc-400 font-sans">{isTh ? 'ฉาก' : 'maps'}</span>
             </div>
           </div>
-          <div className="text-xl font-bold text-white mt-2">
-            {stats ? stats.sceneGroupsCount : '0'} <span className="text-xs font-normal text-hz-gray-400">{isTh ? 'ฉาก' : 'maps'}</span>
-          </div>
-        </Card>
+        </div>
 
-        <Card className="p-4 bg-hz-navy-800/80 border-hz-navy-500/50 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium text-hz-gray-400">
+        <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
+          <div className="p-3 rounded-xl border shrink-0 bg-zinc-800 border-zinc-700/60 text-zinc-200">
+            <Users className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">
               {isTh ? 'ฐานข้อมูลตัวละคร' : 'Avatars Config'}
             </span>
-            <div className="p-1.5 rounded-lg bg-purple-500/15 text-purple-400">
-              <Users className="h-4 w-4" />
+            <div className="text-xl font-bold font-mono text-white mt-0.5 truncate">
+              {stats ? stats.avatarsCount.toLocaleString() : '0'}{' '}
+              <span className="text-xs font-normal text-zinc-400 font-sans">{isTh ? 'ตัว' : 'units'}</span>
             </div>
           </div>
-          <div className="text-xl font-bold text-white mt-2">
-            {stats ? stats.avatarsCount : '0'} <span className="text-xs font-normal text-hz-gray-400">{isTh ? 'ตัว' : 'units'}</span>
-          </div>
-        </Card>
+        </div>
 
-        <Card className="p-4 bg-hz-navy-800/80 border-hz-navy-500/50 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium text-hz-gray-400">
+        <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
+          <div className="p-3 rounded-xl border shrink-0 bg-zinc-800 border-zinc-700/60 text-zinc-200">
+            <Database className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">
               {isTh ? 'ขนาดไฟล์ res.json' : 'Output File Size'}
             </span>
-            <div className="p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400">
-              <Database className="h-4 w-4" />
+            <div className="text-xl font-bold font-mono text-white mt-0.5 truncate">
+              {stats ? `${stats.fileSizeMb} MB` : '0 MB'}
             </div>
           </div>
-          <div className="text-xl font-bold text-white mt-2">
-            {stats ? `${stats.fileSizeMb} MB` : '0 MB'}
-          </div>
-        </Card>
+        </div>
 
-        <Card className="p-4 bg-hz-navy-800/80 border-hz-navy-500/50 flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium text-hz-gray-400">
+        <div className="bg-hz-navy-700 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-4 flex items-center gap-3.5 shadow-md shadow-black/20 transition-all">
+          <div className="p-3 rounded-xl border shrink-0 bg-zinc-800 border-zinc-700/60 text-zinc-200">
+            <Clock className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">
               {isTh ? 'ความเร็วประมวลผล' : 'Compile Speed'}
             </span>
-            <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-400">
-              <Clock className="h-4 w-4" />
+            <div className="text-xl font-bold font-mono text-white mt-0.5 truncate">
+              {stats ? `${stats.timeSeconds}s` : '0.00s'}
             </div>
           </div>
-          <div className="text-xl font-bold text-white mt-2">
-            {stats ? `${stats.timeSeconds}s` : '0.00s'}
-          </div>
-        </Card>
+        </div>
       </div>
 
       {/* Main Configuration & Compiler Card */}
-      <Card className="p-5 border-hz-navy-500/50 bg-hz-navy-800/80 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-hz-navy-500/40">
+      <Card className="p-5 border-zinc-800 bg-hz-navy-800/80 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-800/80">
           <div className="flex items-center gap-2.5 text-white">
-            <div className="p-2 rounded-xl bg-cyan-500/15 border border-cyan-500/25 text-cyan-400">
+            <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200">
               <FileCode className="h-4 w-4" />
             </div>
             <div>
               <h2 className="text-sm font-bold text-white">
                 {isTh ? 'กำหนดโฟลเดอร์ Resources และเริ่มการสร้างไฟล์' : 'Target Resources Configuration'}
               </h2>
-              <p className="text-xs text-hz-gray-400">
+              <p className="text-xs text-zinc-400">
                 {isTh
                   ? 'ระบบจะอ่าน Config/LevelOutput/Scene, ExcelOutput/AvatarConfig, MappingInfo และ RelicRecommend อัตโนมัติ'
                   : 'Auto-scans scene groups, avatar weakness buffs, entrance mappings, and relic recommendations.'}
               </p>
             </div>
           </div>
-          <Badge variant="emerald">Auto-Sync ./res.json & ./bin/res.json</Badge>
+          <Badge variant="neutral">Auto-Sync ./res.json & ./bin/res.json</Badge>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -290,48 +282,26 @@ export function ResCompilerView() {
         </div>
       </Card>
 
-      {/* Terminal Log Output */}
-      <Card className="flex-1 min-h-48 p-4 flex flex-col font-mono text-xs space-y-2.5 shadow-lg shadow-black/20" flat>
-        <div className="flex items-center justify-between pb-2.5 border-b border-hz-navy-500/40">
-          <div className="flex items-center gap-2 text-white">
-            <span className="font-bold text-xs">
-              {isTh ? 'บันทึกการทำงานของ Resource Compiler' : 'Resource Compiler Live Execution Stream'}
-            </span>
-          </div>
-          <Badge variant="outline" className="text-[10px] font-mono">
-            {logs.length} Events
-          </Badge>
-        </div>
-
-        <div className="flex-1 overflow-y-auto space-y-1.5 p-3 rounded-xl bg-hz-navy-900 border border-hz-navy-500/40 text-[11px] scrollbar-thin max-h-56">
-          {logs.map((log, i) => (
-            <div
-              key={i}
-              className={`break-all font-mono leading-relaxed ${
-                log.includes('[OK]') || log.includes('Successfully')
-                  ? 'text-emerald-300 font-bold'
-                  : log.includes('[*]') || log.includes('Starting') || log.includes('Verifying')
-                  ? 'text-cyan-300 font-semibold'
-                  : log.includes('[INFO]')
-                  ? 'text-amber-300 font-semibold'
-                  : log.includes('[ERR]') || log.includes('Error')
-                  ? 'text-rose-400 font-semibold'
-                  : 'text-zinc-300'
-              }`}
-            >
-              {log}
+      {/* Standardized Unified Log Terminal */}
+      <div className="flex-1 min-h-[300px] flex flex-col">
+        <UnifiedLogConsole
+          title={isTh ? 'บันทึกการทำงานของ Resource Compiler' : 'Resource Compiler Process Execution Stream'}
+          subtitle="Config/LevelOutput & Excel Aggregator"
+          logs={logs}
+          onClear={() => setLogs([])}
+          exportFileName="rescompiler-execution.log"
+          heightClassName="h-64 sm:h-72"
+          extraFooter={
+            <div className="flex items-center justify-between text-[11px] text-emerald-400 font-sans">
+              <span className="flex items-center gap-1.5 font-medium">
+                <CheckCircle2 className="h-4 w-4 shrink-0" />
+                {isTh ? 'ตำแหน่งไฟล์ผลลัพธ์:' : 'Compiled Output:'}{' '}
+                <span className="font-mono text-hz-gray-400">./res.json, ./bin/res.json</span>
+              </span>
             </div>
-          ))}
-        </div>
-
-        <div className="pt-2 border-t border-hz-navy-500/40 flex items-center justify-between text-[11px] text-emerald-400 font-sans">
-          <span className="flex items-center gap-1.5 font-medium">
-            <CheckCircle2 className="h-4 w-4" />
-            {isTh ? 'ตำแหน่งไฟล์ผลลัพธ์:' : 'Compiled Output:'}{' '}
-            <span className="font-mono text-zinc-300">./res.json, ./bin/res.json</span>
-          </span>
-        </div>
-      </Card>
+          }
+        />
+      </div>
     </div>
   );
 }

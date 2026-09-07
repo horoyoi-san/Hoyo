@@ -66,10 +66,11 @@ const FEATURES: CheatFeature[] = [
 ];
 
 export function CheatView() {
-  const { t } = useT();
+  const { t, isTh } = useT();
   const cheatStates = useAppStore((state) => state.cheatStates);
   const setCheatState = useAppStore((state) => state.setCheatState);
   const backendConnected = useAppStore((state) => state.backendConnected);
+  const setCurrentPage = useAppStore((state) => state.setCurrentPage);
 
   const toggleFeature = (id: string, enabled: boolean) => {
     // Optimistic toggle; the engine's `cheat_status` event re-syncs on reply.
@@ -78,7 +79,7 @@ export function CheatView() {
   };
 
   return (
-    <div className="h-full flex flex-col gap-5 p-6 overflow-y-auto">
+    <div className="w-full min-h-full flex flex-col gap-3.5 p-4 sm:p-5">
       <SectionHeader
         icon={<Sparkles className="h-5 w-5" />}
         title={t('cheat.title')}
@@ -95,6 +96,32 @@ export function CheatView() {
           </div>
         }
       />
+
+      {/* Guide notice if game client hook is in standby */}
+      <Card className="p-3.5 border border-hz-navy-500/50 bg-hz-navy-800/80 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 text-xs">
+          <div className="p-2 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 shrink-0">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <div>
+            <div className="font-semibold text-white">
+              {isTh ? 'การปรับแต่งรันไทม์ไคลเอนต์ (Client Runtime Hooks)' : 'Client Runtime Hooks & Memory Controls'}
+            </div>
+            <div className="text-hz-gray-400 text-[11px] leading-relaxed">
+              {isTh
+                ? 'การกำหนดค่าจะมีผลกับโปรเซส StarRail.exe เมื่อเปิดใช้งานผ่านตัวเรียกใช้ของ RobinSR'
+                : 'Configurations take effect in the StarRail.exe process when launched via RobinSR runner.'}
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setCurrentPage('robinsr')}
+          className="shrink-0 px-3 py-1.5 rounded-xl bg-hz-navy-700 border border-hz-navy-500 text-white hover:bg-zinc-800 hover:border-zinc-600 hover:text-white transition-colors text-xs font-medium cursor-pointer"
+        >
+          {isTh ? 'ไปที่ RobinSR' : 'Open RobinSR'}
+        </button>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {FEATURES.map((item) => {

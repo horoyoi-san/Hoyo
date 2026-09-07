@@ -17,15 +17,19 @@ persistent
 **/persistent
 upstream_robinsr/
 **/upstream_robinsr/
+lib/texture2ddecoder/resources/
 scratch.rs
 scratch/
 **/scratch/
 
+# IDE & Editor files
+.vscode/
+.idea/
+
 # Compiled Executables & Extracted Assets
 AstralOS.exe
 *.exe
-!bin/sdkserver.exe
-!bin/gameserver.exe
+!bin/launcher.exe
 Extracted_Assets/
 **/Extracted_Assets/
 
@@ -76,12 +80,22 @@ src-tauri/WixTools/
 # Ignore compiled executables and temporary session files
 bin/*.exe
 bin/persistent
+bin/cache/
+bin/resources/
 
 # Track essential runtime server assets & proxy DLL
 !bin/version.dll
+!bin/hkrpg.dll
+!bin/launcher.exe
 !bin/versions.json
 !bin/res.json
 !bin/freesr-data.json
+!bin/challenge_data.json
+
+# Ignore duplicate generated res.json outside bin/
+crates/robinsr_engine/res.json
+crates/robinsr_engine/resources/res.json
+**/resources/res.json
 
 # -----------------------------------------------------------------------------
 # 5. Game Dumps, Metadata & Reverse Engineering Outputs
@@ -94,8 +108,10 @@ output/
 **/output/
 DummyDlls/
 **/DummyDlls/
-Resources/
-**/Resources/
+Extracted_Assets/
+**/Extracted_Assets/
+TurnBasedGameData/
+**/TurnBasedGameData/
 *.dump
 *.pcap
 *.pcapng
