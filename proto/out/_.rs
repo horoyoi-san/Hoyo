@@ -7900,8 +7900,8 @@ impl AvatarType {
 #[repr(i32)]
 pub enum MultiPathAvatarType {
     None = 0,
-    Mar7thKnightType = 1001,
-    Mar7thRogueType = 1224,
+    Mar7ThKnightType = 1001,
+    Mar7ThRogueType = 1224,
     BoyWarriorType = 8001,
     GirlWarriorType = 8002,
     BoyKnightType = 8003,
@@ -7921,8 +7921,8 @@ impl MultiPathAvatarType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::None => "MultiPathAvatarType_None",
-            Self::Mar7thKnightType => "MultiPathAvatarType_Mar7thKnightType",
-            Self::Mar7thRogueType => "MultiPathAvatarType_Mar7thRogueType",
+            Self::Mar7ThKnightType => "MultiPathAvatarType_Mar7ThKnightType",
+            Self::Mar7ThRogueType => "MultiPathAvatarType_Mar7ThRogueType",
             Self::BoyWarriorType => "MultiPathAvatarType_BoyWarriorType",
             Self::GirlWarriorType => "MultiPathAvatarType_GirlWarriorType",
             Self::BoyKnightType => "MultiPathAvatarType_BoyKnightType",
@@ -7939,8 +7939,8 @@ impl MultiPathAvatarType {
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "MultiPathAvatarType_None" => Some(Self::None),
-            "MultiPathAvatarType_Mar7thKnightType" => Some(Self::Mar7thKnightType),
-            "MultiPathAvatarType_Mar7thRogueType" => Some(Self::Mar7thRogueType),
+            "MultiPathAvatarType_Mar7ThKnightType" => Some(Self::Mar7ThKnightType),
+            "MultiPathAvatarType_Mar7ThRogueType" => Some(Self::Mar7ThRogueType),
             "MultiPathAvatarType_BoyWarriorType" => Some(Self::BoyWarriorType),
             "MultiPathAvatarType_GirlWarriorType" => Some(Self::GirlWarriorType),
             "MultiPathAvatarType_BoyKnightType" => Some(Self::BoyKnightType),

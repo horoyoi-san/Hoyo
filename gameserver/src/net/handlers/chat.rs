@@ -11,7 +11,7 @@ use crate::{
 use super::*;
 
 const SERVER_UID: u32 = 727;
-const SERVER_HEAD_ICON: u32 = 201402;
+const SERVER_HEAD_ICON: u32 = 201503;
 const SERVER_CHAT_BUBBLE_ID: u32 = 220005;
 const SERVER_CHAT_HISTORY: &[&str] = &[
     "'lua {path_to_lua_script}' execute lua script",
@@ -46,7 +46,7 @@ pub async fn on_get_friend_list_info_cs_req(
             online_status: FriendOnlineStatus::Online.into(),
             head_icon: SERVER_HEAD_ICON,
             chat_bubble_id: SERVER_CHAT_BUBBLE_ID,
-            level: 70,
+            level: 67,
             nickname: String::from("Server"),
             signature: String::from("omg"),
             ..Default::default()

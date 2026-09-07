@@ -20,12 +20,12 @@ pub async fn on_get_bag_cs_req(
     res.material_list = vec![
         Material {
             tid: 101, // Normal Pass
-            num: 999999,
+            num: 67,
             ..Default::default()
         },
         Material {
             tid: 102, // Special Pass
-            num: 999999,
+            num: 67,
             ..Default::default()
         },
     ];
