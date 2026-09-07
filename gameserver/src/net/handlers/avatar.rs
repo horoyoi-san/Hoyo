@@ -21,7 +21,7 @@ pub async fn on_get_avatar_data_cs_req(
         return;
     };
 
-    res.is_get_all = body.is_get_all;
+    res.is_get_all = body.mghniadpnpl;
     res.avatar_list = BASE_AVATAR_IDS
         .into_iter()
         .map(|id| {

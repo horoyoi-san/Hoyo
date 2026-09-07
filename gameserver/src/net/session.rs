@@ -10,7 +10,7 @@ use anyhow::Result;
 use common::sr_tools::FreesrData;
 use mhy_kcp::Kcp;
 use prost::Message;
-use proto::{AvatarSync, CmdID, CmdPlayerType, PlayerSyncScNotify};
+use proto::{AvatarSync, CmdID, PlayerSyncScNotify};
 use tokio::{
     io::AsyncWrite,
     net::UdpSocket,
@@ -70,7 +70,7 @@ impl PlayerSession {
         drop(kcp);
 
         for packet in packets {
-            if packet.cmd_type == CmdPlayerType::CmdPlayerLogoutCsReq as u16 {
+            if packet.cmd_type == <proto::PlayerLogoutCsReq as proto::CmdID>::CMD_ID {
                 tracing::info!("Player logged out");
                 let _ = self.shutdown_tx.send(());
                 return Ok(());
