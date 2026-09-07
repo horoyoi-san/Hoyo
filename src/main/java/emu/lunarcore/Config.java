@@ -18,7 +18,7 @@ public class Config {
 
     public KeystoreInfo keystore = new KeystoreInfo();
 
-    public HttpServerConfig httpServer = new HttpServerConfig(80);
+    public HttpServerConfig httpServer = new HttpServerConfig(21000);
     public GameServerConfig gameServer = new GameServerConfig(23301);
     
     public ServerOptions serverOptions = new ServerOptions();

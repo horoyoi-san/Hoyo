@@ -21,6 +21,8 @@ plugins {
 }
 
 compileJava.options.encoding = "UTF-8"
+compileJava.options.fork = true
+compileJava.options.forkOptions.jvmArgs = ["-Xmx4g"]
 compileTestJava.options.encoding = "UTF-8"
 
 sourceCompatibility = JavaVersion.VERSION_21
@@ -56,7 +58,7 @@ protobuf {
             }
             task.plugins {
                 quickbuf {
-                    //option 'store_unknown_fields=true'
+                    option 'allocation=lazymsg'
                     outputSubDir = ''
                 }
             }

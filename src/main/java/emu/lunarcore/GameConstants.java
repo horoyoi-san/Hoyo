@@ -9,7 +9,7 @@ import emu.lunarcore.util.Position;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 public class GameConstants {
-    public static String VERSION = "4.2.0";
+    public static String VERSION = "4.5.52";
     
     public static final ZoneOffset CURRENT_ZONEOFFSET = ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
     public static final int CURRENT_TIMEZONE = CURRENT_ZONEOFFSET.getTotalSeconds() / 3600;

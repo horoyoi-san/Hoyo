@@ -1,9 +1,6 @@
 package emu.lunarcore.util;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -26,11 +23,38 @@ public class Handbook {
         List<Integer> list = null;
         String language = LunarCore.getConfig().getServerOptions().language;
 
-        try {
-            var rawMap = JsonUtils.loadToMap(LunarCore.getConfig().getResourceDir() + "/TextMap/TextMap" + language + ".json", String.class, String.class);
-            
-            for (var entry : rawMap.entrySet()) {
-                textMap.put(Long.parseUnsignedLong(entry.getKey()), entry.getValue());
+        String textMapPath = LunarCore.getConfig().getResourceDir() + "/TextMap/TextMap" + language + ".json";
+        File textMapFile = new File(textMapPath);
+        if (!textMapFile.exists()) {
+            LunarCore.getLogger().error("TextMap file not found: {}", textMapPath);
+            return;
+        }
+
+        try (var fileReader = new InputStreamReader(new FileInputStream(textMapFile), StandardCharsets.UTF_8)) {
+            com.google.gson.JsonElement json = com.google.gson.JsonParser.parseReader(fileReader);
+            if (json.isJsonObject()) {
+                for (var entry : json.getAsJsonObject().entrySet()) {
+                    textMap.put(Long.parseUnsignedLong(entry.getKey()), entry.getValue().getAsString());
+                }
+            } else if (json.isJsonArray()) {
+                for (var element : json.getAsJsonArray()) {
+                    if (!element.isJsonObject()) continue;
+                    var obj = element.getAsJsonObject();
+                    if (!obj.has("Text") || !obj.has("ID")) continue;
+                    String text = obj.get("Text").getAsString();
+                    var idElem = obj.get("ID");
+                    if (idElem.isJsonObject()) {
+                        var idObj = idElem.getAsJsonObject();
+                        if (idObj.has("Hash")) {
+                            textMap.put(idObj.get("Hash").getAsLong(), text);
+                        }
+                        if (idObj.has("Hash64")) {
+                            textMap.put(idObj.get("Hash64").getAsLong(), text);
+                        }
+                    } else if (idElem.isJsonPrimitive()) {
+                        textMap.put(idElem.getAsLong(), text);
+                    }
+                }
             }
         } catch (Exception e) {
             LunarCore.getLogger().error("Error loading text map: " + language, e);
