@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdRollShopType {
+    CmdRollShopType_None = 0;
+    CmdRollShopType_TakeRollShopRewardCsReq = 6909;
+    CmdRollShopType_GetRollShopInfoCsReq = 6905;
+    CmdRollShopType_DoGachaInRollShopCsReq = 6920;
+    CmdRollShopType_TakeRollShopRewardScRsp = 6912;
+    CmdRollShopType_GetRollShopInfoScRsp = 6915;
+    CmdRollShopType_DoGachaInRollShopScRsp = 6913;
+}
+
+message DoGachaInRollShopCsReq {
+    uint32 roll_shop_id = 9;
+    uint32 gacha_random = 8;
+    uint32 gacha_count = 15;
+}
+
+message DoGachaInRollShopScRsp {
+    uint32 LDBCKJIPDHF = 15;
+    uint32 roll_shop_id = 3;
+    ItemList reward = 1;
+    uint32 retcode = 7;
+    uint32 reward_display_type = 10;
+}
+
+message GetRollShopInfoCsReq {
+    uint32 roll_shop_id = 1;
+}
+
+message GetRollShopInfoScRsp {
+    uint32 retcode = 10;
+    repeated uint32 shop_group_id_list = 5;
+    uint32 roll_shop_id = 4;
+    uint32 gacha_random = 15;
+}
+
+message TakeRollShopRewardCsReq {
+    uint32 roll_shop_id = 3;
+}
+
+message TakeRollShopRewardScRsp {
+    uint32 retcode = 13;
+    uint32 roll_shop_id = 1;
+    uint32 group_type = 12;
+    ItemList reward = 9;
+}

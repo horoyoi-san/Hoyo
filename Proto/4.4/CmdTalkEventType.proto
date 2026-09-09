@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdTalkEventType {
+    CmdTalkEventType_MNPGFLPBDLK = 0;
+    CmdTalkEventType_FinishFirstTalkNpcCsReq = 2186;
+    CmdTalkEventType_GetReceivedTalkEventsCsReq = 2125;
+    CmdTalkEventType_FinishFirstTalkByPerformanceNpcScRsp = 2138;
+    CmdTalkEventType_GetFirstTalkByPerformanceNpcScRsp = 2140;
+    CmdTalkEventType_GetNpcTakenRewardScRsp = 2178;
+    CmdTalkEventType_GetTalkEventRewardCsReq = 2193;
+    CmdTalkEventType_GetFirstTalkNpcCsReq = 2188;
+    CmdTalkEventType_FinishFirstTalkByPerformanceNpcCsReq = 2133;
+    CmdTalkEventType_ANIFMPJBLKE = 2171;
+    CmdTalkEventType_TakeTalkRewardScRsp = 2158;
+    CmdTalkEventType_GetFirstTalkNpcScRsp = 2181;
+    CmdTalkEventType_FinishFirstTalkNpcScRsp = 2147;
+    CmdTalkEventType_SelectInclinationTextScRsp = 2113;
+    CmdTalkEventType_PEBGMODAAJE = 2126;
+}
+
+message FinishFirstTalkByPerformanceNpcCsReq {
+    uint32 performance_id = 1;
+}
+
+message FinishFirstTalkByPerformanceNpcScRsp {
+    uint32 performance_id = 1;
+    ItemList reward = 5;
+    uint32 retcode = 9;
+}
+
+message FinishFirstTalkNpcCsReq {
+    uint32 npc_id = 5;
+}
+
+message FinishFirstTalkNpcScRsp {
+    uint32 retcode = 2;
+    uint32 npc_id = 11;
+}
+
+message FirstNpcTalkInfo {
+    bool is_meet = 3;
+    uint32 npc_id = 13;
+}
+
+message GetFirstTalkByPerformanceNpcScRsp {
+    repeated NpcMeetByPerformanceStatus npc_meet_status_list = 3;
+    uint32 retcode = 15;
+}
+
+message GetFirstTalkNpcCsReq {
+    repeated uint32 npc_id_list = 8;
+}
+
+message GetFirstTalkNpcScRsp {
+    repeated FirstNpcTalkInfo npc_meet_status_list = 1;
+    uint32 retcode = 9;
+}
+
+message GetNpcTakenRewardScRsp {
+    uint32 retcode = 6;
+    repeated uint32 talk_event_list = 13;
+    uint32 npc_id = 14;
+}
+
+message NpcMeetByPerformanceStatus {
+    bool is_meet = 2;
+    uint32 performance_id = 15;
+}
+
+message SelectInclinationTextScRsp {
+    uint32 retcode = 5;
+    uint32 talk_sentence_id = 10;
+}
+
+message TakeTalkRewardScRsp {
+    uint32 MJALBOEAKME = 1;
+    uint32 retcode = 11;
+    ItemList reward = 15;
+}

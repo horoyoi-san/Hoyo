@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>March7thHoney.GameServer</RootNamespace>
+    <StartupObject></StartupObject>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>March7thHoney.GameServer</AssemblyName>
+    <ApplicationIcon>March7thHoney.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <Content Include="March7thHoney.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- PlayerInstance is referenced pervasively (handlers, managers, packets); import it globally to cut per-file using churn. -->
+    <Using Include="March7thHoney.GameServer.Game.Player" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Server/Packet/Recv/Tutorial/HandlerGetTutorialCsReq.cs" />
+    <Compile Remove="Server/Packet/Recv/Tutorial/HandlerGetTutorialGuideCsReq.cs" />
+    <Compile Remove="Server/Packet/Recv/Tutorial/HandlerUnlockTutorialCsReq.cs" />
+    <!-- 4.6 把宠物 id 从标量挪进子消息，新结构无证据前不猜字段 -->
+    <Compile Remove="Server/Packet/Recv/Pet/**/*.cs" />
+    <Compile Remove="Server/Packet/Send/Pet/**/*.cs" />
+    <!-- 4.6 只剩两个同型 uint32 候选，旧映射本就是未验证猜测，不再续猜 -->
+    <Compile Remove="Server/Packet/Recv/DiceCombat/HandlerDiceCombatFinishPveStageCsReq.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\KcpSharp\KcpSharp.csproj" />
+    <ProjectReference Include="..\Proto\Proto.csproj" />
+    <ProjectReference Include="..\SourceGen\SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="Google.Protobuf" Version="3.33.1" />
+    <PackageReference Include="Google.Protobuf.Tools" Version="3.33.1" />
+  </ItemGroup>
+
+</Project>

@@ -1,92 +1,170 @@
-![LunarCore](https://socialify.git.ci/Melledy/LunarCore/image?description=1&descriptionEditable=A%20game%20server%20reimplementation%20for%20version%204.2.0%20of%20a%20certain%20turn-based%20anime%20game%20for%20educational%20purposes.%20&font=Inter&forks=1&issues=1&language=1&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
-<div align="center"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Melledy/LunarCore?logo=java&style=for-the-badge"> <img alt="GitHub" src="https://img.shields.io/github/license/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Melledy/LunarCore/build.yml?branch=development&logo=github&style=for-the-badge"></div>
+# March7thHoney
 
-<div align="center"><a href="https://discord.gg/cfPKJ6N5hw"><img alt="Discord - LunarCore" src="https://img.shields.io/discord/1163718404067303444?label=Discord&logo=discord&style=for-the-badge"></a></div>
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-2ea44f" alt="Platform" />
+  <img src="https://img.shields.io/badge/Status-Active%20Development-f39c12" alt="Status" />
+  <img src="https://img.shields.io/badge/License-GPLv3-blue" alt="License" />
+</p>
 
-[EN](README.md) | [ID](docs/README_id-ID.md) | [简中](docs/README_zh-CN.md) | [繁中](docs/README_zh-TW.md) | [JP](docs/README_ja-JP.md) | [RU](docs/README_ru-RU.md) | [FR](docs/README_fr-FR.md) | [KR](docs/README_ko-KR.md) | [VI](docs/README_vi-VI.md)
+March7thHoney is a server project built with .NET 10.
+The project is actively developed, with regular feature updates and fixes.
 
-**Attention:** For any extra support, questions, or discussions, check out our [Discord](https://discord.gg/cfPKJ6N5hw).
+[EN](README.md) | [简中](docs/README_zh-CN.md) | [繁中](docs/README_zh-TW.md) | [JP](docs/README_ja-JP.md)
 
-### Notable features
-- Basic game features: Logging in, team setup, inventory, basic scene/entity management
-- Monster battles working
-- Natural world monster/prop/NPC spawns
-- Character techniques
-- Crafting/Consumables working
-- NPC shops handled
-- Gacha system
-- Mail system
-- Friend system (Assists are not working yet)
-- Forgotten hall
-- Pure Fiction
-- Simulated universe (Runs can be finished, but many features are missing)
+## Table of Contents
 
-# Running the server and client
+- [Feature Progress](#feature-progress)
+- [Gameplay Implementation Tree](docs/GameplayImplementationTree.md)
+- [Muip API Entry](#muip-api-entry)
+- [Roadmap](#roadmap)
+- [Repository Layout](#repository-layout)
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Native Linux Server](#native-linux-server)
+- [Build](#build)
+- [CI Artifacts](#ci-artifacts)
+- [Notes](#notes)
+- [Troubleshooting](#troubleshooting)
+- [Credits](#credits)
 
-### Prerequisites
-* [Java 21 JDK](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
+## Feature Progress
 
-### Recommended
-* [Java 25 JDK](https://www.oracle.com/java/technologies/javase/jdk25-archive-downloads.html)
-* [MongoDB 4.0+](https://www.mongodb.com/try/download/community)
+| Module | Status | Notes |
+|---|---|---|
+| Shop system | Stable | Browse and purchase flow works |
+| Team formation | Stable | Lineup and slot switching available |
+| Warp/Gacha | Stable | Full pull flow and result display |
+| Battle flow | Stable | Core combat loop is playable |
+| Open-world scene | Stable | Scene loading, interaction, exploration |
+| Character progression | Stable | Leveling and promotion loops available |
+| Quest system | In progress | Main/common progression works, edge cases remain |
+| Friend system | Stable | Core interaction and display |
+| Anomaly Arbitration | Stable | Entry/challenge/reward supported |
+| Challenge modes | Stable | FH / PF / AS playable |
+| Currency War | In progress | Basic gameplay flow available |
+| Achievement system | Stable | Most achievements supported |
 
-### Compiling the server
-1. Open your system terminal, and compile the server with `./gradlew jar`
-2. Create a folder named `resources` in your server directory
-3. Download the `Config`, `TextMap`, and `ExcelBin` folders from [https://github.com/Dimbreath/StarRailData](https://gitlab.com/Dimbreath/turnbasedgamedata) and place them into your resources folder.
-4. Run the server with `java -jar LunarCore.jar` from your system terminal. Lunar Core comes with a built-in internal MongoDB server for its database, so no Mongodb installation is required. However, it is highly recommended to install Mongodb anyway.
-- `& "C:\Program Files\Java\jdk-25.0.4\bin\java.exe" -jar LunarCore.jar -skiphandbook`
-### Connecting with the client (Fiddler method)
-1. **Log in with the client to an official server and Hoyoverse account at least once to download game data.**
-2. Install and have [Fiddler Classic](https://www.telerik.com/fiddler) running.
-3. Copy and paste the following code into the Fiddlerscript tab of Fiddler Classic. Remember to save the fiddler script after you copy and paste it:
+Detailed implementation progress: [Gameplay Implementation Tree](docs/GameplayImplementationTree.md) | [简中](docs/GameplayImplementationTree_zh-CN.md) | [繁中](docs/GameplayImplementationTree_zh-TW.md) | [JP](docs/GameplayImplementationTree_ja-JP.md)
 
+## Muip API Entry
+
+- Muip API docs: [English](docs/MuipAPI.md) | [简中](docs/MuipAPI_zh-CN.md) | [繁中](docs/MuipAPI_zh-TW.md) | [日本語](docs/MuipAPI_ja-JP.md)
+
+
+## Roadmap
+
+1. Improve Currency War and Divergent Universe.
+2. Fill remaining quests and special trigger logic.
+3. Improve settlement/sync stability in edge cases.
+4. Expand event-mode gameplay coverage.
+5. Continue fixing UI and state-sync issues.
+6. Add more configurable server options.
+
+## Repository Layout
+
+- `Program/` startup entry and orchestration
+- `GameServer/` gameplay logic, packet handlers, runtime managers
+- `WebServer/` dispatch/http side services
+- `Command/` command implementations
+- `Common/` shared data models, config, enums, and database entities
+- `Config/` runtime resources and custom data
+- `docs/` multilingual docs and API docs
+
+## Requirements
+
+- .NET SDK 10
+- Git
+- Windows, Linux, or macOS (`x64` / `arm64`)
+
+## Quick Start
+
+```bash
+git clone --recurse-submodules https://github.com/Mar7thLover/March7thHoney.git
+cd March7thHoney
+dotnet restore
+dotnet run --project Program/Program.csproj
 ```
-import System;
-import System.Windows.Forms;
-import Fiddler;
-import System.Text.RegularExpressions;
 
-class Handlers
-{
-    static function OnBeforeRequest(oS: Session) {
-        if (oS.host.EndsWith(".starrails.com") || oS.host.EndsWith(".hoyoverse.com") || oS.host.EndsWith(".mihoyo.com") || oS.host.EndsWith(".bhsr.com")) {
-            oS.oRequest.headers.UriScheme = "http";
-            oS.host = "localhost"; // This can also be replaced with another IP address.
-        }
-    }
-};
+## Native Linux Server
+
+On Linux you can run from source the same way as Windows. The project path is
+case-sensitive on Linux, so use `Program`, not `program`:
+
+```bash
+dotnet run --project Program/Program.csproj
 ```
 
-4. If `autoCreateAccount` is set to true in the config, then you can skip this step. Otherwise, type `/account create [account name]` in the server console to create an account.
-5. Login with your account name, the password field is ignored by the server and can be set to anything.
+Or use the root launcher:
 
-### Server commands
-Server commands can be run in the server console or in-game. There is a dummy user named "Server" in every player's friends list that you can message to use in-game commands.
+```bash
+bash Start.sh
+```
 
+On a fresh Debian server, install prerequisites once:
+
+```bash
+bash scripts/setup-debian.sh
 ```
-/account {create | delete} [username] (reserved player uid). Creates or deletes an account.
-/avatar {cur | all | lineup} lv(level) p(ascension) e(eidolon) s(skill levels). Sets the current avatar's properties
-/buildavatar [{avatar id} | cur | all | lineup]. Creates a set of relics for the selected avatars
-/clear {relics | lightcones | materials | items} lv(filter level). Removes filter items from the targeted player's inventory.
-/energy. Refills all characters energy in current lineup.
-/gender {male | female}. Sets the player gender.
-/give [item id] x(amount) lv(level) r(rank) p(promotion). Gives the targeted player an item.
-/giveall {materials | avatars | lightcones | relics | usables} lv(level). Gives the targeted player items.
-/heal. Heals your avatars.
-/help. Displays a list of available commands.
-/kick @[player id]. Kicks a player from the server.
-/lineup [avatar ids]. USE AT YOUR OWN RISK. Sets your current lineup with the specified avatar ids.
-/mail [content]. Sends the targeted player a system mail.
-/permission {add | remove | clear} [permission]. Gives/removes a permission from the targeted player.
-/refill - refill your skill points in open world.
-/reload. Reloads the server config.
-/scene [scene id] [floor id]. Teleports the player to the specified scene.
-/setlevel [level] - Sets the targeted player's trailblazer level.
-/spawn [npc monster id/prop id] s[stage id] x[amount] lv[level] r[radius] <battle monster ids...>. Spawns a monster or prop near the targeted player.
-/status. Displays the status of the server.
-/stop - Stops the server
-/tp [x] [y] [z]. Teleports the player to the specified coordinates.
-/unstuck @[player id]. Unstucks an offline player if theyre in a scene that doesnt load.
-/worldlevel [world level]. Sets the targeted player's equilibrium level.
+
+To update later:
+
+```bash
+git pull --ff-only
+git submodule update --init --recursive
+dotnet run --project Program/Program.csproj
 ```
+
+Optional systemd service setup:
+
+```bash
+sudo bash scripts/install-systemd-service.sh
+sudo systemctl start march7thhoney
+```
+
+More details: [Native Linux Setup](docs/native-linux.md).
+
+## Build
+
+```bash
+dotnet build Program/Program.csproj -c Release
+```
+
+## CI Artifacts
+
+Workflow publishes self-contained builds for:
+
+| Runtime | Artifact Name |
+|---|---|
+| `win-x64` | `March7thHoney-win-x64` |
+| `linux-x64` | `March7thHoney-linux-x64` |
+| `linux-arm64` | `March7thHoney-linux-arm64` |
+
+## Notes
+
+- If behavior looks inconsistent after updating commits, clear runtime cache/data and retest with a fresh account state first.
+- Some modules are still under refactor, so packet behavior may change before docs fully catch up.
+
+## Troubleshooting
+
+- Check server logs under your configured log path.
+- `/scene reload` can solve most of the problem.
+- Community support: <https://discord.gg/CyreneEchoes>
+
+## Credits
+
+### Collaborators
+
+- [Mar7thLover](https://github.com/Mar7thLover)
+- [Cyrup](https://github.com/March7thHoney)
+- [Melioli](https://github.com/Melioli)
+
+### Contributors
+
+- [Yuki](https://github.com/Yuki8859)
+- [Cyt](https://github.com/qinfyy)
+
+### Projects
+
+- [LunarCore](https://github.com/Melledy/LunarCore)
+- [DanhengServer](https://github.com/Mar7thLover/DanhengServer-OpenSource)

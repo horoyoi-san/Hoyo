@@ -1,87 +1,137 @@
-![LunarCore](https://socialify.git.ci/Melledy/LunarCore/image?description=1&descriptionEditable=A%20game%20server%20reimplementation%20for%20version%202.2.0%20of%20a%20certain%20turn-based%20anime%20game%20for%20educational%20purposes.%20&font=Inter&forks=1&issues=1&language=1&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
-<div align="center"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Melledy/LunarCore?logo=java&style=for-the-badge"> <img alt="GitHub" src="https://img.shields.io/github/license/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Melledy/LunarCore/build.yml?branch=development&logo=github&style=for-the-badge"></div>
+# March7thHoney
 
-<div align="center"><a href="https://discord.gg/cfPKJ6N5hw"><img alt="Discord - LunarCore" src="https://img.shields.io/discord/1163718404067303444?label=Discord&logo=discord&style=for-the-badge"></a></div>
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-2ea44f" alt="Platform" />
+  <img src="https://img.shields.io/badge/Status-Active%20Development-f39c12" alt="Status" />
+  <img src="https://img.shields.io/badge/License-GPLv3-blue" alt="License" />
+</p>
 
-[EN](README.md) | [ID](docs/README_id-ID.md) | [简中](docs/README_zh-CN.md) | [繁中](docs/README_zh-TW.md) | [JP](docs/README_ja-JP.md) | [RU](docs/README_ru-RU.md) | [FR](docs/README_fr-FR.md) | [KR](docs/README_ko-KR.md) | [VI](docs/README_vi-VI.md)
+March7thHoneyは、.NET 10をベースとしたサーバープロジェクトです。
+このプロジェクトは現在も継続的に開発が進められており、新機能の追加やバグ修正が行われています。
 
-**Attention:** 追加のサポート、質問、または議論がある場合は、 [Discord](https://discord.gg/cfPKJ6N5hw).
+[EN](../README.md) | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [JP](README_ja-JP.md)
 
-### 注目すべき機能
-- 基本ゲーム機能：ログイン、チームのセットアップ、バッグ、基本的なシーン/エンティティの管理
-- モンスター戦闘
-- オーバーワールドのモンスター/プロップ/NPCのスポーン
-- キャラクターの秘技
-- 消耗品
-- NPCショップ
-- ガチャシステム
-- メールシステム
-- フレンドシステム（アシストはまだ機能していません）
-- 忘却の庭
-- 虚構叙事
-- 模擬宇宙（実行はできますが、多くの機能が不足しています）
+## 目次
 
-# サーバーとクライアントの実行
+- [機能進捗](#機能進捗)
+- [ロードマップ](#ロードマップ)
+- [リポジトリ構成](#リポジトリ構成)
+- [必要環境](#必要環境)
+- [クイックスタート](#クイックスタート)
+- [ビルド](#ビルド)
+- [CI成果物](#ci成果物)
+- [補足](#補足)
+- [トラブルシューティング](#トラブルシューティング)
+- [クレジット](#クレジット)
 
-### 必須
-* [Java 17 JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+## 機能進捗
 
-### 推奨
-* [MongoDB 4.0+](https://www.mongodb.com/try/download/community)
+| モジュール | 状態 | メモ |
+|---|---|---|
+| ショップ | 安定 | 閲覧・購入フローに対応 |
+| 編成 | 安定 | 編成切替・スロット変更に対応 |
+| ガチャ | 安定 | 一連の抽選・表示フローに対応 |
+| バトル | 安定 | コア戦闘ループはプレイ可能 |
+| フィールド/シーン | 安定 | 読み込み・インタラクション・探索に対応 |
+| キャラ育成 | 安定 | レベル/昇格の基本ループに対応 |
+| クエスト | 改善中 | 進行可能だが一部エッジケースあり |
+| フレンド | 安定 | 基本機能に対応 |
+| 異相仲裁 | 安定 | 解放・挑戦・報酬受取に対応 |
+| チャレンジ系 | 安定 | FH / PF / AS はプレイ可能 |
+| 差分宇宙関連 | 改善中 | 基本フロー導入済み |
+| 実績 | 安定 | 多くの実績に対応 |
 
-### サーバーのコンパイル
-1. システムターミナルを開き、`./gradlew jar` でサーバーをコンパイル。
-2. サーバーのディレクトリに `resources` という名前のフォルダを作成。
-3. [https://github.com/Dimbreath/StarRailData](https://github.com/Dimbreath/StarRailData) から `Config`、`TextMap`、および `ExcelBin` フォルダをダウンロードし、それらを`resources`に配置。
-4. `/resources/Config/LevelOutput`を削除。
-5. [https://gitlab.com/Melledy/LunarCore-Configs](https://gitlab.com/Melledy/LunarCore-Configs)から`Config`をダウンロードし、`resources`に配置。※これらはワールドの生成に関するもので、非常に重要です。
-6. システムターミナルから `java -jar LunarCore.jar` を使用してサーバーを実行。Lunar Coreにはデータベースのための組み込みの内部MongoDBサーバーが付属しているため、MongoDBのインストールは必要ありません。ただし、MongoDBのインストールを強くお勧めします。
+詳細な開発進捗： [英語](GameplayImplementationTree.md) | [簡体字中国語](GameplayImplementationTree_zh-CN.md) | [繁体字中国語](GameplayImplementationTree_zh-TW.md) | [日本語](GameplayImplementationTree_ja-JP.md)
 
-### クライアントとの接続（Fiddler）
-1. **同じクライアントで公式サーバーとHoyoverseアカウントに少なくとも一度ログインしてゲームデータをダウンロードしてください。**
-2. [Fiddler Classic](https://www.telerik.com/fiddler) をインストールし、実行します。
-3. Fiddlerをhttpsトラフィックを復号化するように設定します（ツール -> オプション -> HTTPS -> HTTPSトラフィックを復号化）。 `サーバー証明書のエラーを無視する` がチェックされていることを確認してください。
-4. Fiddler ClassicのFiddlerscriptタブに以下のコードをコピーして貼り付けます：
+## Muip API 入口
 
-```javascript
-import System;
-import System.Windows.Forms;
-import Fiddler;
-import System.Text.RegularExpressions;
+- Muip API ドキュメント： [英語](MuipAPI.md) | [簡体字中国語](MuipAPI_zh-CN.md) | [繁体字中国語](MuipAPI_zh-TW.md) | [日本語](MuipAPI_ja-JP.md)
 
-class Handlers
-{
-    static function OnBeforeRequest(oS: Session) {
-        if (oS.host.EndsWith(".starrails.com") || oS.host.EndsWith(".hoyoverse.com") || oS.host.EndsWith(".mihoyo.com") || oS.host.EndsWith(".bhsr.com")) {
-            oS.host = "localhost"; // これは別のIPアドレスに置き換えることもできます。
-        }
-    }
-};
+## ロードマップ
+
+1. 差分宇宙と高複雑コンテンツの安定化。
+2. 残タスクと特殊トリガー処理の補完。
+3. 精算・同期の安定性をさらに改善。
+4. イベント系コンテンツ対応範囲の拡張。
+5. UI/状態同期の不整合を継続修正。
+6. サーバー設定項目の拡充。
+
+## リポジトリ構成
+
+- `Program/` 起動エントリと全体オーケストレーション
+- `GameServer/` ゲームロジック、パケット処理、ランタイム管理
+- `WebServer/` ディスパッチ/HTTP サービス
+- `Command/` コマンド実装
+- `Common/` 共有データモデル、設定、列挙、DBエンティティ
+- `Config/` 実行時リソースとカスタムデータ
+- `docs/` 多言語ドキュメント/API
+
+## 必要環境
+
+- .NET SDK 10
+- Git
+- Windows、Linux または macOS（`x64` / `arm64`）
+
+## クイックスタート
+
+```bash
+git clone --recurse-submodules https://github.com/Mar7thLover/March7thHoney.git
+cd March7thHoney
+dotnet restore
+dotnet run --project program
 ```
 
-5. configで`autoCreateAccount`をtrueにした場合、このステップはスキップされます。 そうでない場合、サーバ＾コンソールに`/account create [account name]`と入力しアカウントを作成します。
-6. 作成したアカウント名と任意のパスワードでログインします。(パスワードはサーバーで無視されます。)
+## ビルド
 
-### サーバーコマンド
-サーバーコマンドはサーバーコンソールまたはゲーム内で実行できます。各プレイヤーのフレンドリストには、ゲーム内でコマンドを使用するための "Server" という名前のユーザーがいます。
+```bash
+dotnet build program/program.csproj -c Release
+```
 
-```
-/account {create | delete} [username] (uidに紐付けされている). アカウントを作成または削除します。
-/avatar lv(level) p(ascension) r(eidolon) s(skill levels). 現在のアバターのプロパティを設定します。
-/clear {relics | lightcones | materials | items}. プレイヤーのインベントリから指定したアイテムを削除します。
-/gender {male | female}. プレイヤーの性別を設定します。
-/give [item id] x[amount] lv[number]. ターゲットのプレイヤーにアイテムを与えます。
-/giveall {materials | avatars}. ターゲットのプレイヤーにアイテムを与えます。
-/heal. プレイヤーのキャラクターを回復します。
-/help. 利用可能なコマンドの一覧を表示します。
-/kick @[player id]. サーバーからプレイヤーをキックする。
-/mail [content]. ターゲットのプレイヤーにシステムメールを送信します。
-/permission {add | remove | clear} [permission]. ターゲットのプレイヤーから権限を付与/削除します。
-/refill. SPを回復します。
-/reload. サーバーコンフィギュレーションを再読み込みします。
-/scene [scene id] [floor id]. プレイヤーを指定したシーンにテレポートします。
-/spawn [monster/prop id] x[amount] s[stage id]. ターゲットのプレイヤーの近くにモンスターまたはプロップを生成します。
-/stop. サーバーを終了します。
-/unstuck @[player id]. オフラインプレイヤーが読み込み不可のシーンにいる場合、スタックを解除します。
-/worldlevel [world level]. ターゲットのプレイヤーの均衡レベルを設定します。
-```
+## CI成果物
+
+現在のワークフローは以下の自己完結ビルドを出力します。
+
+| ランタイム | 成果物名 |
+|---|---|
+| `win-x64` | `March7thHoney-win-x64` |
+| `linux-x64` | `March7thHoney-linux-x64` |
+| `linux-arm64` | `March7thHoney-linux-arm64` |
+
+<details>
+<summary>手動公開メモ</summary>
+
+- Actions のストレージ逼迫時は手動実行時のみ成果物アップロードを推奨。
+- 容量超過時は過去成果物の削除、または再計算待ちが必要です。
+
+</details>
+
+## 補足
+
+- 更新後に挙動不整合が出る場合、まずキャッシュ/実行データを整理して再検証してください。
+- 一部モジュールはリファクタ中のため、ドキュメントと実装に一時的な差分が出ることがあります。
+
+## トラブルシューティング
+
+- まず設定済みログ出力先を確認してください。
+- よく使う復旧コマンドは `/scene reload`。
+- コミュニティサポート: <https://discord.gg/castoriceps>
+
+## クレジット
+
+### 共同開発者
+
+- [Mar7thLover](https://github.com/Mar7thLover)
+- [Cyrup](https://github.com/March7thHoney)
+- [Melioli](https://github.com/Melioli)
+
+### 貢献者
+
+- [Yuki](https://github.com/Yuki8859)
+- [Cyt](https://github.com/qinfyy)
+
+### 関連プロジェクト
+
+- [SqlSugar](https://github.com/donet5/SqlSugar)
+- [LunarCore](https://github.com/Melledy/LunarCore)
+- [DanhengServer](https://github.com/Mar7thLover/DanhengServer-OpenSource)

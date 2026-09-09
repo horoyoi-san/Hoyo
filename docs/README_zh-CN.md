@@ -1,84 +1,137 @@
-![LunarCore](https://socialify.git.ci/Melledy/LunarCore/image?description=1&descriptionEditable=A%20game%20server%20reimplementation%20for%20version%201.5.0%20of%20a%20certain%20turn-based%20anime%20game%20for%20educational%20purposes.%20&font=Inter&forks=1&issues=1&language=1&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
-<div align="center"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Melledy/LunarCore?logo=java&style=for-the-badge"> <img alt="GitHub" src="https://img.shields.io/github/license/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Melledy/LunarCore/build.yml?branch=development&logo=github&style=for-the-badge"></div>
+# March7thHoney
 
-<div align="center"><a href="https://discord.gg/cfPKJ6N5hw"><img alt="Discord - Grasscutter" src="https://img.shields.io/discord/1163718404067303444?label=Discord&logo=discord&style=for-the-badge"></a></div>
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/平台-Windows%20%7C%20Linux%20%7C%20macOS-2ea44f" alt="Platform" />
+  <img src="https://img.shields.io/badge/状态-持续开发-f39c12" alt="Status" />
+  <img src="https://img.shields.io/badge/许可证-GPLv3-blue" alt="License" />
+</p>
 
-[EN](../README.md) | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [JP](README_ja-JP.md) | [RU](README_ru-RU.md) | [FR](README_fr-FR.md) | [KR](README_ko-KR.md) | [VI](README_vi-VI.md)
+March7thHoney 是一个基于 .NET 10 的服务器项目。
+项目仍在持续开发中，功能会持续更新。
 
-**注意:** 如果需要任何额外的支持、问题或者讨论，请查看我们的 [Discord](https://discord.gg/cfPKJ6N5hw).
+[EN](../README.md) | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [JP](README_ja-JP.md)
 
-### 显著特点
-- 基本游戏功能：登录、队伍配置、背包、基本场景/实体管理
-- 战斗功能
-- 自然世界怪物/道具/NPC生成
-- 大多数角色技能已处理
-- NPC商店已处理
-- 祈愿系统
-- 邮件系统
-- 好友系统（好友支援尚未实现）
-- 忘却之庭（暂时无法运行）
-- 模拟宇宙（暂时无法运行）
+## 目录
 
-# 运行服务端和客户端
+- [功能进度](#功能进度)
+- [开发计划](#开发计划)
+- [仓库结构](#仓库结构)
+- [环境要求](#环境要求)
+- [快速启动](#快速启动)
+- [构建](#构建)
+- [产物](#产物)
+- [说明](#说明)
+- [故障排查](#故障排查)
+- [致谢](#致谢)
 
-### 必需条件
-* [Java 21 JDK](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
+## 功能进度
 
-### 推荐安装
-* [Java 25 JDK](https://www.oracle.com/java/technologies/javase/jdk25-archive-downloads.html)
-* [MongoDB 4.0+](https://www.mongodb.com/try/download/community)
+| 模块 | 状态 | 备注 |
+|---|---|---|
+| 商店系统 | 稳定 | 浏览与购买流程可用 |
+| 编队系统 | 稳定 | 队伍切换与槽位调整可用 |
+| 抽卡系统 | 稳定 | 完整抽卡与结果展示流程 |
+| 战斗流程 | 稳定 | 核心战斗循环可游玩 |
+| 大世界场景 | 稳定 | 场景加载、交互、探索可用 |
+| 角色养成 | 稳定 | 等级/突破基础链路可用 |
+| 任务系统 | 持续完善 | 主线与常规任务可推进 |
+| 好友系统 | 稳定 | 核心展示与交互可用 |
+| 异相仲裁 | 稳定 | 已支持解锁、挑战、领奖主流程 |
+| 挑战玩法 | 稳定 | 忘却之庭 / 虚构叙事 / 末日幻影可玩 |
+| 货币战争 | 持续完善 | 基础流程已接入 |
+| 成就系统 | 稳定 | 大多数成就可追踪与完成 |
 
-### 编译服务端核心
-1. 打开系统终端，使用 `./gradlew jar` 编译服务端核心
-2. 在服务器目录中创建一个名为 `resources` 的文件夹
-3. 从 [https://github.com/Dimbreath/StarRailData](https://github.com/DimbreathBot/TurnBasedGameData) 下载 `Config`、`TextMap` 和 `ExcelOutput` 文件夹，并将它们放入资源文件夹
-5. 从系统终端使用 `java -jar LunarCore.jar` 运行服务端。Lunar Core带有一个内置的MongoDB数据库服务，因此不需要安装MongoDB。但是，还是强烈建议安装MongoDB。
-6. 如果在配置中将 `autoCreateAccount` 设置为true，则可以跳过创建帐户的步骤。否则，需要在服务器控制台使用 `/account` 命令创建一个帐户。
+详细开发进度： [英文](GameplayImplementationTree.md) | [简中](GameplayImplementationTree_zh-CN.md) | [繁中](GameplayImplementationTree_zh-TW.md) | [日文](GameplayImplementationTree_ja-JP.md)
 
-### 与客户端（Fiddler）连接
-1. **使用客户端至少一次登录到官方服务器和Hoyoverse账户以下载游戏数据。**
-2. 安装并运行 [Fiddler Classic](https://www.telerik.com/fiddler)。
-3. 将Fiddler设置为解密https流量（工具 -> 选项 -> HTTPS -> 解密HTTPS流量），确保选中 `忽略服务器证书错误`。
-4. 将以下代码复制并粘贴到Fiddler Classic的Fiddlerscript选项卡中：
+## Muip API 入口
 
-```javascript
-import System;
-import System.Windows.Forms;
-import Fiddler;
-import System.Text.RegularExpressions;
+- Muip API 文档： [英文](MuipAPI.md) | [简中](MuipAPI_zh-CN.md) | [繁中](MuipAPI_zh-TW.md) | [日文](MuipAPI_ja-JP.md)
 
-class Handlers
-{
-    static function OnBeforeRequest(oS: Session) {
-        if (oS.host.EndsWith(".starrails.com") || oS.host.EndsWith(".hoyoverse.com") || oS.host.EndsWith(".mihoyo.com") || oS.host.EndsWith(".bhsr.com")) {
-            oS.host = "localhost"; // 这也可以替换为其他IP地址。
-        }
-    }
-};
+## 开发计划
+
+1. 持续完善差分宇宙与高复杂玩法链路。
+2. 补全剩余任务与特殊触发逻辑。
+3. 提升结算和同步在边缘场景下的稳定性。
+4. 扩展活动玩法覆盖范围。
+5. 持续修复 UI 与状态同步问题。
+6. 增加更多可配置项。
+
+## 仓库结构
+
+- `Program/` 启动入口与整体编排
+- `GameServer/` 游戏逻辑、协议处理、运行时管理器
+- `WebServer/` 分发与 HTTP 服务
+- `Command/` 命令系统实现
+- `Common/` 共享数据模型、配置、枚举、数据库实体
+- `Config/` 运行资源与自定义数据
+- `docs/` 多语言文档与 API 文档
+
+## 环境要求
+
+- .NET SDK 10
+- Git
+- Windows、Linux 或 macOS（`x64` / `arm64`）
+
+## 快速启动
+
+```bash
+git clone --recurse-submodules https://github.com/Mar7thLover/March7thHoney.git
+cd March7thHoney
+dotnet restore
+dotnet run --project program
 ```
 
-5. 使用您的帐户名称登录，密码可以设置为任何值。
+## 构建
 
-### 服务器命令
-服务器命令可以在服务器控制台或游戏中运行。每个玩家的好友列表中都有一个名为 "Server" 的虚拟用户，您可以向其发送消息以使用游戏中的命令。
+```bash
+dotnet build program/program.csproj -c Release
+```
 
-```
-/account {create | delete} [username] (保留玩家uid). 创建或删除一个帐户。
-/avatar lv(level) p(ascension) r(eidolon) s(skill levels). 设置当前角色的属性。
-/buildavatar [{avatar id} | cur | all | lineup]. 为选定的角色创建一套遗器。
-/clear {relics | lightcones | materials | items}. 从玩家库存中删除过滤的物品。
-/gender {male | female}. 设置玩家性别。
-/give [item id] x[amount] lv[number]. 给予目标玩家一个物品。
-/giveall {materials | avatars}. 给予目标玩家物品。
-/heal. 治疗你的角色。
-/help 显示可用命令列表。
-/kick @[player id]. 将一名玩家踢出服务器。
-/mail [content]. 发送系统邮件给目标玩家。
-/permission {add | remove | clear} [permission]. 向目标玩家授予/移除权限。
-/refill. 在开放世界中补充战技点。
-/reload. 重载服务器配置。
-/scene [scene id] [floor id]. 将玩家传送到指定的场景。
-/spawn [monster/prop id] x[amount] s[stage id]. 在目标玩家附近生成怪物或道具。
-/unstuck @[player id]. 如果离线玩家卡在不加载的场景中，解除卡住。
-/worldlevel [world level]. 设置目标玩家的均衡等级。
-```
+## CI 产物
+
+当前工作流发布以下自包含构建：
+
+| 运行时 | 产物名 |
+|---|---|
+| `win-x64` | `March7thHoney-win-x64` |
+| `linux-x64` | `March7thHoney-linux-x64` |
+| `linux-arm64` | `March7thHoney-linux-arm64` |
+
+<details>
+<summary>手动发布说明</summary>
+
+- 在 Actions 存储配额紧张时，建议仅手动触发上传产物。
+- 如果配额超限，请清理历史产物或等待平台重新计算用量。
+
+</details>
+
+## 说明
+
+- 拉取新提交后若出现行为异常，建议先清理缓存/运行数据，再用新账号复测。
+- 部分模块仍在重构中，文档与实际协议行为可能存在短期差异。
+
+## 故障排查
+
+- 先检查你配置的日志目录输出。
+- 常见问题可先尝试 `/scene reload`。
+- 社区支持：<https://discord.gg/castoriceps>
+
+## 致谢
+
+### 协作者
+
+- [Mar7thLover](https://github.com/Mar7thLover)
+- [Cyrup](https://github.com/March7thHoney)
+- [Melioli](https://github.com/Melioli)
+
+### 贡献者
+
+- [Yuki](https://github.com/Yuki8859)
+- [Cyt](https://github.com/qinfyy)
+
+### 相关项目
+
+- [SqlSugar](https://github.com/donet5/SqlSugar)
+- [LunarCore](https://github.com/Melledy/LunarCore)
+- [DanhengServer](https://github.com/Mar7thLover/DanhengServer-OpenSource)

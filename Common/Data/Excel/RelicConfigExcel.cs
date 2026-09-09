@@ -1,0 +1,39 @@
+using MemoryPack;
+using March7thHoney.Enums.Avatar;
+using March7thHoney.Enums.Item;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace March7thHoney.Data.Excel;
+
+[ResourceEntity("RelicConfig.json")]
+[MemoryPackable]
+public partial class RelicConfigExcel : ExcelResource
+{
+    public int ID { get; set; }
+    public int SetID { get; set; }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public RelicTypeEnum Type { get; set; }
+
+    public int MainAffixGroup { get; set; }
+    public int SubAffixGroup { get; set; }
+    public int MaxLevel { get; set; }
+    public int ExpType { get; set; }
+
+    public int ExpProvide { get; set; }
+    public int CoinCost { get; set; }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public RarityEnum Rarity { get; set; }
+
+    public override int GetId()
+    {
+        return ID;
+    }
+
+    public override void Loaded()
+    {
+        GameData.RelicConfigData[ID] = this;
+    }
+}

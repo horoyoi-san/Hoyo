@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdTutorialType {
+    CmdTutorialType_NLCDGIPGFDJ = 0;
+    CmdTutorialType_BLPBNGIFIGN = 1686;
+    CmdTutorialType_UnlockTutorialScRsp = 1681;
+    CmdTutorialType_FinishTutorialCsReq = 1626;
+    CmdTutorialType_GEDDGDNFMLC = 1688;
+    CmdTutorialType_FinishTutorialScRsp = 1613;
+    CmdTutorialType_GetTutorialGuideCsReq = 1693;
+    CmdTutorialType_UnlockTutorialGuideScRsp = 1647;
+    CmdTutorialType_GetTutorialGuideScRsp = 1658;
+    CmdTutorialType_FinishTutorialGuideCsReq = 1671;
+    CmdTutorialType_FinishTutorialGuideScRsp = 1640;
+    CmdTutorialType_GetTutorialCsReq = 1625;
+    CmdTutorialType_GetTutorialScRsp = 1678;
+}
+
+message FinishTutorialCsReq {
+    uint32 tutorial_id = 10;
+    TutorialFinishType HFIBLHAFONM = 11;
+}
+
+message FinishTutorialGuideCsReq {
+    TutorialGuideType type = 13;
+    uint32 group_id = 14;
+}
+
+message FinishTutorialGuideScRsp {
+    uint32 retcode = 1;
+    ItemList reward = 2;
+    TutorialGuide tutorial_guide = 12;
+}
+
+message FinishTutorialScRsp {
+    Tutorial tutorial = 2;
+    uint32 retcode = 9;
+}
+
+message GetTutorialCsReq {
+}
+
+message GetTutorialGuideCsReq {
+}
+
+message GetTutorialGuideScRsp {
+    repeated TutorialGuide tutorial_guide_list = 1;
+    uint32 retcode = 5;
+}
+
+message GetTutorialScRsp {
+    uint32 retcode = 3;
+    repeated Tutorial tutorial_list = 5;
+}
+
+message Tutorial {
+    TutorialStatus status = 3;
+    uint32 id = 10;
+}
+
+enum TutorialFinishType {
+    CEBJAAAIPDA_NLCDGIPGFDJ = 0;
+    CEBJAAAIPDA_CNPNACJBHJG = 1;
+    CEBJAAAIPDA_NNAIDJINDHO = 2;
+}
+
+message TutorialGuide {
+    uint32 id = 1;
+    TutorialStatus status = 2;
+    TutorialGuideType type = 7;
+}
+
+enum TutorialGuideType {
+    AOCCEBGNPJA_GINFCGDDDOM = 0;
+    AOCCEBGNPJA_JLOAFBAGFHG = 1;
+}
+
+enum TutorialStatus {
+    TUTORIAL_NONE = 0;
+    TUTORIAL_UNLOCK = 1;
+    TUTORIAL_FINISH = 2;
+}
+
+message UnlockTutorialGuideScRsp {
+    uint32 retcode = 11;
+    TutorialGuide tutorial_guide = 12;
+}
+
+message UnlockTutorialScRsp {
+    Tutorial tutorial = 9;
+    uint32 retcode = 13;
+}

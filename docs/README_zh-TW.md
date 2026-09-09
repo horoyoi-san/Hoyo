@@ -1,83 +1,137 @@
-![LunarCore](https://socialify.git.ci/Melledy/LunarCore/image?description=1&descriptionEditable=A%20game%20server%20reimplementation%20for%20version%201.5.0%20of%20a%20certain%20turn-based%20anime%20game%20for%20educational%20purposes.%20&font=Inter&forks=1&issues=1&language=1&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
-<div align="center"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/Melledy/LunarCore?logo=java&style=for-the-badge"> <img alt="GitHub" src="https://img.shields.io/github/license/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Melledy/LunarCore?style=for-the-badge"> <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Melledy/LunarCore/build.yml?branch=development&logo=github&style=for-the-badge"></div>
+# March7thHoney
 
-<div align="center"><a href="https://discord.gg/cfPKJ6N5hw"><img alt="Discord - Grasscutter" src="https://img.shields.io/discord/1163718404067303444?label=Discord&logo=discord&style=for-the-badge"></a></div>
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/平台-Windows%20%7C%20Linux%20%7C%20macOS-2ea44f" alt="Platform" />
+  <img src="https://img.shields.io/badge/狀態-持續開發-f39c12" alt="Status" />
+  <img src="https://img.shields.io/badge/授權-GPLv3-blue" alt="License" />
+</p>
 
-[EN](../README.md) | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [JP](README_ja-JP.md) | [RU](README_ru-RU.md) | [FR](README_fr-FR.md) | [KR](README_ko-KR.md) | [VI](README_vi-VI.md)
+March7thHoney 是一個基於 .NET 10 的伺服器專案。
+專案仍在持續開發中，功能會持續更新。
 
-**請注意:** 如果需要任何額外的支持、問題或者討論，請查看我們的 [Discord](https://discord.gg/cfPKJ6N5hw).
+[EN](../README.md) | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [JP](README_ja-JP.md)
 
-### 當前功能
-- 基本遊戲功能：登錄、隊伍配置、背包、基本場景/實體管理
-- 戰鬥功能
-- 自然世界怪物/道具/NPC生成
-- 大多數角色技能
-- NPC商店
-- 躍遷/抽卡系統
-- 郵件系統
-- 好友系統（支援角色尚未實現）
-- 忘卻之庭（帶有1.4.0功能）
-- 模擬宇宙（可以運行，但缺少許多功能）
+## 目錄
 
-# 運行伺服器端和用戶端
+- [功能進度](#功能進度)
+- [開發計畫](#開發計畫)
+- [倉庫結構](#倉庫結構)
+- [環境需求](#環境需求)
+- [快速啟動](#快速啟動)
+- [建置](#建置)
+- [CI 產物](#ci-產物)
+- [說明](#說明)
+- [疑難排解](#疑難排解)
+- [致謝](#致謝)
 
-### 必需條件
-* [Java 17 JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+## 功能進度
 
-### 推薦安裝
-* [MongoDB 4.0+](https://www.mongodb.com/try/download/community)
+| 模組 | 狀態 | 備註 |
+|---|---|---|
+| 商店系統 | 穩定 | 瀏覽與購買流程可用 |
+| 編隊系統 | 穩定 | 隊伍切換與槽位調整可用 |
+| 抽卡系統 | 穩定 | 完整抽卡與結果展示流程 |
+| 戰鬥流程 | 穩定 | 核心戰鬥循環可遊玩 |
+| 大世界場景 | 穩定 | 場景載入、互動、探索可用 |
+| 角色養成 | 穩定 | 等級/突破基礎鏈路可用 |
+| 任務系統 | 持續完善 | 主線與常規任務可推進，仍有邊緣問題 |
+| 好友系統 | 穩定 | 核心展示與互動可用 |
+| 異相仲裁 | 持續完善 | 已支援解鎖、挑戰、領獎主流程 |
+| 挑戰玩法 | 持續完善 | 忘卻之庭 / 虛構敘事 / 末日幻影可玩 |
+| 貨幣戰爭 | 持續完善 | 基礎流程已接入 |
+| 成就系統 | 持續完善 | 大多數成就可追蹤與完成 |
 
-### 編譯伺服器端核心
-1. 打開系統終端，使用 `./gradlew jar` 編譯伺服器端核心
-2. 在伺服器目錄中創建一個名為 `resources` 的文件夾
-3. 從 [https://github.com/Dimbreath/StarRailData](https://github.com/Dimbreath/StarRailData) 下載 `Config`、`TextMap` 和 `ExcelBin` 文件夾，並將它們放入資源文件夾
-4. 從 [https://gitlab.com/Melledy/LunarCore-Configs](https://gitlab.com/Melledy/LunarCore-Configs) 下載 `Config` 文件夾，並將其放入資源文件夾。替換系統詢問的任何文件。這些文件用於世界生成，對伺服器非常重要。
-5. 從系統終端使用 `java -jar LunarCore.jar` 運行伺服器端。Lunar Core帶有一個內建的MongoDB資料庫服務，因此不需要安裝MongoDB。但是還是強烈建議安裝MongoDB。
-6. 如果在配置中將 `autoCreateAccount` 設置為true，則可以跳過創建帳戶的步驟。否則，需要在伺服器控制台使用 `/account` 命令創建一個帳戶。
+詳細開發進度： [英文](GameplayImplementationTree.md) | [簡中](GameplayImplementationTree_zh-CN.md) | [繁中](GameplayImplementationTree_zh-TW.md) | [日文](GameplayImplementationTree_ja-JP.md)
 
-### 與用戶端連接（Fiddler）
-1. **使用用戶端至少一次登錄到官方伺服器和Hoyoverse帳戶以下載遊戲數據。**
-2. 安裝並運行 [Fiddler Classic](https://www.telerik.com/fiddler)。
-3. 將Fiddler設置為解密https流量（工具 -> 選項 -> HTTPS -> 解密HTTPS流量），確保選中 `忽略伺服器證書錯誤 (Ignore server certificate errors)`。
-4. 將以下代碼複製並黏貼到Fiddler Classic的Fiddlerscript選項卡中：
+## Muip API 入口
 
+- Muip API 文件： [英文](MuipAPI.md) | [簡中](MuipAPI_zh-CN.md) | [繁中](MuipAPI_zh-TW.md) | [日文](MuipAPI_ja-JP.md)
+
+## 開發計畫
+
+1. 持續完善差分宇宙與高複雜玩法鏈路。
+2. 補齊剩餘任務與特殊觸發邏輯。
+3. 提升結算與同步在邊緣場景下的穩定性。
+4. 擴展活動玩法覆蓋範圍。
+5. 持續修復 UI 與狀態同步問題。
+6. 增加更多可配置選項。
+
+## 倉庫結構
+
+- `Program/` 啟動入口與整體編排
+- `GameServer/` 遊戲邏輯、封包處理、執行期管理器
+- `WebServer/` 分發與 HTTP 服務
+- `Command/` 指令系統實作
+- `Common/` 共用資料模型、設定、列舉、資料庫實體
+- `Config/` 執行資源與自訂資料
+- `docs/` 多語系文件與 API 文件
+
+## 環境需求
+
+- .NET SDK 10
+- Git
+- Windows、Linux 或 macOS（`x64` / `arm64`）
+
+## 快速啟動
+
+```bash
+git clone --recurse-submodules https://github.com/Mar7thLover/March7thHoney.git
+cd March7thHoney
+dotnet restore
+dotnet run --project program
 ```
-import System;
-import System.Windows.Forms;
-import Fiddler;
-import System.Text.RegularExpressions;
 
-class Handlers
-{
-    static function OnBeforeRequest(oS: Session) {
-        if (oS.host.EndsWith(".starrails.com") || oS.host.EndsWith(".hoyoverse.com") || oS.host.EndsWith(".mihoyo.com") || oS.host.EndsWith(".bhsr.com")) {
-            oS.host = "localhost"; // 這也可以替換為其他IP位址。
-        }
-    }
-};
+## 建置
+
+```bash
+dotnet build program/program.csproj -c Release
 ```
 
-5. 使用您的帳戶名稱登入，密碼可以隨機輸入。
+## CI 產物
 
-### 伺服器命令
-伺服器命令可以在伺服器控制台或遊戲中運行。每個玩家的好友列表中都有一個名為 "Server" 的虛擬用戶，您可以向其發送消息以使用遊戲中的命令。
+目前工作流程發佈以下自包含建置：
 
-```
-/account {create | delete} [username] (玩家UID). 創建或刪除一個帳戶。
-/avatar lv(level) p(ascension) r(eidolon) s(skill levels) 設置當前角色的屬性。
-/clear {relics | lightcones | materials | items} 從玩家庫存中刪除過濾的物品。
-/gender {male | female} 設置目標玩家性別。
-/give [item id] x[amount] lv[number] 給予目標玩家指定物品。
-/giveall {materials | avatars} 給予目標玩家所有物品／角色。
-/heal. 治癒你的角色。
-/help 顯示可用命令列表。
-/kick @[player id]. 將一名玩家踢出伺服器。
-/mail [content] 發送系統郵件給目標玩家。
-/permission {add | remove | clear} [permission] 向目標玩家授予/移除權限。
-/refill. 在開放世界中補充戰技點。
-/reload 重載伺服器配置。
-/scene [scene id] [floor id] 將玩家傳送到指定的場景。
-/spawn [monster/prop id] x[amount] s[stage id] 在目標玩家附近生成怪物或實體。
-/unstuck @[player id]. 如果離線目標玩家卡在無法載入的場景中，將會把目標玩家傳送到初始場景。
-/worldlevel [world level]. 設置目標玩家的均衡等級。
-``` 
+| 執行時 | 產物名稱 |
+|---|---|
+| `win-x64` | `March7thHoney-win-x64` |
+| `linux-x64` | `March7thHoney-linux-x64` |
+| `linux-arm64` | `March7thHoney-linux-arm64` |
+
+<details>
+<summary>手動發佈說明</summary>
+
+- 在 Actions 儲存配額緊張時，建議僅手動觸發上傳產物。
+- 若配額超限，請清理歷史產物或等待平台重新計算用量。
+
+</details>
+
+## 說明
+
+- 拉取新提交後若行為異常，建議先清理快取/執行資料，再以新帳號重測。
+- 部分模組仍在重構中，文件與實際封包行為可能存在短期落差。
+
+## 疑難排解
+
+- 先檢查你設定的日誌目錄輸出。
+- 常見問題可先嘗試 `/scene reload`。
+- 社群支援：<https://discord.gg/xRtZsmHBVj>
+
+## 致謝
+
+### 協作者
+
+- [Mar7thLover](https://github.com/Mar7thLover)
+- [Cyrup](https://github.com/March7thHoney)
+- [Melioli](https://github.com/Melioli)
+
+### 貢獻者
+
+- [Yuki](https://github.com/Yuki8859)
+- [Cyt](https://github.com/qinfyy)
+
+### 相關專案
+
+- [SqlSugar](https://github.com/donet5/SqlSugar)
+- [LunarCore](https://github.com/Melledy/LunarCore)
+- [DanhengServer](https://github.com/Mar7thLover/DanhengServer-OpenSource)

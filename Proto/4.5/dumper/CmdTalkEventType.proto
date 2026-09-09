@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdTalkEventType {
+    CmdTalkEventType_CmdTalkRewardTypeNone = 0;
+    CmdTalkEventType_GetFirstTalkNpcScRsp = 2191;
+    CmdTalkEventType_TakeTalkRewardCsReq = 2179;
+    CmdTalkEventType_SelectInclinationTextScRsp = 2199;
+    CmdTalkEventType_FinishFirstTalkNpcScRsp = 2126;
+    CmdTalkEventType_GetNpcTakenRewardScRsp = 2182;
+    CmdTalkEventType_FinishFirstTalkByPerformanceNpcScRsp = 2171;
+    CmdTalkEventType_GetFirstTalkNpcCsReq = 2156;
+    CmdTalkEventType_FinishFirstTalkNpcCsReq = 2198;
+    CmdTalkEventType_TakeTalkRewardScRsp = 2139;
+    CmdTalkEventType_GetFirstTalkByPerformanceNpcCsReq = 2172;
+    CmdTalkEventType_GetNpcTakenRewardCsReq = 2134;
+    CmdTalkEventType_GetFirstTalkByPerformanceNpcScRsp = 2165;
+    CmdTalkEventType_SelectInclinationTextCsReq = 2173;
+    CmdTalkEventType_FinishFirstTalkByPerformanceNpcCsReq = 2180;
+}
+
+message FinishFirstTalkByPerformanceNpcCsReq {
+    uint32 performance_id = 14;
+}
+
+message FinishFirstTalkByPerformanceNpcScRsp {
+    uint32 performance_id = 4;
+    ItemList reward = 8;
+    uint32 retcode = 3;
+}
+
+message FinishFirstTalkNpcCsReq {
+    uint32 npc_id = 1;
+}
+
+message FinishFirstTalkNpcScRsp {
+    uint32 retcode = 5;
+    uint32 npc_id = 12;
+}
+
+message FirstNpcTalkInfo {
+    bool is_meet = 7;
+    uint32 npc_id = 4;
+}
+
+message GetFirstTalkByPerformanceNpcCsReq {
+    repeated uint32 performance_id_list = 14;
+}
+
+message GetFirstTalkByPerformanceNpcScRsp {
+    uint32 retcode = 15;
+    repeated NpcMeetByPerformanceStatus npc_meet_status_list = 9;
+}
+
+message GetFirstTalkNpcCsReq {
+    repeated uint32 npc_id_list = 7;
+}
+
+message GetFirstTalkNpcScRsp {
+    uint32 retcode = 15;
+    repeated FirstNpcTalkInfo npc_meet_status_list = 1;
+}
+
+message GetNpcTakenRewardCsReq {
+    uint32 npc_id = 14;
+}
+
+message GetNpcTakenRewardScRsp {
+    repeated uint32 talk_event_list = 8;
+    uint32 npc_id = 10;
+    uint32 retcode = 6;
+}
+
+message NpcMeetByPerformanceStatus {
+    bool is_meet = 1;
+    uint32 performance_id = 3;
+}
+
+message SelectInclinationTextCsReq {
+    uint32 talk_sentence_id = 8;
+}
+
+message SelectInclinationTextScRsp {
+    uint32 retcode = 14;
+    uint32 talk_sentence_id = 9;
+}
+
+message TakeTalkRewardCsReq {
+    uint32 MJALBOEAKME = 13;
+    Vector JAKEBEGAJNA = 10;
+}
+
+message TakeTalkRewardScRsp {
+    ItemList reward = 7;
+    uint32 MJALBOEAKME = 12;
+    uint32 retcode = 4;
+}

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+enum CmdPetType {
+    CmdPetType_None = 0;
+    CmdPetType_SummonPetCsReq = 7611;
+    CmdPetType_RecallPetScRsp = 7612;
+    CmdPetType_GetPetDataCsReq = 7609;
+    CmdPetType_CurPetChangedScNotify = 7614;
+    CmdPetType_RecallPetCsReq = 7621;
+    CmdPetType_SummonPetScRsp = 7624;
+    CmdPetType_GetPetDataScRsp = 7618;
+}
+
+message CurPetChangedScNotify {
+    uint32 cur_pet_id = 11;
+}
+
+message GetPetDataCsReq {
+}
+
+message GetPetDataScRsp {
+    repeated uint32 unlocked_pet_id = 7;
+    uint32 retcode = 8;
+    uint32 cur_pet_id = 4;
+}
+
+message RecallPetCsReq {
+    uint32 summoned_pet_id = 5;
+}
+
+message RecallPetScRsp {
+    uint32 cur_pet_id = 14;
+    uint32 select_pet_id = 2;
+    uint32 retcode = 13;
+}
+
+message SummonPetCsReq {
+    uint32 summoned_pet_id = 6;
+}
+
+message SummonPetScRsp {
+    uint32 cur_pet_id = 15;
+    uint32 retcode = 1;
+    uint32 select_pet_id = 10;
+}

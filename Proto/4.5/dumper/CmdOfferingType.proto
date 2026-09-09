@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdOfferingType {
+    CmdOfferingType_None = 0;
+    CmdOfferingType_OfferingInfoScNotify = 6931;
+    CmdOfferingType_TakeOfferingRewardCsReq = 6929;
+    CmdOfferingType_GetOfferingInfoCsReq = 6925;
+    CmdOfferingType_SubmitOfferingItemCsReq = 6940;
+    CmdOfferingType_TakeOfferingRewardScRsp = 6932;
+    CmdOfferingType_GetOfferingInfoScRsp = 6935;
+    CmdOfferingType_SubmitOfferingItemScRsp = 6933;
+}
+
+message GetOfferingInfoCsReq {
+    repeated uint32 offering_id_list = 14;
+}
+
+message GetOfferingInfoScRsp {
+    repeated OfferingInfo offering_info_list = 15;
+    uint32 retcode = 4;
+}
+
+message OfferingInfo {
+    uint32 level_exp = 9;
+    repeated uint32 has_taken_reward_id_list = 4;
+    OfferingState offering_state = 13;
+    uint32 offering_level = 14;
+    uint32 offering_id = 1;
+    uint32 total_exp = 7;
+}
+
+message OfferingInfoScNotify {
+    OfferingInfo offering_info = 1;
+}
+
+enum OfferingState {
+    OFFERING_STATE_NONE = 0;
+    OFFERING_STATE_LOCK = 1;
+    OFFERING_STATE_OPEN = 2;
+}
+
+message SubmitOfferingItemCsReq {
+    uint32 interacted_prop_entity_id = 11;
+    uint32 offering_id = 1;
+}
+
+message SubmitOfferingItemScRsp {
+    uint32 retcode = 6;
+    OfferingInfo offering_info = 4;
+}
+
+message TakeOfferingRewardCsReq {
+    uint32 offering_id = 15;
+    uint32 interacted_prop_entity_id = 9;
+    repeated uint32 take_reward_level_list = 7;
+}
+
+message TakeOfferingRewardScRsp {
+    OfferingInfo offering_info = 14;
+    ItemList reward = 3;
+    uint32 retcode = 15;
+}

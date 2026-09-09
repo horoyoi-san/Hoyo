@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "CmdDrinkMakerType.proto";
+import "CmdMissionType.proto";
+import "Common.proto";
+
+message FinishCosumeItemMissionScRsp {
+    uint32 retcode = 2;
+    uint32 sub_mission_id = 11;
+}
+
+message FinishTalkMissionCsReq {
+    string talk_str = 5;
+    repeated MissionCustomValue custom_value_list = 9;
+    uint32 sub_mission_id = 14;
+}
+
+message GetMainMissionCustomValueCsReq {
+    repeated uint32 main_mission_id_list = 13;
+}
+
+message GetMissionStatusCsReq {
+    repeated uint32 main_mission_id_list = 4;
+    repeated uint32 sub_mission_id_list = 13;
+}
+
+message MainMissionMcvSnapshot {
+    uint32 main_mission_id = 1;
+    MissionCustomValueSnapshotList custom_value_list = 2;
+}
+
+message MainMissionSnapshot {
+    uint32 main_mission_id = 1;
+    repeated SubMissionSnapshot sub_mission_list = 2;
+}
+
+message MakeMissionDrinkCsReq {
+    DFJPGILAAON AGCBLNPHFCI = 2;
+    bool is_save = 5;
+    uint32 CJGGHHCILMD = 15;
+}
+
+message MissionCustomValueSnapshot {
+    uint32 custom_value = 1;
+    string mcv_key = 2;
+}
+
+message MissionCustomValueSnapshotList {
+    repeated MissionCustomValueSnapshot custom_value_list = 1;
+}
+
+message MissionSnapshot {
+    repeated MainMissionMcvSnapshot server_mcv_list = 1;
+    repeated MainMissionMcvSnapshot client_mcv_list = 2;
+    MainMissionSnapshot tracking_main_mission = 3;
+    bool has_mission_audio_snapshot = 4;
+    string cur_audio_emotion_state = 5;
+    string cur_sound_effect_state = 6;
+}
+
+enum MissionSyncRecord {
+    MissionSyncRecord_DOJFCPKAJEN = 0;
+    MissionSyncRecord_HPBMPLFIGDO = 1;
+    MissionSyncRecord_BBFKOIKPIOA = 2;
+    MissionSyncRecord_LPJJPGJPMKA = 3;
+    MissionSyncRecord_JCIHFNMKAKK = 4;
+    MissionSyncRecord_EGDIDGJEOCG = 11;
+    MissionSyncRecord_JPJOOPBLLHO = 12;
+    MissionSyncRecord_EBINJEAEFOE = 13;
+    MissionSyncRecord_BJLCBIGLBIM = 14;
+    MissionSyncRecord_KPDHHAPIIGM = 15;
+}
+
+message MissionSyncTaskCsReq {
+    string key = 6;
+}
+
+message MissionSyncTaskScRsp {
+    string key = 6;
+    uint32 retcode = 9;
+}
+
+message SubMissionSnapshot {
+    uint32 sub_mission_id = 1;
+}
+
+message TeleportToMissionResetPointCsReq {
+}
+
+message UpdateMainMissionCustomValueCsReq {
+    string BGDFHBAANLB = 1;
+    uint32 value = 3;
+    uint32 main_mission_id = 6;
+}
+
+message UpdateMainMissionCustomValueScRsp {
+    MainMission HKDDMGGDCIP = 4;
+    uint32 retcode = 9;
+}
+
+message UpdateTrackMainMissionCsReq {
+    uint32 track_mission_id = 8;
+    uint32 JFONDEBDIOO = 10;
+    TrackMainMissionUpdateReasonId POPNCNIBNMJ = 15;
+}
+
+message UpdateTrackMainMissionScRsp {
+    uint32 prev_track_mission_id = 4;
+    uint32 track_mission_id = 7;
+    uint32 retcode = 14;
+}

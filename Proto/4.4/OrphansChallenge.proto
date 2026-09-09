@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+message ChallengeBossBuffInfo {
+    uint32 buff_two = 1;
+    uint32 buff_one = 8;
+}
+
+message ChallengeBuffInfo {
+    oneof KKNBOACNCON {
+        ChallengeStoryBuffInfo story_info = 11;
+        ChallengeBossBuffInfo boss_info = 13;
+    }
+}
+
+message ChallengeStoryBuffInfo {
+    uint32 buff_two = 5;
+    uint32 buff_one = 12;
+}
+
+message RestartChallengePhaseCsReq {
+}
+
+message StartChallengeCsReq {
+    ChallengeBuffInfo stage_info = 1;
+    repeated uint32 first_lineup = 3;
+    repeated uint32 second_lineup = 4;
+    repeated AvatarIdentifier avatar_lineup_first = 6;
+    repeated AvatarIdentifier avatar_lineup_second = 10;
+    uint32 challenge_id = 12;
+}
+
+message StartPartialChallengeCsReq {
+    uint32 challenge_id = 1;
+    uint32 buff_id = 10;
+    bool is_first_half = 14;
+}
+
+message TakeChallengeRaidRewardCsReq {
+    uint32 HEJANCCDGAP = 15;
+}
+
+message TakeChallengeRewardCsReq {
+    uint32 group_id = 13;
+}

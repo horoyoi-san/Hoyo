@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+enum CmdContentPackageType {
+    CmdContentPackageType_NLCDGIPGFDJ = 0;
+    CmdContentPackageType_ContentPackageTransferScNotify = 7548;
+    CmdContentPackageType_ContentPackageSyncDataScNotify = 7537;
+    CmdContentPackageType_DODAJINHEGA = 7509;
+    CmdContentPackageType_ContentPackageGetDataScRsp = 7523;
+}
+
+message ContentPackageData {
+    repeated ContentPackageInfo content_package_list = 1;
+    uint32 cur_content_id = 15;
+}
+
+message ContentPackageGetDataScRsp {
+    ContentPackageData data = 9;
+    uint32 retcode = 14;
+}
+
+message ContentPackageInfo {
+    ContentPackageStatus status = 7;
+    uint32 content_id = 15;
+}
+
+enum ContentPackageStatus {
+    ContentPackageStatus_None = 0;
+    ContentPackageStatus_Init = 1;
+    ContentPackageStatus_Doing = 2;
+    ContentPackageStatus_Finished = 3;
+    ContentPackageStatus_Release = 4;
+}
+
+message ContentPackageSyncDataScNotify {
+    ContentPackageData data = 2;
+}
+
+message ContentPackageTransferScNotify {
+}

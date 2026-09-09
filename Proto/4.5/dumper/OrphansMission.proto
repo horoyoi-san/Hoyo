@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+message MainMissionAcceptNotify {
+    repeated uint32 main_mission_id_list = 10;
+}
+
+message MainMissionMcvSnapshot {
+    uint32 main_mission_id = 1;
+    MissionCustomValueSnapshotList custom_value_list = 2;
+}
+
+message MainMissionSnapshot {
+    uint32 main_mission_id = 1;
+    repeated SubMissionSnapshot sub_mission_list = 2;
+}
+
+message MissionCustomValueSnapshot {
+    uint32 custom_value = 1;
+    string mcv_key = 2;
+}
+
+message MissionCustomValueSnapshotList {
+    repeated MissionCustomValueSnapshot custom_value_list = 1;
+}
+
+message MissionSnapshot {
+    repeated MainMissionMcvSnapshot server_mcv_list = 1;
+    repeated MainMissionMcvSnapshot client_mcv_list = 2;
+    MainMissionSnapshot tracking_main_mission = 3;
+    bool has_mission_audio_snapshot = 4;
+    string cur_audio_emotion_state = 5;
+    string cur_sound_effect_state = 6;
+}
+
+enum MissionSyncRecord {
+    MissionSyncRecord_DOJFCPKAJEN = 0;
+    MissionSyncRecord_HPBMPLFIGDO = 1;
+    MissionSyncRecord_BBFKOIKPIOA = 2;
+    MissionSyncRecord_LPJJPGJPMKA = 3;
+    MissionSyncRecord_JCIHFNMKAKK = 4;
+    MissionSyncRecord_EGDIDGJEOCG = 11;
+    MissionSyncRecord_JPJOOPBLLHO = 12;
+    MissionSyncRecord_EBINJEAEFOE = 13;
+    MissionSyncRecord_BJLCBIGLBIM = 14;
+    MissionSyncRecord_KPDHHAPIIGM = 15;
+}
+
+message MissionSyncTaskScRsp {
+    uint32 retcode = 6;
+    string key = 8;
+}
+
+message SubMissionSnapshot {
+    uint32 sub_mission_id = 1;
+}
+
+message SyncMuseumTargetMissionFinishNotify {
+    bool MAOMPIDOMIJ = 10;
+    repeated uint32 CLLLEMMKDMB = 7;
+    uint32 KFGLDLFBFFB = 8;
+}
+
+message UpdateTrackMainMissionScRsp {
+    uint32 track_mission_id = 14;
+    uint32 prev_track_mission_id = 5;
+    uint32 retcode = 1;
+}

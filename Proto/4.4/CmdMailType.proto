@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+message ClientMail {
+    uint32 id = 1;
+    int64 expire_time = 2;
+    bool is_read = 3;
+    string content = 4;
+    string title = 5;
+    MailType mail_type = 6;
+    ItemList attachment = 8;
+    int64 time = 9;
+    string sender = 11;
+    uint32 template_id = 12;
+    repeated string para_list = 15;
+}
+
+enum CmdMailType {
+    CmdMailType_NLCDGIPGFDJ = 0;
+    CmdMailType_GetMailScRsp = 878;
+    CmdMailType_DelMailCsReq = 888;
+    CmdMailType_DelMailScRsp = 881;
+    CmdMailType_TakeMailAttachmentScRsp = 847;
+    CmdMailType_PCCBLDPKNKH = 858;
+    CmdMailType_GetMailCsReq = 825;
+    CmdMailType_MarkReadMailCsReq = 893;
+    CmdMailType_NewMailScNotify = 826;
+    CmdMailType_PELMIHDCFIL = 886;
+}
+
+message DelMailCsReq {
+    repeated uint32 id_list = 9;
+}
+
+message DelMailScRsp {
+    repeated uint32 id_list = 2;
+    uint32 retcode = 12;
+}
+
+message GetMailCsReq {
+    uint32 start = 1;
+    uint32 HFKFNFKIEON = 15;
+}
+
+message GetMailScRsp {
+    uint32 total_num = 3;
+    repeated ClientMail mail_list = 8;
+    uint32 retcode = 10;
+    uint32 start = 11;
+    repeated ClientMail notice_mail_list = 12;
+    bool is_end = 14;
+}
+
+message KNPNAHPHNJK {
+    uint32 IODBGABPNOP = 10;
+    uint32 item_id = 12;
+}
+
+enum MailType {
+    MAIL_TYPE_NORMAL = 0;
+    MAIL_TYPE_STAR = 1;
+}
+
+message MarkReadMailCsReq {
+    uint32 id = 14;
+}
+
+message NewMailScNotify {
+    repeated uint32 mail_id_list = 7;
+}
+
+message TakeMailAttachmentScRsp {
+    repeated KNPNAHPHNJK fail_mail_list = 3;
+    repeated uint32 succ_mail_id_list = 10;
+    uint32 retcode = 11;
+    ItemList attachment = 15;
+}

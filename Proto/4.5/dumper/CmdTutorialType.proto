@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdTutorialType {
+    CmdTutorialType_None = 0;
+    CmdTutorialType_GetTutorialGuideScRsp = 1639;
+    CmdTutorialType_FinishTutorialCsReq = 1673;
+    CmdTutorialType_GetTutorialCsReq = 1634;
+    CmdTutorialType_FinishTutorialGuideScRsp = 1665;
+    CmdTutorialType_FinishTutorialGuideCsReq = 1672;
+    CmdTutorialType_GetTutorialScRsp = 1682;
+    CmdTutorialType_UnlockTutorialGuideScRsp = 1626;
+    CmdTutorialType_UnlockTutorialCsReq = 1656;
+    CmdTutorialType_GetTutorialGuideCsReq = 1679;
+    CmdTutorialType_FinishTutorialScRsp = 1699;
+    CmdTutorialType_UnlockTutorialScRsp = 1691;
+    CmdTutorialType_UnlockTutorialGuideCsReq = 1698;
+}
+
+message FinishTutorialCsReq {
+    TutorialFinishType HFIBLHAFONM = 15;
+    uint32 tutorial_id = 11;
+}
+
+message FinishTutorialGuideCsReq {
+    TutorialGuideType type = 11;
+    uint32 group_id = 7;
+}
+
+message FinishTutorialGuideScRsp {
+    ItemList reward = 1;
+    TutorialGuide tutorial_guide = 5;
+    uint32 retcode = 2;
+}
+
+message FinishTutorialScRsp {
+    uint32 retcode = 4;
+    Tutorial tutorial = 9;
+}
+
+message GetTutorialCsReq {
+}
+
+message GetTutorialGuideCsReq {
+}
+
+message GetTutorialGuideScRsp {
+    uint32 retcode = 1;
+    repeated TutorialGuide tutorial_guide_list = 7;
+}
+
+message GetTutorialScRsp {
+    uint32 retcode = 11;
+    repeated Tutorial tutorial_list = 8;
+}
+
+message Tutorial {
+    uint32 id = 13;
+    TutorialStatus status = 4;
+}
+
+enum TutorialFinishType {
+    TutorialFinishType_None = 0;
+    TutorialFinishType_Manual = 1;
+    TutorialFinishType_Automatic = 2;
+}
+
+message TutorialGuide {
+    TutorialStatus status = 7;
+    uint32 id = 6;
+    TutorialGuideType type = 2;
+}
+
+enum TutorialGuideType {
+    TutorialGuideType_TutorialGuideDefault = 0;
+    TutorialGuideType_TutorialGuideSubguide = 1;
+}
+
+enum TutorialStatus {
+    TutorialStatus_TutorialNone = 0;
+    TutorialStatus_TutorialUnlock = 1;
+    TutorialStatus_TutorialFinish = 2;
+}
+
+message UnlockTutorialCsReq {
+    uint32 tutorial_id = 8;
+}
+
+message UnlockTutorialGuideCsReq {
+    TutorialGuideType type = 6;
+    uint32 group_id = 14;
+}
+
+message UnlockTutorialGuideScRsp {
+    uint32 retcode = 15;
+    TutorialGuide tutorial_guide = 10;
+}
+
+message UnlockTutorialScRsp {
+    uint32 retcode = 14;
+    Tutorial tutorial = 4;
+}

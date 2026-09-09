@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdExpeditionBattleActivityType {
+    CmdExpeditionBattleActivityType_None = 0;
+    CmdExpeditionBattleActivityType_ExpeditionBattleSettleScNotify = 9332;
+    CmdExpeditionBattleActivityType_GetExpeditionBattleDataScRsp = 9350;
+    CmdExpeditionBattleActivityType_ExpeditionBattleEndScNotify = 9331;
+    CmdExpeditionBattleActivityType_GetExpeditionBattleDataCsReq = 9346;
+    CmdExpeditionBattleActivityType_ExpeditionBattleStartScRsp = 9329;
+    CmdExpeditionBattleActivityType_ExpeditionBattleSetLineupScRsp = 9339;
+    CmdExpeditionBattleActivityType_ExpeditionBattleSetLineupCsReq = 9334;
+    CmdExpeditionBattleActivityType_ExpeditionBattleStartCsReq = 9324;
+}
+
+message ExpeditionBattleAvatarDamage {
+    uint32 avatar_id = 5;
+    uint64 damage = 2;
+}
+
+message ExpeditionBattleAvatarInfo {
+    uint32 avatar_id = 9;
+    AvatarType avatar_type = 13;
+}
+
+message ExpeditionBattleEndScNotify {
+    bool is_new_record = 7;
+    ExpeditionBattleMapData map_data = 14;
+}
+
+message ExpeditionBattleFunRecord {
+    uint32 avatar_id = 14;
+    uint32 fun_id = 7;
+    uint64 fun_count = 5;
+}
+
+message ExpeditionBattleLevelRecord {
+    repeated ExpeditionBattleAvatarDamage avatar_damage_list = 7;
+    repeated uint32 dead_avatar_id_list = 15;
+    uint32 level_id = 14;
+}
+
+message ExpeditionBattleLineup {
+    uint32 route_id = 2;
+    repeated ExpeditionBattleAvatarInfo avatar_list = 13;
+}
+
+message ExpeditionBattleMapData {
+    uint32 map_id = 13;
+    repeated ExpeditionBattleFunRecord fun_list = 12;
+    repeated ExpeditionBattleRouteRecord route_record_list = 8;
+    uint32 remaining_challenge_count = 15;
+}
+
+message ExpeditionBattleRouteRecord {
+    repeated ExpeditionBattleAvatarInfo avatar_list = 9;
+    uint32 passed_level = 1;
+    uint32 last_level_percent = 13;
+    repeated ExpeditionBattleFunRecord fun_list = 14;
+    uint32 route_id = 5;
+    repeated uint32 dead_avatar_id_list = 8;
+    uint32 battle_round_count = 11;
+    uint64 buff_value = 3;
+    repeated ExpeditionBattleLevelRecord level_record_list = 6;
+    bool is_new_record = 7;
+}
+
+message ExpeditionBattleRouteSettleInfo {
+    bool is_passed = 5;
+    repeated uint32 dead_avatar_id_list = 1;
+    uint32 last_level_percent = 14;
+    uint32 battle_round_count = 6;
+    uint32 route_id = 10;
+    repeated ExpeditionBattleAvatarDamage avatar_damage_list = 4;
+    uint64 buff_value = 11;
+}
+
+message ExpeditionBattleSetLineupCsReq {
+    repeated ExpeditionBattleLineup lineup_list = 15;
+    uint32 map_id = 9;
+}
+
+message ExpeditionBattleSetLineupScRsp {
+    repeated ExpeditionBattleLineup lineup_list = 2;
+    uint32 map_id = 4;
+    uint32 retcode = 15;
+}
+
+message ExpeditionBattleSettleScNotify {
+    repeated ExpeditionBattleFunRecord fun_list = 7;
+    uint32 level_turn = 14;
+    uint32 map_id = 13;
+    repeated ExpeditionBattleRouteSettleInfo route_settle_list = 6;
+}
+
+message ExpeditionBattleStartCsReq {
+    uint32 map_id = 3;
+}
+
+message ExpeditionBattleStartScRsp {
+    uint32 retcode = 13;
+}
+
+message GetExpeditionBattleDataCsReq {
+}
+
+message GetExpeditionBattleDataScRsp {
+    uint32 retcode = 1;
+    repeated ExpeditionBattleMapData map_data_list = 11;
+}

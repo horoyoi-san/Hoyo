@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdMessageType {
+    CmdMessageType_NLCDGIPGFDJ = 0;
+    CmdMessageType_GetNpcStatusScRsp = 2758;
+    CmdMessageType_GetNpcMessageGroupScRsp = 2778;
+    CmdMessageType_FinishSectionIdScRsp = 2747;
+    CmdMessageType_FPIEPJMKGGB = 2726;
+    CmdMessageType_FinishItemIdScRsp = 2781;
+    CmdMessageType_GetMissionMessageScRsp = 2740;
+    CmdMessageType_OBKNDEAOLPF = 2788;
+    CmdMessageType_FinishPerformSectionIdScRsp = 2713;
+    CmdMessageType_PJBBDHBNFOC = 2725;
+    CmdMessageType_BOMFNPGCIEG = 2793;
+    CmdMessageType_LDNLCNFIPCJ = 2771;
+    CmdMessageType_DKKMLOIPOIH = 2786;
+}
+
+message FinishItemIdScRsp {
+    uint32 item_id = 6;
+    uint32 retcode = 9;
+    uint32 text_id = 11;
+}
+
+message FinishPerformSectionIdScRsp {
+    ItemList reward = 3;
+    uint32 retcode = 5;
+    uint32 section_id = 9;
+    repeated MessageItem item_list = 11;
+}
+
+message FinishSectionIdScRsp {
+    ItemList reward = 6;
+    uint32 retcode = 10;
+    uint32 section_id = 15;
+}
+
+message GetMissionMessageScRsp {
+    uint32 retcode = 2;
+    map<uint32, uint32> PFMHKKKAGCD = 12;
+}
+
+message GetNpcMessageGroupScRsp {
+    repeated MessageGroup message_group_list = 10;
+    uint32 retcode = 12;
+}
+
+message GetNpcStatusScRsp {
+    uint32 retcode = 5;
+    repeated NpcStatus npc_status_list = 7;
+}
+
+message MessageGroup {
+    MessageGroupStatus status = 3;
+    uint32 message_section_id = 6;
+    repeated MessageSection message_section_list = 8;
+    uint32 id = 9;
+    int64 refresh_time = 15;
+}
+
+message MessageItem {
+    uint32 text_id = 14;
+    uint32 item_id = 15;
+}
+
+message MessageSection {
+    repeated uint32 message_item_list = 1;
+    uint32 frozen_item_id = 2;
+    repeated MessageItem item_list = 3;
+    uint32 id = 10;
+    MessageSectionStatus status = 13;
+}
+
+message NpcStatus {
+    bool is_finish = 1;
+    uint32 npc_id = 6;
+}

@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+enum CmdMusicRhythmType {
+    CmdMusicRhythmType_None = 0;
+    CmdMusicRhythmType_MusicRhythmUnlockSongSfxScNotify = 7599;
+    CmdMusicRhythmType_MusicRhythmFinishLevelScRsp = 7579;
+    CmdMusicRhythmType_MusicRhythmDataCsReq = 7596;
+    CmdMusicRhythmType_MusicRhythmSaveSongConfigDataCsReq = 7582;
+    CmdMusicRhythmType_MusicRhythmStartLevelCsReq = 7584;
+    CmdMusicRhythmType_MusicRhythmMaxDifficultyLevelsUnlockNotify = 7588;
+    CmdMusicRhythmType_MusicRhythmStartLevelScRsp = 7589;
+    CmdMusicRhythmType_MusicRhythmUnlockSongNotify = 7585;
+    CmdMusicRhythmType_MusicRhythmUnlockTrackScNotify = 7581;
+    CmdMusicRhythmType_MusicRhythmFinishLevelCsReq = 7574;
+    CmdMusicRhythmType_MusicRhythmDataScRsp = 7600;
+    CmdMusicRhythmType_MusicRhythmSaveSongConfigDataScRsp = 7580;
+}
+
+message MusicRhythmDataCsReq {
+}
+
+message MusicRhythmDataScRsp {
+    uint32 cur_song_id = 3;
+    repeated uint32 unlock_song_list = 9;
+    bool show_hint = 5;
+    repeated MusicRhythmGroup music_group = 12;
+    uint32 cur_level_id = 14;
+    repeated uint32 unlock_phase_list = 8;
+    repeated MusicRhythmLevel level_data_list = 1;
+    repeated uint32 unlock_track_list = 11;
+    uint32 retcode = 2;
+}
+
+message MusicRhythmFinishLevelCsReq {
+    uint32 role_star = 9;
+    bool full_combo = 13;
+    uint32 score_id = 4;
+}
+
+message MusicRhythmFinishLevelScRsp {
+    uint32 level_id = 1;
+    uint32 retcode = 13;
+}
+
+message MusicRhythmGroup {
+    uint32 music_group_phase = 13;
+    uint32 music_group_id = 2;
+    repeated uint32 BBINFDHMGII = 5;
+    repeated uint32 EOHMNCBOALC = 1;
+}
+
+message MusicRhythmLevel {
+    uint32 unlock_level = 15;
+    uint32 level_id = 12;
+    bool full_combo = 5;
+}
+
+message MusicRhythmMaxDifficultyLevelsUnlockNotify {
+}
+
+message MusicRhythmSaveSongConfigDataCsReq {
+    MusicRhythmGroup BENAFNHLCEO = 1;
+}
+
+message MusicRhythmSaveSongConfigDataScRsp {
+    uint32 EFEGLAOAJDA = 14;
+    uint32 retcode = 15;
+    uint32 cur_song_id = 1;
+}
+
+message MusicRhythmStartLevelCsReq {
+    uint32 level_id = 15;
+}
+
+message MusicRhythmStartLevelScRsp {
+    uint32 level_id = 11;
+    string trans_no = 2;
+    uint32 retcode = 10;
+}
+
+message MusicRhythmUnlockSongSfxScNotify {
+    repeated uint32 PHCHFKMHDMA = 4;
+}
+
+message MusicRhythmUnlockTrackScNotify {
+    repeated uint32 PFHNONKNHAC = 9;
+}

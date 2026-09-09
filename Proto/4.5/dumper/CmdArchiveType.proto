@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+message ArchiveData {
+    repeated uint32 archive_missing_equipment_id_list = 14;
+    repeated MonsterList kill_monster_list = 8;
+    repeated uint32 archive_avatar_id_list = 12;
+    repeated RelicList relic_list = 2;
+    repeated uint32 archive_equipment_id_list = 15;
+}
+
+enum CmdArchiveType {
+    CmdArchiveType_None = 0;
+    CmdArchiveType_GetArchiveDataScRsp = 2382;
+    CmdArchiveType_GetUpdatedArchiveDataCsReq = 2379;
+    CmdArchiveType_GetUpdatedArchiveDataScRsp = 2339;
+    CmdArchiveType_GetArchiveDataCsReq = 2334;
+}
+
+message GetArchiveDataCsReq {
+}
+
+message GetArchiveDataScRsp {
+    uint32 retcode = 14;
+    ArchiveData archive_data = 12;
+}
+
+message GetUpdatedArchiveDataCsReq {
+}
+
+message GetUpdatedArchiveDataScRsp {
+    uint32 retcode = 9;
+    ArchiveData archive_data = 8;
+}
+
+message MonsterList {
+    uint32 num = 2;
+    uint32 monster_id = 6;
+}
+
+message RelicList {
+    uint32 type = 1;
+    uint32 set_id = 13;
+}

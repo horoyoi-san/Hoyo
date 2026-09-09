@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+message BatchMarkChatEmojiScRsp {
+    repeated uint32 marked_emoji_id_list = 6;
+    uint32 retcode = 5;
+}
+
+enum ChatType {
+    ChatType_None = 0;
+    ChatType_Private = 1;
+    ChatType_Group = 2;
+}
+
+enum CmdChatType {
+    CmdChatType_None = 0;
+    CmdChatType_GetChatEmojiListCsReq = 3973;
+    CmdChatType_MarkChatEmojiCsReq = 3972;
+    CmdChatType_GetChatFriendHistoryScRsp = 3926;
+    CmdChatType_GetPrivateChatHistoryScRsp = 3991;
+    CmdChatType_GetChatEmojiListScRsp = 3999;
+    CmdChatType_MarkChatEmojiScRsp = 3965;
+    CmdChatType_GetChatFriendHistoryCsReq = 3998;
+    CmdChatType_GetLoginChatInfoCsReq = 3904;
+    CmdChatType_GetPrivateChatHistoryCsReq = 3956;
+    CmdChatType_GetLoginChatInfoScRsp = 3962;
+    CmdChatType_SendMsgScRsp = 3982;
+    CmdChatType_BatchMarkChatEmojiCsReq = 3980;
+    CmdChatType_RevcMsgScNotify = 3979;
+    CmdChatType_BatchMarkChatEmojiScRsp = 3971;
+    CmdChatType_SendMsgCsReq = 3934;
+}
+
+message FriendHistoryInfo {
+    uint32 contact_side = 14;
+    int64 last_send_time = 10;
+}
+
+message GetChatEmojiListCsReq {
+}
+
+message GetChatEmojiListScRsp {
+    uint32 retcode = 1;
+    repeated uint32 chat_emoji_list = 10;
+}
+
+message GetChatFriendHistoryCsReq {
+}
+
+message GetChatFriendHistoryScRsp {
+    uint32 retcode = 10;
+    repeated FriendHistoryInfo friend_history_info = 11;
+}
+
+message GetLoginChatInfoCsReq {
+}
+
+message GetLoginChatInfoScRsp {
+    repeated uint32 contact_id_list = 7;
+    uint32 retcode = 11;
+}
+
+message GetPrivateChatHistoryCsReq {
+    uint32 contact_side = 3;
+    uint32 target_side = 12;
+}
+
+message GetPrivateChatHistoryScRsp {
+    uint32 target_side = 14;
+    uint32 retcode = 4;
+    uint32 contact_side = 13;
+    repeated ChatMessageData chat_message_list = 6;
+}
+
+message MarkChatEmojiCsReq {
+    bool is_remove_id = 15;
+    uint32 emoji_id = 9;
+}
+
+message MarkChatEmojiScRsp {
+    bool is_remove_id = 8;
+    uint32 emoji_id = 14;
+    uint32 retcode = 10;
+}
+
+message RevcMsgScNotify {
+    ChatType chat_type = 5;
+    ChatMessageData recv_message_data = 13;
+    uint32 source_uid = 14;
+}
+
+message SendMsgCsReq {
+    ChatType chat_type = 2;
+    repeated uint32 target_list = 10;
+    MessageChatData message_datas = 14;
+}
+
+message SendMsgScRsp {
+    uint64 end_time = 13;
+    uint32 retcode = 4;
+}

@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+enum CmdServerPrefsType {
+    CmdServerPrefsType_None = 0;
+    CmdServerPrefsType_UpdateServerPrefsDataScRsp = 6191;
+    CmdServerPrefsType_GetServerPrefsDataScRsp = 6139;
+    CmdServerPrefsType_GetServerPrefsDataCsReq = 6179;
+    CmdServerPrefsType_UpdateServerPrefsDataCsReq = 6156;
+    CmdServerPrefsType_GetAllServerPrefsDataScRsp = 6182;
+    CmdServerPrefsType_GetAllServerPrefsDataCsReq = 6134;
+}
+
+message GetAllServerPrefsDataCsReq {
+}
+
+message GetAllServerPrefsDataScRsp {
+    uint32 retcode = 2;
+    repeated ServerPrefs server_prefs_list = 12;
+}
+
+message GetServerPrefsDataScRsp {
+    ServerPrefs server_prefs = 6;
+    uint32 retcode = 1;
+}
+
+message ServerPrefs {
+    uint32 server_prefs_id = 8;
+    bytes data = 14;
+}
+
+message UpdateServerPrefsDataScRsp {
+    uint32 retcode = 12;
+    uint32 server_prefs_id = 1;
+}

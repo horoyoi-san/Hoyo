@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+message ChangeScriptEmotionCsReq {
+    uint32 script_id = 2;
+    HeartDialEmotionType target_emotion_type = 4;
+    uint32 BLKFCFGMMBD = 9;
+}
+
+message ChangeScriptEmotionScRsp {
+    HeartDialEmotionType emotion_type = 4;
+    uint32 script_id = 8;
+    uint32 retcode = 15;
+}
+
+enum CmdHeartdialType {
+    CmdHeartdialType_None = 0;
+    CmdHeartdialType_ChangeScriptEmotionScRsp = 6339;
+    CmdHeartdialType_FinishEmotionDialoguePerformanceCsReq = 6398;
+    CmdHeartdialType_SubmitEmotionItemCsReq = 6356;
+    CmdHeartdialType_HeartDialTraceScriptScRsp = 6372;
+    CmdHeartdialType_FinishEmotionDialoguePerformanceScRsp = 6326;
+    CmdHeartdialType_HeartDialScriptChangeScNotify = 6373;
+    CmdHeartdialType_GetHeartDialInfoScRsp = 6382;
+    CmdHeartdialType_SubmitEmotionItemScRsp = 6391;
+    CmdHeartdialType_ChangeScriptEmotionCsReq = 6379;
+    CmdHeartdialType_HeartDialTraceScriptCsReq = 6399;
+    CmdHeartdialType_GetHeartDialInfoCsReq = 6334;
+}
+
+message FinishEmotionDialoguePerformanceCsReq {
+    uint32 script_id = 15;
+    uint32 BLKFCFGMMBD = 3;
+    uint32 dialogue_id = 1;
+}
+
+message FinishEmotionDialoguePerformanceScRsp {
+    uint32 retcode = 12;
+    uint32 dialogue_id = 6;
+    ItemList reward_list = 9;
+    uint32 script_id = 8;
+}
+
+message GetHeartDialInfoCsReq {
+}
+
+message GetHeartDialInfoScRsp {
+    repeated HeartDialDialogueInfo dialogue_info_list = 1;
+    uint32 retcode = 14;
+    HeartDialUnlockStatus unlock_status = 13;
+    repeated HeartDialTraceScriptCsReq EBLMNLBBFNL = 10;
+    repeated HeartDialScriptInfo script_info_list = 5;
+}
+
+message HeartDialDialogueInfo {
+    bool GDPHOIMONLN = 12;
+    uint32 dialogue_id = 8;
+}
+
+enum HeartDialEmotionType {
+    HEART_DIAL_EMOTION_TYPE_PEACE = 0;
+    HEART_DIAL_EMOTION_TYPE_ANGER = 1;
+    HEART_DIAL_EMOTION_TYPE_HAPPY = 2;
+    HEART_DIAL_EMOTION_TYPE_SAD = 3;
+}
+
+message HeartDialScriptChangeScNotify {
+    HeartDialUnlockStatus unlock_status = 11;
+    repeated HeartDialDialogueInfo changed_dialogue_info_list = 1;
+    repeated HeartDialScriptInfo changed_script_info_list = 12;
+    repeated HeartDialTraceScriptCsReq EBLMNLBBFNL = 13;
+}
+
+message HeartDialScriptInfo {
+    HeartDialEmotionType cur_emotion_type = 10;
+    bool LHCOJIEBFFM = 11;
+    HeartDialStepType step = 6;
+    bool EEKCKFGHGEH = 1;
+    uint32 script_id = 15;
+}
+
+enum HeartDialStepType {
+    HeartDialStepType_COEEJALELPF = 0;
+    HeartDialStepType_BADPBGFJPNN = 1;
+    HeartDialStepType_game_lock_info = 2;
+    HeartDialStepType_CCJMKNNHKKE = 3;
+    HeartDialStepType_BEJEBBNFGPM = 4;
+    HeartDialStepType_NGNFOIHNLMJ = 5;
+}
+
+message HeartDialTraceScriptCsReq {
+    uint32 BFGENNIHOAB = 11;
+    uint32 NFMNBHFFLHJ = 6;
+}
+
+message HeartDialTraceScriptScRsp {
+    uint32 retcode = 2;
+    HeartDialTraceScriptCsReq NDPMEMLJGCK = 1;
+}
+
+enum HeartDialUnlockStatus {
+    HEART_DIAL_UNLOCK_STATUS_LOCK = 0;
+    HEART_DIAL_UNLOCK_STATUS_UNLOCK_SINGLE = 1;
+    HEART_DIAL_UNLOCK_STATUS_UNLOCK_ALL = 2;
+}
+
+message SubmitEmotionItemCsReq {
+    uint32 script_id = 7;
+    ItemList item_list = 2;
+}
+
+message SubmitEmotionItemScRsp {
+    uint32 retcode = 15;
+    uint32 script_id = 10;
+}

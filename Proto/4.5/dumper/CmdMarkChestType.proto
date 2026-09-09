@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+enum CmdMarkChestType {
+    CmdMarkChestType_None = 0;
+    CmdMarkChestType_MarkChestChangedScNotify = 8189;
+    CmdMarkChestType_UpdateMarkChestCsReq = 8200;
+    CmdMarkChestType_GetMarkChestCsReq = 8185;
+    CmdMarkChestType_UpdateMarkChestScRsp = 8193;
+    CmdMarkChestType_GetMarkChestScRsp = 8195;
+}
+
+message GetMarkChestCsReq {
+}
+
+message GetMarkChestScRsp {
+    repeated MarkChestFuncInfo mark_chest_func_info = 10;
+    uint32 retcode = 13;
+}
+
+message MarkChestChangedScNotify {
+    repeated MarkChestFuncInfo mark_chest_func_info = 4;
+}
+
+message MarkChestFuncInfo {
+    int64 mark_time = 13;
+    uint32 func_id = 11;
+    repeated MarkChestInfo mark_chest_info_list = 4;
+}
+
+message MarkChestInfo {
+    uint32 group_id = 6;
+    uint32 floor_id = 3;
+    uint32 HFJELBGDGHP = 15;
+    uint32 config_id = 7;
+    uint32 plane_id = 12;
+}
+
+message UpdateMarkChestCsReq {
+    uint32 func_id = 7;
+    uint32 trigger_param_id = 11;
+    repeated MarkChestInfo mark_chest_info_list = 8;
+}
+
+message UpdateMarkChestScRsp {
+    repeated MarkChestFuncInfo mark_chest_func_info = 11;
+    uint32 func_id = 1;
+    uint32 trigger_param_id = 2;
+    uint32 retcode = 12;
+}

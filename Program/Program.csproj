@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>March7thHoney.Program</RootNamespace>
+    <AssemblyName>March7thHoney</AssemblyName>
+    <ApplicationIcon>March7thHoney.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <!--
+    NativeAOT publish: pass `-p:DoAot=true` to `dotnet publish`. A custom gate
+    property (rather than passing PublishAot globally) keeps PublishAot local to this
+    executable, so it never leaks onto the SourceGen analyzer (netstandard2.0, NETSDK1207).
+  -->
+  <PropertyGroup Condition="'$(DoAot)' == 'true'">
+    <PublishAot>true</PublishAot>
+    <!-- First goal is a runnable native binary; don't fail on trim/AOT warnings yet. -->
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
+
+    <!--
+      Anti-reverse hardening: strip the readable name/metadata tables NativeAOT
+      otherwise embeds. StackTraceSupport=false drops per-method name strings
+      (the biggest source of a symbol map); UseSystemResourceKeys replaces BCL
+      exception messages with short keys; the rest remove reflection/diagnostic
+      metadata we don't use. Tradeoff: exception logs lose readable stack traces.
+    -->
+    <StackTraceSupport>false</StackTraceSupport>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <DebuggerSupport>false</DebuggerSupport>
+    <EventSourceSupport>false</EventSourceSupport>
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <NullabilityInfoContextSupport>false</NullabilityInfoContextSupport>
+    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+    <!-- Fold identical method bodies: smaller image, fewer distinct call targets. -->
+    <IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+  </PropertyGroup>
+
+  <!-- Keep reflection-heavy libraries whole so trimming doesn't break them at runtime. -->
+  <ItemGroup Condition="'$(DoAot)' == 'true'">
+    <TrimmerRootAssembly Include="Newtonsoft.Json" />
+    <TrimmerRootAssembly Include="System.Management" />
+    <TrimmerRootAssembly Include="MailKit" />
+    <TrimmerRootAssembly Include="MimeKit" />
+    <TrimmerRootAssembly Include="BouncyCastle.Cryptography" />
+    <TrimmerRootAssembly Include="Spectre.Console" />
+  </ItemGroup>
+
+  <!-- The in-process IIS shim is dead weight for a self-hosted Kestrel server; drop it from publish. -->
+  <Target Name="RemoveUnusedInProcessShim" AfterTargets="Publish">
+    <Delete Files="$(PublishDir)aspnetcorev2_inprocess.dll" />
+  </Target>
+
+  <ItemGroup>
+	  <Content Include="March7thHoney.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="BuildUtc" Value="$([System.DateTime]::UtcNow.ToString(&quot;yyyy-MM-ddTHH:mm:ssZ&quot;))" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.33.1" />
+    <PackageReference Include="Google.Protobuf.Tools" Version="3.33.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Command\Command.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\GameServer\GameServer.csproj" />
+    <ProjectReference Include="..\WebServer\WebServer.csproj" />
+  </ItemGroup>
+
+</Project>
+

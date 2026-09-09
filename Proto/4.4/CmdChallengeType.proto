@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+message Challenge {
+    uint32 record_id = 1;
+    uint32 score_id = 2;
+    bool HGPKMHFPMBJ = 4;
+    uint32 challenge_id = 5;
+    uint32 taken_reward = 9;
+    uint32 star = 11;
+    ChallengeStageInfo stage_info = 14;
+    uint32 score_two = 15;
+}
+
+message ChallengeBossAvatarRelicInfo {
+    map<uint32, ChallengeBossRelicInfo> avatar_relic_slot_map = 1;
+}
+
+message ChallengeBossBuffList {
+    repeated uint32 buff_list = 2;
+    uint32 challenge_boss_const = 3;
+}
+
+message ChallengeBossEquipmentInfo {
+    uint32 unique_id = 1;
+    uint32 tid = 2;
+    uint32 level = 3;
+    uint32 promotion = 4;
+    uint32 rank = 5;
+}
+
+message ChallengeBossInfo {
+    bool unk1 = 3;
+    repeated AvatarIdentifier avatar_lineup_first = 5;
+    ChallengeBossSingleNodeInfo second_node = 6;
+    repeated AvatarIdentifier avatar_lineup_second = 8;
+    map<uint32, ChallengeBossAvatarRelicInfo> challenge_avatar_relic_map = 10;
+    ChallengeBossSingleNodeInfo first_node = 11;
+    map<uint32, ChallengeBossEquipmentInfo> challenge_avatar_equipment_map = 12;
+}
+
+message ChallengeBossPhaseSettleNotify {
+    uint32 challenge_score = 2;
+    uint32 star = 3;
+    bool is_second_half = 4;
+    bool AGAEPDNHPJC = 5;
+    bool is_reward = 6;
+    uint32 page_type = 8;
+    uint32 phase = 10;
+    bool is_win = 11;
+    repeated BattleTarget battle_target_list = 12;
+    uint32 challenge_id = 14;
+    uint32 score_two = 15;
+}
+
+message ChallengeBossRelicInfo {
+    uint32 unique_id = 1;
+    uint32 tid = 2;
+    uint32 level = 3;
+    uint32 main_affix_id = 4;
+    repeated RelicAffix sub_affix_list = 5;
+}
+
+message ChallengeBossSingleNodeInfo {
+    uint32 max_score = 2;
+    bool MBHCJPONJOM = 3;
+    uint32 buff_id = 5;
+    bool is_win = 6;
+}
+
+message ChallengeCurBuffInfo {
+    oneof KKNBOACNCON {
+        ChallengeStoryBuffList cur_story_buffs = 1;
+        ChallengeBossBuffList cur_boss_buffs = 9;
+    }
+}
+
+message ChallengeGroup {
+    uint32 group_id = 12;
+    uint64 taken_stars_count_reward = 13;
+}
+
+message ChallengeHistoryMaxLevel {
+    bool HNHCFJJNJCE = 10;
+    uint32 reward_display_type = 11;
+    uint32 level = 14;
+}
+
+message ChallengeLineupNotify {
+    ExtraLineupType extra_lineup_type = 4;
+}
+
+message ChallengeSettleNotify {
+    repeated uint32 KDIDCCOOJJC = 1;
+    uint32 star = 2;
+    ChallengeHistoryMaxLevel max_level = 6;
+    bool is_win = 7;
+    uint32 score_two = 8;
+    uint32 challenge_id = 9;
+    uint32 challenge_score = 12;
+    ItemList reward = 14;
+    CurChallenge cur_challenge = 15;
+}
+
+message ChallengeStageInfo {
+    ChallengeBossInfo boss_info = 6;
+}
+
+enum ChallengeStatus {
+    CHALLENGE_UNKNOWN = 0;
+    CHALLENGE_DOING = 1;
+    CHALLENGE_FINISH = 2;
+    CHALLENGE_FAILED = 3;
+}
+
+message ChallengeStoryBuffList {
+    repeated uint32 buff_list = 5;
+}
+
+enum CmdChallengeType {
+    CmdChallengeType_NLCDGIPGFDJ = 0;
+    CmdChallengeType_GetChallengeGroupStatisticsCsReq = 1711;
+    CmdChallengeType_GetChallengeGroupStatisticsScRsp = 1736;
+    CmdChallengeType_GetChallengeCsReq = 1725;
+    CmdChallengeType_DLAOMOLCFNI = 1739;
+    CmdChallengeType_GetCurChallengeScRsp = 1771;
+    CmdChallengeType_StartChallengeScRsp = 1758;
+    CmdChallengeType_ChallengeSettleNotify = 1786;
+    CmdChallengeType_EnterChallengeNextPhaseScRsp = 1772;
+    CmdChallengeType_JDCJCNOEHCO = 1793;
+    CmdChallengeType_ChallengeLineupNotify = 1740;
+    CmdChallengeType_PartialChallengeCsReq = 1748;
+    CmdChallengeType_JDGPAOKCAKC = 1765;
+    CmdChallengeType_LeaveChallengeScRsp = 1781;
+    CmdChallengeType_GetChallengeScRsp = 1778;
+    CmdChallengeType_RestartChallengePhaseScRsp = 1730;
+    CmdChallengeType_GetCurChallengeCsReq = 1713;
+    CmdChallengeType_LeaveChallengeCsReq = 1788;
+    CmdChallengeType_StartPartialChallengeScRsp = 1745;
+    CmdChallengeType_ChallengeBossPhaseSettleNotify = 1780;
+    CmdChallengeType_TakeChallengeRewardScRsp = 1704;
+    CmdChallengeType_EnterChallengeNextPhaseCsReq = 1742;
+}
+
+message CurChallenge {
+    ExtraLineupType extra_lineup_type = 1;
+    uint32 challenge_id = 2;
+    uint32 score_two = 5;
+    ChallengeStatus status = 6;
+    uint32 dead_avatar_num = 7;
+    repeated KillMonster kill_monster_list = 9;
+    ChallengeCurBuffInfo stage_info = 10;
+    uint32 round_count = 12;
+    uint32 score_id = 13;
+}
+
+message EnterChallengeNextPhaseCsReq {
+}
+
+message EnterChallengeNextPhaseScRsp {
+    uint32 retcode = 3;
+    SceneInfo scene = 13;
+}
+
+message FMDAAIKLAJA {
+    uint32 group_id = 1;
+    bool JFKMNBHOBCL = 2;
+    bool EGLLMGLLHDL = 3;
+}
+
+message GetChallengeCsReq {
+}
+
+message GetChallengeGroupStatisticsCsReq {
+    uint32 group_id = 12;
+}
+
+message GetChallengeGroupStatisticsScRsp {
+    uint32 group_id = 9;
+    uint32 retcode = 15;
+    PlayerChallengeTierceRecord MEGBIPBAFBP = 713;
+    oneof EDKOHAAMONH {
+        ChallengeStatistics challenge_default = 2;
+        ChallengeStoryStatistics challenge_story = 8;
+        ChallengeBossStatistics challenge_boss = 11;
+    }
+}
+
+message GetChallengeScRsp {
+    repeated ChallengeGroup challenge_group_list = 1;
+    repeated FMDAAIKLAJA KKIAFPFKLGE = 6;
+    repeated Challenge challenge_list = 10;
+    repeated ChallengeHistoryMaxLevel max_level_list = 11;
+    uint32 retcode = 12;
+}
+
+message GetCurChallengeCsReq {
+}
+
+message GetCurChallengeScRsp {
+    repeated LineupInfo lineup_list = 6;
+    uint32 retcode = 8;
+    CurChallenge cur_challenge = 13;
+}
+
+message KillMonster {
+    uint32 monster_id = 2;
+    uint32 kill_num = 14;
+}
+
+message LeaveChallengeCsReq {
+}
+
+message LeaveChallengeScRsp {
+    uint32 retcode = 8;
+}
+
+message RestartChallengePhaseScRsp {
+    SceneInfo scene = 1;
+    uint32 retcode = 3;
+}
+
+message StartChallengeScRsp {
+    repeated LineupInfo lineup_list = 2;
+    uint32 retcode = 3;
+    CurChallenge cur_challenge = 10;
+    ChallengeStageInfo stage_info = 11;
+    SceneInfo scene = 14;
+}
+
+message StartPartialChallengeScRsp {
+    uint32 retcode = 2;
+    SceneInfo scene = 6;
+    CurChallenge cur_challenge = 13;
+    LineupInfo lineup = 14;
+}
+
+message TakeChallengeRewardScRsp {
+    uint32 group_id = 2;
+    ItemList OAKNHADPLJD = 5;
+    uint32 retcode = 6;
+    repeated TakenChallengeRewardInfo taken_reward_list = 7;
+}
+
+message TakenChallengeRewardInfo {
+    ItemList reward = 4;
+    uint32 star_count = 5;
+}

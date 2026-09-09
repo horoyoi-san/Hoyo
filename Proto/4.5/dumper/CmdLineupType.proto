@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+message ChangeLineupLeaderCsReq {
+    uint32 slot = 13;
+}
+
+message ChangeLineupLeaderScRsp {
+    uint32 slot = 2;
+    uint32 retcode = 9;
+}
+
+enum CmdLineupType {
+    CmdLineupType_None = 0;
+    CmdLineupType_GetLineupAvatarDataCsReq = 765;
+    CmdLineupType_GetLineupAvatarDataScRsp = 780;
+    CmdLineupType_ChangeLineupLeaderScRsp = 704;
+    CmdLineupType_SyncLineupNotify = 772;
+    CmdLineupType_ReplaceLineupCsReq = 741;
+    CmdLineupType_JoinLineupCsReq = 756;
+    CmdLineupType_SwapLineupCsReq = 773;
+    CmdLineupType_QuitReturnAssistNotify = 709;
+    CmdLineupType_ExtraLineupDestroyNotify = 757;
+    CmdLineupType_ChangeLineupLeaderCsReq = 771;
+    CmdLineupType_GetAllLineupDataCsReq = 715;
+    CmdLineupType_GetCurLineupDataCsReq = 779;
+    CmdLineupType_GetAllLineupDataScRsp = 764;
+    CmdLineupType_JoinLineupScRsp = 791;
+    CmdLineupType_SetLineupNameScRsp = 788;
+    CmdLineupType_ReplaceLineupScRsp = 738;
+    CmdLineupType_VirtualLineupDestroyNotify = 781;
+    CmdLineupType_QuitLineupScRsp = 726;
+    CmdLineupType_SwapLineupScRsp = 799;
+    CmdLineupType_SetLineupNameCsReq = 748;
+    CmdLineupType_SwitchLineupIndexCsReq = 762;
+    CmdLineupType_GetCurLineupDataScRsp = 739;
+    CmdLineupType_QuitLineupCsReq = 798;
+    CmdLineupType_SyncAllPresetLineupNotify = 766;
+    CmdLineupType_SwitchLineupIndexScRsp = 749;
+    CmdLineupType_VirtualLineupTrialAvatarChangeScNotify = 746;
+}
+
+message ExtraLineupDestroyNotify {
+    ExtraLineupType extra_lineup_type = 12;
+}
+
+message GetAllLineupDataCsReq {
+}
+
+message GetAllLineupDataScRsp {
+    uint32 cur_index = 13;
+    uint32 retcode = 9;
+    repeated LineupInfo lineup_list = 6;
+}
+
+message GetCurLineupDataCsReq {
+}
+
+message GetCurLineupDataScRsp {
+    LineupInfo lineup = 15;
+    uint32 retcode = 12;
+}
+
+message GetLineupAvatarDataCsReq {
+}
+
+message GetLineupAvatarDataScRsp {
+    repeated LineupAvatarData avatar_data_list = 4;
+    uint32 retcode = 3;
+}
+
+message JoinLineupCsReq {
+    bool OPHLICGEPIC = 4;
+    AvatarType avatar_type = 14;
+    uint32 slot = 12;
+    uint32 plane_id = 5;
+    uint32 base_avatar_id = 1;
+    uint32 index = 7;
+    ExtraLineupType extra_lineup_type = 9;
+}
+
+message JoinLineupScRsp {
+    uint32 PLDKENJLKME = 4;
+    uint32 JDKBOJADCKO = 1;
+}
+
+message LineupAvatarData {
+    AvatarType avatar_type = 11;
+    uint32 id = 12;
+    uint32 hp = 8;
+}
+
+message LineupSlotData {
+    uint32 id = 10;
+    uint32 assist_uid = 12;
+    AvatarType avatar_type = 4;
+    uint32 slot = 13;
+}
+
+message QuitLineupCsReq {
+    uint32 plane_id = 14;
+    AvatarType avatar_type = 2;
+    bool OPHLICGEPIC = 11;
+    uint32 base_avatar_id = 13;
+    ExtraLineupType extra_lineup_type = 9;
+    uint32 index = 5;
+}
+
+message QuitLineupScRsp {
+    uint32 retcode = 11;
+    bool MFBIPMACFCE = 13;
+    bool OPHLICGEPIC = 10;
+}
+
+message ReplaceLineupCsReq {
+    bool PLIEODDEEHG = 1;
+    uint32 leader_slot = 2;
+    bool HIAMAJKDIOO = 9;
+    uint32 game_story_line_id = 10;
+    uint32 plane_id = 11;
+    repeated LineupSlotData lineup_slot_list = 13;
+    uint32 index = 14;
+    ExtraLineupType extra_lineup_type = 15;
+}
+
+message SetLineupNameCsReq {
+    string name = 7;
+    uint32 index = 14;
+}
+
+message SetLineupNameScRsp {
+    string name = 13;
+    uint32 retcode = 8;
+    uint32 index = 12;
+}
+
+message SwapLineupCsReq {
+    uint32 plane_id = 12;
+    uint32 MPIEGFCNBEN = 8;
+    ExtraLineupType extra_lineup_type = 3;
+    bool OPHLICGEPIC = 1;
+    uint32 index = 10;
+    uint32 ENBIBCPPLDC = 9;
+}
+
+message SwapLineupScRsp {
+    uint32 retcode = 6;
+}
+
+message SwitchLineupIndexCsReq {
+    uint32 index = 14;
+}
+
+message SwitchLineupIndexScRsp {
+    uint32 index = 5;
+    uint32 retcode = 10;
+}
+
+message SyncAllPresetLineupNotify {
+    uint32 cur_index = 8;
+    repeated LineupInfo lineup_list = 2;
+}
+
+message SyncLineupNotify {
+    repeated SyncLineupReason reason_list = 7;
+    LineupInfo lineup = 6;
+}
+
+enum SyncLineupReason {
+    SyncLineupReason_SyncReasonNone = 0;
+    SyncLineupReason_SyncReasonMpAdd = 1;
+    SyncLineupReason_SyncReasonMpAddPropHit = 2;
+    SyncLineupReason_SyncReasonHpAdd = 3;
+    SyncLineupReason_SyncReasonHpAddPropHit = 4;
+    SyncLineupReason_SyncReasonMpMaxChangedPermanent = 5;
+    SyncLineupReason_SyncReasonMpMaxChangedByModifier = 6;
+}
+
+message VirtualLineupDestroyNotify {
+    uint32 plane_id = 14;
+}
+
+message VirtualLineupTrialAvatarChangeScNotify {
+    uint32 plane_id = 8;
+    repeated uint32 ILIDIIGALKD = 7;
+    repeated uint32 EDBMIFNEHHH = 4;
+    bool OLPNMKAPDLP = 12;
+}

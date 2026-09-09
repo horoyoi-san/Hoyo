@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+option csharp_namespace = "March7thHoney.Proto";
+
+import "Common.proto";
+
+enum CmdPlayerBoardType {
+    CmdPlayerBoardType_NLCDGIPGFDJ = 0;
+    CmdPlayerBoardType_IBHDNDNHKNA = 2813;
+    CmdPlayerBoardType_GCDFLAPFNIH = 2886;
+    CmdPlayerBoardType_FKEMPFFFGJN = 2893;
+    CmdPlayerBoardType_OJKCPGJLCDI = 2826;
+    CmdPlayerBoardType_DBMDNBBECIK = 2838;
+    CmdPlayerBoardType_SetPersonalCardScRsp = 2839;
+    CmdPlayerBoardType_PLBEIOFLLOG = 2888;
+    CmdPlayerBoardType_SetAssistAvatarScRsp = 2833;
+    CmdPlayerBoardType_SetHeadIconScRsp = 2858;
+    CmdPlayerBoardType_SetSignatureScRsp = 2871;
+    CmdPlayerBoardType_SetDisplayAvatarScRsp = 2881;
+    CmdPlayerBoardType_GetPlayerBoardDataCsReq = 2825;
+    CmdPlayerBoardType_EHBCEBFNELG = 2840;
+    CmdPlayerBoardType_GetPlayerBoardDataScRsp = 2878;
+    CmdPlayerBoardType_SetIsDisplayAvatarInfoScRsp = 2847;
+}
+
+message DisplayAvatarData {
+    uint32 avatar_id = 1;
+    uint32 pos = 9;
+}
+
+message DisplayAvatarVec {
+    bool is_display = 8;
+    repeated DisplayAvatarData display_avatar_list = 12;
+}
+
+message GetPlayerBoardDataCsReq {
+}
+
+message GetPlayerBoardDataScRsp {
+    uint32 retcode = 2;
+    repeated uint32 assist_avatar_id_list = 3;
+    string signature = 5;
+    repeated uint32 unlocked_personal_card_list = 6;
+    DisplayAvatarVec display_avatar_vec = 8;
+    repeated HeadIconData unlocked_head_icon_list = 9;
+    uint32 current_head_icon_id = 10;
+    HeadFrameInfo head_frame_info = 13;
+    uint32 current_personal_card_id = 15;
+}
+
+message SetAssistAvatarScRsp {
+    uint32 avatar_id = 9;
+    uint32 retcode = 10;
+    repeated uint32 avatar_id_list = 15;
+}
+
+message SetDisplayAvatarScRsp {
+    repeated DisplayAvatarData display_avatar_list = 7;
+    uint32 retcode = 13;
+}
+
+message SetHeadIconScRsp {
+    uint32 retcode = 1;
+    uint32 current_head_icon_id = 13;
+}
+
+message SetIsDisplayAvatarInfoScRsp {
+    bool is_display = 7;
+    uint32 retcode = 8;
+}
+
+message SetPersonalCardScRsp {
+    uint32 retcode = 9;
+    uint32 current_personal_card_id = 13;
+}
+
+message SetSignatureScRsp {
+    string signature = 7;
+    uint32 retcode = 10;
+}
