@@ -1,4 +1,4 @@
-# SophonDownloader
+# SophonDownloader Support REL/BETA
 Download mihoyo assets using their new download method
 
 [English][p:en-us] | [中文][p:zh-cn]
