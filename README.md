@@ -62,30 +62,35 @@ Options:
 
 # Honkai: Star Rail
 | Game | Version | Downloader |
+| - | - | - |
 | Honkai: Star Rail |Version|Sophon.Downloader.exe full 4ziysqXOQ8 game Version output --region=OSREL |
 | Honkai: Star Rail |Version|Sophon.Downloader.exe full 64kMb5iAWu game Version output --region=CNREL |
 
 # Genshin Impact
 | Game | Version | Downloader |
+| - | - | - |
 | Genshin Impact |Version|Sophon.Downloader.exe full gopR6Cufr3 game Version output --region=OSREL |
 | Genshin Impact |Version|Sophon.Downloader.exe full 1Z8W5NHUQb game Version output --region=CNREL |
 
 # Honkai Impact 3rd
 | Game | Version | Downloader |
+| - | - | - |
 | Honkai Impact 3rd |Version|Sophon.Downloader.exe full 5TIVvvcwtM game Version output --region=OSREL |
 | Honkai Impact 3rd |Version|Sophon.Downloader.exe full osvnlOc0S8 game Version output --region=CNREL |
 
 # Honkai: Nexus anima
 | Game | Version | Downloader |
+| - | - | - |
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full 4qvmDrMwKS game 0.3.0 output --region=OSBETA |
 | Honkai: Nexus anima |0.3.0|Sophon.Downloader.exe full j7rlly0oYR game 0.3.0 output --region=CNBETA |
 | Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full IWISpEcDbC game 0.6.0 output --region=OSBETA |
 | Honkai: Nexus anima |0.6.0|Sophon.Downloader.exe full lgyIM35mz8 game 0.6.0 output --region=CNBETA |
 | Honkai: Nexus anima |Version|Sophon.Downloader.exe full yneO4yGc4x game 1.0 output --region=OSREL |
-| Honkai: Nexus anima |Version|Sophon.Downloader.exe full m8TGERqknS game Version output --region=CNREL |
+| Honkai: Nexus anima |Version|Sophon.Downloader.exe full m8TGERqknS game 1.0 output --region=CNREL |
 
 # Petit Planet
 | Game | Version | Downloader |
+| - | - | - |
 | Petit Planet |0.83.6|Sophon.Downloader.exe full 0fijU7nET7 game 0.83.6 output --region=CNBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
@@ -94,6 +99,7 @@ Options:
 
 # TheWeavers
 | Game | Version | Downloader |
+| - | - | - |
 | TheWeavers |0.7.0|Sophon.Downloader.exe full pkMBmK7jxJ game 0.7.0 output --region=CNBETA |
 ---
 
