@@ -348,7 +348,7 @@ async def main():
         g["id"]: {
             "name": g["display"]["name"],
             "icon": g["display"]["icon"]["url"],
-            "bg": g["display"]["background"]["url"],
+            "bg": (g.get("display", {}).get("background") or {}).get("url"),
         }
         for g in resp["data"]["games"]
     }
