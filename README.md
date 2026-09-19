@@ -94,6 +94,7 @@ Options:
 | Petit Planet |0.83.6|Sophon.Downloader.exe full 0fijU7nET7 game 0.83.6 output --region=CNBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full 679gqJWz4L game 0.92.7 output --region=OSBETA |
 | Petit Planet |0.92.7|Sophon.Downloader.exe full Dg5IUTLSzd game 0.92.7 output --region=CNBETA |
+| Petit Planet |0.95.2|Sophon.Downloader.exe full 679gqJWz4L game 0.95.2 output --region=OSBETA |
 | Petit Planet |Version|Sophon.Downloader.exe full viiywh5G2H game 1.0 output --region=OSREL |
 | Petit Planet |Version|Sophon.Downloader.exe full ERYDdvf0w8 game 1.0 output --region=CNREL |
 
