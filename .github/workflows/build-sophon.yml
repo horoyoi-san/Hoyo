@@ -1,0 +1,52 @@
+name: Build SophonDownloader
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout SophonDownloader
+        uses: actions/checkout@v4
+        with:
+          ref: SophonDownloader
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore Sophon.Downloader.sln
+        working-directory: Sophon.Downloader
+
+      - name: Build
+        run: dotnet build Sophon.Downloader.sln -c Release --no-restore
+        working-directory: Sophon.Downloader
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sophon.Downloader
+          path: Sophon.Downloader/Core/bin/Release/*
+
+      - name: Create ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path "Sophon.Downloader/Core/bin/Release/*" `
+            -DestinationPath "Sophon.Downloader.zip" `
+            -Force
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "build-${{ github.run_number }}"
+          name: "Sophon.Downloader Build ${{ github.run_number }}"
+          generate_release_notes: true
+          files: Sophon.Downloader.zip
