@@ -33,12 +33,12 @@ namespace Core
             {(Region.CNREL, GameType.bh3), new[] { "osvnlOc0S8" }},
             {(Region.OSREL, GameType.abc), new[] { "yneO4yGc4x" }},
             {(Region.CNREL, GameType.abc), new[] { "m8TGERqknS" }},
-            {(Region.OSREL, GameType.hyg), new[] { "viiywh5G2H" }},
+            {(Region.OSREL, GameType.hyg), new[] { "viiywh5G2H", "a26PNg1Mgk" }}, // hyg 0.95.2
             {(Region.CNREL, GameType.hyg), new[] { "ERYDdvf0w8" }},
 
             {(Region.OSBETA, GameType.abc), new[] { "4qvmDrMwKS", "IWISpEcDbC" }}, //abc 0.3.0, abc 0.6.0
             {(Region.CNBETA, GameType.abc), new[] { "j7rlly0oYR", "lgyIM35mz8" }}, //abc 0.3.0, abc 0.6.0
-            {(Region.OSBETA, GameType.hyg), new[] { "679gqJWz4L", "a26PNg1Mgk" }}, //hyg 0.83.6, hyg 0.95.2
+            {(Region.OSBETA, GameType.hyg), new[] { "679gqJWz4L" }}, //hyg 0.83.6
             {(Region.CNBETA, GameType.hyg), new[] { "0fijU7nET7", "Dg5IUTLSzd" }}, //hyg 0.83.6, hyg 0.92.7
             {(Region.OSBETA, GameType.kl), new[] { "" }},
             {(Region.CNBETA, GameType.kl), new[] { "pkMBmK7jxJ" }}, 
