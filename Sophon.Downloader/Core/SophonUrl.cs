@@ -106,7 +106,7 @@ namespace Core
                 case Region.OSREL:
                     apiBase = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches";
                     sophonBase = "https://sg-public-api.hoyoverse.com/downloader/sophon_chunk/api/getBuild";
-                    launcherIds = new List<string> { "VYTpXlbWo8" };
+                    launcherIds = new List<string> { "VYTpXlbWo8", "dYgxEMpG3U" }; //hyg 0.95.2
                     platApp = "ddxf6vlr1reo";
                     break;
 
@@ -120,7 +120,7 @@ namespace Core
                 case Region.OSBETA:
                     apiBase = "https://sg-hyp-api-beta.hoyoverse.com/hyp/hyp-connect/api/getGameBranches";
                     sophonBase = "https://sg-beta-api.hoyoverse.com/downloader/sophon_chunk/api/getBuild";
-                    launcherIds = new List<string> { "9HDza24TWA", "95ODRGH3xC", "KAGKS3zS99", "dYgxEMpG3U" }; //hyg 0.92.7, abc 0.3.0, abc 0.6.0
+                    launcherIds = new List<string> { "9HDza24TWA", "95ODRGH3xC", "KAGKS3zS99" }; //hyg 0.92.7, abc 0.3.0, abc 0.6.0
                     platApp = "ddxf7scwm7ls";
                     break;
 
