@@ -29,7 +29,9 @@ Rust itself, then run the following command:
 rustup toolchain install nightly
 rustup default nightly
 ```
-
+```cmd
+winget install Google.Protobuf
+```
 ## Usage
 
 To begin using the server, you need to run both the SDK server and the game server. Just run the `run.bat` file.
