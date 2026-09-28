@@ -78,8 +78,7 @@ impl VersionConfig {
         if decoded.asset_bundle_url.is_empty() && decoded.ex_resource_url.is_empty() {
             return Err(anyhow::format_err!(
                 "asset_bundle_url and ex_resource_url are empty! gateway result code: {} message: {}",
-                //decoded.retcode,
-                0,
+                decoded.retcode,
                 decoded.msg
             ));
         }

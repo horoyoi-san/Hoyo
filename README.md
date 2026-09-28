@@ -29,8 +29,7 @@ Rust itself, then run the following command:
 rustup toolchain install nightly
 rustup default nightly
 ```
-CMD Window
-```
+```cmd
 winget install Google.Protobuf
 ```
 ## Usage

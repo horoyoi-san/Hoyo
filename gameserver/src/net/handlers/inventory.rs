@@ -1,5 +1,5 @@
 use common::{resources::GAME_RES, sr_tools::FreesrData};
-use proto::*;
+use proto::{get_big_data_all_recommend_sc_rsp::RecommendType, *};
 
 use crate::net::PlayerSession;
 
@@ -20,12 +20,12 @@ pub async fn on_get_bag_cs_req(
     res.material_list = vec![
         Material {
             tid: 101, // Normal Pass
-            num: 999999,
+            num: 67,
             ..Default::default()
         },
         Material {
             tid: 102, // Special Pass
-            num: 999999,
+            num: 67,
             ..Default::default()
         },
     ];
@@ -105,7 +105,7 @@ pub async fn on_get_big_data_all_recommend_cs_req(
     res: &mut GetBigDataAllRecommendScRsp,
 ) {
     res.big_data_recommend_type = req.big_data_recommend_type;
-/*
+
     match req.big_data_recommend_type() {
         BigDataRecommendType::RelicAvatar => {
             res.recommend_type = Some(RecommendType::RelicAvatar(BigDataRecommendRelicAvatar {
@@ -132,7 +132,7 @@ pub async fn on_get_big_data_all_recommend_cs_req(
             }))
         }
         _ => {}
-    }*/
+    }
 }
 
 pub async fn on_rank_up_avatar_cs_req(

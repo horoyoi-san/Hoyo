@@ -11,7 +11,7 @@ use crate::{
 use super::*;
 
 const SERVER_UID: u32 = 727;
-const SERVER_HEAD_ICON: u32 = 201402;
+const SERVER_HEAD_ICON: u32 = 201503;
 const SERVER_CHAT_BUBBLE_ID: u32 = 220005;
 const SERVER_CHAT_HISTORY: &[&str] = &[
     "'lua {path_to_lua_script}' execute lua script",
@@ -29,8 +29,8 @@ pub async fn on_get_friend_login_info_cs_req(
     _req: &GetFriendLoginInfoCsReq,
     res: &mut GetFriendLoginInfoScRsp,
 ) {
-    //res.black_uid_list = vec![SERVER_UID];
-    //res.friend_uid_list = vec![SERVER_UID];
+    res.black_uid_list = vec![SERVER_UID];
+    res.friend_uid_list = vec![SERVER_UID];
 }
 
 pub async fn on_get_friend_list_info_cs_req(
@@ -45,8 +45,8 @@ pub async fn on_get_friend_list_info_cs_req(
             platform: PlatformType::Pc.into(),
             online_status: FriendOnlineStatus::Online.into(),
             head_icon: SERVER_HEAD_ICON,
-            chat_bubble: SERVER_CHAT_BUBBLE_ID,
-            level: 70,
+            chat_bubble_id: SERVER_CHAT_BUBBLE_ID,
+            level: 67,
             nickname: String::from("Server"),
             signature: String::from("omg"),
             ..Default::default()
@@ -325,7 +325,7 @@ fn create_send_message(
 ) -> RevcMsgScNotify {
     RevcMsgScNotify {
         chat_type,
-        to_uid: to,
+        pffpfkoglpo: to,
         recv_message_data: Some(ChatMessageData {
             create_time: cur_timestamp_ms(),
             ckhpffenobe: Some(Eknabklpeel {

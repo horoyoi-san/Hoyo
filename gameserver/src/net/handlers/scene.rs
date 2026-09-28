@@ -91,17 +91,17 @@ pub async fn on_get_scene_map_info_cs_req(
 
         if let Some((_, floor_config)) = floor_configs {
             for (group_id, group) in floor_config.scenes.iter() {
-                //map_info.group_list.push(MapInfoGroup {
-                //    group_id: *group_id,
-                //    ..Default::default()
-                //});
+                map_info.group_list.push(MapInfoGroup {
+                    group_id: *group_id,
+                    ..Default::default()
+                });
 
                 for teleport in group.teleports.keys() {
-                    map_info.unlocked_teleport_list.push(*teleport)
+                    map_info.unlock_teleport_list.push(*teleport)
                 }
 
                 for prop in &group.props {
-                    map_info.maze_prop_list.push(MazePropState {
+                    map_info.map_info_prop_list.push(MazePropState {
                         group_id: prop.group_id,
                         state: prop.prop_state,
                         config_id: prop.inst_id,
@@ -117,7 +117,7 @@ pub async fn on_get_scene_map_info_cs_req(
             }
 
             map_info.lighten_section_list = floor_config.sections.clone();
-            map_info.floor_saved_data = floor_config.saved_values.clone();
+            map_info.floor_saved_value_map = floor_config.saved_values.clone();
             // #TODO!
             // map_info
             //     .chest_unlock_progress_list
@@ -128,7 +128,7 @@ pub async fn on_get_scene_map_info_cs_req(
             //     });
         }
 
-        res.scene_map_info.push(map_info)
+        res.scene_map_info_list.push(map_info)
     }
 }
 
@@ -253,7 +253,7 @@ async fn load_scene(
             scene.world_id
         },
         lighten_section_list: scene.sections.clone(),
-        opened_chest_id_list: scene
+        opened_chests_list: scene
             .scenes
             .values()
             .flat_map(|v| v.chests.clone())
@@ -412,6 +412,7 @@ async fn load_scene(
     scene_info.entity_group_list.push(SceneEntityGroupInfo {
         state: 0,
         group_id: 0,
+        property_map: HashMap::with_capacity(0),
         entity_list: json
             .lineups
             .iter()
@@ -428,7 +429,6 @@ async fn load_scene(
                 ..Default::default()
             })
             .collect(),
-        ..Default::default()
     });
 
     if is_enter_scene {
