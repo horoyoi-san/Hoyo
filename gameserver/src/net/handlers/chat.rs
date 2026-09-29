@@ -14,12 +14,13 @@ const SERVER_UID: u32 = 727;
 const SERVER_HEAD_ICON: u32 = 201511;
 const SERVER_CHAT_BUBBLE_ID: u32 = 220005;
 const SERVER_CHAT_HISTORY: &[&str] = &[
+
     "'lua {path_to_lua_script}' execute lua script",
     "'sw {on/off}' enable/disable silver wolf global buff",
     "'castorice {on/off}' enable/disable castorice global buff",
-    "'sync' to synchronize stats between json and in-game view",
-    "'mc {mc_id}' mc_id can be set from 8001 to 8008",
-    "'march {march_id}' march_id can be set 1001 or 1224",
+    "'sync' เมื่ออัพไฟล์ json แล้วให้ใช้คำสั่งนี้เพื่อซิงค์ข้อมูล",
+    "'mc {mc_id}' mc_id ใสไอดี 8001 ถึง 8008 (สำหรับตัวละครหลัก) หรือ 1001 ถึง 1006 (สำหรับตัวละครเสริม) หรือ 1101 ถึง 1108 (สำหรับตัวละครพิเศษ) ตัวอย่างเช่น 'mc 8001' จะเปลี่ยนตัวละครหลักเป็น 8001 ใช้สำสั่ง mc 8009",
+    "'march {march_id}' march_id ใส่ไอดี 1001 or 1224 (สำหรับตัวละครหลัก) หรือ 1002 ถึง 1006 (สำหรับตัวละครเสริม) หรือ 1101 ถึง 1108 (สำหรับตัวละครพิเศษ) หรือ 1224 (สำหรับตัวละครพิเศษ)",
     "available commands:",
     "visit srtools.neonteam.dev to configure the PS! (you configure relics, equipment, monsters from there)",
 ];
@@ -48,7 +49,7 @@ pub async fn on_get_friend_list_info_cs_req(
             chat_bubble_id: SERVER_CHAT_BUBBLE_ID,
             level: 67,
             nickname: String::from("Server"),
-            signature: String::from("omg"),
+            signature: String::from("GAY"),
             ..Default::default()
         }),
         is_marked: true,

@@ -15,6 +15,10 @@ pub struct BattleConfig {
     pub path_resonance_id: u32,
     pub custom_stats: Vec<SubAffix>,
     #[serde(default)]
+    pub challenge_id: Option<u32>,
+    #[serde(default)]
+    pub challenge_group_id: Option<u32>,
+    #[serde(default)]
     pub scepters: Vec<RogueMagicScepter>,
     #[serde(default)]
     pub custom_battle_lineup: Option<BTreeMap<u32, u32>>,
@@ -34,6 +38,8 @@ impl Default for BattleConfig {
             cycle_count: Default::default(),
             path_resonance_id: Default::default(),
             custom_stats: Default::default(),
+            challenge_id: None,
+            challenge_group_id: None,
             scepters: Default::default(),
             custom_battle_lineup: Default::default(),
         }
@@ -51,6 +57,19 @@ pub enum BattleType {
     SU = 3,
     AS = 4,
     AA = 5,
+}
+
+impl BattleType {
+    pub const fn endgame_key(&self) -> Option<u32> {
+        match self {
+            Self::Default => None,
+            Self::Moc => Some(1),
+            Self::PF => Some(2),
+            Self::SU => Some(3),
+            Self::AS => Some(4),
+            Self::AA => Some(5),
+        }
+    }
 }
 
 // BATTLE BUFFS

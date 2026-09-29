@@ -11,6 +11,8 @@ const DEFAULT_VERSIONS: &str = include_str!("../../../versions.json");
 #[derive(Serialize, Deserialize, Clone, Default)]
 pub struct VersionConfig {
     pub asset_bundle_url: String,
+    #[serde(default)]
+    pub asset_bundle_url_android: String,
     pub ex_resource_url: String,
     pub lua_url: String,
     pub ifix_url: String,
@@ -87,6 +89,7 @@ impl VersionConfig {
 
         Ok(VersionConfig {
             asset_bundle_url: decoded.asset_bundle_url,
+            asset_bundle_url_android: decoded.asset_bundle_url_android,
             ex_resource_url: decoded.ex_resource_url,
             lua_url: decoded.lua_url,
             ifix_url: decoded.ifix_url,

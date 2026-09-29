@@ -35,6 +35,9 @@ pub struct FreesrData {
     pub enable_sw_global: Option<bool>,
     #[serde(skip_serializing, skip_deserializing)]
     pub enable_castorice_global: Option<bool>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub challenge_progress:
+        BTreeMap<u32, BTreeMap<u32, crate::structs::persistent::ChallengeProgress>>,
 }
 
 impl FreesrData {
@@ -83,6 +86,7 @@ impl FreesrData {
         freesr_data.march_type = persistent.march_type;
         freesr_data.enable_sw_global = persistent.enable_sw_global;
         freesr_data.enable_castorice_global = persistent.enable_castorice_global;
+        freesr_data.challenge_progress = persistent.challenge_progress;
         // freesr_data.game_language = persistent.game_language;
         // freesr_data.voice_langauge = persistent.voice_language;
 
@@ -149,6 +153,7 @@ impl FreesrData {
             march_type: self.march_type,
             enable_sw_global: self.enable_sw_global,
             enable_castorice_global: self.enable_castorice_global,
+            challenge_progress: self.challenge_progress.clone(),
             // game_language: self.game_language,
             // voice_language: self.voice_langauge,
         }) {

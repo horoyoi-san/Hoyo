@@ -46,12 +46,85 @@ pub async fn on_scene_enter_stage_cs_req(
 }
 
 pub async fn on_pve_battle_result_cs_req(
-    _session: &mut PlayerSession,
+    session: &mut PlayerSession,
     req: &PveBattleResultCsReq,
     res: &mut PveBattleResultScRsp,
 ) {
     res.end_status = req.end_status;
     res.battle_id = req.battle_id;
+    res.stage_id = req.stage_id;
+
+    if req.end_status != BattleEndStatus::BattleEndWin as i32 {
+        return;
+    }
+
+    let Some(player) = session.json_data.get_mut() else {
+        return;
+    };
+    let battle_config = &player.battle_config;
+    let (Some(mode_id), Some(challenge_id)) = (
+        battle_config.battle_type.endgame_key(),
+        battle_config.challenge_id,
+    ) else {
+        return;
+    };
+    if req.stage_id != battle_config.stage_id {
+        return;
+    }
+
+    let group_id = battle_config.challenge_group_id.unwrap_or_default();
+    player
+        .challenge_progress
+        .entry(mode_id)
+        .or_default()
+        .insert(
+            challenge_id,
+            common::structs::persistent::ChallengeProgress {
+                stage_id: req.stage_id,
+                star: 1,
+                group_id,
+            },
+        );
+    player.save_persistent().await;
+}
+
+pub async fn on_get_challenge_cs_req(
+    session: &mut PlayerSession,
+    _req: &GetChallengeCsReq,
+    res: &mut GetChallengeScRsp,
+) {
+    let Some(player) = session.json_data.get() else {
+        return;
+    };
+
+    let mut group_ids = std::collections::BTreeSet::new();
+    for records in player.challenge_progress.values() {
+        for (challenge_id, progress) in records {
+            res.challenge_list.push(Challenge {
+                challenge_id: *challenge_id,
+                star: progress.star,
+                ..Default::default()
+            });
+            if progress.group_id != 0 {
+                group_ids.insert(progress.group_id);
+            }
+        }
+    }
+
+    res.challenge_group_list = group_ids
+        .into_iter()
+        .map(|group_id| ChallengeGroup {
+            group_id,
+            ..Default::default()
+        })
+        .collect();
+}
+
+pub async fn on_get_cur_challenge_cs_req(
+    _session: &mut PlayerSession,
+    _req: &GetCurChallengeCsReq,
+    _res: &mut GetCurChallengeScRsp,
+) {
 }
 
 pub async fn on_scene_cast_skill_cs_req(

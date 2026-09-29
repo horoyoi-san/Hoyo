@@ -85,11 +85,8 @@ dummy! {
     // GetTreasureDungeonActivityData, // ?3.7.51
     // PlayerReturnInfoQuery, // ?3.7.51
     // GetBag,
-    GetPlayerBoardData,
     GetActivityScheduleConfig,
     GetMissionData,
-    GetChallenge,
-    GetCurChallenge,
     // GetRogueInfo, // ?3.7.51
     GetExpeditionData,
     // GetRogueDialogueEventData,

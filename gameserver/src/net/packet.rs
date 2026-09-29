@@ -150,6 +150,8 @@ trait_handler! {
     GetMissionStatus;
     GetBasicInfo;
     GetAvatarData;
+    GetPlayerBoardData;
+    SetHeadIcon;
     GetAllLineupData;
     GetCurLineupData;
     GetCurSceneInfo;
@@ -187,6 +189,8 @@ trait_handler! {
     SceneCastSkill;
     QuickStartCocoonStage;
     SceneEnterStage;
+    GetChallenge;
+    GetCurChallenge;
 
     // Teleport
     GetEnteredScene;

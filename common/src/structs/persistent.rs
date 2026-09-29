@@ -36,6 +36,8 @@ pub struct Persistent {
     #[serde(default)]
     pub lineups: BTreeMap<u32, u32>,
     #[serde(default)]
+    pub challenge_progress: BTreeMap<u32, BTreeMap<u32, ChallengeProgress>>,
+    #[serde(default)]
     pub position: Position,
     #[serde(default)]
     pub scene: Scene,
@@ -49,6 +51,14 @@ pub struct Persistent {
     pub enable_castorice_global: Option<bool>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct ChallengeProgress {
+    pub stage_id: u32,
+    pub star: u32,
+    #[serde(default)]
+    pub group_id: u32,
+}
+
 fn default_true() -> Option<bool> {
     Some(true)
 }
@@ -57,6 +67,7 @@ impl Default for Persistent {
     fn default() -> Self {
         Self {
             lineups: BTreeMap::from([(0, 1313), (1, 1006), (2, 8001), (3, 1405)]),
+            challenge_progress: BTreeMap::new(),
             position: Default::default(),
             main_character: MultiPathAvatar::FemaleRemembrance,
             scene: Default::default(),

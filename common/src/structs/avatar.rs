@@ -89,8 +89,8 @@ impl MultiPathAvatar {
             MultiPathAvatar::FemalePreservation => MultiPathAvatarType::GirlKnightType,
             MultiPathAvatar::MaleHarmony => MultiPathAvatarType::BoyShamanType,
             MultiPathAvatar::FemaleHarmony => MultiPathAvatarType::GirlShamanType,
-            MultiPathAvatar::MarchHunt => MultiPathAvatarType::Mar7ThRogueType,
-            MultiPathAvatar::MarchPreservation => MultiPathAvatarType::Mar7ThKnightType,
+            MultiPathAvatar::MarchHunt => MultiPathAvatarType::Mar7thRogueType,
+            MultiPathAvatar::MarchPreservation => MultiPathAvatarType::Mar7thKnightType,
             MultiPathAvatar::Unk => MultiPathAvatarType::None,
             MultiPathAvatar::MaleRemembrance => MultiPathAvatarType::BoyMemoryType,
             MultiPathAvatar::FemaleRemembrance => MultiPathAvatarType::GirlMemoryType,
@@ -211,6 +211,7 @@ impl AvatarJson {
             unk_enhanced_id: self.enhanced_id.unwrap_or_default(),
             unlock_timestamp: 0,
             dressed_skin_id: 0,
+            ..Default::default()
         }
     }
 

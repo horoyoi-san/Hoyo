@@ -97,7 +97,7 @@ pub async fn apn_login_with_password() -> Json<serde_json::Value> {
             "area_code": "**",
             "country": "US",
             "is_adult": 1,
-            "email": "motorized@wheel.chair"
+            "email": "Aeon ★ Aha@GAY.miHoYo"
         }
     },
     "message": "OK",
@@ -122,7 +122,7 @@ pub async fn apn_veriy_token() -> Json<serde_json::Value> {
             "area_code": "**",
             "country": "US",
             "is_adult": 1,
-            "email": "motorized@wheel.chair"
+            "email": "Aeon ★ Aha@GAY.miHoYo"
         }
     },
     "message": "OK",
