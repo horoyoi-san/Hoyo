@@ -424,7 +424,7 @@ async fn load_scene(
                     avatar_type: AvatarType::AvatarFormalType.into(),
                     base_avatar_id: *avatar_id,
                     map_layer: 0,
-                    uid: 25,
+                    uid: 67,
                 })),
                 ..Default::default()
             })

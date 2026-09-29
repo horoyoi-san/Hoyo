@@ -11,7 +11,7 @@ use crate::{
 use super::*;
 
 const SERVER_UID: u32 = 727;
-const SERVER_HEAD_ICON: u32 = 201503;
+const SERVER_HEAD_ICON: u32 = 201511;
 const SERVER_CHAT_BUBBLE_ID: u32 = 220005;
 const SERVER_CHAT_HISTORY: &[&str] = &[
     "'lua {path_to_lua_script}' execute lua script",
@@ -39,7 +39,7 @@ pub async fn on_get_friend_list_info_cs_req(
     res: &mut GetFriendListInfoScRsp,
 ) {
     res.friend_list = vec![FriendSimpleInfo {
-        remark_name: String::from("RobinSR"),
+        remark_name: String::from("Aeon ★ Aha"),
         player_info: Some(PlayerSimpleInfo {
             uid: SERVER_UID,
             platform: PlatformType::Pc.into(),

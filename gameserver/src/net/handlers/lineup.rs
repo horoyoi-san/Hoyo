@@ -117,7 +117,7 @@ async fn refresh_lineup(session: &mut PlayerSession) {
                     avatar_type: AvatarType::AvatarFormalType.into(),
                     base_avatar_id: *v,
                     map_layer: 0,
-                    uid: 25,
+                    uid: 67,
                 })),
                 entity_id: idx + 1,
                 group_id: 0,
