@@ -211,6 +211,7 @@ impl AvatarJson {
             unk_enhanced_id: self.enhanced_id.unwrap_or_default(),
             unlock_timestamp: 0,
             dressed_skin_id: 0,
+            ..Default::default()
         }
     }
 
