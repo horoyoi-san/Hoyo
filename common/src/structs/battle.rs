@@ -19,6 +19,10 @@ pub struct BattleConfig {
     #[serde(default)]
     pub challenge_group_id: Option<u32>,
     #[serde(default)]
+    pub challenge_node: Option<u32>,
+    #[serde(default)]
+    pub challenge_second_lineup: Option<BTreeMap<u32, u32>>,
+    #[serde(default)]
     pub scepters: Vec<RogueMagicScepter>,
     #[serde(default)]
     pub custom_battle_lineup: Option<BTreeMap<u32, u32>>,
@@ -40,6 +44,8 @@ impl Default for BattleConfig {
             custom_stats: Default::default(),
             challenge_id: None,
             challenge_group_id: None,
+            challenge_node: None,
+            challenge_second_lineup: None,
             scepters: Default::default(),
             custom_battle_lineup: Default::default(),
         }

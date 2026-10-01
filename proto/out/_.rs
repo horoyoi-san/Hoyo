@@ -3547,6 +3547,95 @@ pub struct GetCurChallengeScRsp {
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengeStoryBuffInfo {
+    #[prost(uint32, tag = "10")]
+    pub buff_one: u32,
+    #[prost(uint32, tag = "15")]
+    pub buff_two: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengeBossBuffInfo {
+    #[prost(uint32, tag = "4")]
+    pub buff_two: u32,
+    #[prost(uint32, tag = "15")]
+    pub buff_one: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChallengeBuffInfo {
+    #[prost(oneof = "challenge_buff_info::Kknboacncon", tags = "9, 10")]
+    pub kknboacncon: ::core::option::Option<challenge_buff_info::Kknboacncon>,
+}
+/// Nested message and enum types in `ChallengeBuffInfo`.
+pub mod challenge_buff_info {
+    #[derive(proto_derive::CmdID)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Kknboacncon {
+        #[prost(message, tag = "9")]
+        StoryInfo(super::ChallengeStoryBuffInfo),
+        #[prost(message, tag = "10")]
+        BossInfo(super::ChallengeBossBuffInfo),
+    }
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1731)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartChallengeCsReq {
+    #[prost(message, repeated, tag = "4")]
+    pub avatar_lineup_first: ::prost::alloc::vec::Vec<AvatarLineup>,
+    #[prost(uint32, repeated, tag = "6")]
+    pub first_lineup: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "8")]
+    pub second_lineup: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, optional, tag = "10")]
+    pub stage_info: ::core::option::Option<ChallengeBuffInfo>,
+    #[prost(uint32, tag = "14")]
+    pub challenge_id: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub avatar_lineup_second: ::prost::alloc::vec::Vec<AvatarLineup>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1787)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartChallengeScRsp {
+    #[prost(uint32, tag = "3")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "5")]
+    pub cur_challenge: ::core::option::Option<CurChallenge>,
+    #[prost(message, repeated, tag = "6")]
+    pub lineup_list: ::prost::alloc::vec::Vec<LineupInfo>,
+    #[prost(message, optional, tag = "10")]
+    pub scene: ::core::option::Option<SceneInfo>,
+    #[prost(message, optional, tag = "13")]
+    pub stage_info: ::core::option::Option<ChallengeStageInfo>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1715)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnterChallengeNextPhaseCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1723)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnterChallengeNextPhaseScRsp {
+    #[prost(uint32, tag = "9")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "15")]
+    pub scene: ::core::option::Option<SceneInfo>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1705)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1771)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeScRsp {
+    #[prost(uint32, tag = "10")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeBossSingleNodeInfo {
     #[prost(uint32, tag = "4")]
     pub max_score: u32,

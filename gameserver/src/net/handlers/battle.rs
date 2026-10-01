@@ -1,13 +1,404 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
+use anyhow::Result;
 use rand::RngExt;
 
 use common::{
-    resources::GAME_RES,
-    structs::{BattleType, Monster},
+    resources::{ENDGAME_CHALLENGE_CONFIG, GAME_RES, EndgameNode, resolve_endgame_node},
+    structs::{AvatarJson, BattleBuffJson, BattleType, Monster, Position, Scene},
 };
 
 use super::*;
+
+fn known_endgame_challenges() -> Vec<(u32, u32)> {
+    let mut challenges = ENDGAME_CHALLENGE_CONFIG
+        .values()
+        .map(|challenge| (challenge.id, challenge.group_id))
+        .collect::<Vec<_>>();
+    challenges.sort_unstable_by_key(|(challenge_id, _)| *challenge_id);
+    challenges
+}
+
+fn challenge_lineup(
+    avatar_lineup: &[AvatarLineup],
+    avatar_ids: &[u32],
+    fallback: &std::collections::BTreeMap<u32, u32>,
+) -> std::collections::BTreeMap<u32, u32> {
+    let ids = if !avatar_lineup.is_empty() {
+        avatar_lineup.iter().map(|avatar| avatar.id).collect::<Vec<_>>()
+    } else if !avatar_ids.is_empty() {
+        avatar_ids.to_vec()
+    } else {
+        fallback.values().copied().collect()
+    };
+
+    ids.into_iter()
+        .filter(|avatar_id| *avatar_id != 0)
+        .take(4)
+        .enumerate()
+        .map(|(slot, avatar_id)| (slot as u32, avatar_id))
+        .collect()
+}
+
+async fn load_challenge_scene(
+    session: &mut PlayerSession,
+    node: &EndgameNode<'_>,
+    lineup: &std::collections::BTreeMap<u32, u32>,
+) -> Result<(SceneInfo, Position)> {
+    let Some(json) = session.json_data.get_mut() else {
+        anyhow::bail!("player data is not set");
+    };
+    let previous_lineups = std::mem::replace(&mut json.lineups, lineup.clone());
+    let scene_result = super::scene::load_scene(session, node.entry_id, false, None).await;
+    if let Some(json) = session.json_data.get_mut() {
+        json.lineups = previous_lineups;
+    }
+    let mut scene = scene_result?;
+
+    let group = scene
+        .entity_group_list
+        .iter_mut()
+        .find(|group| group.group_id == node.group_id)
+        .ok_or_else(|| anyhow::anyhow!("challenge spawn group {} is missing", node.group_id))?;
+    let mut spawn_motion = None;
+    let mut entities = Vec::with_capacity(group.entity_list.len());
+    for mut entity in group.entity_list.drain(..) {
+        if let Some(scene_entity_info::Entity::NpcMonster(monster)) = entity.entity.as_mut() {
+            if spawn_motion.is_some() {
+                continue;
+            }
+            monster.monster_id = node.monster_id;
+            monster.event_id = node.event_id;
+            monster.world_level = 6;
+            spawn_motion = entity.motion.clone();
+        }
+        entities.push(entity);
+    }
+    group.entity_list = entities;
+
+    let spawn_motion = spawn_motion
+        .ok_or_else(|| anyhow::anyhow!("challenge spawn monster is missing"))?;
+    let spawn_pos = spawn_motion
+        .pos
+        .as_ref()
+        .ok_or_else(|| anyhow::anyhow!("challenge spawn position is missing"))?;
+    let spawn_rot = spawn_motion.rot.as_ref();
+    let spawn_position = Position {
+        x: spawn_pos.x,
+        y: spawn_pos.y,
+        z: spawn_pos.z,
+        rot_y: spawn_rot.map(|rot| rot.y).unwrap_or_default(),
+    };
+
+    if let Some(player_group) = scene
+        .entity_group_list
+        .iter_mut()
+        .find(|group| group.group_id == 0)
+    {
+        for entity in &mut player_group.entity_list {
+            if matches!(entity.entity, Some(scene_entity_info::Entity::Actor(_))) {
+                entity.motion = Some(spawn_motion.clone());
+            }
+        }
+    }
+
+    Ok((scene, spawn_position))
+}
+
+fn challenge_mode(challenge_id: u32) -> BattleType {
+    if challenge_id >= 30_000 {
+        BattleType::AS
+    } else if challenge_id >= 20_000 {
+        BattleType::PF
+    } else {
+        BattleType::Moc
+    }
+}
+
+fn configure_challenge_battle(
+    player: &mut common::sr_tools::FreesrData,
+    node: &EndgameNode<'_>,
+    lineup: &std::collections::BTreeMap<u32, u32>,
+    second_lineup: &std::collections::BTreeMap<u32, u32>,
+) {
+    let battle_type = challenge_mode(node.challenge.id);
+    player.battle_config.battle_type = battle_type.clone();
+    player.battle_config.challenge_id = Some(node.challenge.id);
+    player.battle_config.challenge_group_id = Some(node.challenge.group_id);
+    player.battle_config.challenge_node = Some(node.node);
+    player.battle_config.challenge_second_lineup = Some(second_lineup.clone());
+    player.battle_config.stage_id = node.stage.stage_id;
+    player.battle_config.cycle_count = if battle_type == BattleType::PF { 4 } else { 30 };
+    player.battle_config.monsters = node
+        .stage
+        .monster_list
+        .iter()
+        .map(|wave| {
+            wave.iter()
+                .map(|monster_id| Monster {
+                    level: node.stage.level,
+                    monster_id: *monster_id,
+                    max_hp: 0,
+                })
+                .collect()
+        })
+        .collect();
+    player.battle_config.blessings = vec![BattleBuffJson {
+        level: 1,
+        id: node.challenge.maze_buff_id,
+        ..Default::default()
+    }];
+    player.battle_config.custom_battle_lineup = Some(lineup.clone());
+}
+
+fn challenge_cur_info(node: &EndgameNode<'_>) -> CurChallenge {
+    let battle_type = challenge_mode(node.challenge.id);
+    let buff_info = match battle_type {
+        BattleType::PF => Some(ChallengeCurBuffInfo {
+            kknboacncon: Some(challenge_cur_buff_info::Kknboacncon::CurStoryBuffs(
+                ChallengeStoryBuffList {
+                    buff_list: vec![node.challenge.maze_buff_id],
+                },
+            )),
+        }),
+        BattleType::AS => Some(ChallengeCurBuffInfo {
+            kknboacncon: Some(challenge_cur_buff_info::Kknboacncon::CurBossBuffs(
+                ChallengeBossBuffList {
+                    buff_list: vec![node.challenge.maze_buff_id],
+                    challenge_boss_const: 1,
+                },
+            )),
+        }),
+        _ => None,
+    };
+
+    CurChallenge {
+        challenge_id: node.challenge.id,
+        score_id: if battle_type == BattleType::PF { 40_000 } else { 0 },
+        status: ChallengeStatus::ChallengeDoing as i32,
+        extra_lineup_type: ExtraLineupType::LineupChallenge as i32,
+        stage_info: buff_info,
+        ..Default::default()
+    }
+}
+
+fn challenge_lineup_info(
+    lineup: &std::collections::BTreeMap<u32, u32>,
+    plane_id: u32,
+    node: u32,
+) -> LineupInfo {
+    let mut info = AvatarJson::to_lineup_info(lineup);
+    info.extra_lineup_type = if node == 1 {
+        ExtraLineupType::LineupChallenge as i32
+    } else {
+        ExtraLineupType::LineupChallenge2 as i32
+    };
+    info.plane_id = plane_id;
+    info
+}
+
+fn enter_challenge_battle(
+    player: &mut common::sr_tools::FreesrData,
+    node: &EndgameNode<'_>,
+    lineup: &BTreeMap<u32, u32>,
+    second_lineup: &BTreeMap<u32, u32>,
+    spawn_position: Position,
+    scene: &SceneInfo,
+) {
+    if player.challenge_origin_scene.is_none() {
+        player.challenge_origin_scene = Some(player.scene.clone());
+        player.challenge_origin_position = Some(player.position.clone());
+        player.challenge_origin_lineups = Some(player.lineups.clone());
+        player.challenge_origin_battle_config = Some(player.battle_config.clone());
+    }
+
+    player.lineups = lineup.clone();
+    player.position = spawn_position;
+    player.scene = Scene {
+        entry_id: scene.entry_id,
+        plane_id: scene.plane_id,
+        floor_id: scene.floor_id,
+    };
+    configure_challenge_battle(player, node, lineup, second_lineup);
+}
+
+fn challenge_start_lineups(
+    req: &StartChallengeCsReq,
+    fallback: &BTreeMap<u32, u32>,
+) -> (BTreeMap<u32, u32>, BTreeMap<u32, u32>) {
+    let first = challenge_lineup(&req.avatar_lineup_first, &req.first_lineup, fallback);
+    let second = challenge_lineup(&req.avatar_lineup_second, &req.second_lineup, &first);
+    (first, second)
+}
+
+pub async fn on_start_challenge_cs_req(
+    session: &mut PlayerSession,
+    req: &StartChallengeCsReq,
+    res: &mut StartChallengeScRsp,
+) {
+    let Some(node) = resolve_endgame_node(req.challenge_id, 1) else {
+        res.retcode = 2801;
+        return;
+    };
+    let Some(player) = session.json_data.get() else {
+        res.retcode = 2801;
+        return;
+    };
+    if player.challenge_origin_scene.is_some() {
+        res.retcode = 2803;
+        return;
+    }
+
+    let (first_lineup, second_lineup) = challenge_start_lineups(req, &player.lineups);
+    if first_lineup.is_empty() {
+        res.retcode = 2805;
+        return;
+    }
+
+    let (mut scene, spawn_position) = match load_challenge_scene(session, &node, &first_lineup).await
+    {
+        Ok(scene) => scene,
+        Err(error) => {
+            tracing::warn!("Unable to load challenge {}: {error:#}", req.challenge_id);
+            res.retcode = 2801;
+            return;
+        }
+    };
+
+    if let Some(player) = session.json_data.get_mut() {
+        enter_challenge_battle(
+            player,
+            &node,
+            &first_lineup,
+            &second_lineup,
+            spawn_position,
+            &scene,
+        );
+        player.save_persistent().await;
+    }
+
+    scene.game_mode_type = 4;
+    res.retcode = 0;
+    res.scene = Some(scene);
+    res.cur_challenge = Some(challenge_cur_info(&node));
+    res.lineup_list.push(challenge_lineup_info(
+        &first_lineup,
+        res.scene.as_ref().map(|scene| scene.plane_id).unwrap_or_default(),
+        1,
+    ));
+}
+
+pub async fn on_enter_challenge_next_phase_cs_req(
+    session: &mut PlayerSession,
+    _req: &EnterChallengeNextPhaseCsReq,
+    res: &mut EnterChallengeNextPhaseScRsp,
+) {
+    let Some(player) = session.json_data.get() else {
+        res.retcode = 2806;
+        return;
+    };
+    let Some(challenge_id) = player.battle_config.challenge_id else {
+        res.retcode = 2806;
+        return;
+    };
+    let Some(node) = resolve_endgame_node(challenge_id, 2) else {
+        res.retcode = 2801;
+        return;
+    };
+    let lineup = player
+        .battle_config
+        .challenge_second_lineup
+        .clone()
+        .unwrap_or_else(|| player.lineups.clone());
+
+    let (mut scene, spawn_position) = match load_challenge_scene(session, &node, &lineup).await {
+        Ok(scene) => scene,
+        Err(error) => {
+            tracing::warn!("Unable to load challenge {challenge_id} node 2: {error:#}");
+            res.retcode = 2801;
+            return;
+        }
+    };
+
+    if let Some(player) = session.json_data.get_mut() {
+        let second_lineup = player
+            .battle_config
+            .challenge_second_lineup
+            .clone()
+            .unwrap_or_else(|| lineup.clone());
+        configure_challenge_battle(
+            player,
+            &node,
+            &lineup,
+            &second_lineup,
+        );
+        player.lineups = lineup;
+        player.position = spawn_position;
+        player.scene = Scene {
+            entry_id: scene.entry_id,
+            plane_id: scene.plane_id,
+            floor_id: scene.floor_id,
+        };
+        player.save_persistent().await;
+    }
+
+    scene.game_mode_type = 4;
+    res.retcode = 0;
+    res.scene = Some(scene);
+}
+
+pub async fn on_leave_challenge_cs_req(
+    session: &mut PlayerSession,
+    _req: &LeaveChallengeCsReq,
+    res: &mut LeaveChallengeScRsp,
+) {
+    let Some(player) = session.json_data.get_mut() else {
+        res.retcode = 2806;
+        return;
+    };
+    let (Some(origin_scene), Some(origin_position), Some(origin_lineups), Some(origin_battle)) = (
+        player.challenge_origin_scene.clone(),
+        player.challenge_origin_position.clone(),
+        player.challenge_origin_lineups.clone(),
+        player.challenge_origin_battle_config.clone(),
+    ) else {
+        res.retcode = 2806;
+        return;
+    };
+
+    player.scene = origin_scene.clone();
+    player.position = origin_position;
+    player.lineups = origin_lineups.clone();
+    player.battle_config = origin_battle;
+    player.challenge_origin_scene = None;
+    player.challenge_origin_position = None;
+    player.challenge_origin_lineups = None;
+    player.challenge_origin_battle_config = None;
+    player.save_persistent().await;
+
+    let scene = match super::scene::load_scene(session, origin_scene.entry_id, false, None).await {
+        Ok(scene) => scene,
+        Err(error) => {
+            tracing::warn!("Unable to restore scene after challenge: {error:#}");
+            res.retcode = 2801;
+            return;
+        }
+    };
+    let lineup = AvatarJson::to_lineup_info(&origin_lineups);
+    if let Err(error) = session
+        .send(EnterSceneByServerScNotify {
+            lineup: Some(lineup),
+            scene: Some(scene),
+            ..Default::default()
+        })
+        .await
+    {
+        tracing::warn!("Unable to send restored scene after challenge: {error:#}");
+        res.retcode = 2801;
+        return;
+    }
+    res.retcode = 0;
+}
 
 pub async fn on_start_cocoon_stage_cs_req(
     session: &mut PlayerSession,
@@ -73,18 +464,17 @@ pub async fn on_pve_battle_result_cs_req(
     }
 
     let group_id = battle_config.challenge_group_id.unwrap_or_default();
-    player
+    let progress = player
         .challenge_progress
         .entry(mode_id)
         .or_default()
-        .insert(
-            challenge_id,
-            common::structs::persistent::ChallengeProgress {
-                stage_id: req.stage_id,
-                star: 1,
-                group_id,
-            },
-        );
+        .entry(challenge_id)
+        .or_default();
+    progress.stage_id = req.stage_id;
+    progress.star = progress.star.max(7);
+    if group_id != 0 {
+        progress.group_id = group_id;
+    }
     player.save_persistent().await;
 }
 
@@ -97,9 +487,44 @@ pub async fn on_get_challenge_cs_req(
         return;
     };
 
-    let mut group_ids = std::collections::BTreeSet::new();
+    let mut group_ids = BTreeSet::new();
+    let mut known_ids = HashSet::new();
+    for (challenge_id, group_id) in known_endgame_challenges() {
+        known_ids.insert(challenge_id);
+        group_ids.insert(group_id);
+
+        let (level, reward_display_type, score_id, score_two) = if challenge_id > 20_000 {
+            (
+                4,
+                101_404,
+                if challenge_id < 30_000 { 40_000 } else { 0 },
+                if challenge_id < 30_000 { 40_000 } else { 0 },
+            )
+        } else {
+            (12, 101_212, 0, 0)
+        };
+
+        res.challenge_list.push(Challenge {
+            challenge_id,
+            star: 7,
+            taken_reward: 42,
+            score_id,
+            score_two,
+            ..Default::default()
+        });
+        res.max_level_list.push(ChallengeHistoryMaxLevel {
+            level,
+            reward_display_type,
+            ..Default::default()
+        });
+    }
+
     for records in player.challenge_progress.values() {
         for (challenge_id, progress) in records {
+            if !known_ids.insert(*challenge_id) {
+                continue;
+            }
+
             res.challenge_list.push(Challenge {
                 challenge_id: *challenge_id,
                 star: progress.star,
@@ -120,11 +545,86 @@ pub async fn on_get_challenge_cs_req(
         .collect();
 }
 
+#[cfg(test)]
+mod tests {
+    use super::{known_endgame_challenges, resolve_endgame_node};
+    use common::resources::{
+        ENDGAME_CHALLENGE_CONFIG, ENDGAME_SCENE_CONFIG,
+    };
+    use std::collections::HashSet;
+
+    #[test]
+    fn includes_all_configured_endgame_rooms() {
+        let challenges = known_endgame_challenges();
+        let ids = challenges.iter().map(|(id, _)| *id).collect::<HashSet<_>>();
+
+        assert_eq!(challenges.len(), 843);
+        assert_eq!(ids.len(), 843);
+        assert!(ids.contains(&1));
+        assert!(ids.contains(&5612));
+        assert!(ids.contains(&20011));
+        assert!(ids.contains(&20284));
+        assert!(ids.contains(&30011));
+        assert!(ids.contains(&30234));
+
+        let mut resolved_nodes = 0;
+        for challenge in ENDGAME_CHALLENGE_CONFIG.values() {
+            for node_id in [1, 2] {
+                let Some(node) = resolve_endgame_node(challenge.id, node_id) else {
+                    continue;
+                };
+                resolved_nodes += 1;
+                assert!(!node.stage.monster_list.is_empty());
+                assert!(node.stage.monster_list.iter().all(|wave| !wave.is_empty()));
+
+            }
+        }
+        assert_eq!(resolved_nodes, 1676);
+
+        for (entry_id, group_ids) in [(3000205, [6, 7]), (3014003, [6, 7])] {
+            let entry = ENDGAME_SCENE_CONFIG
+                .get(&entry_id)
+                .expect("challenge fallback scene should exist");
+            assert!(group_ids.into_iter().all(|group_id| {
+                entry.values().any(|floor| {
+                    floor.scenes.values().any(|scene| {
+                        scene
+                            .monsters
+                            .iter()
+                            .any(|monster| monster.group_id == group_id)
+                    })
+                })
+            }));
+        }
+    }
+}
+
 pub async fn on_get_cur_challenge_cs_req(
-    _session: &mut PlayerSession,
+    session: &mut PlayerSession,
     _req: &GetCurChallengeCsReq,
-    _res: &mut GetCurChallengeScRsp,
+    res: &mut GetCurChallengeScRsp,
 ) {
+    let Some(player) = session.json_data.get() else {
+        res.retcode = 2806;
+        return;
+    };
+    let (Some(challenge_id), Some(node_id)) = (
+        player.battle_config.challenge_id,
+        player.battle_config.challenge_node,
+    ) else {
+        return;
+    };
+    let Some(node) = resolve_endgame_node(challenge_id, node_id) else {
+        res.retcode = 2801;
+        return;
+    };
+
+    res.cur_challenge = Some(challenge_cur_info(&node));
+    res.lineup_list.push(challenge_lineup_info(
+        &player.lineups,
+        player.scene.plane_id,
+        node_id,
+    ));
 }
 
 pub async fn on_scene_cast_skill_cs_req(

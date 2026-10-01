@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use common::{
-    resources::GAME_RES,
+    resources::{ENDGAME_SCENE_CONFIG, GAME_RES},
     structs::{AvatarJson, Position},
 };
 use scene_entity_info::Entity;
@@ -9,6 +9,18 @@ use scene_entity_info::Entity;
 use crate::util::{self};
 
 use super::*;
+
+fn lighten_sections(sections: &[u32]) -> Vec<u32> {
+    if !sections.is_empty() {
+        return sections.to_vec();
+    }
+
+    (0..=100)
+        .chain(10_000..=10_050)
+        .chain([20_000])
+        .chain(30_000..=30_019)
+        .collect()
+}
 
 pub async fn on_get_cur_scene_info_cs_req(
     session: &mut PlayerSession,
@@ -87,6 +99,32 @@ pub async fn on_get_scene_map_info_cs_req(
                     .level_output_configs
                     .get(v)
                     .and_then(|v| v.iter().next())
+            })
+            .or_else(|| {
+                GAME_RES
+                    .level_output_configs
+                    .iter()
+                    .filter_map(|(entry_id, entries)| {
+                        entries.iter().find_map(|(name, config)| {
+                            name.rsplit_once("_F")
+                                .and_then(|(_, id)| id.parse::<u32>().ok())
+                                .filter(|id| *id == floor_id)
+                                .map(|_| (*entry_id, name, config))
+                        })
+                    })
+                    .min_by_key(|(entry_id, _, config)| {
+                        (!config.is_entered_scene_info, *entry_id)
+                    })
+                    .map(|(_, name, config)| (name, config))
+            })
+            .or_else(|| {
+                ENDGAME_SCENE_CONFIG
+                    .iter()
+                    .find_map(|(_, floors)| floors.iter().find(|(name, _)| {
+                        name.rsplit_once("_F")
+                            .and_then(|(_, id)| id.parse::<u32>().ok())
+                            == Some(floor_id)
+                    }))
             });
 
         if let Some((_, floor_config)) = floor_configs {
@@ -116,7 +154,7 @@ pub async fn on_get_scene_map_info_cs_req(
                 }
             }
 
-            map_info.lighten_section_list = floor_config.sections.clone();
+            map_info.lighten_section_list = lighten_sections(&floor_config.sections);
             map_info.floor_saved_value_map = floor_config.saved_values.clone();
             // #TODO!
             // map_info
@@ -194,7 +232,7 @@ pub async fn on_get_entered_scene_cs_req(
         .collect::<Vec<_>>();
 }
 
-async fn load_scene(
+pub(super) async fn load_scene(
     session: &mut PlayerSession,
     entry_id: u32,
     is_enter_scene: bool,
@@ -208,6 +246,7 @@ async fn load_scene(
     let (name, scene) = GAME_RES
         .level_output_configs
         .get(&entry_id)
+        .or_else(|| ENDGAME_SCENE_CONFIG.get(&entry_id))
         .and_then(|v| v.iter().next())
         .ok_or_else(|| {
             tracing::error!("Map Entrance Not Found {}", entry_id);
@@ -252,7 +291,7 @@ async fn load_scene(
         } else {
             scene.world_id
         },
-        lighten_section_list: scene.sections.clone(),
+        lighten_section_list: lighten_sections(&scene.sections),
         opened_chests_list: scene
             .scenes
             .values()

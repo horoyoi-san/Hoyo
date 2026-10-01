@@ -117,6 +117,15 @@ macro_rules! trait_handler {
 
             async fn on_message(session: &mut PlayerSession, cmd_id: u16, payload: Vec<u8>) -> Result<()> {
                 use ::prost::Message;
+                if cmd_id == GET_BAG_45_REQUEST_CMD_ID {
+                    on_get_bag_45_compat(session).await?;
+                    return Ok(());
+                }
+                if cmd_id == GET_AVATAR_DATA_45_REQUEST_CMD_ID {
+                    on_get_avatar_data_45_compat(session, &payload).await?;
+                    return Ok(());
+                }
+
                 if PlayerSession::should_send_dummy_rsp(cmd_id) {
                     session.send_dummy_response(cmd_id).await?;
                     return Ok(());
@@ -191,6 +200,9 @@ trait_handler! {
     SceneEnterStage;
     GetChallenge;
     GetCurChallenge;
+    StartChallenge;
+    EnterChallengeNextPhase;
+    LeaveChallenge;
 
     // Teleport
     GetEnteredScene;

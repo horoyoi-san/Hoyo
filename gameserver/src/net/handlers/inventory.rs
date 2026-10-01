@@ -1,9 +1,331 @@
 use common::{resources::GAME_RES, sr_tools::FreesrData};
 use proto::{get_big_data_all_recommend_sc_rsp::RecommendType, *};
+use prost::Message;
 
-use crate::net::PlayerSession;
+use crate::net::{NetPacket, PlayerSession};
 
 use super::BASE_AVATAR_IDS;
+
+pub const GET_BAG_45_REQUEST_CMD_ID: u16 = 534;
+pub const GET_AVATAR_DATA_45_REQUEST_CMD_ID: u16 = 334;
+
+#[derive(Clone, PartialEq, Message)]
+struct RelicAffix45 {
+    #[prost(uint32, tag = "1")]
+    affix_id: u32,
+    #[prost(uint32, tag = "2")]
+    cnt: u32,
+    #[prost(uint32, tag = "3")]
+    step: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct Relic45 {
+    #[prost(uint32, tag = "1")]
+    unique_id: u32,
+    #[prost(uint32, tag = "2")]
+    dress_avatar_id: u32,
+    #[prost(message, repeated, tag = "3")]
+    sub_affix_list: Vec<RelicAffix45>,
+    #[prost(uint32, tag = "4")]
+    level: u32,
+    #[prost(message, repeated, tag = "5")]
+    preview_sub_affix_list: Vec<RelicAffix45>,
+    #[prost(uint32, tag = "6")]
+    exp: u32,
+    #[prost(bool, tag = "7")]
+    is_protected: bool,
+    #[prost(message, repeated, tag = "8")]
+    reforge_sub_affix_list: Vec<RelicAffix45>,
+    #[prost(uint32, tag = "10")]
+    reforge_block_sub_affix_id: u32,
+    #[prost(uint32, tag = "11")]
+    tid: u32,
+    #[prost(bool, tag = "14")]
+    is_discarded: bool,
+    #[prost(uint32, tag = "15")]
+    main_affix_id: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct Material45 {
+    #[prost(uint32, tag = "3")]
+    num: u32,
+    #[prost(uint32, tag = "8")]
+    tid: u32,
+    #[prost(uint64, tag = "15")]
+    expire_time: u64,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct Equipment45 {
+    #[prost(uint32, tag = "1")]
+    level: u32,
+    #[prost(uint32, tag = "3")]
+    unique_id: u32,
+    #[prost(uint32, tag = "6")]
+    exp: u32,
+    #[prost(uint32, tag = "7")]
+    promotion: u32,
+    #[prost(bool, tag = "8")]
+    is_protected: bool,
+    #[prost(uint32, tag = "9")]
+    dress_avatar_id: u32,
+    #[prost(uint32, tag = "14")]
+    rank: u32,
+    #[prost(uint32, tag = "15")]
+    tid: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct GetBag45ScRsp {
+    #[prost(message, repeated, tag = "4")]
+    material_list: Vec<Material45>,
+    #[prost(message, repeated, tag = "9")]
+    relic_list: Vec<Relic45>,
+    #[prost(message, repeated, tag = "10")]
+    equipment_list: Vec<Equipment45>,
+    #[prost(uint32, tag = "3")]
+    retcode: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct GetAvatarData45CsReq {
+    #[prost(bool, tag = "8")]
+    is_get_all: bool,
+    #[prost(uint32, repeated, tag = "12")]
+    requested_avatar_ids: Vec<u32>,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct AvatarPathSkillTree45 {
+    #[prost(uint32, tag = "8")]
+    point_id: u32,
+    #[prost(uint32, tag = "11")]
+    level: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct EquipRelic45 {
+    #[prost(uint32, tag = "5")]
+    relic_type: u32,
+    #[prost(uint32, tag = "15")]
+    relic_unique_id: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct Avatar45 {
+    #[prost(uint32, tag = "2")]
+    cur_multi_path_avatar_type: u32,
+    #[prost(uint32, tag = "4")]
+    level: u32,
+    #[prost(uint32, tag = "7")]
+    equipment_unique_id: u32,
+    #[prost(uint64, tag = "9")]
+    first_met_time_stamp: u64,
+    #[prost(bool, tag = "10")]
+    is_marked: bool,
+    #[prost(uint32, repeated, tag = "12")]
+    has_taken_promotion_reward_list: Vec<u32>,
+    #[prost(uint32, tag = "13")]
+    promotion: u32,
+    #[prost(uint32, tag = "14")]
+    exp: u32,
+    #[prost(uint32, tag = "15")]
+    base_avatar_id: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct AvatarPathData45 {
+    #[prost(uint32, tag = "1")]
+    unk_enhanced_id: u32,
+    #[prost(uint32, tag = "2")]
+    path_equipment_id: u32,
+    #[prost(uint32, tag = "3")]
+    avatar_id: u32,
+    #[prost(message, repeated, tag = "9")]
+    avatar_path_skill_tree: Vec<AvatarPathSkillTree45>,
+    #[prost(uint32, tag = "10")]
+    rank: u32,
+    #[prost(message, repeated, tag = "12")]
+    equip_relic_list: Vec<EquipRelic45>,
+    #[prost(uint64, tag = "13")]
+    unlock_time: u64,
+    #[prost(uint32, tag = "14")]
+    dressed_skin_id: u32,
+}
+
+#[derive(Clone, PartialEq, Message)]
+struct GetAvatarData45ScRsp {
+    #[prost(uint32, tag = "1")]
+    unknown: u32,
+    #[prost(uint32, repeated, tag = "2")]
+    basic_type_id_list: Vec<u32>,
+    #[prost(uint32, tag = "3")]
+    retcode: u32,
+    #[prost(message, repeated, tag = "7")]
+    avatar_path_data_info_list: Vec<AvatarPathData45>,
+    #[prost(message, repeated, tag = "8")]
+    avatar_list: Vec<Avatar45>,
+    #[prost(uint32, tag = "9")]
+    unknown_avatar_data: u32,
+    #[prost(uint32, repeated, tag = "10")]
+    skin_list: Vec<u32>,
+    #[prost(bool, tag = "14")]
+    is_get_all: bool,
+    #[prost(uint32, repeated, tag = "15")]
+    extra_avatar_type_list: Vec<u32>,
+}
+
+pub async fn on_get_bag_45_compat(session: &PlayerSession) -> anyhow::Result<()> {
+    let Some(player) = session.json_data.get() else {
+        return Ok(());
+    };
+
+    let response = GetBag45ScRsp {
+        material_list: vec![
+            Material45 { tid: 101, num: 67, expire_time: 0 },
+            Material45 { tid: 102, num: 67, expire_time: 0 },
+        ],
+        relic_list: player
+            .relics
+            .iter()
+            .map(|relic| Relic45 {
+                unique_id: relic.get_unique_id(),
+                dress_avatar_id: relic.equip_avatar,
+                sub_affix_list: relic.sub_affixes.iter().map(|affix| RelicAffix45 {
+                    affix_id: affix.sub_affix_id,
+                    cnt: affix.count,
+                    step: affix.step,
+                }).collect(),
+                level: relic.level,
+                preview_sub_affix_list: Vec::new(),
+                exp: 0,
+                is_protected: false,
+                reforge_sub_affix_list: Vec::new(),
+                reforge_block_sub_affix_id: 0,
+                tid: relic.relic_id,
+                is_discarded: false,
+                main_affix_id: relic.main_affix_id,
+            })
+            .collect(),
+        equipment_list: player
+            .lightcones
+            .iter()
+            .map(|lightcone| Equipment45 {
+                level: lightcone.level,
+                unique_id: lightcone.get_unique_id(),
+                exp: 0,
+                promotion: lightcone.promotion,
+                is_protected: false,
+                dress_avatar_id: lightcone.equip_avatar,
+                rank: lightcone.rank,
+                tid: lightcone.item_id,
+            })
+            .collect(),
+        retcode: 0,
+    };
+    let mut body = Vec::new();
+    response.encode(&mut body)?;
+    session
+        .send_raw(NetPacket {
+            cmd_type: 525,
+            head: Vec::new(),
+            body,
+        })
+        .await
+}
+
+pub async fn on_get_avatar_data_45_compat(
+    session: &PlayerSession,
+    payload: &[u8],
+) -> anyhow::Result<()> {
+    let request = GetAvatarData45CsReq::decode(payload)?;
+    let Some(player) = session.json_data.get() else {
+        return Ok(());
+    };
+
+    let avatar_list = BASE_AVATAR_IDS
+        .into_iter()
+        .map(|id| {
+            let avatar = player.avatars.get(&id).map(|avatar| {
+                avatar.to_avatar_proto(
+                    player.lightcones.iter().find(|lightcone| lightcone.equip_avatar == id),
+                    player.main_character as u32,
+                    player.march_type as u32,
+                )
+            }).unwrap_or(Avatar {
+                base_avatar_id: id,
+                level: 80,
+                promotion: 6,
+                first_met_time_stamp: 1_712_924_677,
+                cur_multi_path_avatar_type: 0,
+                equipment_unique_id: 0,
+                has_taken_promotion_reward_list: vec![1, 3, 5],
+                is_marked: false,
+                exp: 0,
+            });
+
+            Avatar45 {
+                cur_multi_path_avatar_type: avatar.cur_multi_path_avatar_type,
+                level: avatar.level,
+                equipment_unique_id: avatar.equipment_unique_id,
+                first_met_time_stamp: avatar.first_met_time_stamp,
+                is_marked: avatar.is_marked,
+                has_taken_promotion_reward_list: avatar.has_taken_promotion_reward_list,
+                promotion: avatar.promotion,
+                exp: avatar.exp,
+                base_avatar_id: avatar.base_avatar_id,
+            }
+        })
+        .collect();
+
+    let avatar_path_data_info_list = player
+        .avatars
+        .values()
+        .map(|avatar| {
+            let path_data = avatar.to_avatar_path_data_proto(
+                player.lightcones.iter().find(|lightcone| lightcone.equip_avatar == avatar.avatar_id),
+                player.relics.iter().filter(|relic| relic.equip_avatar == avatar.avatar_id).collect(),
+            );
+            AvatarPathData45 {
+                unk_enhanced_id: path_data.unk_enhanced_id,
+                path_equipment_id: path_data.path_equipment_id,
+                avatar_id: path_data.avatar_id,
+                avatar_path_skill_tree: path_data.avatar_path_skill_tree.into_iter().map(|skill| {
+                    AvatarPathSkillTree45 { point_id: skill.anchor_type, level: skill.level }
+                }).collect(),
+                rank: path_data.rank,
+                equip_relic_list: path_data.equip_relic_list.into_iter().map(|relic| {
+                    EquipRelic45 { relic_type: relic.r#type, relic_unique_id: relic.relic_unique_id }
+                }).collect(),
+                unlock_time: path_data.unlock_timestamp,
+                dressed_skin_id: path_data.dressed_skin_id,
+            }
+        })
+        .collect();
+
+    let response = GetAvatarData45ScRsp {
+        unknown: 0,
+        basic_type_id_list: Vec::new(),
+        retcode: 0,
+        avatar_path_data_info_list,
+        avatar_list,
+        unknown_avatar_data: 0,
+        skin_list: Vec::new(),
+        is_get_all: request.is_get_all,
+        extra_avatar_type_list: Vec::new(),
+    };
+    let mut body = Vec::new();
+    response.encode(&mut body)?;
+    session
+        .send_raw(NetPacket {
+            cmd_type: 325,
+            head: Vec::new(),
+            body,
+        })
+        .await
+}
 
 pub async fn on_get_bag_cs_req(
     session: &mut PlayerSession,

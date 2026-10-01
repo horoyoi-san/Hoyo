@@ -147,6 +147,134 @@ pub struct JsonConfig {
     pub relic_avatar_recommend: HashMap<u32, Vec<u32>>,
 }
 
+#[derive(Deserialize)]
+pub struct EndgameChallengeConfig {
+    #[serde(rename = "ID")]
+    pub id: u32,
+    #[serde(rename = "GroupID")]
+    pub group_id: u32,
+    #[serde(rename = "MapEntranceID")]
+    pub map_entrance_id: u32,
+    #[serde(rename = "MapEntranceID2")]
+    pub map_entrance_id2: u32,
+    #[serde(rename = "MazeGroupID1")]
+    pub maze_group_id1: u32,
+    #[serde(rename = "MazeGroupID2", default)]
+    pub maze_group_id2: Option<u32>,
+    #[serde(rename = "NpcMonsterIDList1")]
+    pub npc_monster_id_list1: Vec<u32>,
+    #[serde(rename = "NpcMonsterIDList2", default)]
+    pub npc_monster_id_list2: Vec<u32>,
+    #[serde(rename = "EventIDList1")]
+    pub event_id_list1: Vec<u32>,
+    #[serde(rename = "EventIDList2", default)]
+    pub event_id_list2: Vec<u32>,
+    #[serde(rename = "MazeBuffID")]
+    pub maze_buff_id: u32,
+}
+
+#[derive(Deserialize)]
+struct EndgameChallengeDocument {
+    challenge_config: Vec<EndgameChallengeConfig>,
+}
+
+#[derive(Deserialize)]
+pub struct EndgameStageConfig {
+    #[serde(rename = "Level")]
+    pub level: u32,
+    #[serde(rename = "StageID")]
+    pub stage_id: u32,
+    #[serde(rename = "MonsterList")]
+    pub monster_list: Vec<Vec<u32>>,
+}
+
+#[derive(Deserialize)]
+struct EndgameStageDocument {
+    stage_config: Vec<EndgameStageConfig>,
+}
+
+pub struct EndgameNode<'a> {
+    pub challenge: &'a EndgameChallengeConfig,
+    pub stage: &'a EndgameStageConfig,
+    pub entry_id: u32,
+    pub group_id: u32,
+    pub event_id: u32,
+    pub monster_id: u32,
+    pub node: u32,
+}
+
+pub static ENDGAME_CHALLENGE_CONFIG: LazyLock<HashMap<u32, EndgameChallengeConfig>> =
+    LazyLock::new(|| {
+        let document = serde_json::from_str::<EndgameChallengeDocument>(include_str!(
+            "../../resources/ChallengeMazeConfig.json"
+        ))
+        .expect("invalid ChallengeMazeConfig.json");
+        document
+            .challenge_config
+            .into_iter()
+            .map(|challenge| (challenge.id, challenge))
+            .collect()
+    });
+
+pub static ENDGAME_STAGE_CONFIG: LazyLock<HashMap<u32, EndgameStageConfig>> = LazyLock::new(|| {
+    let document = serde_json::from_str::<EndgameStageDocument>(include_str!(
+        "../../resources/StageConfig.json"
+    ))
+    .expect("invalid StageConfig.json");
+    document
+        .stage_config
+        .into_iter()
+        .map(|stage| (stage.stage_id, stage))
+        .collect()
+});
+
+#[derive(Deserialize)]
+struct EndgameSceneDocument {
+    #[serde(rename = "levelOutputConfigs")]
+    level_output_configs: HashMap<u32, HashMap<String, LevelOutputConfig>>,
+}
+
+pub static ENDGAME_SCENE_CONFIG: LazyLock<HashMap<u32, HashMap<String, LevelOutputConfig>>> =
+    LazyLock::new(|| {
+        let document = serde_json::from_str::<EndgameSceneDocument>(include_str!(
+            "../../resources/EndgameSceneFallback.json"
+        ))
+        .expect("invalid EndgameSceneFallback.json");
+        document.level_output_configs
+    });
+
+pub fn resolve_endgame_node(challenge_id: u32, node: u32) -> Option<EndgameNode<'static>> {
+    let challenge = ENDGAME_CHALLENGE_CONFIG.get(&challenge_id)?;
+    let (entry_id, group_id, monster_ids, event_ids) = match node {
+        1 => (
+            challenge.map_entrance_id,
+            challenge.maze_group_id1,
+            &challenge.npc_monster_id_list1,
+            &challenge.event_id_list1,
+        ),
+        2 => (
+            challenge.map_entrance_id2,
+            challenge.maze_group_id2?,
+            &challenge.npc_monster_id_list2,
+            &challenge.event_id_list2,
+        ),
+        _ => return None,
+    };
+    let event_id = *event_ids.last()?;
+    let monster_id = *monster_ids.last()?;
+    let stage = ENDGAME_STAGE_CONFIG.get(&event_id)?;
+
+    Some(EndgameNode {
+        challenge,
+        stage,
+        entry_id,
+        group_id,
+        event_id,
+        monster_id,
+        node,
+    })
+}
+
 pub static GAME_RES: LazyLock<JsonConfig> = LazyLock::new(|| {
     serde_json::from_str::<JsonConfig>(&fs::read_to_string("res.json").unwrap()).unwrap()
 });

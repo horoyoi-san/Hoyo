@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{
     avatar::MultiPathAvatar,
+    battle::BattleConfig,
     scene::{Position, Scene},
 };
 
@@ -38,6 +39,16 @@ pub struct Persistent {
     #[serde(default)]
     pub challenge_progress: BTreeMap<u32, BTreeMap<u32, ChallengeProgress>>,
     #[serde(default)]
+    pub challenge_origin_scene: Option<Scene>,
+    #[serde(default)]
+    pub challenge_origin_position: Option<Position>,
+    #[serde(default)]
+    pub challenge_origin_lineups: Option<BTreeMap<u32, u32>>,
+    #[serde(default)]
+    pub challenge_origin_battle_config: Option<BattleConfig>,
+    #[serde(default)]
+    pub challenge_active_battle_config: Option<BattleConfig>,
+    #[serde(default)]
     pub position: Position,
     #[serde(default)]
     pub scene: Scene,
@@ -68,6 +79,11 @@ impl Default for Persistent {
         Self {
             lineups: BTreeMap::from([(0, 1313), (1, 1006), (2, 8001), (3, 1405)]),
             challenge_progress: BTreeMap::new(),
+            challenge_origin_scene: None,
+            challenge_origin_position: None,
+            challenge_origin_lineups: None,
+            challenge_origin_battle_config: None,
+            challenge_active_battle_config: None,
             position: Default::default(),
             main_character: MultiPathAvatar::FemaleRemembrance,
             scene: Default::default(),

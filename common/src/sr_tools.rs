@@ -38,6 +38,16 @@ pub struct FreesrData {
     #[serde(skip_serializing, skip_deserializing)]
     pub challenge_progress:
         BTreeMap<u32, BTreeMap<u32, crate::structs::persistent::ChallengeProgress>>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub challenge_origin_scene: Option<Scene>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub challenge_origin_position: Option<Position>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub challenge_origin_lineups: Option<BTreeMap<u32, u32>>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub challenge_origin_battle_config: Option<BattleConfig>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub challenge_active_battle_config: Option<BattleConfig>,
 }
 
 impl FreesrData {
@@ -87,6 +97,15 @@ impl FreesrData {
         freesr_data.enable_sw_global = persistent.enable_sw_global;
         freesr_data.enable_castorice_global = persistent.enable_castorice_global;
         freesr_data.challenge_progress = persistent.challenge_progress;
+        freesr_data.challenge_origin_scene = persistent.challenge_origin_scene;
+        freesr_data.challenge_origin_position = persistent.challenge_origin_position;
+        freesr_data.challenge_origin_lineups = persistent.challenge_origin_lineups;
+        freesr_data.challenge_origin_battle_config =
+            persistent.challenge_origin_battle_config;
+        if let Some(active_battle_config) = persistent.challenge_active_battle_config.clone() {
+            freesr_data.battle_config = active_battle_config;
+        }
+        freesr_data.challenge_active_battle_config = persistent.challenge_active_battle_config;
         // freesr_data.game_language = persistent.game_language;
         // freesr_data.voice_langauge = persistent.voice_language;
 
@@ -154,6 +173,14 @@ impl FreesrData {
             enable_sw_global: self.enable_sw_global,
             enable_castorice_global: self.enable_castorice_global,
             challenge_progress: self.challenge_progress.clone(),
+            challenge_origin_scene: self.challenge_origin_scene.clone(),
+            challenge_origin_position: self.challenge_origin_position.clone(),
+            challenge_origin_lineups: self.challenge_origin_lineups.clone(),
+            challenge_origin_battle_config: self.challenge_origin_battle_config.clone(),
+            challenge_active_battle_config: self
+                .battle_config
+                .challenge_id
+                .map(|_| self.battle_config.clone()),
             // game_language: self.game_language,
             // voice_language: self.voice_langauge,
         }) {

@@ -1,4 +1,7 @@
-use common::structs::MultiPathAvatar;
+use common::{
+    resources::{ENDGAME_CHALLENGE_CONFIG, ENDGAME_STAGE_CONFIG},
+    structs::{BattleBuffJson, BattleType, Monster, MultiPathAvatar},
+};
 use proto::chat_data::ExtendType;
 use std::path::Path;
 use tokio::fs;
@@ -21,6 +24,8 @@ const SERVER_CHAT_HISTORY: &[&str] = &[
     "'sync' เมื่ออัพไฟล์ json แล้วให้ใช้คำสั่งนี้เพื่อซิงค์ข้อมูล",
     "'mc {mc_id}' mc_id ใสไอดี 8001 ถึง 8008 (สำหรับตัวละครหลัก) หรือ 1001 ถึง 1006 (สำหรับตัวละครเสริม) หรือ 1101 ถึง 1108 (สำหรับตัวละครพิเศษ) ตัวอย่างเช่น 'mc 8001' จะเปลี่ยนตัวละครหลักเป็น 8001 ใช้สำสั่ง mc 8009",
     "'march {march_id}' march_id ใส่ไอดี 1001 or 1224 (สำหรับตัวละครหลัก) หรือ 1002 ถึง 1006 (สำหรับตัวละครเสริม) หรือ 1101 ถึง 1108 (สำหรับตัวละครพิเศษ) หรือ 1224 (สำหรับตัวละครพิเศษ)",
+    "'eg <challenge_id> <node: 1|2>' ตั้งค่าห้อง Endgame ด้วยศัตรูและคลื่นตาม config เกม แล้วเข้า Calyx เพื่อเริ่มสู้",
+    "'eg off' ปิดการบันทึกผล Endgame",
     "available commands:",
     "visit srtools.neonteam.dev to configure the PS! (you configure relics, equipment, monsters from there)",
 ];
@@ -232,6 +237,145 @@ pub async fn on_send_msg_cs_req(
                             .unwrap_or_default(),
                         body.chat_type,
                         format!("Success change march to {march_type:#?}"),
+                    ))
+                    .await
+                    .unwrap();
+            }
+            "eg" => {
+                let reply = if args.first().copied() == Some("off") {
+                    json.battle_config.battle_type = BattleType::Default;
+                    json.battle_config.challenge_id = None;
+                    json.battle_config.challenge_group_id = None;
+                    String::from("Endgame mode disabled; current stage and enemies were kept.")
+                } else if args.len() != 2 {
+                    String::from("Usage: eg <challenge_id> <node: 1|2>")
+                } else {
+                    let challenge_id = args[0].parse::<u32>().ok();
+                    let node = args[1].parse::<u8>().ok();
+
+                    match (challenge_id, node) {
+                        (Some(challenge_id), Some(node @ (1 | 2))) => {
+                            let Some(challenge) = ENDGAME_CHALLENGE_CONFIG.get(&challenge_id) else {
+                                let message = format!("Unknown Endgame challenge ID {challenge_id}.");
+                                session
+                                    .send(create_send_message(
+                                        25,
+                                        SERVER_UID,
+                                        body.message_datas
+                                            .as_ref()
+                                            .map(|v| v.message_type)
+                                            .unwrap_or_default(),
+                                        body.chat_type,
+                                        message,
+                                    ))
+                                    .await
+                                    .unwrap();
+                                return;
+                            };
+
+                            let event_ids = if node == 1 {
+                                &challenge.event_id_list1
+                            } else {
+                                &challenge.event_id_list2
+                            };
+                            let Some(stage_id) = event_ids.last() else {
+                                let message = format!(
+                                    "Challenge {challenge_id} has no configured node {node}."
+                                );
+                                session
+                                    .send(create_send_message(
+                                        25,
+                                        SERVER_UID,
+                                        body.message_datas
+                                            .as_ref()
+                                            .map(|v| v.message_type)
+                                            .unwrap_or_default(),
+                                        body.chat_type,
+                                        message,
+                                    ))
+                                    .await
+                                    .unwrap();
+                                return;
+                            };
+                            let Some(stage) = ENDGAME_STAGE_CONFIG.get(stage_id) else {
+                                let message = format!(
+                                    "No battle stage config for challenge {challenge_id}, node {node}."
+                                );
+                                session
+                                    .send(create_send_message(
+                                        25,
+                                        SERVER_UID,
+                                        body.message_datas
+                                            .as_ref()
+                                            .map(|v| v.message_type)
+                                            .unwrap_or_default(),
+                                        body.chat_type,
+                                        message,
+                                    ))
+                                    .await
+                                    .unwrap();
+                                return;
+                            };
+
+                            let battle_type = if challenge_id >= 30_000 {
+                                BattleType::AS
+                            } else if challenge_id >= 20_000 {
+                                BattleType::PF
+                            } else {
+                                BattleType::Moc
+                            };
+                            json.battle_config.battle_type = battle_type.clone();
+                            json.battle_config.challenge_id = Some(challenge_id);
+                            json.battle_config.challenge_group_id = Some(challenge.group_id);
+                            json.battle_config.stage_id = stage.stage_id;
+                            json.battle_config.cycle_count = if battle_type == BattleType::PF {
+                                4
+                            } else {
+                                30
+                            };
+                            json.battle_config.monsters = stage
+                                .monster_list
+                                .iter()
+                                .map(|wave| {
+                                    wave.iter()
+                                        .map(|monster_id| Monster {
+                                            level: stage.level,
+                                            monster_id: *monster_id,
+                                            max_hp: 0,
+                                        })
+                                        .collect()
+                                })
+                                .collect();
+                            json.battle_config.blessings = vec![BattleBuffJson {
+                                level: 1,
+                                id: challenge.maze_buff_id,
+                                ..Default::default()
+                            }];
+                            format!(
+                                "Configured {:?} challenge {} group {} node {} (stage {}, level {}, {} waves). Enter a Calyx to start.",
+                                battle_type,
+                                challenge_id,
+                                challenge.group_id,
+                                node,
+                                stage.stage_id,
+                                stage.level,
+                                stage.monster_list.len()
+                            )
+                        }
+                        _ => String::from("Usage: eg <challenge_id> <node: 1|2>"),
+                    }
+                };
+
+                session
+                    .send(create_send_message(
+                        25,
+                        SERVER_UID,
+                        body.message_datas
+                            .as_ref()
+                            .map(|v| v.message_type)
+                            .unwrap_or_default(),
+                        body.chat_type,
+                        reply,
                     ))
                     .await
                     .unwrap();
