@@ -1,0 +1,67 @@
+name: Build Cyrene Launcher
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-hkrpg-release
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Hoyo
+        uses: actions/checkout@v4
+
+      - name: Checkout launcher source
+        uses: actions/checkout@v4
+        with:
+          repository: horoyoi-san/game-Launcher
+          ref: cyrene-launcher
+          path: source
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: source/go.mod
+          cache-dependency-path: source/go.sum
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: source/frontend/package-lock.json
+
+      - name: Install Wails CLI
+        run: |
+          go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0-alpha.59
+          "$env:USERPROFILE\go\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Build Windows executable
+        working-directory: source
+        run: wails3 task build
+        env:
+          PRODUCTION: "true"
+
+      - name: Verify build output
+        run: |
+          if (!(Test-Path "source/bin/Cyrene-launcher.exe")) {
+            throw "Expected build output source/bin/Cyrene-launcher.exe was not produced."
+          }
+
+      - name: Publish executable to Hoyo release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: hkrpg
+          files: source/bin/Cyrene-launcher.exe
+          overwrite_files: true
+          fail_on_unmatched_files: true
