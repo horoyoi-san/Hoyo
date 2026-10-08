@@ -7,8 +7,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: build-hkrpg-release
-  cancel-in-progress: true
+  group: build-cyrene-release
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -44,9 +44,38 @@ jobs:
           go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0-alpha.59
           "$env:USERPROFILE\go\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+      - name: Calculate launcher version
+        shell: pwsh
+        run: |
+          $manifestPath = Join-Path $env:RUNNER_TEMP "cyrene-latest.json"
+          $manifestUrl = "https://github.com/horoyoi-san/Hoyo/releases/download/hkrpg/latest.json"
+          $status = & curl.exe --location --silent --show-error --output $manifestPath --write-out "%{http_code}" "$manifestUrl`?cachebust=$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not check the current Cyrene launcher manifest."
+          }
+
+          if ($status -eq "200") {
+            $currentVersion = (Get-Content -Raw $manifestPath | ConvertFrom-Json).version
+          } elseif ($status -eq "404") {
+            $currentVersion = "2.1.0"
+          } else {
+            throw "Cyrene launcher manifest request returned HTTP $status."
+          }
+
+          $version = node source/scripts/launcher-release.mjs next $currentVersion
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not calculate the next Cyrene launcher version."
+          }
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "LAUNCHER_VERSION=$version`n")
+          node source/scripts/launcher-release.mjs stamp-info $version source/build/windows/info.json
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not stamp the Windows executable version."
+          }
+          Write-Host "Building Cyrene launcher version $version"
+
       - name: Build Windows executable
         working-directory: source
-        run: wails3 task build
+        run: wails3 task build BUILD_VERSION=$env:LAUNCHER_VERSION
         env:
           PRODUCTION: "true"
 
@@ -56,10 +85,15 @@ jobs:
             throw "Expected build output source/bin/Cyrene-launcher.exe was not produced."
           }
 
+      - name: Create update manifest
+        run: node source/scripts/launcher-release.mjs manifest $env:LAUNCHER_VERSION source/bin/Cyrene-launcher.exe "$env:RUNNER_TEMP/latest.json"
+
       - name: Publish executable to Hoyo release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: hkrpg
-          files: source/bin/Cyrene-launcher.exe
+          files: |
+            source/bin/Cyrene-launcher.exe
+            ${{ runner.temp }}/latest.json
           overwrite_files: true
           fail_on_unmatched_files: true
