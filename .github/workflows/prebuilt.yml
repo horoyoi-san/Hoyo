@@ -1,0 +1,68 @@
+name: Prebuilt release RobinSR
+
+on:
+  push:
+    branches:
+      - hkrpg-PS
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prebuilt:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install nightly Rust
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: x86_64-pc-windows-gnu
+
+      - name: Install native build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 protobuf-compiler zip unzip
+
+      - name: Build release binaries
+        env:
+          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
+        run: cargo build --release --target x86_64-pc-windows-gnu --bin gameserver --bin sdkserver
+
+      - name: Package prebuilt release
+        run: |
+          set -euo pipefail
+
+          rm -rf dist
+          mkdir -p dist
+
+          cp target/x86_64-pc-windows-gnu/release/gameserver.exe dist/gameserver.exe
+          cp target/x86_64-pc-windows-gnu/release/sdkserver.exe dist/sdkserver.exe
+          cp persistent res.json freesr-data.json versions.json dist/
+
+          for file in gameserver.exe sdkserver.exe persistent res.json freesr-data.json versions.json; do
+            test -f "dist/${file}"
+          done
+
+          (
+            cd dist
+            zip -9 -q ../prebuilt-win64-RobinSR.zip \
+              gameserver.exe \
+              sdkserver.exe \
+              persistent \
+              res.json \
+              freesr-data.json \
+              versions.json
+          )
+
+          unzip -l prebuilt-win64-RobinSR.zip
+
+      - name: Upload to hkrpg release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload hkrpg prebuilt-win64-RobinSR.zip --clobber
