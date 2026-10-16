@@ -75,21 +75,176 @@ pub async fn on_take_promotion_reward_cs_req(
 }
 
 pub async fn on_set_avatar_enhanced_id_cs_req(
-    _session: &mut PlayerSession,
-    _req: &SetAvatarEnhancedIdCsReq,
-    _res: &mut SetAvatarEnhancedIdScRsp,
+    session: &mut PlayerSession,
+    req: &SetAvatarEnhancedIdCsReq,
+    res: &mut SetAvatarEnhancedIdScRsp,
 ) {
-    // let Some(json) = session.json_data.get_mut() else {
-    //     return;
-    // };
-    // let Some(avatar) = json.avatars.get_mut(&req.avatar_id) else {
-    //     return;
-    // };
-    // avatar.enhanced_id = if req.enhanced_id == 0 {
-    //     Option::<u32>::None
-    // } else {
-    //     Some(req.enhanced_id)
-    // };
-    // res.growth_avatar_id = avatar.avatar_id;
-    // res.unk_enhanced_id = req.enhanced_id;
+    let Some(json) = session.json_data.get_mut() else {
+        return;
+    };
+    let Some(avatar) = json.avatars.get_mut(&req.avatar_id) else {
+        return;
+    };
+    avatar.enhanced_id = if req.enhanced_id == 0 {
+        None
+    } else {
+        Some(req.enhanced_id)
+    };
+    res.growth_avatar_id = avatar.avatar_id;
+    res.unk_enhanced_id = req.enhanced_id;
+    res.retcode = 0;
+    if let Some(player) = session.json_data.get() {
+        player.save_persistent().await;
+    }
+    let _ = session.sync_player().await;
+}
+
+pub const EX_RANK_UNLOCK_CMD_ID: u16 = 400;
+
+#[derive(Clone, PartialEq, prost::Message)]
+struct ExRankUnlockScRsp {
+    #[prost(uint32, tag = "2")]
+    retcode: u32,
+}
+
+// handleExRankUnlock handles CmdID 400 (Affinitive Eidolon / Ex-Rank unlock request from client).
+pub async fn on_ex_rank_unlock(session: &mut PlayerSession, payload: &[u8]) -> Result<()> {
+    tracing::info!(
+        "[EX-RANK] Received cmd 400 (len: {}) payload: {:x?}",
+        payload.len(),
+        payload
+    );
+
+    let mut buf = payload;
+    let mut parsed_val = 0u32;
+    while !buf.is_empty() {
+        let Some(tag) = read_uvarint(&mut buf) else {
+            break;
+        };
+        let wire_type = (tag & 0x7) as u32;
+        let field_num = (tag >> 3) as u32;
+
+        if wire_type == 0 {
+            if let Some(v) = read_uvarint(&mut buf) {
+                tracing::info!("[EX-RANK] field {} = {}", field_num, v);
+                if v >= 100_000 || (v >= 1000 && v < 10000 && parsed_val == 0) {
+                    parsed_val = v as u32;
+                }
+                continue;
+            }
+        }
+        skip_wire_field(wire_type, &mut buf);
+    }
+
+    let avatar_id = if parsed_val >= 100_000 {
+        parsed_val / 100 // e.g. 120401 -> 1204, 121301 -> 1213, 130801 -> 1308
+    } else if (1000..10000).contains(&parsed_val) {
+        parsed_val
+    } else {
+        0
+    };
+
+    tracing::info!(
+        "[EX-RANK] Target avatarID: {} (from val: {})",
+        avatar_id,
+        parsed_val
+    );
+
+    if let Some(player) = session.json_data.get_mut() {
+        let targets = if avatar_id == 0 {
+            // Fallback: unlock for all avatars that have ExRank defined (1204, 1213, 1308)
+            vec![1204, 1213, 1308]
+        } else {
+            vec![avatar_id]
+        };
+
+        for aid in targets {
+            if let Some(av) = player.avatars.get_mut(&aid) {
+                let eid = if parsed_val >= 100_000 {
+                    parsed_val
+                } else {
+                    aid * 100 + 1
+                };
+                av.unlocked_enhanced_id = Some(eid);
+                tracing::info!(
+                    "[EX-RANK] Unlocked avatar {} with ex_rank_id={}",
+                    aid,
+                    eid
+                );
+            }
+        }
+        player.save_persistent().await;
+    }
+
+    let rsp = ExRankUnlockScRsp { retcode: 0 };
+    let mut body = Vec::new();
+    prost::Message::encode(&rsp, &mut body)?;
+    session
+        .send_raw(NetPacket {
+            cmd_type: 395,
+            head: Vec::new(),
+            body,
+        })
+        .await?;
+    tracing::info!(
+        "[EX-RANK] Sent unlock response cmd=395 retcode=0 for value {}",
+        parsed_val
+    );
+
+    let _ = session.sync_player().await;
+
+    Ok(())
+}
+
+fn read_uvarint(buf: &mut &[u8]) -> Option<u64> {
+    let mut result = 0u64;
+    let mut shift = 0;
+    while !buf.is_empty() {
+        let byte = buf[0];
+        *buf = &buf[1..];
+        result |= ((byte & 0x7F) as u64) << shift;
+        if (byte & 0x80) == 0 {
+            return Some(result);
+        }
+        shift += 7;
+        if shift >= 64 {
+            return None;
+        }
+    }
+    None
+}
+
+fn skip_wire_field(wire_type: u32, buf: &mut &[u8]) {
+    match wire_type {
+        0 => {
+            let _ = read_uvarint(buf);
+        }
+        1 => {
+            if buf.len() >= 8 {
+                *buf = &buf[8..];
+            } else {
+                *buf = &[];
+            }
+        }
+        2 => {
+            if let Some(len) = read_uvarint(buf) {
+                let len = len as usize;
+                if buf.len() >= len {
+                    *buf = &buf[len..];
+                } else {
+                    *buf = &[];
+                }
+            }
+        }
+        5 => {
+            if buf.len() >= 4 {
+                *buf = &buf[4..];
+            } else {
+                *buf = &[];
+            }
+        }
+        _ => {
+            *buf = &[];
+        }
+    }
 }

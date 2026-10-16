@@ -708,7 +708,7 @@ async fn create_battle_info(
         };
 
         if let Some(avatar) = player.avatars.get(&avatar_id) {
-            let (battle_avatar, techs) = avatar.to_battle_avatar_proto(
+            let (mut battle_avatar, techs) = avatar.to_battle_avatar_proto(
                 *avatar_index,
                 player
                     .lightcones
@@ -720,6 +720,21 @@ async fn create_battle_info(
                     .filter(|v| v.equip_avatar == avatar.avatar_id)
                     .collect::<Vec<_>>(),
             );
+
+            if avatar.unlocked_enhanced_id.is_some() {
+                if !player.enable_ex_rank.unwrap_or(true) {
+                    battle_avatar.igdehgikfja.clear();
+                }
+            }
+
+            if !battle_avatar.igdehgikfja.is_empty() {
+                tracing::info!(
+                    "[EX-RANK] BattleAvatar id={} enhanced_id={} ex_rank_ids={:?}",
+                    battle_avatar.id,
+                    battle_avatar.enhanced_id,
+                    battle_avatar.igdehgikfja
+                );
+            }
 
             battle_info.buff_list.extend(techs);
 

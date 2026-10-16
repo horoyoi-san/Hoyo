@@ -19,6 +19,7 @@ const SERVER_CHAT_BUBBLE_ID: u32 = 220005;
 const SERVER_CHAT_HISTORY: &[&str] = &[
 
     "'lua {path_to_lua_script}' execute lua script",
+    "'ex {on/off}' เปิด/ปิด EX RANK ระหว่างต่อสู้ (ตัวละครที่ปลดล็อกแล้ว)",
     "'sw {on/off}' enable/disable silver wolf global buff",
     "'castorice {on/off}' enable/disable castorice global buff",
     "'sync' เมื่ออัพไฟล์ json แล้วให้ใช้คำสั่งนี้เพื่อซิงค์ข้อมูล",
@@ -162,6 +163,64 @@ pub async fn on_send_msg_cs_req(
                             "{} Global Buff: {}",
                             if cmd == "sw" { "SW" } else { "Castorice" },
                             if enabled { "Enabled" } else { "Disabled" }
+                        ),
+                    ))
+                    .await
+                    .unwrap();
+            }
+            "ex" => {
+                let Some(status) = args.first() else {
+                    session
+                        .send(create_send_message(
+                            25,
+                            SERVER_UID,
+                            body.message_datas
+                                .as_ref()
+                                .map(|v| v.message_type)
+                                .unwrap_or_default(),
+                            body.chat_type,
+                            String::from("Usage: ex on | ex off"),
+                        ))
+                        .await
+                        .unwrap();
+                    return;
+                };
+                let enabled = match status.to_ascii_lowercase().as_str() {
+                    "on" | "1" | "true" => true,
+                    "off" | "0" | "false" => false,
+                    _ => {
+                        session
+                            .send(create_send_message(
+                                25,
+                                SERVER_UID,
+                                body.message_datas
+                                    .as_ref()
+                                    .map(|v| v.message_type)
+                                    .unwrap_or_default(),
+                                body.chat_type,
+                                String::from("Usage: ex on | ex off"),
+                            ))
+                            .await
+                            .unwrap();
+                        return;
+                    }
+                };
+
+                json.enable_ex_rank = Some(enabled);
+                json.save_persistent().await;
+                let _ = session.sync_player().await;
+                session
+                    .send(create_send_message(
+                        25,
+                        SERVER_UID,
+                        body.message_datas
+                            .as_ref()
+                            .map(|v| v.message_type)
+                            .unwrap_or_default(),
+                        body.chat_type,
+                        format!(
+                            "EX RANK in battle: {}. Start a new battle to apply.",
+                            if enabled { "ON" } else { "OFF" }
                         ),
                     ))
                     .await

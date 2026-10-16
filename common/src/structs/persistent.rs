@@ -60,6 +60,10 @@ pub struct Persistent {
     pub enable_sw_global: Option<bool>,
     #[serde(default = "default_true")]
     pub enable_castorice_global: Option<bool>,
+    #[serde(default = "default_true")]
+    pub enable_ex_rank: Option<bool>,
+    #[serde(default)]
+    pub unlocked_ex_ranks: BTreeMap<u32, u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -92,6 +96,8 @@ impl Default for Persistent {
             // voice_language: AllowedLanguages::Jp,
             enable_sw_global: Some(true),
             enable_castorice_global: Some(true),
+            enable_ex_rank: Some(true),
+            unlocked_ex_ranks: BTreeMap::new(),
         }
     }
 }

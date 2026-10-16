@@ -36,6 +36,8 @@ pub struct FreesrData {
     #[serde(skip_serializing, skip_deserializing)]
     pub enable_castorice_global: Option<bool>,
     #[serde(skip_serializing, skip_deserializing)]
+    pub enable_ex_rank: Option<bool>,
+    #[serde(skip_serializing, skip_deserializing)]
     pub challenge_progress:
         BTreeMap<u32, BTreeMap<u32, crate::structs::persistent::ChallengeProgress>>,
     #[serde(skip_serializing, skip_deserializing)]
@@ -89,6 +91,19 @@ impl FreesrData {
         )
         .unwrap_or_default();
 
+        for (&avatar_id, &enhanced_id) in &persistent.unlocked_ex_ranks {
+            if let Some(avatar) = freesr_data.avatars.get_mut(&avatar_id) {
+                avatar.unlocked_enhanced_id = Some(enhanced_id);
+            }
+        }
+        // Force the known EX ranks reported by the client to stay unlocked
+        // across sessions, even if the client's unlock request is repeated.
+        for (avatar_id, ex_rank_id) in [(1204, 120401), (1213, 121301), (1308, 130801)] {
+            if let Some(avatar) = freesr_data.avatars.get_mut(&avatar_id) {
+                avatar.unlocked_enhanced_id = Some(ex_rank_id);
+            }
+        }
+
         freesr_data.lineups = persistent.lineups;
         freesr_data.position = persistent.position;
         freesr_data.scene = persistent.scene;
@@ -96,6 +111,7 @@ impl FreesrData {
         freesr_data.march_type = persistent.march_type;
         freesr_data.enable_sw_global = persistent.enable_sw_global;
         freesr_data.enable_castorice_global = persistent.enable_castorice_global;
+        freesr_data.enable_ex_rank = persistent.enable_ex_rank;
         freesr_data.challenge_progress = persistent.challenge_progress;
         freesr_data.challenge_origin_scene = persistent.challenge_origin_scene;
         freesr_data.challenge_origin_position = persistent.challenge_origin_position;
@@ -172,6 +188,7 @@ impl FreesrData {
             march_type: self.march_type,
             enable_sw_global: self.enable_sw_global,
             enable_castorice_global: self.enable_castorice_global,
+            enable_ex_rank: self.enable_ex_rank,
             challenge_progress: self.challenge_progress.clone(),
             challenge_origin_scene: self.challenge_origin_scene.clone(),
             challenge_origin_position: self.challenge_origin_position.clone(),
@@ -181,6 +198,13 @@ impl FreesrData {
                 .battle_config
                 .challenge_id
                 .map(|_| self.battle_config.clone()),
+            unlocked_ex_ranks: self
+                .avatars
+                .iter()
+                .filter_map(|(&avatar_id, avatar)| {
+                    avatar.unlocked_enhanced_id.map(|id| (avatar_id, id))
+                })
+                .collect(),
             // game_language: self.game_language,
             // voice_language: self.voice_langauge,
         }) {

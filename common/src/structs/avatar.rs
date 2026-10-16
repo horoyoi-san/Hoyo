@@ -139,6 +139,8 @@ pub struct AvatarJson {
     #[serde(alias = "spMax")]
     pub sp_max: Option<u32>,
     pub enhanced_id: Option<u32>,
+    #[serde(default)]
+    pub unlocked_enhanced_id: Option<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -208,7 +210,12 @@ impl AvatarJson {
                 .map(|(&anchor_type, &level)| AvatarPathSkillTree { anchor_type, level })
                 .collect(),
             path_equipment_id: lightcone.map(|v| v.get_unique_id()).unwrap_or_default(),
+            // This field is the active enhanced mode selector. EX-rank unlock
+            // IDs are sent separately in BattleAvatar. Never put a rank ID
+            // such as 120401 in this field.
             unk_enhanced_id: self.enhanced_id.unwrap_or_default(),
+            // AvatarPathData tag 8 is the client's unlocked EX-rank ID list.
+            igdehgikfja: self.unlocked_enhanced_id.into_iter().collect(),
             unlock_timestamp: 0,
             dressed_skin_id: 0,
             ..Default::default()
@@ -227,6 +234,8 @@ impl AvatarJson {
             id: self.avatar_id,
             level: self.level,
             rank: self.data.rank,
+            enhanced_id: self.enhanced_id.unwrap_or_default(),
+            igdehgikfja: self.unlocked_enhanced_id.into_iter().collect(),
             skilltree_list: self
                 .data
                 .skills
@@ -249,7 +258,6 @@ impl AvatarJson {
                 cur_sp: self.sp_value.unwrap_or(10_000),
                 max_sp: self.sp_max.unwrap_or(10_000),
             }),
-            enhanced_id: self.enhanced_id.unwrap_or_default(),
             ..Default::default()
         };
 

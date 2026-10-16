@@ -125,6 +125,18 @@ macro_rules! trait_handler {
                     on_get_avatar_data_45_compat(session, &payload).await?;
                     return Ok(());
                 }
+                if cmd_id == EX_RANK_UNLOCK_CMD_ID {
+                    on_ex_rank_unlock(session, &payload).await?;
+                    return Ok(());
+                }
+                if cmd_id == 1775 || cmd_id == 1711 {
+                    session.send_raw(NetPacket {
+                        cmd_type: 1708,
+                        head: Vec::new(),
+                        body: Vec::new(),
+                    }).await?;
+                    return Ok(());
+                }
 
                 if PlayerSession::should_send_dummy_rsp(cmd_id) {
                     session.send_dummy_response(cmd_id).await?;

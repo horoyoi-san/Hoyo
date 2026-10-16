@@ -465,7 +465,32 @@ pub async fn on_rank_up_avatar_cs_req(
     let player = session.json_data.get_mut()?;
     let avatar = player.avatars.get_mut(&req.avatar_id)?;
 
-    avatar.data.rank = req.rank;
+    let mut is_ex_rank = req.rank > 6;
+    if let Some(cost_data) = &req.cost_data {
+        for item in &cost_data.item_list {
+            if let Some(item_cost::Item::PileItem(pile)) = &item.item {
+                if pile.item_id == 131204
+                    || pile.item_id == 131213
+                    || pile.item_id == 131308
+                {
+                    is_ex_rank = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    if is_ex_rank {
+        let eid = req.avatar_id * 100 + 1;
+        avatar.unlocked_enhanced_id = Some(eid);
+        tracing::info!(
+            "[EX-RANK] Unlocked avatar {} with ex_rank_id={}",
+            req.avatar_id,
+            eid
+        );
+    } else {
+        avatar.data.rank = req.rank;
+    }
 
     let avatar_id = avatar.avatar_id;
 
@@ -478,6 +503,8 @@ pub async fn on_rank_up_avatar_cs_req(
         Vec::with_capacity(0),
         Vec::with_capacity(0),
     );
+
+    player.save_persistent().await;
 
     let _ = session.send(ret).await;
 
