@@ -52,7 +52,19 @@ jobs:
 
           Compress-Archive -Path dist/* -DestinationPath prebuilt-win64.zip -Force
 
-      - name: Upload to hkrpg release
+      - name: Generate server update manifest
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash -LiteralPath prebuilt-win64.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          $manifest = @{ version = "${{ github.sha }}"; sha256 = $hash } | ConvertTo-Json
+          [System.IO.File]::WriteAllText("$PWD/server-latest.json", "$manifest`n", [System.Text.UTF8Encoding]::new($false))
+
+      - name: Upload server package
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload hkrpg prebuilt-win64.zip --clobber
+
+      - name: Publish server update manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload hkrpg server-latest.json --clobber
