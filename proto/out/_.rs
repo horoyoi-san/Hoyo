@@ -3611,6 +3611,61 @@ pub struct StartChallengeScRsp {
     pub stage_info: ::core::option::Option<ChallengeStageInfo>,
 }
 #[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LineupTierce {
+    #[prost(message, repeated, tag = "9")]
+    pub tierce_avatar_id_list: ::prost::alloc::vec::Vec<AvatarLineup>,
+    #[prost(uint32, tag = "10")]
+    pub buff_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CurTierceChallenge {
+    #[prost(message, repeated, tag = "2")]
+    pub lineup_list: ::prost::alloc::vec::Vec<LineupInfo>,
+    #[prost(bool, tag = "7")]
+    pub mpkmikbfehg: bool,
+    #[prost(uint32, tag = "9")]
+    pub challenge_id: u32,
+    #[prost(uint32, tag = "13")]
+    pub stage_index: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8986)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartChallengeTierceCsReq {
+    #[prost(bool, tag = "2")]
+    pub mpkmikbfehg: bool,
+    #[prost(uint32, tag = "3")]
+    pub challenge_id: u32,
+    #[prost(uint32, tag = "5")]
+    pub stage_index: u32,
+    #[prost(message, repeated, tag = "9")]
+    pub lineup_tierce_list: ::prost::alloc::vec::Vec<LineupTierce>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8998)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartChallengeTierceScRsp {
+    #[prost(uint32, tag = "3")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "9")]
+    pub scene: ::core::option::Option<SceneInfo>,
+    #[prost(message, optional, tag = "15")]
+    pub cur_tierce_challenge: ::core::option::Option<CurTierceChallenge>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8989)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeTierceCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(8983)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LeaveChallengeTierceScRsp {
+    #[prost(uint32, tag = "13")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
 #[cmdid(1715)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnterChallengeNextPhaseCsReq {}
@@ -6676,6 +6731,23 @@ pub struct SceneEntityMoveScRsp {
     #[prost(message, repeated, tag = "10")]
     pub entity_motion_list: ::prost::alloc::vec::Vec<EntityMotion>,
     #[prost(uint32, tag = "11")]
+    pub retcode: u32,
+}
+/// Obf: MNEPAIGBPGM
+#[derive(proto_derive::CmdID)]
+#[cmdid(1467)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnterSectionCsReq {
+    #[prost(uint32, tag = "6")]
+    pub section_id: u32,
+    #[prost(uint64, tag = "10")]
+    pub interact_id: u64,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1463)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct EnterSectionScRsp {
+    #[prost(uint32, tag = "3")]
     pub retcode: u32,
 }
 /// Obf: OBOAHKMABIJ

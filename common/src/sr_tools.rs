@@ -1,7 +1,8 @@
 use proto::{Avatar, AvatarPathData};
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, HashMap};
+use std::collections::{BTreeMap, HashMap, HashSet};
 
+use crate::resources::resolve_endgame_node;
 use crate::structs::{
     // AllowedLanguages,
     avatar::{AvatarJson, MultiPathAvatar},
@@ -50,6 +51,12 @@ pub struct FreesrData {
     pub challenge_origin_battle_config: Option<BattleConfig>,
     #[serde(skip_serializing, skip_deserializing)]
     pub challenge_active_battle_config: Option<BattleConfig>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub spawned_monsters: Vec<crate::structs::persistent::SpawnedMonster>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub spawned_battle_config: Option<BattleConfig>,
+    #[serde(skip_serializing, skip_deserializing)]
+    pub spawned_battle_active: bool,
 }
 
 impl FreesrData {
@@ -76,7 +83,16 @@ impl FreesrData {
 
 impl FreesrData {
     pub async fn load() -> anyhow::Result<Self> {
-        let mut freesr_data: FreesrData = tokio::fs::read_to_string("freesr-data.json")
+        let persistent: Persistent = serde_json::from_str(
+            &tokio::fs::read_to_string("persistent")
+                .await
+                .unwrap_or_default(),
+        )
+        .unwrap_or_default();
+
+        // Inventory and battle setup always come from freesr-data.json.
+        // `persistent` stores only server-owned gameplay state.
+        let mut freesr_data = tokio::fs::read_to_string("freesr-data.json")
             .await
             .map_err(|e| anyhow::anyhow!("failed to read freesr-data.json: {e}"))
             .and_then(|v| {
@@ -84,12 +100,78 @@ impl FreesrData {
                     .map_err(|e| anyhow::anyhow!("freesr-data.json is broken: {e}, pls redownload"))
             })?;
 
-        let persistent: Persistent = serde_json::from_str(
-            &tokio::fs::read_to_string("persistent")
-                .await
-                .unwrap_or_default(),
-        )
-        .unwrap_or_default();
+        freesr_data.lineups = persistent.lineups.clone();
+        freesr_data.position = persistent.position.clone();
+        freesr_data.scene = persistent.scene.clone();
+        freesr_data.main_character = persistent.main_character;
+        freesr_data.march_type = persistent.march_type;
+        freesr_data.enable_sw_global = persistent.enable_sw_global;
+        freesr_data.enable_castorice_global = persistent.enable_castorice_global;
+        freesr_data.enable_ex_rank = persistent.enable_ex_rank;
+        freesr_data.challenge_progress = persistent.challenge_progress.clone();
+        freesr_data.challenge_origin_scene = persistent.challenge_origin_scene.clone();
+        freesr_data.challenge_origin_position = persistent.challenge_origin_position.clone();
+        freesr_data.challenge_origin_lineups = persistent.challenge_origin_lineups.clone();
+        freesr_data.challenge_origin_battle_config =
+            persistent.challenge_origin_battle_config.clone();
+        freesr_data.challenge_active_battle_config =
+            persistent.challenge_active_battle_config.clone();
+        freesr_data.spawned_monsters = persistent.spawned_monsters.clone();
+
+        // Old server runs restarted the entity counter at 40000, which could
+        // duplicate IDs already persisted. Renumber collisions before sending
+        // the scene snapshot to the client.
+        let mut used_entity_ids = HashSet::new();
+        let mut next_entity_id = 40_000;
+        for spawned in &mut freesr_data.spawned_monsters {
+            if !used_entity_ids.insert(spawned.entity_id) {
+                while used_entity_ids.contains(&next_entity_id) {
+                    next_entity_id += 1;
+                }
+                spawned.entity_id = next_entity_id;
+                used_entity_ids.insert(next_entity_id);
+                next_entity_id += 1;
+            }
+        }
+
+        // Repair saved monsters that were stacked at the exact same location
+        // by older versions. Only migrate the player's current map once.
+        let current_scene = &freesr_data.scene;
+        let mut has_stacked_monsters = false;
+        'pairs: for (index, first) in freesr_data.spawned_monsters.iter().enumerate() {
+            if first.entry_id != current_scene.entry_id
+                || first.plane_id != current_scene.plane_id
+                || first.floor_id != current_scene.floor_id
+            {
+                continue;
+            }
+            for second in freesr_data.spawned_monsters.iter().skip(index + 1) {
+                if second.entry_id == first.entry_id
+                    && second.plane_id == first.plane_id
+                    && second.floor_id == first.floor_id
+                    && second.position.x == first.position.x
+                    && second.position.y == first.position.y
+                    && second.position.z == first.position.z
+                {
+                    has_stacked_monsters = true;
+                    break 'pairs;
+                }
+            }
+        }
+        if has_stacked_monsters {
+            let origin = freesr_data.position.clone();
+            let mut index = 0;
+            for spawned in &mut freesr_data.spawned_monsters {
+                if spawned.entry_id == current_scene.entry_id
+                    && spawned.plane_id == current_scene.plane_id
+                    && spawned.floor_id == current_scene.floor_id
+                {
+                    spawned.position =
+                        crate::structs::persistent::spawned_monster_position(&origin, index);
+                    index += 1;
+                }
+            }
+        }
 
         for (&avatar_id, &enhanced_id) in &persistent.unlocked_ex_ranks {
             if let Some(avatar) = freesr_data.avatars.get_mut(&avatar_id) {
@@ -104,24 +186,48 @@ impl FreesrData {
             }
         }
 
-        freesr_data.lineups = persistent.lineups;
-        freesr_data.position = persistent.position;
-        freesr_data.scene = persistent.scene;
-        freesr_data.main_character = persistent.main_character;
-        freesr_data.march_type = persistent.march_type;
-        freesr_data.enable_sw_global = persistent.enable_sw_global;
-        freesr_data.enable_castorice_global = persistent.enable_castorice_global;
-        freesr_data.enable_ex_rank = persistent.enable_ex_rank;
-        freesr_data.challenge_progress = persistent.challenge_progress;
-        freesr_data.challenge_origin_scene = persistent.challenge_origin_scene;
-        freesr_data.challenge_origin_position = persistent.challenge_origin_position;
-        freesr_data.challenge_origin_lineups = persistent.challenge_origin_lineups;
-        freesr_data.challenge_origin_battle_config =
-            persistent.challenge_origin_battle_config;
         if let Some(active_battle_config) = persistent.challenge_active_battle_config.clone() {
             freesr_data.battle_config = active_battle_config;
         }
         freesr_data.challenge_active_battle_config = persistent.challenge_active_battle_config;
+
+        // Challenge IDs are tied to the resource version. If a saved active
+        // challenge no longer exists, the client cannot reconstruct its UI on
+        // login. Restore the pre-challenge state saved when it was entered.
+        if let Some(challenge_id) = freesr_data.battle_config.challenge_id {
+            let challenge_node = freesr_data.battle_config.challenge_node.unwrap_or(1);
+            // Login resumes through GetCurChallenge (the legacy challenge
+            // protocol). A Tierce-only ID cannot be resumed through that
+            // response even if it exists in ChallengeMazeTierceConfig.
+            let challenge_is_supported =
+                resolve_endgame_node(challenge_id, challenge_node).is_some();
+            if !challenge_is_supported {
+                if let (
+                    Some(origin_scene),
+                    Some(origin_position),
+                    Some(origin_lineups),
+                    Some(origin_battle_config),
+                ) = (
+                    freesr_data.challenge_origin_scene.clone(),
+                    freesr_data.challenge_origin_position.clone(),
+                    freesr_data.challenge_origin_lineups.clone(),
+                    freesr_data.challenge_origin_battle_config.clone(),
+                ) {
+                    tracing::warn!(
+                        "Discarding stale challenge state {challenge_id}; restoring saved origin scene"
+                    );
+                    freesr_data.scene = origin_scene;
+                    freesr_data.position = origin_position;
+                    freesr_data.lineups = origin_lineups;
+                    freesr_data.battle_config = origin_battle_config;
+                    freesr_data.challenge_origin_scene = None;
+                    freesr_data.challenge_origin_position = None;
+                    freesr_data.challenge_origin_lineups = None;
+                    freesr_data.challenge_origin_battle_config = None;
+                    freesr_data.challenge_active_battle_config = None;
+                }
+            }
+        }
         // freesr_data.game_language = persistent.game_language;
         // freesr_data.voice_langauge = persistent.voice_language;
 
@@ -198,6 +304,7 @@ impl FreesrData {
                 .battle_config
                 .challenge_id
                 .map(|_| self.battle_config.clone()),
+            spawned_monsters: self.spawned_monsters.clone(),
             unlocked_ex_ranks: self
                 .avatars
                 .iter()

@@ -9,10 +9,8 @@ pub async fn on_get_gacha_info_cs_req(
         end_time: 1924992000,
         begin_time: 0,
         gacha_ceiling: Some(GachaCeiling::default()),
-        prize_item_list: vec![8001,],
-        item_detail_list: vec![
-        8001,
-        ],
+        prize_item_list: vec![8001],
+        item_detail_list: vec![8001],
         gacha_id: 1001,
         ..Default::default()
     }];
@@ -27,7 +25,6 @@ pub async fn on_do_gacha_cs_req(
     res.gacha_num = req.gacha_num;
 
     let item_ids = [
-        
         8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010,
         //Avatars
         //The Preservation
@@ -87,9 +84,7 @@ pub async fn on_do_gacha_cs_req(
                         ..Default::default()
                     }],
                 }),
-                transfer_item_list: Some(ItemList {
-                    item_list: vec![],
-                }),
+                transfer_item_list: Some(ItemList { item_list: vec![] }),
             }
         })
         .collect();

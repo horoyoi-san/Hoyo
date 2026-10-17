@@ -1,15 +1,19 @@
-use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
+use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use anyhow::Result;
 use rand::RngExt;
 
 use common::{
-    resources::{ENDGAME_CHALLENGE_CONFIG, GAME_RES, EndgameNode, resolve_endgame_node},
+    resources::{
+        ENDGAME_CHALLENGE_CONFIG, EndgameNode, EndgameTierceNode, GAME_RES, resolve_endgame_node,
+        resolve_endgame_tierce_node,
+    },
     structs::{AvatarJson, BattleBuffJson, BattleType, Monster, Position, Scene},
 };
 
 use super::*;
 
+#[cfg(test)]
 fn known_endgame_challenges() -> Vec<(u32, u32)> {
     let mut challenges = ENDGAME_CHALLENGE_CONFIG
         .values()
@@ -25,7 +29,10 @@ fn challenge_lineup(
     fallback: &std::collections::BTreeMap<u32, u32>,
 ) -> std::collections::BTreeMap<u32, u32> {
     let ids = if !avatar_lineup.is_empty() {
-        avatar_lineup.iter().map(|avatar| avatar.id).collect::<Vec<_>>()
+        avatar_lineup
+            .iter()
+            .map(|avatar| avatar.id)
+            .collect::<Vec<_>>()
     } else if !avatar_ids.is_empty() {
         avatar_ids.to_vec()
     } else {
@@ -45,11 +52,49 @@ async fn load_challenge_scene(
     node: &EndgameNode<'_>,
     lineup: &std::collections::BTreeMap<u32, u32>,
 ) -> Result<(SceneInfo, Position)> {
+    load_challenge_scene_parts(
+        session,
+        node.entry_id,
+        node.group_id,
+        node.event_id,
+        node.monster_id,
+        lineup,
+    )
+    .await
+}
+
+async fn load_tierce_challenge_scene(
+    session: &mut PlayerSession,
+    node: &EndgameTierceNode<'_>,
+    lineup: &std::collections::BTreeMap<u32, u32>,
+) -> Result<(SceneInfo, Position)> {
+    load_challenge_scene_parts(
+        session,
+        node.entry_id,
+        node.group_id,
+        node.event_id,
+        // Keep the configured NPC as the scene interaction trigger. The
+        // actual battle monsters are supplied separately from StageConfig;
+        // replacing this NPC with a wave monster can make the trigger inert.
+        node.monster_id,
+        lineup,
+    )
+    .await
+}
+
+async fn load_challenge_scene_parts(
+    session: &mut PlayerSession,
+    entry_id: u32,
+    group_id: u32,
+    event_id: u32,
+    monster_id: u32,
+    lineup: &std::collections::BTreeMap<u32, u32>,
+) -> Result<(SceneInfo, Position)> {
     let Some(json) = session.json_data.get_mut() else {
         anyhow::bail!("player data is not set");
     };
     let previous_lineups = std::mem::replace(&mut json.lineups, lineup.clone());
-    let scene_result = super::scene::load_scene(session, node.entry_id, false, None).await;
+    let scene_result = super::scene::load_scene(session, entry_id, false, None).await;
     if let Some(json) = session.json_data.get_mut() {
         json.lineups = previous_lineups;
     }
@@ -58,8 +103,8 @@ async fn load_challenge_scene(
     let group = scene
         .entity_group_list
         .iter_mut()
-        .find(|group| group.group_id == node.group_id)
-        .ok_or_else(|| anyhow::anyhow!("challenge spawn group {} is missing", node.group_id))?;
+        .find(|group| group.group_id == group_id)
+        .ok_or_else(|| anyhow::anyhow!("challenge spawn group {group_id} is missing"))?;
     let mut spawn_motion = None;
     let mut entities = Vec::with_capacity(group.entity_list.len());
     for mut entity in group.entity_list.drain(..) {
@@ -67,8 +112,8 @@ async fn load_challenge_scene(
             if spawn_motion.is_some() {
                 continue;
             }
-            monster.monster_id = node.monster_id;
-            monster.event_id = node.event_id;
+            monster.monster_id = monster_id;
+            monster.event_id = event_id;
             monster.world_level = 6;
             spawn_motion = entity.motion.clone();
         }
@@ -76,19 +121,44 @@ async fn load_challenge_scene(
     }
     group.entity_list = entities;
 
-    let spawn_motion = spawn_motion
-        .ok_or_else(|| anyhow::anyhow!("challenge spawn monster is missing"))?;
+    let spawn_motion =
+        spawn_motion.ok_or_else(|| anyhow::anyhow!("challenge spawn monster is missing"))?;
     let spawn_pos = spawn_motion
         .pos
         .as_ref()
         .ok_or_else(|| anyhow::anyhow!("challenge spawn position is missing"))?;
     let spawn_rot = spawn_motion.rot.as_ref();
-    let spawn_position = Position {
+    let monster_position = Position {
         x: spawn_pos.x,
         y: spawn_pos.y,
         z: spawn_pos.z,
         rot_y: spawn_rot.map(|rot| rot.y).unwrap_or_default(),
     };
+
+    // Challenge maps expose the boss as a scene monster that starts combat when
+    // the player hits it. Spawning the player on the exact same coordinates
+    // makes large bosses cover the avatar and can prevent the client from
+    // selecting the monster. Keep the monster transform intact and place the
+    // party a few meters in front of it instead.
+    // Scene rotations use millidegrees (the same scale as the other map
+    // transforms), while the standard trigonometric functions take radians.
+    let yaw = (f64::from(monster_position.rot_y) / 1000.0).to_radians();
+    let player_position = Position {
+        // Keep the party near the scene's monster anchor. A larger offset can
+        // push the spawn through the arena boundary and leave the player facing
+        // a wall, where the client cannot acquire a combat target.
+        x: monster_position.x + (yaw.sin() * 8_000.0).round() as i32,
+        y: monster_position.y,
+        z: monster_position.z + (yaw.cos() * 8_000.0).round() as i32,
+        // Face the monster from the offset spawn point.
+        rot_y: monster_position
+            .rot_y
+            .wrapping_add(180_000)
+            .rem_euclid(360_000),
+    };
+    tracing::info!(
+        "Challenge scene entry={entry_id} npc_monster={monster_id} group={group_id} monster_position={monster_position:?} player_position={player_position:?}"
+    );
 
     if let Some(player_group) = scene
         .entity_group_list
@@ -97,12 +167,12 @@ async fn load_challenge_scene(
     {
         for entity in &mut player_group.entity_list {
             if matches!(entity.entity, Some(scene_entity_info::Entity::Actor(_))) {
-                entity.motion = Some(spawn_motion.clone());
+                entity.motion = Some((&player_position).into());
             }
         }
     }
 
-    Ok((scene, spawn_position))
+    Ok((scene, player_position))
 }
 
 fn challenge_mode(challenge_id: u32) -> BattleType {
@@ -174,7 +244,11 @@ fn challenge_cur_info(node: &EndgameNode<'_>) -> CurChallenge {
 
     CurChallenge {
         challenge_id: node.challenge.id,
-        score_id: if battle_type == BattleType::PF { 40_000 } else { 0 },
+        score_id: if battle_type == BattleType::PF {
+            40_000
+        } else {
+            0
+        },
         status: ChallengeStatus::ChallengeDoing as i32,
         extra_lineup_type: ExtraLineupType::LineupChallenge as i32,
         stage_info: buff_info,
@@ -188,10 +262,10 @@ fn challenge_lineup_info(
     node: u32,
 ) -> LineupInfo {
     let mut info = AvatarJson::to_lineup_info(lineup);
-    info.extra_lineup_type = if node == 1 {
-        ExtraLineupType::LineupChallenge as i32
-    } else {
-        ExtraLineupType::LineupChallenge2 as i32
+    info.extra_lineup_type = match node {
+        1 => ExtraLineupType::LineupChallenge as i32,
+        2 => ExtraLineupType::LineupChallenge2 as i32,
+        _ => ExtraLineupType::LineupChallenge3 as i32,
     };
     info.plane_id = plane_id;
     info
@@ -255,15 +329,15 @@ pub async fn on_start_challenge_cs_req(
         return;
     }
 
-    let (mut scene, spawn_position) = match load_challenge_scene(session, &node, &first_lineup).await
-    {
-        Ok(scene) => scene,
-        Err(error) => {
-            tracing::warn!("Unable to load challenge {}: {error:#}", req.challenge_id);
-            res.retcode = 2801;
-            return;
-        }
-    };
+    let (mut scene, spawn_position) =
+        match load_challenge_scene(session, &node, &first_lineup).await {
+            Ok(scene) => scene,
+            Err(error) => {
+                tracing::warn!("Unable to load challenge {}: {error:#}", req.challenge_id);
+                res.retcode = 2801;
+                return;
+            }
+        };
 
     if let Some(player) = session.json_data.get_mut() {
         enter_challenge_battle(
@@ -283,9 +357,172 @@ pub async fn on_start_challenge_cs_req(
     res.cur_challenge = Some(challenge_cur_info(&node));
     res.lineup_list.push(challenge_lineup_info(
         &first_lineup,
-        res.scene.as_ref().map(|scene| scene.plane_id).unwrap_or_default(),
+        res.scene
+            .as_ref()
+            .map(|scene| scene.plane_id)
+            .unwrap_or_default(),
         1,
     ));
+}
+
+pub async fn on_start_challenge_tierce_cs_req(
+    session: &mut PlayerSession,
+    req: &StartChallengeTierceCsReq,
+    res: &mut StartChallengeTierceScRsp,
+) {
+    let Some(node) = resolve_endgame_tierce_node(req.challenge_id) else {
+        res.retcode = 2801;
+        return;
+    };
+    let stage_index = req.stage_index as usize;
+    // The client sends a zero-based stage index (room 1 => 0, room 2 => 1).
+    // Use it directly so later rooms don't accidentally replay the first wave.
+    // The client exposes three lineup rooms for this challenge, while this
+    // StageConfig currently contains only two monster waves. Keep the selected
+    // room's lineup, and reuse the final configured wave for any extra room
+    // until the resource provides a dedicated encounter for it.
+    let wave_index = stage_index.min(node.stage.monster_list.len().saturating_sub(1));
+    let Some(wave) = node.stage.monster_list.get(wave_index) else {
+        tracing::warn!(
+            "Tierce challenge {} requested stage_index={} (wave_index={}), but stage {} has {} waves",
+            req.challenge_id,
+            req.stage_index,
+            wave_index,
+            node.stage.stage_id,
+            node.stage.monster_list.len()
+        );
+        res.retcode = 2801;
+        return;
+    };
+    tracing::info!(
+        "Tierce challenge {} starting stage_index={} wave_index={} stage_id={} monsters={:?}",
+        req.challenge_id,
+        req.stage_index,
+        wave_index,
+        node.stage.stage_id,
+        wave
+    );
+    let Some(player) = session.json_data.get() else {
+        res.retcode = 2801;
+        return;
+    };
+    if player.challenge_origin_scene.is_some()
+        && player.battle_config.challenge_id != Some(req.challenge_id)
+    {
+        res.retcode = 2803;
+        return;
+    }
+
+    let fallback = player.lineups.clone();
+    let tierce_lineups = req
+        .lineup_tierce_list
+        .iter()
+        .map(|lineup| challenge_lineup(&lineup.tierce_avatar_id_list, &[], &fallback))
+        .collect::<Vec<_>>();
+    // stage_index selects the room/team, while wave_index selects the monster
+    // data. They are not interchangeable when a room has no dedicated wave.
+    let lineup = if tierce_lineups.is_empty() {
+        fallback
+    } else {
+        tierce_lineups
+            .get(stage_index)
+            .filter(|lineup| !lineup.is_empty())
+            .cloned()
+            .unwrap_or_default()
+    };
+    if lineup.is_empty() {
+        tracing::warn!(
+            "Tierce challenge {} has no lineup for stage_index={} (received {} lineups)",
+            req.challenge_id,
+            req.stage_index,
+            tierce_lineups.len()
+        );
+        res.retcode = 2805;
+        return;
+    }
+    tracing::info!(
+        "Tierce challenge {} selected lineup for stage_index={}: {:?}",
+        req.challenge_id,
+        req.stage_index,
+        lineup
+    );
+
+    let (mut scene, spawn_position) =
+        match load_tierce_challenge_scene(session, &node, &lineup).await {
+            Ok(scene) => scene,
+            Err(error) => {
+                tracing::warn!(
+                    "Unable to load Tierce challenge {}: {error:#}",
+                    req.challenge_id
+                );
+                res.retcode = 2801;
+                return;
+            }
+        };
+
+    if let Some(player) = session.json_data.get_mut() {
+        if player.challenge_origin_scene.is_none() {
+            player.challenge_origin_scene = Some(player.scene.clone());
+            player.challenge_origin_position = Some(player.position.clone());
+            player.challenge_origin_lineups = Some(player.lineups.clone());
+            player.challenge_origin_battle_config = Some(player.battle_config.clone());
+        }
+        player.lineups = lineup.clone();
+        player.position = spawn_position;
+        player.scene = Scene {
+            entry_id: scene.entry_id,
+            plane_id: scene.plane_id,
+            floor_id: scene.floor_id,
+        };
+
+        let battle_type = challenge_mode(req.challenge_id);
+        player.battle_config.battle_type = battle_type.clone();
+        player.battle_config.challenge_id = Some(req.challenge_id);
+        player.battle_config.challenge_group_id = Some(req.challenge_id / 10);
+        player.battle_config.challenge_node = Some(req.stage_index);
+        player.battle_config.stage_id = node.stage.stage_id;
+        player.battle_config.cycle_count = if battle_type == BattleType::PF { 4 } else { 30 };
+        player.battle_config.monsters = vec![
+            wave.iter()
+                .map(|monster_id| Monster {
+                    level: node.stage.level,
+                    monster_id: *monster_id,
+                    max_hp: 0,
+                })
+                .collect(),
+        ];
+        let buff_id = req
+            .lineup_tierce_list
+            .get(stage_index)
+            .or_else(|| req.lineup_tierce_list.first())
+            .map(|lineup| lineup.buff_id)
+            .unwrap_or_default();
+        player.battle_config.blessings = if buff_id == 0 {
+            Vec::new()
+        } else {
+            vec![BattleBuffJson {
+                level: 1,
+                id: buff_id,
+                ..Default::default()
+            }]
+        };
+        player.battle_config.custom_battle_lineup = Some(lineup);
+        player.save_persistent().await;
+    }
+
+    scene.game_mode_type = 4;
+    res.retcode = 0;
+    res.scene = Some(scene.clone());
+    res.cur_tierce_challenge = Some(CurTierceChallenge {
+        mpkmikbfehg: req.mpkmikbfehg,
+        challenge_id: req.challenge_id,
+        stage_index: req.stage_index,
+        lineup_list: tierce_lineups
+            .iter()
+            .enumerate()
+            .map(|(index, lineup)| challenge_lineup_info(lineup, scene.plane_id, index as u32 + 1))
+            .collect(),
+    });
 }
 
 pub async fn on_enter_challenge_next_phase_cs_req(
@@ -326,12 +563,7 @@ pub async fn on_enter_challenge_next_phase_cs_req(
             .challenge_second_lineup
             .clone()
             .unwrap_or_else(|| lineup.clone());
-        configure_challenge_battle(
-            player,
-            &node,
-            &lineup,
-            &second_lineup,
-        );
+        configure_challenge_battle(player, &node, &lineup, &second_lineup);
         player.lineups = lineup;
         player.position = spawn_position;
         player.scene = Scene {
@@ -400,6 +632,16 @@ pub async fn on_leave_challenge_cs_req(
     res.retcode = 0;
 }
 
+pub async fn on_leave_challenge_tierce_cs_req(
+    session: &mut PlayerSession,
+    _req: &LeaveChallengeTierceCsReq,
+    res: &mut LeaveChallengeTierceScRsp,
+) {
+    let mut legacy_res = LeaveChallengeScRsp::default();
+    on_leave_challenge_cs_req(session, &LeaveChallengeCsReq {}, &mut legacy_res).await;
+    res.retcode = legacy_res.retcode;
+}
+
 pub async fn on_start_cocoon_stage_cs_req(
     session: &mut PlayerSession,
     req: &StartCocoonStageCsReq,
@@ -445,13 +687,23 @@ pub async fn on_pve_battle_result_cs_req(
     res.battle_id = req.battle_id;
     res.stage_id = req.stage_id;
 
-    if req.end_status != BattleEndStatus::BattleEndWin as i32 {
-        return;
-    }
-
     let Some(player) = session.json_data.get_mut() else {
         return;
     };
+
+    // Restore after wins, losses, or retreats. Retain the snapshot to allow
+    // another fight with the still-spawned scene entity later.
+    if player.spawned_battle_active {
+        if let Some(original_config) = player.spawned_battle_config.clone() {
+            player.battle_config = original_config;
+        }
+        player.spawned_battle_active = false;
+        tracing::info!("Restored battle config after spawned monster encounter");
+    }
+
+    if req.end_status != BattleEndStatus::BattleEndWin as i32 {
+        return;
+    }
     let battle_config = &player.battle_config;
     let (Some(mode_id), Some(challenge_id)) = (
         battle_config.battle_type.endgame_key(),
@@ -487,70 +739,129 @@ pub async fn on_get_challenge_cs_req(
         return;
     };
 
-    let mut group_ids = BTreeSet::new();
-    let mut known_ids = HashSet::new();
-    for (challenge_id, group_id) in known_endgame_challenges() {
-        known_ids.insert(challenge_id);
-        group_ids.insert(group_id);
+    // Return only the active cycle's stages. Historical cycles were all being
+    // marked complete, and max_level_list was repeated once per stage; that
+    // malformed response can leave the endgame page showing empty nodes.
+    let mut latest_group_by_mode = BTreeMap::new();
+    for challenge in ENDGAME_CHALLENGE_CONFIG.values() {
+        let mode_id = challenge_mode(challenge.id)
+            .endgame_key()
+            .unwrap_or_default();
+        latest_group_by_mode
+            .entry(mode_id)
+            .and_modify(|group_id: &mut u32| *group_id = (*group_id).max(challenge.group_id))
+            .or_insert(challenge.group_id);
+    }
 
-        let (level, reward_display_type, score_id, score_two) = if challenge_id > 20_000 {
-            (
-                4,
-                101_404,
-                if challenge_id < 30_000 { 40_000 } else { 0 },
-                if challenge_id < 30_000 { 40_000 } else { 0 },
-            )
+    let mut active_challenges = ENDGAME_CHALLENGE_CONFIG
+        .values()
+        .filter(|challenge| {
+            let mode_id = challenge_mode(challenge.id)
+                .endgame_key()
+                .unwrap_or_default();
+            latest_group_by_mode.get(&mode_id) == Some(&challenge.group_id)
+        })
+        .collect::<Vec<_>>();
+    active_challenges.sort_unstable_by_key(|challenge| challenge.id);
+
+    // Newer endgame floors are represented by ChallengeMazeTierceConfig and
+    // extend a legacy floor via PreChallengeMazeID. Include only the Tierce
+    // records whose parent belongs to the active cycle for that mode.
+    let active_legacy_ids = active_challenges
+        .iter()
+        .map(|challenge| challenge.id)
+        .collect::<BTreeSet<_>>();
+
+    for challenge in active_challenges {
+        let mode_id = challenge_mode(challenge.id)
+            .endgame_key()
+            .unwrap_or_default();
+        let progress = player
+            .challenge_progress
+            .get(&mode_id)
+            .and_then(|records| records.get(&challenge.id));
+        let (score_id, score_two) = if mode_id == 2 {
+            (40_000, 40_000)
         } else {
-            (12, 101_212, 0, 0)
+            (0, 0)
         };
-
         res.challenge_list.push(Challenge {
-            challenge_id,
-            star: 7,
-            taken_reward: 42,
+            challenge_id: challenge.id,
+            star: progress.map(|progress| progress.star).unwrap_or_default(),
             score_id,
             score_two,
             ..Default::default()
         });
-        res.max_level_list.push(ChallengeHistoryMaxLevel {
-            level,
-            reward_display_type,
+    }
+
+    let mut active_tierce_challenges = common::resources::ENDGAME_TIERCE_CHALLENGE_CONFIG
+        .values()
+        .filter(|challenge| active_legacy_ids.contains(&challenge.pre_challenge_maze_id))
+        .collect::<Vec<_>>();
+    active_tierce_challenges.sort_unstable_by_key(|challenge| challenge.id);
+    for challenge in active_tierce_challenges {
+        let mode_id = challenge_mode(challenge.id)
+            .endgame_key()
+            .unwrap_or_default();
+        let progress = player
+            .challenge_progress
+            .get(&mode_id)
+            .and_then(|records| records.get(&challenge.id));
+        let (score_id, score_two) = if mode_id == 2 {
+            (40_000, 40_000)
+        } else {
+            (0, 0)
+        };
+        res.challenge_list.push(Challenge {
+            challenge_id: challenge.id,
+            star: progress.map(|progress| progress.star).unwrap_or_default(),
+            score_id,
+            score_two,
             ..Default::default()
         });
     }
 
-    for records in player.challenge_progress.values() {
-        for (challenge_id, progress) in records {
-            if !known_ids.insert(*challenge_id) {
-                continue;
-            }
-
+    // Memory of Chaos is gated by the 15 Last Vestiges of Towering Citadel
+    // stages. The client derives that gate from these legacy challenge records.
+    // Expose those prerequisite clears explicitly so the newer modes are usable
+    // on fresh server profiles that do not have legacy challenge history.
+    for challenge_id in 1..=15 {
+        if ENDGAME_CHALLENGE_CONFIG.contains_key(&challenge_id) {
             res.challenge_list.push(Challenge {
-                challenge_id: *challenge_id,
-                star: progress.star,
+                challenge_id,
+                star: 7,
+                taken_reward: 42,
                 ..Default::default()
             });
-            if progress.group_id != 0 {
-                group_ids.insert(progress.group_id);
-            }
         }
     }
 
-    res.challenge_group_list = group_ids
+    let mut challenge_group_ids = latest_group_by_mode
+        .values()
+        .copied()
+        .collect::<BTreeSet<_>>();
+    challenge_group_ids.insert(100);
+    res.challenge_group_list = challenge_group_ids
         .into_iter()
         .map(|group_id| ChallengeGroup {
             group_id,
             ..Default::default()
         })
         .collect();
+
+    for (level, reward_display_type) in [(15, 101_015), (12, 101_212), (4, 101_404), (4, 101_404)] {
+        res.max_level_list.push(ChallengeHistoryMaxLevel {
+            level,
+            reward_display_type,
+            ..Default::default()
+        });
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::{known_endgame_challenges, resolve_endgame_node};
-    use common::resources::{
-        ENDGAME_CHALLENGE_CONFIG, ENDGAME_SCENE_CONFIG,
-    };
+    use common::resources::{ENDGAME_CHALLENGE_CONFIG, ENDGAME_SCENE_CONFIG};
     use std::collections::HashSet;
 
     #[test]
@@ -576,7 +887,6 @@ mod tests {
                 resolved_nodes += 1;
                 assert!(!node.stage.monster_list.is_empty());
                 assert!(node.stage.monster_list.iter().all(|wave| !wave.is_empty()));
-
             }
         }
         assert_eq!(resolved_nodes, 1676);
@@ -634,16 +944,163 @@ pub async fn on_scene_cast_skill_cs_req(
 ) {
     res.cast_entity_id = req.cast_entity_id;
 
+    let target_position = req
+        .target_motion
+        .as_ref()
+        .and_then(|motion| motion.pos.as_ref());
+
     let targets = req
         .hit_target_entity_id_list
         .iter()
         .chain(&req.assist_monster_entity_id_list)
-        .filter(|id| **id > 30_000 || **id < 1_000)
+        // Entity IDs are allocated by the scene and can fall in the range
+        // 1,000..=30,000. These are still valid hit targets; only zero is an
+        // unset ID. Filtering by an arbitrary range silently blocked some
+        // Tierce rooms from starting combat.
+        .filter(|id| **id != 0)
         .collect::<Vec<_>>();
 
-    if targets.is_empty() {
-        tracing::warn!("scene cast skill target is empty!");
-        return;
+    let position_spawn_target = session.json_data.get().and_then(|player| {
+        let target_position = target_position?;
+        player
+            .spawned_monsters
+            .iter()
+            .filter(|spawned| {
+                spawned.entry_id == player.scene.entry_id
+                    && spawned.plane_id == player.scene.plane_id
+                    && spawned.floor_id == player.scene.floor_id
+            })
+            .map(|spawned| {
+                let dx = i128::from(target_position.x) - i128::from(spawned.position.x);
+                let dy = i128::from(target_position.y) - i128::from(spawned.position.y);
+                let dz = i128::from(target_position.z) - i128::from(spawned.position.z);
+                (spawned, dx * dx + dy * dy + dz * dz)
+            })
+            .filter(|(_, distance_squared)| *distance_squared <= 2_500i128 * 2_500)
+            .min_by_key(|(_, distance_squared)| *distance_squared)
+            .map(|(spawned, _)| (spawned.entity_id, spawned.monster_id))
+    });
+    // Some clients send nearby map monster IDs in the assist list even when
+    // the dynamic entity added by the server is the intended encounter. Since
+    // spawn replaces prior command-spawned entities in a scene, there is at
+    // most one eligible record here; use it as a final fallback for a cast.
+    let scene_spawn_target = session.json_data.get().and_then(|player| {
+        let mut spawned = player.spawned_monsters.iter().filter(|spawned| {
+            spawned.entry_id == player.scene.entry_id
+                && spawned.plane_id == player.scene.plane_id
+                && spawned.floor_id == player.scene.floor_id
+        });
+        let first = spawned.next()?;
+        spawned
+            .next()
+            .is_none()
+            .then_some((first.entity_id, first.monster_id))
+    });
+    let fallback_spawn_target = position_spawn_target.or(scene_spawn_target);
+
+    if targets.is_empty() && fallback_spawn_target.is_none() {
+        let is_active_challenge = session.json_data.get().is_some_and(|player| {
+            player.battle_config.challenge_id.is_some() && player.challenge_origin_scene.is_some()
+        });
+        if !is_active_challenge {
+            tracing::warn!(
+                "scene cast skill has no targets (hit_targets={:?}, assist_targets={:?})",
+                req.hit_target_entity_id_list,
+                req.assist_monster_entity_id_list
+            );
+            return;
+        }
+
+        // Tierce challenge scenes may send the opening cast before assigning a
+        // target entity ID. The active challenge already carries its exact wave
+        // in BattleConfig, so start that configured encounter instead of
+        // returning an empty response and leaving the client stuck in-scene.
+        tracing::warn!(
+            "starting active challenge battle from targetless scene cast (challenge_id={:?}, skill_index={})",
+            session
+                .json_data
+                .get()
+                .and_then(|player| player.battle_config.challenge_id),
+            req.skill_index
+        );
+    }
+
+    // Scope the temporary config to attacks against spawned scene entities.
+    // Otherwise their custom wave remains active and contaminates every later
+    // battle, including battles started after toggling EX-RANK.
+    if let Some(player) = session.json_data.get_mut() {
+        let spawned_target = player
+            .spawned_monsters
+            .iter()
+            .find(|spawned| {
+                spawned.entry_id == player.scene.entry_id
+                    && spawned.plane_id == player.scene.plane_id
+                    && spawned.floor_id == player.scene.floor_id
+                    && targets.iter().any(|target| **target == spawned.entity_id)
+            })
+            .map(|spawned| (spawned.entity_id, spawned.monster_id))
+            .or(fallback_spawn_target);
+        if !player.spawned_monsters.is_empty() {
+            tracing::info!(
+                "Scene cast target resolution: scene=({}, {}, {}), hit_targets={:?}, assist_targets={:?}, target_motion={:?}, attacked_by={}, spawned_targets={:?}",
+                player.scene.entry_id,
+                player.scene.plane_id,
+                player.scene.floor_id,
+                req.hit_target_entity_id_list,
+                req.assist_monster_entity_id_list,
+                target_position.map(|position| (position.x, position.y, position.z)),
+                req.attacked_by_entity_id,
+                player
+                    .spawned_monsters
+                    .iter()
+                    .filter(|spawned| {
+                        spawned.entry_id == player.scene.entry_id
+                            && spawned.plane_id == player.scene.plane_id
+                            && spawned.floor_id == player.scene.floor_id
+                    })
+                    .map(|spawned| (spawned.entity_id, spawned.monster_id))
+                    .collect::<Vec<_>>()
+            );
+        }
+        if let Some((entity_id, monster_id)) = spawned_target {
+            if player.spawned_battle_config.is_none() {
+                player.spawned_battle_config = Some(player.battle_config.clone());
+            }
+            if let Some(original_config) = player.spawned_battle_config.as_ref() {
+                let mut spawn_config = original_config.clone();
+                spawn_config.battle_type = BattleType::Default;
+                spawn_config.challenge_id = None;
+                spawn_config.challenge_group_id = None;
+                spawn_config.challenge_node = None;
+                spawn_config.challenge_second_lineup = None;
+                spawn_config.custom_battle_lineup = None;
+                spawn_config.stage_id = 201012311;
+                spawn_config.cycle_count = 30;
+                spawn_config.blessings.clear();
+                spawn_config.monsters = vec![vec![Monster {
+                    level: 95,
+                    monster_id,
+                    max_hp: 0,
+                }]];
+                player.battle_config = spawn_config;
+                player.spawned_battle_active = true;
+                tracing::info!(
+                    "Starting spawned monster battle entity_id={entity_id} monster_id={monster_id}"
+                );
+            }
+        } else if !player.spawned_monsters.is_empty() {
+            tracing::warn!(
+                "Scene cast did not match a saved spawned monster; using configured battle monsters (stage_id={}, monsters={:?})",
+                player.battle_config.stage_id,
+                player
+                    .battle_config
+                    .monsters
+                    .iter()
+                    .flatten()
+                    .map(|monster| monster.monster_id)
+                    .collect::<Vec<_>>()
+            );
+        }
     }
 
     let battle_info = create_battle_info(session, req.attacked_by_entity_id, req.skill_index).await;

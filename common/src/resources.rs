@@ -127,7 +127,19 @@ pub struct LevelOutputConfig {
     pub plane_type: u32,
     pub world_id: u32,
     pub sections: Vec<u32>,
+    #[serde(default, deserialize_with = "deserialize_saved_values")]
     pub saved_values: HashMap<String, i32>,
+}
+
+fn deserialize_saved_values<'de, D>(deserializer: D) -> Result<HashMap<String, i32>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let values = HashMap::<String, Option<i32>>::deserialize(deserializer)?;
+    Ok(values
+        .into_iter()
+        .filter_map(|(key, value)| value.map(|value| (key, value)))
+        .collect())
 }
 
 #[derive(Deserialize)]
@@ -146,6 +158,72 @@ pub struct JsonConfig {
     pub map_default_entrance_map: HashMap<u32, u32>,
     pub relic_avatar_recommend: HashMap<u32, Vec<u32>>,
 }
+
+#[derive(Deserialize)]
+struct MapEntranceDocument {
+    #[serde(rename = "map_entrance_config")]
+    entries: Vec<MapEntranceInfo>,
+}
+
+#[derive(Deserialize)]
+pub struct MapEntranceInfo {
+    #[serde(rename = "ID")]
+    pub id: u32,
+    #[serde(rename = "EntranceType")]
+    pub entrance_type: String,
+    #[serde(rename = "PlaneID")]
+    pub plane_id: u32,
+    #[serde(rename = "FloorID")]
+    pub floor_id: u32,
+}
+
+#[derive(Deserialize)]
+struct MazePlaneDocument {
+    #[serde(rename = "maze_plane_config")]
+    planes: Vec<MazePlaneInfo>,
+}
+
+#[derive(Deserialize)]
+pub struct MazePlaneInfo {
+    #[serde(rename = "PlaneID")]
+    pub plane_id: u32,
+    #[serde(rename = "PlaneType")]
+    pub plane_type: String,
+    #[serde(rename = "WorldID")]
+    pub world_id: u32,
+    #[serde(rename = "StartFloorID")]
+    pub start_floor_id: u32,
+    #[serde(rename = "FloorIDList")]
+    pub floor_id_list: Vec<u32>,
+}
+
+pub static MAP_ENTRANCE_CONFIG: LazyLock<HashMap<u32, MapEntranceInfo>> = LazyLock::new(|| {
+    fs::read_to_string("resources/MapEntrance.json")
+        .ok()
+        .and_then(|text| serde_json::from_str::<MapEntranceDocument>(&text).ok())
+        .map(|document| {
+            document
+                .entries
+                .into_iter()
+                .map(|entry| (entry.id, entry))
+                .collect()
+        })
+        .unwrap_or_default()
+});
+
+pub static MAZE_PLANE_CONFIG: LazyLock<HashMap<u32, MazePlaneInfo>> = LazyLock::new(|| {
+    fs::read_to_string("resources/MazePlane.json")
+        .ok()
+        .and_then(|text| serde_json::from_str::<MazePlaneDocument>(&text).ok())
+        .map(|document| {
+            document
+                .planes
+                .into_iter()
+                .map(|plane| (plane.plane_id, plane))
+                .collect()
+        })
+        .unwrap_or_default()
+});
 
 #[derive(Deserialize)]
 pub struct EndgameChallengeConfig {
@@ -171,6 +249,27 @@ pub struct EndgameChallengeConfig {
     pub event_id_list2: Vec<u32>,
     #[serde(rename = "MazeBuffID")]
     pub maze_buff_id: u32,
+}
+
+#[derive(Deserialize)]
+pub struct EndgameTierceChallengeConfig {
+    #[serde(rename = "ID")]
+    pub id: u32,
+    #[serde(rename = "PreChallengeMazeID")]
+    pub pre_challenge_maze_id: u32,
+    #[serde(rename = "MapEntranceID")]
+    pub map_entrance_id: u32,
+    #[serde(rename = "MazeGroupID")]
+    pub maze_group_id: u32,
+    #[serde(rename = "NpcMonsterIDList")]
+    pub npc_monster_id_list: Vec<u32>,
+    #[serde(rename = "EventIDList")]
+    pub event_id_list: Vec<u32>,
+}
+
+#[derive(Deserialize)]
+struct EndgameTierceChallengeDocument {
+    challenge_tierce_config: Vec<EndgameTierceChallengeConfig>,
 }
 
 #[derive(Deserialize)]
@@ -203,29 +302,57 @@ pub struct EndgameNode<'a> {
     pub node: u32,
 }
 
+pub struct EndgameTierceNode<'a> {
+    pub challenge: &'a EndgameTierceChallengeConfig,
+    pub stage: &'a EndgameStageConfig,
+    pub entry_id: u32,
+    pub group_id: u32,
+    pub event_id: u32,
+    pub monster_id: u32,
+}
+
 pub static ENDGAME_CHALLENGE_CONFIG: LazyLock<HashMap<u32, EndgameChallengeConfig>> =
     LazyLock::new(|| {
-        let document = serde_json::from_str::<EndgameChallengeDocument>(include_str!(
-            "../../resources/ChallengeMazeConfig.json"
-        ))
-        .expect("invalid ChallengeMazeConfig.json");
-        document
-            .challenge_config
-            .into_iter()
-            .map(|challenge| (challenge.id, challenge))
-            .collect()
+        fs::read_to_string("resources/ChallengeMazeConfig.json")
+            .ok()
+            .and_then(|text| serde_json::from_str::<EndgameChallengeDocument>(&text).ok())
+            .map(|document| {
+                document
+                    .challenge_config
+                    .into_iter()
+                    .map(|challenge| (challenge.id, challenge))
+                    .collect()
+            })
+            .unwrap_or_default()
+    });
+
+pub static ENDGAME_TIERCE_CHALLENGE_CONFIG: LazyLock<HashMap<u32, EndgameTierceChallengeConfig>> =
+    LazyLock::new(|| {
+        fs::read_to_string("resources/ChallengeMazeTierceConfig.json")
+            .ok()
+            .and_then(|text| serde_json::from_str::<EndgameTierceChallengeDocument>(&text).ok())
+            .map(|document| {
+                document
+                    .challenge_tierce_config
+                    .into_iter()
+                    .map(|challenge| (challenge.id, challenge))
+                    .collect()
+            })
+            .unwrap_or_default()
     });
 
 pub static ENDGAME_STAGE_CONFIG: LazyLock<HashMap<u32, EndgameStageConfig>> = LazyLock::new(|| {
-    let document = serde_json::from_str::<EndgameStageDocument>(include_str!(
-        "../../resources/StageConfig.json"
-    ))
-    .expect("invalid StageConfig.json");
-    document
-        .stage_config
-        .into_iter()
-        .map(|stage| (stage.stage_id, stage))
-        .collect()
+    fs::read_to_string("resources/StageConfig.json")
+        .ok()
+        .and_then(|text| serde_json::from_str::<EndgameStageDocument>(&text).ok())
+        .map(|document| {
+            document
+                .stage_config
+                .into_iter()
+                .map(|stage| (stage.stage_id, stage))
+                .collect()
+        })
+        .unwrap_or_default()
 });
 
 #[derive(Deserialize)]
@@ -236,11 +363,11 @@ struct EndgameSceneDocument {
 
 pub static ENDGAME_SCENE_CONFIG: LazyLock<HashMap<u32, HashMap<String, LevelOutputConfig>>> =
     LazyLock::new(|| {
-        let document = serde_json::from_str::<EndgameSceneDocument>(include_str!(
-            "../../resources/EndgameSceneFallback.json"
-        ))
-        .expect("invalid EndgameSceneFallback.json");
-        document.level_output_configs
+        fs::read_to_string("resources/EndgameSceneFallback.json")
+            .ok()
+            .and_then(|text| serde_json::from_str::<EndgameSceneDocument>(&text).ok())
+            .map(|document| document.level_output_configs)
+            .unwrap_or_default()
     });
 
 pub fn resolve_endgame_node(challenge_id: u32, node: u32) -> Option<EndgameNode<'static>> {
@@ -272,6 +399,22 @@ pub fn resolve_endgame_node(challenge_id: u32, node: u32) -> Option<EndgameNode<
         event_id,
         monster_id,
         node,
+    })
+}
+
+pub fn resolve_endgame_tierce_node(challenge_id: u32) -> Option<EndgameTierceNode<'static>> {
+    let challenge = ENDGAME_TIERCE_CHALLENGE_CONFIG.get(&challenge_id)?;
+    let event_id = *challenge.event_id_list.last()?;
+    let monster_id = *challenge.npc_monster_id_list.last()?;
+    let stage = ENDGAME_STAGE_CONFIG.get(&event_id)?;
+
+    Some(EndgameTierceNode {
+        challenge,
+        stage,
+        entry_id: challenge.map_entrance_id,
+        group_id: challenge.maze_group_id,
+        event_id,
+        monster_id,
     })
 }
 

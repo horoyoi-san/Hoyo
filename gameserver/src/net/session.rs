@@ -1,4 +1,5 @@
 use std::{
+    collections::HashSet,
     io::Error,
     net::SocketAddr,
     pin::Pin,
@@ -31,9 +32,12 @@ pub struct PlayerSession {
     kcp: Arc<Mutex<Kcp<RemoteEndPoint>>>,
     start_time: u64,
     pub shutdown_tx: watch::Sender<()>,
-    pub shutdown_rx: watch::Receiver<()>,
+    _shutdown_rx: watch::Receiver<()>,
     pub json_data: OnceLock<FreesrData>,
     pub next_scene_save: u64,
+    pub pending_spawned_monsters: bool,
+    pub next_spawned_monster_entity_id: u32,
+    pub used_spawned_monster_entity_ids: HashSet<u32>,
 }
 
 impl PlayerSession {
@@ -49,9 +53,12 @@ impl PlayerSession {
             ))),
             start_time: util::cur_timestamp_secs(),
             json_data: OnceLock::new(),
-            shutdown_rx,
+            _shutdown_rx: shutdown_rx,
             shutdown_tx,
             next_scene_save: 0,
+            pending_spawned_monsters: false,
+            next_spawned_monster_entity_id: 40_000,
+            used_spawned_monster_entity_ids: HashSet::new(),
         }
     }
 
@@ -72,6 +79,9 @@ impl PlayerSession {
         for packet in packets {
             if packet.cmd_type == CmdPlayerType::CmdPlayerLogoutCsReq as u16 {
                 tracing::info!("Player logged out");
+                if let Some(player) = self.json_data.get() {
+                    player.save_persistent().await;
+                }
                 let _ = self.shutdown_tx.send(());
                 return Ok(());
             };

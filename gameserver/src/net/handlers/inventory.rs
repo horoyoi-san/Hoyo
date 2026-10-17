@@ -1,6 +1,6 @@
 use common::{resources::GAME_RES, sr_tools::FreesrData};
-use proto::{get_big_data_all_recommend_sc_rsp::RecommendType, *};
 use prost::Message;
+use proto::{get_big_data_all_recommend_sc_rsp::RecommendType, *};
 
 use crate::net::{NetPacket, PlayerSession};
 
@@ -184,8 +184,16 @@ pub async fn on_get_bag_45_compat(session: &PlayerSession) -> anyhow::Result<()>
 
     let response = GetBag45ScRsp {
         material_list: vec![
-            Material45 { tid: 101, num: 67, expire_time: 0 },
-            Material45 { tid: 102, num: 67, expire_time: 0 },
+            Material45 {
+                tid: 101,
+                num: 67,
+                expire_time: 0,
+            },
+            Material45 {
+                tid: 102,
+                num: 67,
+                expire_time: 0,
+            },
         ],
         relic_list: player
             .relics
@@ -193,11 +201,15 @@ pub async fn on_get_bag_45_compat(session: &PlayerSession) -> anyhow::Result<()>
             .map(|relic| Relic45 {
                 unique_id: relic.get_unique_id(),
                 dress_avatar_id: relic.equip_avatar,
-                sub_affix_list: relic.sub_affixes.iter().map(|affix| RelicAffix45 {
-                    affix_id: affix.sub_affix_id,
-                    cnt: affix.count,
-                    step: affix.step,
-                }).collect(),
+                sub_affix_list: relic
+                    .sub_affixes
+                    .iter()
+                    .map(|affix| RelicAffix45 {
+                        affix_id: affix.sub_affix_id,
+                        cnt: affix.count,
+                        step: affix.step,
+                    })
+                    .collect(),
                 level: relic.level,
                 preview_sub_affix_list: Vec::new(),
                 exp: 0,
@@ -248,23 +260,30 @@ pub async fn on_get_avatar_data_45_compat(
     let avatar_list = BASE_AVATAR_IDS
         .into_iter()
         .map(|id| {
-            let avatar = player.avatars.get(&id).map(|avatar| {
-                avatar.to_avatar_proto(
-                    player.lightcones.iter().find(|lightcone| lightcone.equip_avatar == id),
-                    player.main_character as u32,
-                    player.march_type as u32,
-                )
-            }).unwrap_or(Avatar {
-                base_avatar_id: id,
-                level: 80,
-                promotion: 6,
-                first_met_time_stamp: 1_712_924_677,
-                cur_multi_path_avatar_type: 0,
-                equipment_unique_id: 0,
-                has_taken_promotion_reward_list: vec![1, 3, 5],
-                is_marked: false,
-                exp: 0,
-            });
+            let avatar = player
+                .avatars
+                .get(&id)
+                .map(|avatar| {
+                    avatar.to_avatar_proto(
+                        player
+                            .lightcones
+                            .iter()
+                            .find(|lightcone| lightcone.equip_avatar == id),
+                        player.main_character as u32,
+                        player.march_type as u32,
+                    )
+                })
+                .unwrap_or(Avatar {
+                    base_avatar_id: id,
+                    level: 80,
+                    promotion: 6,
+                    first_met_time_stamp: 1_712_924_677,
+                    cur_multi_path_avatar_type: 0,
+                    equipment_unique_id: 0,
+                    has_taken_promotion_reward_list: vec![1, 3, 5],
+                    is_marked: false,
+                    exp: 0,
+                });
 
             Avatar45 {
                 cur_multi_path_avatar_type: avatar.cur_multi_path_avatar_type,
@@ -285,20 +304,37 @@ pub async fn on_get_avatar_data_45_compat(
         .values()
         .map(|avatar| {
             let path_data = avatar.to_avatar_path_data_proto(
-                player.lightcones.iter().find(|lightcone| lightcone.equip_avatar == avatar.avatar_id),
-                player.relics.iter().filter(|relic| relic.equip_avatar == avatar.avatar_id).collect(),
+                player
+                    .lightcones
+                    .iter()
+                    .find(|lightcone| lightcone.equip_avatar == avatar.avatar_id),
+                player
+                    .relics
+                    .iter()
+                    .filter(|relic| relic.equip_avatar == avatar.avatar_id)
+                    .collect(),
             );
             AvatarPathData45 {
                 unk_enhanced_id: path_data.unk_enhanced_id,
                 path_equipment_id: path_data.path_equipment_id,
                 avatar_id: path_data.avatar_id,
-                avatar_path_skill_tree: path_data.avatar_path_skill_tree.into_iter().map(|skill| {
-                    AvatarPathSkillTree45 { point_id: skill.anchor_type, level: skill.level }
-                }).collect(),
+                avatar_path_skill_tree: path_data
+                    .avatar_path_skill_tree
+                    .into_iter()
+                    .map(|skill| AvatarPathSkillTree45 {
+                        point_id: skill.anchor_type,
+                        level: skill.level,
+                    })
+                    .collect(),
                 rank: path_data.rank,
-                equip_relic_list: path_data.equip_relic_list.into_iter().map(|relic| {
-                    EquipRelic45 { relic_type: relic.r#type, relic_unique_id: relic.relic_unique_id }
-                }).collect(),
+                equip_relic_list: path_data
+                    .equip_relic_list
+                    .into_iter()
+                    .map(|relic| EquipRelic45 {
+                        relic_type: relic.r#type,
+                        relic_unique_id: relic.relic_unique_id,
+                    })
+                    .collect(),
                 unlock_time: path_data.unlock_timestamp,
                 dressed_skin_id: path_data.dressed_skin_id,
             }
@@ -366,14 +402,18 @@ pub async fn on_dress_relic_avatar_cs_req(
     req: &DressRelicAvatarCsReq,
     _: &mut DressRelicAvatarScRsp,
 ) {
-    let Some(player) = session.json_data.get_mut() else {
-        tracing::error!("data is not set!");
-        return;
+    let pkt = {
+        let Some(player) = session.json_data.get_mut() else {
+            tracing::error!("data is not set!");
+            return;
+        };
+        let Some(pkt) = equip_relic(player, req) else {
+            return;
+        };
+        player.save_persistent().await;
+        pkt
     };
-
-    if let Some(pkt) = equip_relic(player, req) {
-        let _ = session.send(pkt).await;
-    };
+    let _ = session.send(pkt).await;
 }
 
 pub async fn on_take_off_relic_cs_req(
@@ -381,14 +421,18 @@ pub async fn on_take_off_relic_cs_req(
     req: &TakeOffRelicCsReq,
     _: &mut TakeOffRelicScRsp,
 ) {
-    let Some(player) = session.json_data.get_mut() else {
-        tracing::error!("data is not set!");
-        return;
+    let pkt = {
+        let Some(player) = session.json_data.get_mut() else {
+            tracing::error!("data is not set!");
+            return;
+        };
+        let Some(pkt) = unequip_relic(player, req) else {
+            return;
+        };
+        player.save_persistent().await;
+        pkt
     };
-
-    if let Some(pkt) = unequip_relic(player, req) {
-        let _ = session.send(pkt).await;
-    };
+    let _ = session.send(pkt).await;
 }
 
 pub async fn on_dress_avatar_cs_req(
@@ -396,14 +440,19 @@ pub async fn on_dress_avatar_cs_req(
     req: &DressAvatarCsReq,
     _: &mut DressAvatarScRsp,
 ) {
-    let Some(player) = session.json_data.get_mut() else {
-        tracing::error!("data is not set!");
-        return;
+    let pkt = {
+        let Some(player) = session.json_data.get_mut() else {
+            tracing::error!("data is not set!");
+            return;
+        };
+        let Some(pkt) = set_lightcone_equipper(player, req.avatar_id, req.equipment_unique_id)
+        else {
+            return;
+        };
+        player.save_persistent().await;
+        pkt
     };
-
-    if let Some(pkt) = set_lightcone_equipper(player, req.avatar_id, req.equipment_unique_id) {
-        let _ = session.send(pkt).await;
-    };
+    let _ = session.send(pkt).await;
 }
 
 pub async fn on_take_off_equipment_cs_req(
@@ -411,14 +460,18 @@ pub async fn on_take_off_equipment_cs_req(
     req: &TakeOffEquipmentCsReq,
     _: &mut TakeOffEquipmentScRsp,
 ) {
-    let Some(player) = session.json_data.get_mut() else {
-        tracing::error!("data is not set!");
-        return;
+    let pkt = {
+        let Some(player) = session.json_data.get_mut() else {
+            tracing::error!("data is not set!");
+            return;
+        };
+        let Some(pkt) = set_lightcone_equipper(player, req.avatar_id, 0) else {
+            return;
+        };
+        player.save_persistent().await;
+        pkt
     };
-
-    if let Some(pkt) = set_lightcone_equipper(player, req.avatar_id, 0) {
-        let _ = session.send(pkt).await;
-    };
+    let _ = session.send(pkt).await;
 }
 
 pub async fn on_get_big_data_all_recommend_cs_req(
@@ -469,10 +522,7 @@ pub async fn on_rank_up_avatar_cs_req(
     if let Some(cost_data) = &req.cost_data {
         for item in &cost_data.item_list {
             if let Some(item_cost::Item::PileItem(pile)) = &item.item {
-                if pile.item_id == 131204
-                    || pile.item_id == 131213
-                    || pile.item_id == 131308
-                {
+                if pile.item_id == 131204 || pile.item_id == 131213 || pile.item_id == 131308 {
                     is_ex_rank = true;
                     break;
                 }

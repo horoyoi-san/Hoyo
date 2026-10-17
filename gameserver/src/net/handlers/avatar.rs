@@ -166,11 +166,7 @@ pub async fn on_ex_rank_unlock(session: &mut PlayerSession, payload: &[u8]) -> R
                     aid * 100 + 1
                 };
                 av.unlocked_enhanced_id = Some(eid);
-                tracing::info!(
-                    "[EX-RANK] Unlocked avatar {} with ex_rank_id={}",
-                    aid,
-                    eid
-                );
+                tracing::info!("[EX-RANK] Unlocked avatar {} with ex_rank_id={}", aid, eid);
             }
         }
         player.save_persistent().await;

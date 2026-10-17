@@ -182,6 +182,7 @@ trait_handler! {
 
     // Entity move (dummy!)
     SceneEntityMove;
+    EnterSection;
 
     // Inventory (dummy!)
     GetBag;
@@ -213,8 +214,10 @@ trait_handler! {
     GetChallenge;
     GetCurChallenge;
     StartChallenge;
+    StartChallengeTierce;
     EnterChallengeNextPhase;
     LeaveChallenge;
+    LeaveChallengeTierce;
 
     // Teleport
     GetEnteredScene;

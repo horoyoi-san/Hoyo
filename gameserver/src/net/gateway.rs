@@ -1,12 +1,10 @@
 use std::{
     collections::HashMap,
     net::SocketAddr,
-    path::Path,
     sync::{
         Arc,
         atomic::{AtomicU32, Ordering},
     },
-    time::{Duration, SystemTime},
 };
 
 use anyhow::Result;
@@ -18,7 +16,7 @@ use crate::net::PlayerSession;
 
 use tokio::{
     net::UdpSocket,
-    sync::{Mutex, RwLock, mpsc},
+    sync::{Mutex, RwLock},
 };
 
 use crate::net::packet::NetOperation;
@@ -87,83 +85,25 @@ impl Gateway {
 
         // Init the json to session
         if let Ok(data) = FreesrData::load().await {
-            let _ = session.write().await.json_data.set(data);
+            let mut session = session.write().await;
+            for spawned in &data.spawned_monsters {
+                session
+                    .used_spawned_monster_entity_ids
+                    .insert(spawned.entity_id);
+            }
+            session.next_spawned_monster_entity_id = data
+                .spawned_monsters
+                .iter()
+                .map(|spawned| spawned.entity_id.saturating_add(1))
+                .max()
+                .unwrap_or(40_000)
+                .max(40_000);
+            let _ = session.json_data.set(data);
         } else {
             tracing::error!("Failed to load initial freesr-data.json");
         }
 
         let session_ref = session.clone();
-
-        // FS watcher
-        tokio::spawn(async move {
-            let (tx, mut rx) = mpsc::channel(100);
-            let mut debouncer =
-                match notify_debouncer_mini::new_debouncer(Duration::from_millis(1000), move |ev| {
-                    let _ = tx.blocking_send(ev);
-                }) {
-                    Ok(d) => d,
-                    Err(e) => {
-                        tracing::error!("debouncer init err: {e}");
-                        return;
-                    }
-                };
-
-            let path = Path::new("freesr-data.json");
-
-            if let Err(e) = debouncer
-                .watcher()
-                .watch(path, notify::RecursiveMode::NonRecursive)
-            {
-                tracing::error!("failed to watch {path:?}: {e}");
-                return;
-            }
-
-            tracing::info!("watching freesr-data.json changes");
-
-            let mut shutdown_rx = session.read().await.shutdown_rx.clone();
-
-            let mut last_modified = std::fs::metadata(path)
-                .and_then(|meta| meta.modified())
-                .unwrap_or(SystemTime::UNIX_EPOCH);
-
-            loop {
-                tokio::select! {
-                    res = rx.recv() => {
-                        let Some(res) = res else {
-                            break;
-                        };
-                        match res {
-                            Ok(events) => {
-                                if events
-                                    .iter()
-                                    .any(|p| p.path.file_name() == path.file_name())
-                                    && let Ok(metadata) = std::fs::metadata(path)
-                                        && let Ok(modified) = metadata.modified()
-                                            && modified > last_modified {
-                                                last_modified = modified;
-
-                                                let mut session = session.write().await;
-                                                if let Some(json) = session.json_data.get_mut() {
-                                                    if let Err(e) = json.update().await {
-                                                        tracing::error!("Failed to update json: {e}");
-                                                    } else {
-                                                        let _ = session.sync_player().await;
-                                                        tracing::info!("json updated");
-                                                    }
-                                                }
-                                            }
-                            }
-                            Err(e) => tracing::error!("json watcher error: {e:?}"),
-                        }
-                    }
-                    _ = shutdown_rx.changed() => {
-                        break;
-                    }
-                }
-            }
-
-            tracing::info!("unwatch freesr-data.json");
-        });
 
         let mut sessions = self.sessions.lock().await;
         for session in sessions.values_mut() {

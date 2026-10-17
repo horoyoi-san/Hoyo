@@ -9,13 +9,18 @@ pub fn main() {
     if std::path::Path::new(proto_file).exists() {
         println!("cargo:rerun-if-changed={proto_file}");
 
-        prost_build::Config::new()
+        let result = prost_build::Config::new()
             .out_dir("out/")
             .type_attribute(".", "#[derive(proto_derive::CmdID)]")
-            .compile_protos(&[proto_file], &["."])
-            .unwrap();
+            .compile_protos(&[proto_file], &["."]);
 
-        impl_message_id(Path::new("out/_.rs")).unwrap();
+        if let Err(error) = result {
+            // Keep builds usable when protoc is unavailable or cannot start;
+            // proto/out/_.rs is checked in and is the crate's compile input.
+            println!("cargo:warning=protoc failed ({error}); using checked-in proto/out/_.rs");
+        } else {
+            impl_message_id(Path::new("out/_.rs")).unwrap();
+        }
     }
 }
 

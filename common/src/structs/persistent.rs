@@ -49,6 +49,8 @@ pub struct Persistent {
     #[serde(default)]
     pub challenge_active_battle_config: Option<BattleConfig>,
     #[serde(default)]
+    pub spawned_monsters: Vec<SpawnedMonster>,
+    #[serde(default)]
     pub position: Position,
     #[serde(default)]
     pub scene: Scene,
@@ -64,6 +66,38 @@ pub struct Persistent {
     pub enable_ex_rank: Option<bool>,
     #[serde(default)]
     pub unlocked_ex_ranks: BTreeMap<u32, u32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SpawnedMonster {
+    pub entry_id: u32,
+    pub plane_id: u32,
+    pub floor_id: u32,
+    pub group_id: u32,
+    pub inst_id: u32,
+    pub entity_id: u32,
+    pub monster_id: u32,
+    pub event_id: u32,
+    pub position: Position,
+}
+
+pub fn spawned_monster_position(origin: &Position, index: usize) -> Position {
+    // Keep spawned monsters in a compact three-column formation in front of
+    // the player, instead of stacking every entity at one coordinate.
+    let yaw = (f64::from(origin.rot_y) / 1000.0).to_radians();
+    let forward = 800.0 + (index / 3) as f64 * 800.0;
+    let sideways = match index % 3 {
+        0 => -600.0,
+        1 => 0.0,
+        _ => 600.0,
+    };
+
+    Position {
+        x: origin.x + (yaw.cos() * forward + yaw.sin() * sideways).round() as i32,
+        y: origin.y,
+        z: origin.z + (-yaw.sin() * forward + yaw.cos() * sideways).round() as i32,
+        rot_y: origin.rot_y,
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -88,6 +122,7 @@ impl Default for Persistent {
             challenge_origin_lineups: None,
             challenge_origin_battle_config: None,
             challenge_active_battle_config: None,
+            spawned_monsters: Vec::new(),
             position: Default::default(),
             main_character: MultiPathAvatar::FemaleRemembrance,
             scene: Default::default(),

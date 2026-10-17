@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use common::{
-    resources::{ENDGAME_SCENE_CONFIG, GAME_RES},
+    resources::{ENDGAME_SCENE_CONFIG, GAME_RES, MAP_ENTRANCE_CONFIG},
     structs::{AvatarJson, Position},
 };
 use scene_entity_info::Entity;
@@ -31,6 +31,11 @@ pub async fn on_get_cur_scene_info_cs_req(
         tracing::error!("data is not set!");
         return;
     };
+    session.pending_spawned_monsters = player.spawned_monsters.iter().any(|spawned| {
+        spawned.entry_id == player.scene.entry_id
+            && spawned.plane_id == player.scene.plane_id
+            && spawned.floor_id == player.scene.floor_id
+    });
 
     let default_scene = SceneInfo {
         game_mode_type: 3,
@@ -60,6 +65,113 @@ pub async fn on_enter_scene_cs_req(
     {
         res.retcode = 2605;
     };
+}
+
+pub async fn on_enter_section_cs_req(
+    session: &mut PlayerSession,
+    _req: &EnterSectionCsReq,
+    res: &mut EnterSectionScRsp,
+) {
+    // Sections are streamed by the client from the scene data already sent in
+    // SceneInfo. A successful acknowledgement is all the server needs here.
+    res.retcode = 0;
+
+    if !session.pending_spawned_monsters {
+        return;
+    }
+
+    let Some(player) = session.json_data.get() else {
+        session.pending_spawned_monsters = false;
+        return;
+    };
+    let entry_id = player.scene.entry_id;
+    let plane_id = player.scene.plane_id;
+    let floor_id = player.scene.floor_id;
+    let Some(scene) = GAME_RES
+        .level_output_configs
+        .get(&entry_id)
+        .and_then(|scenes| scenes.get(&format!("P{plane_id}_F{floor_id}")))
+    else {
+        session.pending_spawned_monsters = false;
+        return;
+    };
+
+    let mut next_inst_id = scene
+        .scenes
+        .values()
+        .flat_map(|group| {
+            group
+                .props
+                .iter()
+                .map(|entity| entity.inst_id)
+                .chain(group.npcs.iter().map(|entity| entity.inst_id))
+                .chain(group.monsters.iter().map(|entity| entity.inst_id))
+        })
+        .max()
+        .unwrap_or(0);
+    let mut refresh_by_group = HashMap::<u32, Vec<SceneEntityRefreshInfo>>::new();
+    for spawned in player.spawned_monsters.iter().filter(|spawned| {
+        spawned.entry_id == entry_id
+            && spawned.plane_id == plane_id
+            && spawned.floor_id == floor_id
+            && scene.scenes.contains_key(&spawned.group_id)
+    }) {
+        let Some(inst_id) = next_inst_id.checked_add(1) else {
+            tracing::warn!("Could not allocate a unique instance ID for saved spawned monster");
+            continue;
+        };
+        next_inst_id = inst_id;
+        let entity = SceneEntityInfo {
+            inst_id,
+            group_id: spawned.group_id,
+            entity_id: spawned.entity_id,
+            motion: Some((&spawned.position).into()),
+            entity: Some(Entity::NpcMonster(SceneNpcMonsterInfo {
+                monster_id: spawned.monster_id,
+                event_id: spawned.event_id,
+                world_level: 6,
+                ..Default::default()
+            })),
+        };
+        refresh_by_group
+            .entry(spawned.group_id)
+            .or_default()
+            .push(SceneEntityRefreshInfo {
+                refresh_type: Some(scene_entity_refresh_info::RefreshType::AddEntity(entity)),
+            });
+    }
+
+    session.pending_spawned_monsters = false;
+    if refresh_by_group.is_empty() {
+        tracing::info!(
+            "No saved spawned monsters to restore in scene entry={entry_id} floor={floor_id}"
+        );
+        return;
+    }
+
+    tracing::info!(
+        "Restoring {} saved spawned monster(s) after section entry in scene entry={entry_id} floor={floor_id}",
+        refresh_by_group.values().map(Vec::len).sum::<usize>()
+    );
+
+    if let Err(err) = session
+        .send(SceneGroupRefreshScNotify {
+            group_refresh_list: refresh_by_group
+                .into_iter()
+                .map(|(group_id, refresh_entity)| GroupRefreshInfo {
+                    group_id,
+                    refresh_type: SceneGroupRefreshType::Loaded.into(),
+                    refresh_entity,
+                    ..Default::default()
+                })
+                .collect(),
+            floor_id,
+            dimension_id: 0,
+        })
+        .await
+    {
+        tracing::warn!("Failed to restore saved spawned monsters after entering scene: {err}");
+    }
 }
 
 pub async fn on_get_scene_map_info_cs_req(
@@ -112,19 +224,17 @@ pub async fn on_get_scene_map_info_cs_req(
                                 .map(|_| (*entry_id, name, config))
                         })
                     })
-                    .min_by_key(|(entry_id, _, config)| {
-                        (!config.is_entered_scene_info, *entry_id)
-                    })
+                    .min_by_key(|(entry_id, _, config)| (!config.is_entered_scene_info, *entry_id))
                     .map(|(_, name, config)| (name, config))
             })
             .or_else(|| {
-                ENDGAME_SCENE_CONFIG
-                    .iter()
-                    .find_map(|(_, floors)| floors.iter().find(|(name, _)| {
+                ENDGAME_SCENE_CONFIG.iter().find_map(|(_, floors)| {
+                    floors.iter().find(|(name, _)| {
                         name.rsplit_once("_F")
                             .and_then(|(_, id)| id.parse::<u32>().ok())
                             == Some(floor_id)
-                    }))
+                    })
+                })
             });
 
         if let Some((_, floor_config)) = floor_configs {
@@ -243,19 +353,53 @@ pub(super) async fn load_scene(
         return Err(anyhow::format_err!("data is not set!"));
     };
 
-    let (name, scene) = GAME_RES
+    let scene_configs = GAME_RES
         .level_output_configs
         .get(&entry_id)
         .or_else(|| ENDGAME_SCENE_CONFIG.get(&entry_id))
-        .and_then(|v| v.iter().next())
         .ok_or_else(|| {
             tracing::error!("Map Entrance Not Found {}", entry_id);
             anyhow::format_err!("Map Entrance Not Found {}", entry_id)
         })?;
 
+    // Prefer the exact floor declared for the map entry. Some entry IDs point
+    // at a floor whose scene payload is stored under another floor key, so
+    // fall back to a scene payload from the same plane in that case.
+    let current_scene_key = format!("P{}_F{}", json.scene.plane_id, json.scene.floor_id);
+    let entrance = MAP_ENTRANCE_CONFIG.get(&entry_id);
+    let metadata_scene = entrance.and_then(|map| {
+        let exact_key = format!("P{}_F{}", map.plane_id, map.floor_id);
+        scene_configs.get_key_value(&exact_key).or_else(|| {
+            let plane_prefix = format!("P{}_F", map.plane_id);
+            scene_configs
+                .iter()
+                .filter(|(name, _)| name.starts_with(&plane_prefix))
+                .min_by_key(|(name, _)| *name)
+        })
+    });
+    let current_floor = (entry_id == json.scene.entry_id)
+        .then(|| scene_configs.get_key_value(&current_scene_key))
+        .flatten();
+    let (name, scene) = current_floor
+        .or(metadata_scene)
+        .map(|(name, scene)| (name.as_str(), scene))
+        .or_else(|| {
+            scene_configs
+                .iter()
+                .min_by_key(|(name, _)| *name)
+                .map(|(name, scene)| (name.as_str(), scene))
+        })
+        .ok_or_else(|| {
+            tracing::error!("No scene floors found for entry {}", entry_id);
+            anyhow::format_err!("No scene floors found for entry {}", entry_id)
+        })?;
+
     let split: Vec<_> = name.split("_").collect();
-    let plane_id = split[0][1..].parse::<u32>()?;
-    let floor_id = split[1][1..].parse::<u32>()?;
+    let config_plane_id = split[0][1..].parse::<u32>()?;
+    let config_floor_id = split[1][1..].parse::<u32>()?;
+    let (plane_id, floor_id) = entrance
+        .map(|map| (map.plane_id, map.floor_id))
+        .unwrap_or((config_plane_id, config_floor_id));
 
     let mut json_pos = json.position.clone();
     if let Some(teleport_id) = teleport_id {
@@ -481,6 +625,9 @@ pub(super) async fn load_scene(
 
         json.save_persistent().await;
 
+        // Restore custom entities after the client confirms section entry,
+        // not during the scene transition while it is still loading.
+        session.pending_spawned_monsters = true;
         session
             .send(EnterSceneByServerScNotify {
                 scene: Some(scene_info.clone()),
