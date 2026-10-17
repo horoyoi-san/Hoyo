@@ -6,6 +6,10 @@ on:
       - hkrpg-PS
   workflow_dispatch:
 
+concurrency:
+  group: hkrpg-ps-server-release
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -18,7 +22,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: hkrpg-PS
 
+      - name: Read next server version
+        id: server_version
+        shell: pwsh
+        run: |
+          $version = (Get-Content -LiteralPath server-version.txt -Raw).Trim()
+          if ($version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') { throw "Invalid server version: $version" }
+          "version=$version" >> $env:GITHUB_OUTPUT
       - name: Install nightly Rust
         uses: dtolnay/rust-toolchain@nightly
         with:
@@ -56,7 +69,7 @@ jobs:
         shell: pwsh
         run: |
           $hash = (Get-FileHash -LiteralPath prebuilt-win64.zip -Algorithm SHA256).Hash.ToLowerInvariant()
-          $manifest = @{ version = "${{ github.sha }}"; sha256 = $hash } | ConvertTo-Json
+          $manifest = @{ version = "${{ steps.server_version.outputs.version }}"; build_id = "${{ github.sha }}"; sha256 = $hash } | ConvertTo-Json
           [System.IO.File]::WriteAllText("$PWD/server-latest.json", "$manifest`n", [System.Text.UTF8Encoding]::new($false))
 
       - name: Upload server package
@@ -68,3 +81,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload hkrpg server-latest.json --clobber
+      - name: Advance next server version
+        shell: pwsh
+        run: |
+          $version = "${{ steps.server_version.outputs.version }}"
+          $parts = $version.Split('.')
+          $nextPatch = ([long]$parts[2] + 1).ToString()
+          $nextVersion = "$($parts[0]).$($parts[1]).$nextPatch"
+
+          git fetch origin hkrpg-PS
+          git checkout -B hkrpg-PS origin/hkrpg-PS
+          $configuredVersion = (Get-Content -LiteralPath server-version.txt -Raw).Trim()
+          if ($configuredVersion -ne $version) {
+            Write-Host "server-version.txt changed during this build; keeping the manual version change."
+            exit 0
+          }
+
+          [System.IO.File]::WriteAllText("$PWD/server-version.txt", "$nextVersion`n", [System.Text.UTF8Encoding]::new($false))
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add server-version.txt
+          git commit -m "chore: set next server version $nextVersion [skip ci]"
+          git push origin HEAD:hkrpg-PS
