@@ -1,6 +1,106 @@
 use super::*;
 
 const SERVER_AVATAR_ICON: u32 = 201511;
+const UI_TEXT_CONFIG_PATH: &str = "UID_Custom.json";
+
+#[derive(serde::Deserialize, serde::Serialize)]
+#[serde(default)]
+struct UiTextConfig {
+    beta_text: String,
+    version_text: String,
+}
+
+impl Default for UiTextConfig {
+    fn default() -> Self {
+        Self {
+            beta_text: String::from(
+                "<color=#0bffe0>Horoyoi-san ඞ</color> | <color=#0b3cff>Aeon</color> ★ <color=#ff0000>Aha</color>",
+            ),
+            version_text: String::from(
+                "เวอร์ชันปัจจุบันคือเวอร์ชันทดสอบ ซึ่งไม่ได้บ่งบอกถึงคุณภาพสุดท้ายของเกม <color=#FF0000>Ho</color><color=#FF7F00>nk</color><color=#FFFF00>ai</color> <color=#00FF00>St</color><color=#0000FF>ar</color> <color=#4B0082>Gay</color>",
+            ),
+        }
+    }
+}
+
+fn lua_string_literal(value: &str) -> String {
+    let mut literal = String::from("\"");
+    for character in value.chars() {
+        match character {
+            '\\' => literal.push_str("\\\\"),
+            '"' => literal.push_str("\\\""),
+            '\n' => literal.push_str("\\n"),
+            '\r' => literal.push_str("\\r"),
+            '\t' => literal.push_str("\\t"),
+            character if character.is_control() && (character as u32) <= 255 => {
+                literal.push_str(&format!("\\{:03}", character as u32));
+            }
+            character => literal.push(character),
+        }
+    }
+    literal.push('"');
+    literal
+}
+
+fn build_ui_text_script(config: &UiTextConfig) -> String {
+    let beta_text = lua_string_literal(&config.beta_text);
+    let version_text = lua_string_literal(&config.version_text);
+    format!(
+        r#"local function beta_text(obj)
+    local gameObject = CS.UnityEngine.GameObject.Find("UIRoot/AboveDialog/BetaHintDialog(Clone)")
+    if gameObject then
+        local textComponent = gameObject:GetComponentInChildren(typeof(CS.RPG.Client.LocalizedText))
+        if textComponent then
+            textComponent.text = {beta_text}
+        end
+    end
+end
+
+local function version_text(obj)
+    local gameObject = CS.UnityEngine.GameObject.Find("VersionText")
+    if gameObject then
+        local textComponent = gameObject:GetComponentInChildren(typeof(CS.RPG.Client.LocalizedText))
+        if textComponent then
+            textComponent.text = {version_text}
+        end
+    end
+end
+
+version_text()
+beta_text()"#
+    )
+}
+
+async fn load_ui_text_config() -> UiTextConfig {
+    match tokio::fs::read_to_string(UI_TEXT_CONFIG_PATH).await {
+        Ok(contents) => match serde_json::from_str(&contents) {
+            Ok(config) => config,
+            Err(err) => {
+                tracing::warn!("Could not parse {UI_TEXT_CONFIG_PATH}; using built-in UI text: {err}");
+                UiTextConfig::default()
+            }
+        },
+        Err(err) if err.kind() == std::io::ErrorKind::NotFound => {
+            let config = UiTextConfig::default();
+            match serde_json::to_string_pretty(&config) {
+                Ok(contents) => match tokio::fs::write(UI_TEXT_CONFIG_PATH, contents).await {
+                    Ok(()) => tracing::info!("Created default {UI_TEXT_CONFIG_PATH}"),
+                    Err(write_err) => tracing::warn!(
+                        "Could not create {UI_TEXT_CONFIG_PATH}; using built-in UI text: {write_err}"
+                    ),
+                },
+                Err(serialize_err) => tracing::warn!(
+                    "Could not serialize default {UI_TEXT_CONFIG_PATH}: {serialize_err}"
+                ),
+            }
+            config
+        }
+        Err(err) => {
+            tracing::warn!("Could not read {UI_TEXT_CONFIG_PATH}; using built-in UI text: {err}");
+            UiTextConfig::default()
+        }
+    }
+}
 
 pub async fn on_get_player_board_data_cs_req(
     _session: &mut PlayerSession,
@@ -41,10 +141,11 @@ pub async fn on_player_heart_beat_cs_req(
 ) {
     res.client_time_ms = body.client_time_ms;
     res.server_time_ms = body.client_time_ms;
+    let ui_text = load_ui_text_config().await;
     res.download_data = Some(ClientDownloadData {
         version: 51,
         time: res.server_time_ms as i64,
-        data: rbase64::decode("bG9jYWwgZnVuY3Rpb24gYmV0YV90ZXh0KG9iaikKICAgIGxvY2FsIGdhbWVPYmplY3QgPSBDUy5Vbml0eUVuZ2luZS5HYW1lT2JqZWN0LkZpbmQoIlVJUm9vdC9BYm92ZURpYWxvZy9CZXRhSGludERpYWxvZyhDbG9uZSkiKQogICAgaWYgZ2FtZU9iamVjdCB0aGVuCiAgICAgICAgbG9jYWwgdGV4dENvbXBvbmVudCA9IGdhbWVPYmplY3Q6R2V0Q29tcG9uZW50SW5DaGlsZHJlbih0eXBlb2YoQ1MuUlBHLkNsaWVudC5Mb2NhbGl6ZWRUZXh0KSkKICAgICAgICBpZiB0ZXh0Q29tcG9uZW50IHRoZW4KICAgICAgICAgICAgdGV4dENvbXBvbmVudC50ZXh0ID0gIjxjb2xvcj0jMGJmZmUwPkhvcm95b2ktc2FuIOC2njwvY29sb3I+IHwgPGNvbG9yPSMwYjNjZmY+QWVvbjwvY29sb3I+IOKYhSA8Y29sb3I9I2ZmMDAwMD5BaGE8L2NvbG9yPiIKICAgICAgICBlbmQKICAgIGVuZAplbmQKCmxvY2FsIGZ1bmN0aW9uIHZlcnNpb25fdGV4dChvYmopCiAgICBsb2NhbCBnYW1lT2JqZWN0ID0gQ1MuVW5pdHlFbmdpbmUuR2FtZU9iamVjdC5GaW5kKCJWZXJzaW9uVGV4dCIpCiAgICBpZiBnYW1lT2JqZWN0IHRoZW4KICAgICAgICBsb2NhbCB0ZXh0Q29tcG9uZW50ID0gZ2FtZU9iamVjdDpHZXRDb21wb25lbnRJbkNoaWxkcmVuKHR5cGVvZihDUy5SUEcuQ2xpZW50LkxvY2FsaXplZFRleHQpKQogICAgICAgIGlmIHRleHRDb21wb25lbnQgdGhlbgogICAgICAgICAgICB0ZXh0Q29tcG9uZW50LnRleHQgPSAi4LmA4Lin4Lit4Lij4LmM4LiK4Lix4LiZ4Lib4Lix4LiI4LiI4Li44Lia4Lix4LiZ4LiE4Li34Lit4LmA4Lin4Lit4Lij4LmM4LiK4Lix4LiZ4LiX4LiU4Liq4Lit4LiaIOC4i+C4tuC5iOC4h+C5hOC4oeC5iOC5hOC4lOC5ieC4muC5iOC4h+C4muC4reC4geC4luC4tuC4h+C4hOC4uOC4k+C4oOC4suC4nuC4quC4uOC4lOC4l+C5ieC4suC4ouC4guC4reC4h+C5gOC4geC4oSA8Y29sb3I9I0ZGMDAwMD5IbzwvY29sb3I+PGNvbG9yPSNGRjdGMDA+bms8L2NvbG9yPjxjb2xvcj0jRkZGRjAwPmFpPC9jb2xvcj4gPGNvbG9yPSMwMEZGMDA+U3Q8L2NvbG9yPjxjb2xvcj0jMDAwMEZGPmFyPC9jb2xvcj4gPGNvbG9yPSM0QjAwODI+R2F5PC9jb2xvcj4iCiAgICAgICAgZW5kCiAgICBlbmQKZW5kCgp2ZXJzaW9uX3RleHQoKQpiZXRhX3RleHQoKQ==").unwrap(),
+        data: build_ui_text_script(&ui_text).into_bytes(),
         ..Default::default()
     });
     if let Err(err) = session.sync_player_if_data_changed().await {
