@@ -7,7 +7,7 @@ use axum::http::Method;
 use axum::http::header::CONTENT_TYPE;
 use axum::routing::{get, post};
 use config::version_config::VersionConfig;
-use services::{auth, dispatch, errors, sr_tools};
+use services::{auth, design_override, dispatch, errors, sr_tools};
 use tokio::fs;
 use tokio::sync::RwLock;
 use tower_http::cors::{Any, CorsLayer};
@@ -73,6 +73,10 @@ pub async fn start_sdkserver() -> Result<()> {
             dispatch::QUERY_GATEWAY_ENDPOINT,
             get(dispatch::query_gateway),
         )
+        .route(
+            "/design_override/{version}/{cdn}/{*path}",
+            get(design_override::serve),
+        )
         .route(auth::RISKY_API_CHECK_ENDPOINT, post(auth::risky_api_check))
         .route(
             auth::LOGIN_WITH_PASSWORD_ENDPOINT,
@@ -95,6 +99,13 @@ pub async fn start_sdkserver() -> Result<()> {
             post(auth::apn_login_with_password),
         )
         .route(auth::APN_VERIFY_TOKEN_ENDPOINT, post(auth::apn_veriy_token))
+        .route(auth::APN_EXCHANGE_ENDPOINT, post(auth::apn_exchange))
+        .route(auth::COMBO_GET_CONFIG_ENDPOINT, get(auth::combo_get_config))
+        .route(auth::SHIELD_LOAD_CONFIG_ENDPOINT, get(auth::shield_load_config))
+        .route(
+            auth::COMPARE_PROTOCOL_ENDPOINT,
+            get(auth::compare_protocol_version).post(auth::compare_protocol_version),
+        )
         .layer(
             CorsLayer::new()
                 .allow_origin(Any)

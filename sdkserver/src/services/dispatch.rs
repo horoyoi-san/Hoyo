@@ -47,12 +47,16 @@ pub async fn query_gateway(
         .get_or_insert_hotfix(&parameters.version, &parameters.dispatch_seed)
         .await;
 
+    let ex_resource_url = design_override_url(&parameters.version, &config.ex_resource_url)
+        .unwrap_or_else(|| config.ex_resource_url.clone());
+    tracing::info!("Ex Resource: {ex_resource_url}");
+
     let rsp = GateServer {
         ip: String::from("127.0.0.1"),
         port: 23301,
         asset_bundle_url: config.asset_bundle_url.clone(),
         asset_bundle_url_android: config.asset_bundle_url_android.clone(),
-        ex_resource_url: config.ex_resource_url.clone(),
+        ex_resource_url,
         lua_url: config.lua_url.clone(),
         ifix_version: String::from("0"),
         unk1: true,
@@ -69,4 +73,34 @@ pub async fn query_gateway(
     rsp.encode(&mut buff).unwrap();
 
     rbase64::encode(&buff)
+}
+
+fn design_override_url(version: &str, upstream: &str) -> Option<String> {
+    if version.is_empty()
+        || !version
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || b"._-".contains(&byte))
+    {
+        return None;
+    }
+    let parsed = reqwest::Url::parse(upstream).ok()?;
+    if parsed.scheme() != "https" {
+        return None;
+    }
+    let cdn = parsed.path_segments()?.filter(|segment| !segment.is_empty()).last()?;
+    if !cdn
+        .bytes()
+        .all(|byte| byte.is_ascii_alphanumeric() || b"._-".contains(&byte))
+    {
+        return None;
+    }
+    let override_dir = crate::services::design_override::root_dir()
+        .join(version)
+        .join(cdn);
+    if !override_dir.join("upstream.txt").is_file() {
+        return None;
+    }
+    Some(format!(
+        "http://127.0.0.1:21000/design_override/{version}/{cdn}"
+    ))
 }
