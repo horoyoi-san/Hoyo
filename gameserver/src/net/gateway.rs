@@ -86,6 +86,10 @@ impl Gateway {
         // Init the json to session
         if let Ok(data) = FreesrData::load().await {
             let mut session = session.write().await;
+            session.freesr_data_signature = tokio::fs::metadata("freesr-data.json")
+                .await
+                .ok()
+                .and_then(|metadata| metadata.modified().ok().map(|modified| (modified, metadata.len())));
             for spawned in &data.spawned_monsters {
                 session
                     .used_spawned_monster_entity_ids

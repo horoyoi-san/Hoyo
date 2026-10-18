@@ -5,6 +5,7 @@ use std::{
     pin::Pin,
     sync::{Arc, OnceLock},
     task::{Context, Poll},
+    time::SystemTime,
 };
 
 use anyhow::Result;
@@ -34,6 +35,7 @@ pub struct PlayerSession {
     pub shutdown_tx: watch::Sender<()>,
     _shutdown_rx: watch::Receiver<()>,
     pub json_data: OnceLock<FreesrData>,
+    pub freesr_data_signature: Option<(SystemTime, u64)>,
     pub next_scene_save: u64,
     pub pending_spawned_monsters: bool,
     pub next_spawned_monster_entity_id: u32,
@@ -53,6 +55,7 @@ impl PlayerSession {
             ))),
             start_time: util::cur_timestamp_secs(),
             json_data: OnceLock::new(),
+            freesr_data_signature: None,
             _shutdown_rx: shutdown_rx,
             shutdown_tx,
             next_scene_save: 0,
@@ -210,6 +213,39 @@ impl PlayerSession {
             ..Default::default()
         })
         .await
+    }
+
+    pub async fn reload_and_sync_player(&mut self) -> Result<()> {
+        let Some(json) = self.json_data.get_mut() else {
+            anyhow::bail!("player data is not initialized");
+        };
+        json.update().await?;
+        self.freesr_data_signature = match tokio::fs::metadata("freesr-data.json").await {
+            Ok(metadata) => Some((metadata.modified()?, metadata.len())),
+            Err(err) => {
+                tracing::warn!("Could not read freesr-data.json metadata after reload: {err}");
+                None
+            }
+        };
+        self.sync_player().await
+    }
+
+    pub async fn sync_player_if_data_changed(&mut self) -> Result<bool> {
+        let metadata = match tokio::fs::metadata("freesr-data.json").await {
+            Ok(metadata) => metadata,
+            Err(err) => {
+                tracing::warn!("Could not check freesr-data.json for changes: {err}");
+                return Ok(false);
+            }
+        };
+        let signature = (metadata.modified()?, metadata.len());
+        if self.freesr_data_signature == Some(signature) {
+            return Ok(false);
+        }
+
+        self.reload_and_sync_player().await?;
+        tracing::info!("Reloaded changed freesr-data.json and synced it to the client");
+        Ok(true)
     }
 
     fn session_time(&self) -> u64 {

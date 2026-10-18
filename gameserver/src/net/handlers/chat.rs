@@ -249,7 +249,19 @@ pub async fn on_send_msg_cs_req(
         let cmd = cmd.to_ascii_lowercase();
         match cmd.as_str() {
             "sync" => {
-                let _ = session.sync_player().await;
+                let sync_result = match json.update().await {
+                    Ok(()) => session.sync_player().await,
+                    Err(err) => Err(err),
+                };
+                let message = match sync_result {
+                    Ok(()) => String::from(
+                        "Reloaded freesr-data.json and synced inventory to the client.",
+                    ),
+                    Err(err) => {
+                        tracing::error!("Failed to reload/sync freesr-data.json: {err:#}");
+                        format!("Sync failed: {err}")
+                    }
+                };
                 session
                     .send(create_send_message(
                         25,
@@ -259,7 +271,7 @@ pub async fn on_send_msg_cs_req(
                             .map(|v| v.message_type)
                             .unwrap_or_default(),
                         body.chat_type,
-                        String::from("Inventory Synced"),
+                        message,
                     ))
                     .await
                     .unwrap();

@@ -1,6 +1,4 @@
-use std::path::Path;
-
-use axum::Json;
+use axum::{http::StatusCode, Json};
 use common::sr_tools::FreesrData;
 use serde::{Deserialize, Serialize};
 use tokio::fs;
@@ -19,38 +17,64 @@ pub struct SrToolDataRsp {
     pub status: u32,
 }
 
-pub async fn sr_tool_save(Json(json): Json<SrToolDataReq>) -> Json<SrToolDataRsp> {
+pub async fn sr_tool_save(
+    Json(json): Json<SrToolDataReq>,
+) -> (StatusCode, Json<SrToolDataRsp>) {
     let Some(json) = json.data else {
-        return Json(SrToolDataRsp {
-            message: String::from("OK"),
-            status: 200,
-        });
+        // RobinSR sends an empty POST as its connection check before sending
+        // the actual data payload from the Sync action.
+        return (
+            StatusCode::OK,
+            Json(SrToolDataRsp {
+                message: String::from("OK"),
+                status: 200,
+            }),
+        );
     };
 
     let json = match serde_json::to_string_pretty(&json) {
         Ok(json) => json,
         Err(err) => {
-            return Json(SrToolDataRsp {
-                message: format!("malformed json: {err}"),
-                status: 500,
-            });
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(SrToolDataRsp {
+                    message: format!("malformed json: {err}"),
+                    status: 500,
+                }),
+            );
         }
     };
 
-    let path = Path::new("freesr-data.json");
-    let env = std::env::current_dir();
-
-    if let Err(err) = fs::write(&path, json).await {
-        return Json(SrToolDataRsp {
-            message: format!(
-                "failed to write freesr-data.json: {err} at path: {path:#?} env: {env:#?}"
-            ),
-            status: 500,
-        });
+    let path = match std::env::current_dir() {
+        Ok(directory) => directory.join("freesr-data.json"),
+        Err(err) => {
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(SrToolDataRsp {
+                    message: format!("failed to resolve server working directory: {err}"),
+                    status: 500,
+                }),
+            );
+        }
     };
 
-    Json(SrToolDataRsp {
-        message: String::from("OK"),
-        status: 200,
-    })
+    if let Err(err) = fs::write(&path, json).await {
+        tracing::error!("Failed to write freesr-data.json at {}: {err}", path.display());
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(SrToolDataRsp {
+                message: format!("failed to write freesr-data.json at {}: {err}", path.display()),
+                status: 500,
+            }),
+        );
+    };
+
+    tracing::info!("RobinSR updated {}", path.display());
+    (
+        StatusCode::OK,
+        Json(SrToolDataRsp {
+            message: format!("updated {}", path.display()),
+            status: 200,
+        }),
+    )
 }
