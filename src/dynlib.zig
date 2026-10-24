@@ -16,7 +16,7 @@ pub const std_options: std.Options = .{
     .log_level = .info,
 };
 
-const log = std.log.scoped(.Roscaelifer);
+const log = std.log.scoped(.Unknown_Realm);
 
 var game_assembly: GameAssembly = undefined; // populated by `hookLoadMhyBase`
 var uid_custom_buf: ?[]u8 = null;
@@ -26,7 +26,7 @@ var crypto_buf: [4096]u8 = undefined;
 
 const default_uid = "Fapper";
 const default_crypto_custom =
-    "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#5100ff>Sunbringer</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
+    "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#9500ff>Kafka</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
 
 pub export fn DllMain(
     _: std.os.windows.HINSTANCE,
@@ -101,11 +101,9 @@ fn initPatches(syscall: *nt.Syscall) !void {
     for (game_assembly.addMany(.dither_alpha_strings)) |dither_alpha_string|
         @as(**String, @ptrFromInt(dither_alpha_string)).* = .allocZ(game_assembly, "InvalidProperty");
 
-    try nt.writeExecutable(
-        syscall,
-        game_assembly.add(.@"MoleMole.UIMainCityMiniMenuWidgetController::RefreshGachaTimeIcon"),
-        &.{0xC3},
-    );
+    if (game_assembly.addIfConfigured(.@"MoleMole.UIMainCityMiniMenuWidgetController::RefreshGachaTimeIcon")) |refresh_gacha_time_icon| {
+        try nt.writeExecutable(syscall, refresh_gacha_time_icon, &.{0xC3});
+    }
 }
 
 const server_public_key: [:0]const u8 = @embedFile("server_public_key.xml");

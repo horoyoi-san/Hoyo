@@ -35,7 +35,7 @@ const Offsets = struct {
     @"System.Security.Cryptography.RSA::FromXmlString": usize,
     @"Foundation.RSAUtil::PublicRsaKey": usize,
     dither_alpha_strings: []const usize,
-    @"MoleMole.UIMainCityMiniMenuWidgetController::RefreshGachaTimeIcon": usize,
+    @"MoleMole.UIMainCityMiniMenuWidgetController::RefreshGachaTimeIcon": usize = 0,
 
     pub const Tag = std.meta.FieldEnum(Offsets);
 };
@@ -49,6 +49,12 @@ var runtime_dither_alpha_strings: [offsets.dither_alpha_strings.len]usize = offs
 
 pub inline fn add(g: GameAssembly, offset: Offsets.Tag) usize {
     return @intFromPtr(g.handle) + @field(active_offsets, @tagName(offset));
+}
+
+pub inline fn addIfConfigured(g: GameAssembly, offset: Offsets.Tag) ?usize {
+    const relative = @field(active_offsets, @tagName(offset));
+    if (relative == 0) return null;
+    return @intFromPtr(g.handle) + relative;
 }
 
 pub inline fn addMany(
@@ -114,20 +120,21 @@ pub fn loadExternalOffsets() void {
 }
 
 fn applyExternalOffsets(source: []const u8) void {
-    inline for (std.meta.fields(Offsets)) |field| {
-        switch (field.type) {
+    const info = @typeInfo(Offsets).@"struct";
+    inline for (info.field_names, info.field_types) |field_name, field_type| {
+        switch (field_type) {
             usize => {
-                if (parseScalar(source, field.name)) |value| {
-                    @field(active_offsets, field.name) = value;
+                if (parseScalar(source, field_name)) |value| {
+                    @field(active_offsets, field_name) = value;
                 }
             },
             []const usize => {
-                if (std.mem.eql(u8, field.name, "sdk_rsa_keys")) {
-                    if (parseArray(source, field.name, &runtime_sdk_rsa_keys)) {
+                if (std.mem.eql(u8, field_name, "sdk_rsa_keys")) {
+                    if (parseArray(source, field_name, &runtime_sdk_rsa_keys)) {
                         active_offsets.sdk_rsa_keys = &runtime_sdk_rsa_keys;
                     }
-                } else if (std.mem.eql(u8, field.name, "dither_alpha_strings")) {
-                    if (parseArray(source, field.name, &runtime_dither_alpha_strings)) {
+                } else if (std.mem.eql(u8, field_name, "dither_alpha_strings")) {
+                    if (parseArray(source, field_name, &runtime_dither_alpha_strings)) {
                         active_offsets.dither_alpha_strings = &runtime_dither_alpha_strings;
                     }
                 }

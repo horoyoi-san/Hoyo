@@ -5,7 +5,7 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const launcher = b.addExecutable(.{
-        .name = "Sunbringer",
+        .name = "Kafka",
         .win32_manifest = b.addWriteFiles().add(
             "launcher.manifest",
             @embedFile("win32_manifest.xml"),
@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(launcher);
 
     const dynlib = b.addLibrary(.{
-        .name = "Roscaelifer",
+        .name = "Unknown_Realm",
         .linkage = .dynamic,
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/dynlib.zig"),
@@ -29,7 +29,7 @@ pub fn build(b: *std.Build) void {
     });
     b.installArtifact(dynlib);
 
-    const assets_dir = b.build_root.handle.openDir(b.graph.io, "assets", .{ .iterate = true }) catch |err| {
+    const assets_dir = b.root.openDir(b.graph.io, "assets", .{ .iterate = true }) catch |err| {
         std.debug.panic("unable to open assets directory: {t}", .{err});
     };
     defer assets_dir.close(b.graph.io);

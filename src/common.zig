@@ -29,7 +29,7 @@ pub fn die(comptime fmt: [:0]const u8, args: anytype) noreturn {
                 0, // ProcedureNumber
                 @ptrCast(&messageBoxA), // ProcedureAddress
             ) == .SUCCESS)
-                _ = messageBoxA(null, errmsg, "Roscaelifer", 0x30);
+                _ = messageBoxA(null, errmsg, "Unknown_Realm", 0x30);
         }
     } else |_| {}
 

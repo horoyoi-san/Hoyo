@@ -1,41 +1,35 @@
-# Roscaelifer
+# Eldreda-patch
 
-**Roscaelifer** is a client patch for the game **Zenless Zone Zero**. It's designed to work with the [Sunbringer Server Emulator](https://git.xeondev.com/Sunbringer/Sunbringer).
+This is a client patch for the game **Zenless Zone Zero**. It's designed to work with the [Eldreda Server Emulator](https://git.xeondev.com/eldreda/eldreda).
 
-## Requirements
-To build **Roscaelifer** from sources you need:
-- Zig Compiler, version `0.16.0`: [Linux](https://ziglang.org/download/0.16.0/zig-x86_64-linux-0.16.0.tar.xz)/[Windows](https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip)
+## Installation
+You can download a pre-built, ready-to-use binaries from the [releases page](https://git.xeondev.com/eldreda/eldreda-patch/releases).
 
-#### Currently supported client version: `CNBetaWin3.2.0`, it can be found in our [discord server](https://discord.xeondev.com/)
+You have to place both `eldreda.exe` and `eldreda.dll` files in the game directory, near `ZenlessZoneZero.exe` or `ZenlessZoneZeroBeta.exe`, depending on the build. Compatible client version at the time of writing is `CNBetaWin3.4.1`.
 
-## Steps to compile and run
+## Building from Source
+Ensure you have Zig compiler of version `0.17.0`. You can download it from the official website: [Linux](https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz)/[Windows](https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip), or by using a [version manager](https://git.xeondev.com/nyan/zvm/releases).
+
+First, double-check the compiler version
 ```sh
-git clone https://git.xeondev.com/Sunbringer/Roscaelifer.git
-cd Roscaelifer
-zig build -Doptimize=ReleaseSmall
-mv zig-out/bin/Sunbringer.exe zig-out/bin/Roscaelifer.dll PATH_TO_CLIENT/
+$ zig version
+0.17.0
 ```
-#### NOTE: "PATH_TO_CLIENT" must be replaced with the actual path to the game directory.
 
-## Configuration
-**Roscaelifer** is configured by editing files in the `assets` directory and (re-)compiling its source code.
-- URL from `login_setting.json` are used to communicate with the dispatch server (dpsv)
-- URLs from `server_pc.json` are used to communicate with the SDK server (sdksv)
-- `sdk_public_key.xml` is the RSA key used for communication with the SDK server
-- `server_public_key.xml` is the RSA key used for communication with dispatch and game servers
-- `offsets.zon` contains version-specific values
+If the output matches, simply run
+```sh
+zig build
+```
+
+If the compilation succeeds, the binaries should appear in the `zig-out/bin` directory.
 
 ## Contributing
 [Donate](https://boosty.to/xeondev/donate).
 
-[Join project-specific discord server](https://Sunbringer.xeondev.com).
+[Join project-specific discord server](https://eldreda.xeondev.com).
 
 [Join ReversedRooms discord server](https://discord.xeondev.com).
 
 [Join ReversedRooms telegram channel](https://t.me/reversedrooms).
 
 The contributions (in form of patches) can be submitted in one of our discord servers. You can also get an account on [our git instance](https://git.xeondev.com/) after a number of accepted contributions.
-
-## License
-This repository was made public in the hopes that it will be useful. However, it comes with no warranty whatsoever (expressed or implied).
-It's licensed under [GNU Affero General Public License v3](LICENSE).
