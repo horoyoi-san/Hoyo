@@ -94,7 +94,7 @@ jobs:
           if (!(Test-Path $builtLauncher)) {
             throw "Expected build output $builtLauncher was not produced."
           }
-          $releaseLauncher = Join-Path $env:RUNNER_TEMP "Sunbringer.exe"
+          $releaseLauncher = Join-Path $env:RUNNER_TEMP "Sunbringer-launcher.exe"
           Copy-Item -LiteralPath $builtLauncher -Destination $releaseLauncher
           $manifestPath = Join-Path $env:RUNNER_TEMP "latest.json"
           node source/scripts/launcher-release.mjs manifest $env:LAUNCHER_VERSION $releaseLauncher $manifestPath
