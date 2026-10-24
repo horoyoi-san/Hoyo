@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Checkout Roscaelifer source
         uses: actions/checkout@v4
+        with:
+          repository: horoyoi-san/Hoyo
+          ref: nap-Sunbringer-zig_patch
+          path: source
 
       - name: Install Zig 0.16.0
         shell: pwsh
@@ -33,6 +37,7 @@ jobs:
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ZIG_EXE=$zigExe$([Environment]::NewLine)")
 
       - name: Build Windows patch
+        working-directory: source
         shell: pwsh
         run: |
           & $env:ZIG_EXE build -Dtarget=x86_64-windows -Doptimize=ReleaseSmall
@@ -42,6 +47,7 @@ jobs:
           }
 
       - name: Create patch update manifest
+        working-directory: source
         shell: pwsh
         run: |
           $assets = @{}
@@ -64,8 +70,8 @@ jobs:
         with:
           tag_name: nap
           files: |
-            zig-out/bin/Sunbringer.exe
-            zig-out/bin/Roscaelifer.dll
+            source/zig-out/bin/Sunbringer.exe
+            source/zig-out/bin/Roscaelifer.dll
             ${{ runner.temp }}/patch-latest.json
           overwrite_files: true
           fail_on_unmatched_files: true
