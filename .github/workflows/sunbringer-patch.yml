@@ -60,7 +60,7 @@ jobs:
             version = '1.0'
             assets = $assets
           }
-          $manifestPath = Join-Path $env:RUNNER_TEMP 'Sunbringer-patch-latest.json'
+          $manifestPath = Join-Path (Get-Location) 'Sunbringer-patch-latest.json'
           $json = $manifest | ConvertTo-Json -Depth 5
           [System.IO.File]::WriteAllText($manifestPath, "$json`n", [System.Text.UTF8Encoding]::new($false))
           Write-Host "Patch version: $($manifest.version)"
@@ -72,6 +72,6 @@ jobs:
           files: |
             source/zig-out/bin/Sunbringer.exe
             source/zig-out/bin/Roscaelifer.dll
-            ${{ runner.temp }}/Sunbringer-patch-latest.json
+            source/Sunbringer-patch-latest.json
           overwrite_files: true
           fail_on_unmatched_files: true
