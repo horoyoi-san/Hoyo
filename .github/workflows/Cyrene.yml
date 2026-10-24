@@ -49,7 +49,7 @@ jobs:
         run: |
           $manifestPath = Join-Path $env:RUNNER_TEMP "cyrene-latest.json"
           $manifestUrl = "https://github.com/horoyoi-san/Hoyo/releases/download/hkrpg/latest.json"
-          $status = & curl.exe --location --silent --show-error --output $manifestPath --write-out "%{http_code}" "$manifestUrl`?cachebust=$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())"
+          $status = & curl.exe --location --silent --show-error --output $manifestPath --write-out "%{http_code}" "$manifestUrl?cachebust=$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())"
           if ($LASTEXITCODE -ne 0) {
             throw "Could not check the current Cyrene launcher manifest."
           }
@@ -66,7 +66,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Could not calculate the next Cyrene launcher version."
           }
-          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "LAUNCHER_VERSION=$version`n")
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "LAUNCHER_VERSION=$version" + [Environment]::NewLine)
           node source/scripts/launcher-release.mjs stamp-info $version source/build/windows/info.json
           if ($LASTEXITCODE -ne 0) {
             throw "Could not stamp the Windows executable version."
