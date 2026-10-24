@@ -45,12 +45,19 @@ jobs:
           go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0-alpha.59
           "$env:USERPROFILE\go\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+
       - name: Calculate launcher version
         shell: pwsh
         run: |
           $manifestPath = Join-Path $env:RUNNER_TEMP "sunbringer-latest.json"
           $manifestUrl = "https://github.com/horoyoi-san/Hoyo/releases/download/nap/latest.json"
-          $status = & curl.exe --location --silent --show-error --output $manifestPath --write-out "%{http_code}" "$manifestUrl?cachebust=$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())"
+          $cacheBust = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+          $requestUrl = "$($manifestUrl)?cachebust=$cacheBust"
+
+          Write-Host "Manifest URL: [$requestUrl]"
+
+          $status = & curl.exe --location --silent --show-error --output $manifestPath --write-out "%{http_code}" $requestUrl
+
           if ($LASTEXITCODE -ne 0) {
             throw "Could not check the current Sunbringer launcher manifest."
           }
