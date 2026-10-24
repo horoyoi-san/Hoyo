@@ -4,7 +4,7 @@ const common = @import("common.zig");
 const die = common.die;
 
 const exe_name = "ZenlessZoneZeroBeta.exe";
-const dll_name: [:0]const u8 = "Covenant_of_Dayat.dll";
+const dll_name: [:0]const u8 = "Roscaelifer.dll";
 
 pub fn main() void {
     const w = std.os.windows;

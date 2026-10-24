@@ -19,7 +19,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(launcher);
 
     const dynlib = b.addLibrary(.{
-        .name = "Covenant_of_Dayat",
+        .name = "Roscaelifer",
         .linkage = .dynamic,
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/dynlib.zig"),

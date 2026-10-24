@@ -16,7 +16,7 @@ pub const std_options: std.Options = .{
     .log_level = .info,
 };
 
-const log = std.log.scoped(.Covenant_of_Dayat);
+const log = std.log.scoped(.Roscaelifer);
 
 var game_assembly: GameAssembly = undefined; // populated by `hookLoadMhyBase`
 var uid_custom_buf: ?[]u8 = null;
