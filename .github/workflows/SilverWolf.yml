@@ -1,4 +1,4 @@
-name: Build SilverWolf999 Launcher
+name: Kafka patch
 
 on:
   workflow_dispatch:
@@ -7,93 +7,71 @@ permissions:
   contents: write
 
 concurrency:
-  group: build-silverwolf-release
+  group: build-Kafka-patch
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-patch:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout Hoyo
-        uses: actions/checkout@v4
-
-      - name: Checkout launcher source
+      - name: Checkout Unknown_Realm source
         uses: actions/checkout@v4
         with:
-          repository: horoyoi-san/game-Launcher
-          ref: silwerwolf999-launcher
+          repository: horoyoi-san/Hoyo
+          ref: nap-Kafka-zig_patch
           path: source
-          persist-credentials: false
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: source/go.mod
-          cache-dependency-path: source/go.sum
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: source/frontend/package-lock.json
-
-      - name: Install Wails CLI
-        run: |
-          go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0-alpha.59
-          "$env:USERPROFILE\go\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-      - name: Calculate launcher version
+      - name: Install Zig 0.17.0
         shell: pwsh
         run: |
-          $manifestPath = Join-Path $env:RUNNER_TEMP "launcher-latest.json"
-          $manifestUrl = "https://github.com/horoyoi-san/Hoyo/releases/download/Sophon.Downloader/latest.json"
-          $status = & curl.exe --location --silent --show-error --output $manifestPath --write-out "%{http_code}" "$manifestUrl`?cachebust=$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())"
-          if ($LASTEXITCODE -ne 0) {
-            throw "Could not check the current launcher manifest."
-          }
+          $archive = Join-Path $env:RUNNER_TEMP 'zig-x86_64-windows-0.17.0.zip'
+          $zigRoot = Join-Path $env:RUNNER_TEMP 'zig-0.17.0'
+          curl.exe --location --fail --silent --show-error 'https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip' --output $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Could not download Zig 0.17.0.' }
+          Expand-Archive -LiteralPath $archive -DestinationPath $zigRoot -Force
+          $zigExe = Join-Path $zigRoot 'zig-x86_64-windows-0.17.0/zig.exe'
+          if (!(Test-Path -LiteralPath $zigExe)) { throw "Zig executable not found: $zigExe" }
+          $version = (& $zigExe version).Trim()
+          if ($version -ne '0.17.0') { throw "Expected Zig 0.17.0, found $version" }
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ZIG_EXE=$zigExe$([Environment]::NewLine)")
 
-          if ($status -eq "200") {
-            $currentVersion = (Get-Content -Raw $manifestPath | ConvertFrom-Json).version
-          } elseif ($status -eq "404") {
-            $currentVersion = "1.0.0"
-          } else {
-            throw "Launcher manifest request returned HTTP $status."
-          }
-
-          $version = node source/scripts/launcher-release.mjs next $currentVersion
-          if ($LASTEXITCODE -ne 0) {
-            throw "Could not calculate the next launcher version."
-          }
-          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "LAUNCHER_VERSION=$version`n")
-          node source/scripts/launcher-release.mjs stamp-info $version source/build/windows/info.json
-          if ($LASTEXITCODE -ne 0) {
-            throw "Could not stamp the Windows executable version."
-          }
-          Write-Host "Building launcher version $version"
-
-      - name: Build Windows executable
+      - name: Build Windows patch
         working-directory: source
-        run: wails3 task build BUILD_VERSION=$env:LAUNCHER_VERSION
-        env:
-          PRODUCTION: "true"
-
-      - name: Verify build output
+        shell: pwsh
         run: |
-          if (!(Test-Path "source/bin/SilwerWolf999-launcher.exe")) {
-            throw "Expected build output source/bin/SilwerWolf999-launcher.exe was not produced."
+          & $env:ZIG_EXE build -Dtarget=x86_64-windows -Doptimize=ReleaseSmall
+          if ($LASTEXITCODE -ne 0) { throw 'Zig patch build failed.' }
+          foreach ($file in @('zig-out/bin/Kafka.exe', 'zig-out/bin/Unknown_Realm.dll')) {
+            if (!(Test-Path -LiteralPath $file -PathType Leaf)) { throw "Expected patch output was not produced: $file" }
           }
 
-      - name: Create update manifest
-        run: node source/scripts/launcher-release.mjs manifest $env:LAUNCHER_VERSION source/bin/SilwerWolf999-launcher.exe "$env:RUNNER_TEMP/latest.json"
+      - name: Create patch update manifest
+        working-directory: source
+        shell: pwsh
+        run: |
+          $assets = @{}
+          foreach ($name in @('Kafka.exe', 'Unknown_Realm.dll')) {
+            $file = Join-Path 'zig-out/bin' $name
+            $hash = (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant()
+            $assets[$name] = @{ sha256 = $hash; size = (Get-Item -LiteralPath $file).Length }
+          }
+          $manifest = @{
+            version = '1.0'
+            assets = $assets
+          }
+          $manifestPath = Join-Path $env:RUNNER_TEMP 'Kafka-patch-latest.json'
+          $json = $manifest | ConvertTo-Json -Depth 5
+          [System.IO.File]::WriteAllText($manifestPath, "$json`n", [System.Text.UTF8Encoding]::new($false))
+          Write-Host "Patch version: $($manifest.version)"
 
-      - name: Publish executable to Hoyo release
+      - name: Publish patch assets to Hoyo nap release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: Sophon.Downloader
+          tag_name: nap
           files: |
-            source/bin/SilwerWolf999-launcher.exe
-            ${{ runner.temp }}/latest.json
+            source/zig-out/bin/Kafka.exe
+            source/zig-out/bin/Unknown_Realm.dll
+            ${{ runner.temp }}/Kafka-patch-latest.json
           overwrite_files: true
           fail_on_unmatched_files: true
