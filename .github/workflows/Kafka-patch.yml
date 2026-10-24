@@ -25,15 +25,15 @@ jobs:
       - name: Install Zig 0.16.0
         shell: pwsh
         run: |
-          $archive = Join-Path $env:RUNNER_TEMP 'zig-x86_64-windows-0.16.0.zip'
-          $zigRoot = Join-Path $env:RUNNER_TEMP 'zig-0.16.0'
-          curl.exe --location --fail --silent --show-error 'https://ziglang.org/download/0.16.0/zig-x86_64-windows-0.16.0.zip' --output $archive
-          if ($LASTEXITCODE -ne 0) { throw 'Could not download Zig 0.16.0.' }
+          $archive = Join-Path $env:RUNNER_TEMP 'zig-x86_64-windows-0.17.0.zip'
+          $zigRoot = Join-Path $env:RUNNER_TEMP 'zig-0.17.0'
+          curl.exe --location --fail --silent --show-error 'https://ziglang.org/download/0.17.0/zig-x86_64-windows-0.17.0.zip' --output $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Could not download Zig 0.17.0.' }
           Expand-Archive -LiteralPath $archive -DestinationPath $zigRoot -Force
-          $zigExe = Join-Path $zigRoot 'zig-x86_64-windows-0.16.0/zig.exe'
+          $zigExe = Join-Path $zigRoot 'zig-x86_64-windows-0.17.0/zig.exe'
           if (!(Test-Path -LiteralPath $zigExe)) { throw "Zig executable not found: $zigExe" }
           $version = (& $zigExe version).Trim()
-          if ($version -ne '0.16.0') { throw "Expected Zig 0.16.0, found $version" }
+          if ($version -ne '0.17.0') { throw "Expected Zig 0.17.0, found $version" }
           [System.IO.File]::AppendAllText($env:GITHUB_ENV, "ZIG_EXE=$zigExe$([Environment]::NewLine)")
 
       - name: Build Windows patch
