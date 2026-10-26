@@ -48,10 +48,17 @@ jobs:
             -DestinationPath "Sophon.Downloader.zip" `
             -Force
 
+      - name: Create Sophon version manifest
+        shell: pwsh
+        run: |
+          $version = (Select-String -Path "Sophon.Downloader/Core/Core.csproj" -Pattern '<Version>([^<]+)</Version>').Matches[0].Groups[1].Value
+          @{ version = $version } | ConvertTo-Json | Set-Content -Path "sophon.json" -Encoding utf8
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: Sophon.Downloader
           name: Sophon.Downloader
           generate_release_notes: false
-          files: Sophon.Downloader.zip
+          files: |
+            Sophon.Downloader.zip
+            sophon.json
