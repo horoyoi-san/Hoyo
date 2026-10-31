@@ -5,15 +5,17 @@ pub async fn on_get_gacha_info_cs_req(
     _req: &GetGachaInfoCsReq,
     res: &mut GetGachaInfoScRsp,
 ) {
-    res.gacha_info_list = vec![GachaInfo {
-        end_time: 1924992000,
-        begin_time: 0,
-        gacha_ceiling: Some(GachaCeiling::default()),
-        prize_item_list: vec![8001],
-        item_detail_list: vec![8001],
-        gacha_id: 1001,
-        ..Default::default()
+    res.gacha_info_list = vec![
+        GachaInfo {
+            end_time: 1924992000,
+            begin_time: 0,
+            gacha_ceiling: Some(GachaCeiling::default()),
+            prize_item_list: vec![8001],
+            item_detail_list: vec![8001],
+            gacha_id: 1001,
+            ..Default::default()
     }];
+
 }
 
 pub async fn on_do_gacha_cs_req(
