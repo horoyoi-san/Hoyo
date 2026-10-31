@@ -26,7 +26,7 @@ var crypto_buf: [4096]u8 = undefined;
 
 const default_uid = "Fapper";
 const default_crypto_custom =
-    "<color=#ff8000>นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม</color> <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#5100ff>Sunbringer</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
+    "นี่คือเวอร์ชั่นทดสอบ ยังไม่ได้ระดับคุณภาพของเกม <color=#FF0000>Ze</color><color=#FF7F00>nl</color><color=#FFFF00>ess</color> <color=#00FF00>Gay</color> <color=#0000FF>Ze</color><color=#4B0082>ro</color> | <color=#5100ff>Sunbringer</color> | <color=#ff0000>Horoyoi-san ඞ</color>";
 
 pub export fn DllMain(
     _: std.os.windows.HINSTANCE,
@@ -90,12 +90,7 @@ fn initPatches(syscall: *nt.Syscall) !void {
     );
     for (game_assembly.addMany(.sdk_rsa_keys)) |rsa_key|
         @as(**const String, @ptrFromInt(rsa_key)).* = .allocZ(game_assembly, sdk_public_key);
-    if (crypto_custom_buf) |custom| {
-        const custom_z: [*:0]const u8 = @ptrCast(custom.ptr);
-        @as(**const String, @ptrFromInt(game_assembly.add(.crypto_str))).* = .allocZ(game_assembly, custom_z);
-    } else {
-        @as(**const String, @ptrFromInt(game_assembly.add(.crypto_str))).* = .allocZ(game_assembly, default_crypto_custom);
-    }
+    reloadCryptoCustom();
     ensureRsaKey();
 
     for (game_assembly.addMany(.dither_alpha_strings)) |dither_alpha_string|
@@ -106,6 +101,8 @@ fn initPatches(syscall: *nt.Syscall) !void {
         game_assembly.add(.@"MoleMole.UIMainCityMiniMenuWidgetController::RefreshGachaTimeIcon"),
         &.{0xC3},
     );
+
+    startWatcherThread();
 }
 
 const server_public_key: [:0]const u8 = @embedFile("server_public_key.xml");
@@ -153,8 +150,34 @@ fn loadFileDelegateInvokeReplacement(_: *anyopaque, path: *String) callconv(.c) 
         .allocZ(game_assembly, "");
 }
 
+const custom_names = &[_][*:0]const u8{
+    "uid_custom.txt",
+    "UID_Custom.txt",
+    "uid_custom",
+    "crypto_custom.txt",
+    "Crypto_Custom.txt",
+    "crypto_custom",
+    "message.txt",
+};
+
+var reload_lock: std.atomic.Value(bool) = .init(false);
+
+fn acquireReloadLock() void {
+    while (reload_lock.cmpxchgWeak(false, true, .acquire, .monotonic) != null) {
+        std.atomic.spinLoopHint();
+    }
+}
+
+fn releaseReloadLock() void {
+    reload_lock.store(false, .release);
+}
+
 fn getDeviceFpReplacement(_: *anyopaque) callconv(.c) *String {
     ensureRsaKey();
+    loadUidCustom();
+    acquireReloadLock();
+    defer releaseReloadLock();
+
     if (uid_custom_buf) |custom| {
         const custom_z: [*:0]const u8 = @ptrCast(custom.ptr);
         return .allocZ(game_assembly, custom_z);
@@ -164,14 +187,16 @@ fn getDeviceFpReplacement(_: *anyopaque) callconv(.c) *String {
 }
 
 fn ensureCustomFiles() void {
-    //createDefaultFile("UID_Custom.txt", default_uid);
+    createDefaultFile("uid_custom.txt", default_crypto_custom);
     createDefaultFile("UID_Custom.txt", default_crypto_custom);
 }
 
 fn loadUidCustom() void {
-    const names = &[_][*:0]const u8{ "UID_Custom.txt", "uid_custom.txt", "uid_custom" };
-    const handle = openFileWin32(names) orelse return;
+    const handle = openFileWin32(custom_names) orelse return;
     defer _ = win.CloseHandle(handle);
+
+    acquireReloadLock();
+    defer releaseReloadLock();
 
     if (readWin32File(handle, &uid_buf)) |bytes_read| {
         const trimmed = mem.trimEnd(u8, uid_buf[0..bytes_read], " \t\r\n");
@@ -183,18 +208,11 @@ fn loadUidCustom() void {
 }
 
 fn loadCryptoCustom() void {
-    const names = &[_][*:0]const u8{
-        "crypto_custom.txt",
-        "crypto_custom",
-        "Crypto_Custom.txt",
-        "crypto.txt",
-        "message.txt", 
-        "UID_Custom.txt", 
-        "uid_custom.txt", 
-        "uid_custom",
-    };
-    const handle = openFileWin32(names) orelse return;
+    const handle = openFileWin32(custom_names) orelse return;
     defer _ = win.CloseHandle(handle);
+
+    acquireReloadLock();
+    defer releaseReloadLock();
 
     if (readWin32File(handle, &crypto_buf)) |bytes_read| {
         const trimmed = mem.trimEnd(u8, crypto_buf[0..bytes_read], " \t\r\n");
@@ -205,12 +223,113 @@ fn loadCryptoCustom() void {
     }
 }
 
+fn reloadCryptoCustom() void {
+    loadCryptoCustom();
+    acquireReloadLock();
+    defer releaseReloadLock();
+
+    if (crypto_custom_buf) |custom| {
+        const custom_z: [*:0]const u8 = @ptrCast(custom.ptr);
+        @as(**const String, @ptrFromInt(game_assembly.add(.crypto_str))).* = .allocZ(game_assembly, custom_z);
+    } else {
+        @as(**const String, @ptrFromInt(game_assembly.add(.crypto_str))).* = .allocZ(game_assembly, default_crypto_custom);
+    }
+}
+
+fn reloadAll() void {
+    loadUidCustom();
+    reloadCryptoCustom();
+    log.info("Reloaded all custom files", .{});
+}
+
+fn getLatestFileTime(names: []const [*:0]const u8, out_time: *win.FILETIME) bool {
+    var max_time: win.FILETIME = .{ .dwLowDateTime = 0, .dwHighDateTime = 0 };
+    var found = false;
+
+    for (names) |name| {
+        var data: win.WIN32_FILE_ATTRIBUTE_DATA = undefined;
+        if (win.GetFileAttributesExA(name, 0, &data) != 0) {
+            const cur_ft = (@as(u64, data.ftLastWriteTime.dwHighDateTime) << 32) | data.ftLastWriteTime.dwLowDateTime;
+            const max_ft = (@as(u64, max_time.dwHighDateTime) << 32) | max_time.dwLowDateTime;
+            if (cur_ft > max_ft) {
+                max_time = data.ftLastWriteTime;
+                found = true;
+            }
+        }
+    }
+
+    if (found) {
+        out_time.* = max_time;
+        return true;
+    }
+    return false;
+}
+
+const GetAsyncKeyStateFn = *const fn (vKey: c_int) callconv(.winapi) i16;
+var get_async_key_state: ?GetAsyncKeyStateFn = null;
+
+fn initUser32() void {
+    if (win.LoadLibraryA("user32.dll")) |user32| {
+        if (win.GetProcAddress(user32, "GetAsyncKeyState")) |proc| {
+            get_async_key_state = @ptrCast(proc);
+        }
+    }
+}
+
+fn watcherThreadProc(_: ?*anyopaque) callconv(.winapi) win.DWORD {
+    var last_time: win.FILETIME = .{ .dwLowDateTime = 0, .dwHighDateTime = 0 };
+    _ = getLatestFileTime(custom_names, &last_time);
+
+    var hotkey_prev = false;
+
+    while (true) {
+        win.Sleep(200);
+
+        // 1. Hotkey check: F11 (0x7A) or F10 (0x79)
+        if (get_async_key_state) |fn_key| {
+            const is_f11 = (fn_key(0x7A) & @as(i16, @bitCast(@as(u16, 0x8000)))) != 0;
+            const is_f10 = (fn_key(0x79) & @as(i16, @bitCast(@as(u16, 0x8000)))) != 0;
+            const pressed = is_f11 or is_f10;
+
+            if (pressed and !hotkey_prev) {
+                log.info("Hotkey pressed: reloading all custom files", .{});
+                reloadAll();
+                _ = getLatestFileTime(custom_names, &last_time);
+            }
+            hotkey_prev = pressed;
+        }
+
+        // 2. File Watcher: any custom file changed
+        var cur_time: win.FILETIME = undefined;
+        if (getLatestFileTime(custom_names, &cur_time)) {
+            if (cur_time.dwLowDateTime != last_time.dwLowDateTime or
+                cur_time.dwHighDateTime != last_time.dwHighDateTime)
+            {
+                last_time = cur_time;
+                reloadAll();
+                log.info("Custom file changed: reloaded all", .{});
+            }
+        }
+    }
+
+    return 0;
+}
+
+var watcher_thread_started: bool = false;
+
+fn startWatcherThread() void {
+    if (watcher_thread_started) return;
+    watcher_thread_started = true;
+    initUser32();
+    _ = win.CreateThread(null, 0, watcherThreadProc, null, 0, null);
+}
+
 fn openFileWin32(names: []const [*:0]const u8) ?win.HANDLE {
     for (names) |name| {
         const handle = win.CreateFileA(
             name,
             win.GENERIC_READ,
-            win.FILE_SHARE_READ,
+            win.FILE_SHARE_READ | win.FILE_SHARE_WRITE | win.FILE_SHARE_DELETE,
             null,
             win.OPEN_EXISTING,
             win.FILE_ATTRIBUTE_NORMAL,
@@ -227,7 +346,7 @@ fn createDefaultFile(name: [*:0]const u8, contents: []const u8) void {
     const handle = win.CreateFileA(
         name,
         win.GENERIC_WRITE,
-        win.FILE_SHARE_READ,
+        win.FILE_SHARE_READ | win.FILE_SHARE_WRITE | win.FILE_SHARE_DELETE,
         null,
         win.CREATE_NEW,
         win.FILE_ATTRIBUTE_NORMAL,
@@ -268,6 +387,20 @@ const win = struct {
     const LPCSTR = [*:0]const u8;
     const LPVOID = ?*anyopaque;
 
+    const FILETIME = extern struct {
+        dwLowDateTime: DWORD,
+        dwHighDateTime: DWORD,
+    };
+
+    const WIN32_FILE_ATTRIBUTE_DATA = extern struct {
+        dwFileAttributes: DWORD,
+        ftCreationTime: FILETIME,
+        ftLastAccessTime: FILETIME,
+        ftLastWriteTime: FILETIME,
+        nFileSizeHigh: DWORD,
+        nFileSizeLow: DWORD,
+    };
+
     extern "kernel32" fn CreateFileA(
         lpFileName: LPCSTR,
         dwDesiredAccess: DWORD,
@@ -296,10 +429,32 @@ const win = struct {
 
     extern "kernel32" fn CloseHandle(hObject: HANDLE) callconv(.winapi) BOOL;
 
+    extern "kernel32" fn CreateThread(
+        lpThreadAttributes: ?*anyopaque,
+        dwStackSize: usize,
+        lpStartAddress: *const fn (?*anyopaque) callconv(.winapi) DWORD,
+        lpParameter: ?*anyopaque,
+        dwCreationFlags: DWORD,
+        lpThreadId: ?*DWORD,
+    ) callconv(.winapi) ?HANDLE;
+
+    extern "kernel32" fn Sleep(dwMilliseconds: DWORD) callconv(.winapi) void;
+
+    extern "kernel32" fn GetFileAttributesExA(
+        lpFileName: LPCSTR,
+        fInfoLevelId: c_int,
+        lpFileInformation: ?*anyopaque,
+    ) callconv(.winapi) BOOL;
+
+    extern "kernel32" fn LoadLibraryA(lpLibFileName: LPCSTR) callconv(.winapi) ?HANDLE;
+    extern "kernel32" fn GetProcAddress(hModule: HANDLE, lpProcName: LPCSTR) callconv(.winapi) ?*anyopaque;
+
     const INVALID_HANDLE_VALUE: HANDLE = @ptrFromInt(std.math.maxInt(usize));
     const GENERIC_READ = 0x80000000;
     const GENERIC_WRITE = 0x40000000;
     const FILE_SHARE_READ = 1;
+    const FILE_SHARE_WRITE = 2;
+    const FILE_SHARE_DELETE = 4;
     const CREATE_NEW = 1;
     const OPEN_EXISTING = 3;
     const FILE_ATTRIBUTE_NORMAL = 0x80;
