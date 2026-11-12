@@ -79,8 +79,37 @@
 | :--- | :--- | :--- |
 | CNPRODAndroid | GI | https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_default |
 | Cloud CNPRODAndroid | GI | https://api-takumi.mihoyo.com/event/download_porter/link/clgm_cn/official/default |
-
+| CNPRODAndroid | HSR | https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/android_default |
+| Cloud CNPRODAndroid | HSR | https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/android_defaultweb |
+| Cloud CNPRODAndroid | HSR | https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/android_addyyxzxweb |
+| Cloud CNPRODAndroid | HSR | https://api-takumi.mihoyo.com/event/download_porter/link/clgm_hkrpg-cn/official/android_default |
+| CNPRODAndroid | ZZZ | https://api-takumi.mihoyo.com/event/download_porter/link/nap_cn/official/android_ldy |
+| Cloud CNPRODAndroid | ZZZ | https://api-takumi.mihoyo.com/event/download_porter/link/clgm_nap-cn/official/android_default |
 ```
+**[ Latest Release links | CN PC Launcher](https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/pc_default)**
+
+**[ Latest Release links | CN Android Launcher](https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/android_default)**
+
+**[ Latest Release links | CN Android Cloud Launcher | Link 1](https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/android_defaultweb)**
+
+**[ Latest Release links | CN Android Cloud Launcher | Link 2](https://api-takumi.mihoyo.com/event/download_porter/link/hkrpg_cn/official/android_addyyxzxweb)**
+
+**[ Latest Release links | CN Android Cloud Launcher | Link 3](https://api-takumi.mihoyo.com/event/download_porter/link/clgm_hkrpg-cn/official/android_default)**
+
+**[ Latest Release links | OS PC Launcher | Link 1](https://sg-public-api.hoyoverse.com/event/download_porter/link/hkrpg_global/oswebpc/default)**
+
+**[ Latest Release links | OS PC Launcher | Link 2](https://sg-public-api.hoyoverse.com/event/download_porter/trace/hkrpg_global/oswebpc/default?url=https%3A%2F%2Fhsr.hoyoverse.com%2Fen-us%2F%3Futm_source%3DHoYoverse%26utm_medium%3Dproducts)**
+
+**[ Latest Release links | CN PC Launcher](https://api-takumi.mihoyo.com/event/download_porter/link/nap_cn/official/pc_ldy)**
+
+**[ Latest Release links | CN Android Launcher](https://api-takumi.mihoyo.com/event/download_porter/link/nap_cn/official/android_ldy)**
+
+<!--**[ Latest Release links | CN Android Cloud Launcher](https://api-takumi.mihoyo.com/event/download_porter/link/clgm_nap-cn/official/android_default)**-->
+
+**[ Latest Release links | OS PC Launcher | Link 1](https://sg-public-api.hoyoverse.com/event/download_porter/trace/nap_global/osgwpc/pc_gw10)**
+
+**[ Latest Release links | OS PC Launcher | Link 2](https://sg-public-api.hoyoverse.com/event/download_porter/trace/nap_global/osgwpc/pc_gw10?url=https%3A%2F%2Fzenless.hoyoverse.com%2Fen-us%2F&appid=920)**
+
 payload:
 # Behavior: classical
 # > Genshin Impact & HoYoverse Games Rules
