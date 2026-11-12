@@ -134,7 +134,7 @@ pub struct ChallengeBossRelicInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChallengeBossAvatarRelicInfo {
     #[prost(map = "uint32, message", tag = "1")]
-    pub avatar_relic_slot_map: ::std::collections::HashMap<u32, ChallengeBossRelicInfo>,
+    pub mhkbnlpcncd: ::std::collections::HashMap<u32, ChallengeBossRelicInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1496,7 +1496,7 @@ pub struct GridFightTraitEffectLevelInfo {
     #[prost(uint32, tag = "1")]
     pub trait_effect_level_exp: u32,
     #[prost(map = "uint32, message", tag = "2")]
-    pub trait_effect_level_reward: ::std::collections::HashMap<u32, GridFightDropInfo>,
+    pub gbnopfpddhg: ::std::collections::HashMap<u32, GridFightDropInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1569,7 +1569,7 @@ pub struct BattleGridFightTraitEffectInfo {
     pub effect_id: u32,
     #[prost(
         oneof = "battle_grid_fight_trait_effect_info::Nebnjdmfelo",
-        tags = "101, 102, 103, 104, 105, 106, 107, 108, 109, 110"
+        tags = "101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111"
     )]
     pub nebnjdmfelo: ::core::option::Option<
         battle_grid_fight_trait_effect_info::Nebnjdmfelo,
@@ -1600,6 +1600,8 @@ pub mod battle_grid_fight_trait_effect_info {
         Mccmpfengcd(super::Ghceoimhkji),
         #[prost(message, tag = "110")]
         Kdbkipphmfi(super::Lfnncomfbmd),
+        #[prost(message, tag = "111")]
+        Mbfpdondiem(super::Cpnnacgjfhc),
     }
 }
 #[derive(proto_derive::CmdID)]
@@ -2531,7 +2533,7 @@ pub struct BattleStatistics {
     #[prost(uint32, tag = "12")]
     pub monster_battle_turns: u32,
     #[prost(map = "string, float", tag = "13")]
-    pub custom_values: ::std::collections::HashMap<::prost::alloc::string::String, f32>,
+    pub kahlgnjobnm: ::std::collections::HashMap<::prost::alloc::string::String, f32>,
     #[prost(uint32, tag = "14")]
     pub challenge_score: u32,
     #[prost(message, repeated, tag = "16")]
@@ -2684,204 +2686,193 @@ pub struct PlayerSimpleInfo {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoginActivityData {
-    #[prost(uint32, tag = "3")]
-    pub id: u32,
-    #[prost(uint32, tag = "6")]
-    pub login_days: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "2")]
     pub panel_id: u32,
-    #[prost(uint32, repeated, tag = "14")]
+    #[prost(uint32, repeated, tag = "3")]
     pub moiahcmhneo: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "8")]
+    pub id: u32,
+    #[prost(uint32, tag = "12")]
+    pub login_days: u32,
 }
-/// Obf: JLKHCGGLIMF
 #[derive(proto_derive::CmdID)]
-#[cmdid(2674)]
+#[cmdid(2683)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLoginActivityCsReq {}
-/// Obf: BJDJGMHNGGJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(2619)]
+#[cmdid(2654)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLoginActivityScRsp {
     #[prost(message, repeated, tag = "1")]
     pub login_activity_list: ::prost::alloc::vec::Vec<LoginActivityData>,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "6")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ActivityScheduleData {
-    #[prost(int64, tag = "1")]
-    pub end_time: i64,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "6")]
     pub activity_id: u32,
-    #[prost(int64, tag = "6")]
+    #[prost(int64, tag = "11")]
+    pub end_time: i64,
+    #[prost(int64, tag = "13")]
     pub begin_time: i64,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "14")]
     pub panel_id: u32,
 }
-/// Obf: HIMPABPFMPG
 #[derive(proto_derive::CmdID)]
-#[cmdid(2605)]
+#[cmdid(2673)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetActivityScheduleConfigCsReq {}
-/// Obf: GHBJFLPLIGA
 #[derive(proto_derive::CmdID)]
-#[cmdid(2671)]
+#[cmdid(2633)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetActivityScheduleConfigScRsp {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "14")]
     pub retcode: u32,
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag = "15")]
     pub schedule_data: ::prost::alloc::vec::Vec<ActivityScheduleData>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrialActivityInfo {
-    #[prost(bool, tag = "6")]
+    #[prost(bool, tag = "4")]
     pub taken_reward: bool,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "13")]
     pub stage_id: u32,
 }
-/// Obf: JJPAAFLHHKC
 #[derive(proto_derive::CmdID)]
-#[cmdid(2639)]
+#[cmdid(2680)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTrialActivityDataCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Paaldkhkole {
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "2")]
     pub avatar_id: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "7")]
     pub enhanced_id: u32,
 }
-/// Obf: GAPLJKIPAOF
 #[derive(proto_derive::CmdID)]
-#[cmdid(2664)]
+#[cmdid(2667)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTrialActivityDataScRsp {
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag = "8")]
     pub trial_activity_info_list: ::prost::alloc::vec::Vec<TrialActivityInfo>,
-    #[prost(uint32, tag = "9")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "9")]
     pub obopmfbgbae: ::prost::alloc::vec::Vec<Paaldkhkole>,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "13")]
     pub activity_stage_id: u32,
 }
-/// Obf: JLGGPEBAIMB
 #[derive(proto_derive::CmdID)]
-#[cmdid(1305)]
+#[cmdid(1373)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QuickStartCocoonStageCsReq {
-    #[prost(uint32, tag = "1")]
-    pub wave: u32,
+    #[prost(message, optional, tag = "1")]
+    pub cbjckeiggnl: ::core::option::Option<Najknjljpep>,
     #[prost(uint32, tag = "2")]
     pub heccobfbjfi: u32,
-    #[prost(message, optional, tag = "3")]
-    pub cbjckeiggnl: ::core::option::Option<Najknjljpep>,
     #[prost(uint32, tag = "8")]
     pub world_level: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "11")]
+    pub wave: u32,
+    #[prost(uint32, tag = "13")]
     pub cocoon_id: u32,
 }
-/// Obf: MHDMHAEADMI
 #[derive(proto_derive::CmdID)]
-#[cmdid(1371)]
+#[cmdid(1333)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuickStartCocoonStageScRsp {
     #[prost(uint32, tag = "1")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "5")]
-    pub battle_info: ::core::option::Option<SceneBattleInfo>,
-    #[prost(uint32, tag = "8")]
-    pub wave: u32,
-    #[prost(uint32, tag = "11")]
     pub cocoon_id: u32,
+    #[prost(message, optional, tag = "2")]
+    pub battle_info: ::core::option::Option<SceneBattleInfo>,
+    #[prost(uint32, tag = "3")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "10")]
+    pub wave: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RelicList {
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "3")]
     pub set_id: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "4")]
     pub r#type: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MonsterList {
+    #[prost(uint32, tag = "1")]
+    pub monster_id: u32,
     #[prost(uint32, tag = "9")]
     pub num: u32,
-    #[prost(uint32, tag = "14")]
-    pub monster_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArchiveData {
+    #[prost(uint32, repeated, tag = "1")]
+    pub archive_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "2")]
+    pub kill_monster_list: ::prost::alloc::vec::Vec<MonsterList>,
     #[prost(uint32, repeated, tag = "4")]
     pub archive_equipment_id_list: ::prost::alloc::vec::Vec<u32>,
     #[prost(message, repeated, tag = "7")]
-    pub kill_monster_list: ::prost::alloc::vec::Vec<MonsterList>,
-    #[prost(message, repeated, tag = "9")]
     pub relic_list: ::prost::alloc::vec::Vec<RelicList>,
-    #[prost(uint32, repeated, tag = "12")]
-    pub archive_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "10")]
     pub archive_missing_equipment_id_list: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: IPFMCBBMOEC
 #[derive(proto_derive::CmdID)]
-#[cmdid(2374)]
+#[cmdid(2383)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetArchiveDataCsReq {}
-/// Obf: JPMDALGBLBO
 #[derive(proto_derive::CmdID)]
-#[cmdid(2319)]
+#[cmdid(2354)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetArchiveDataScRsp {
-    #[prost(message, optional, tag = "1")]
-    pub archive_data: ::core::option::Option<ArchiveData>,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "4")]
     pub retcode: u32,
+    #[prost(message, optional, tag = "10")]
+    pub archive_data: ::core::option::Option<ArchiveData>,
 }
-/// Obf: EELGBOMFJEJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(374)]
+#[cmdid(383)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAvatarDataCsReq {
     #[prost(bool, tag = "7")]
     pub is_get_all: bool,
-    #[prost(uint32, repeated, tag = "14")]
+    #[prost(uint32, repeated, tag = "13")]
     pub base_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvatarPathSkillTree {
-    #[prost(uint32, tag = "3")]
-    pub anchor_type: u32,
     #[prost(uint32, tag = "5")]
+    pub anchor_type: u32,
+    #[prost(uint32, tag = "9")]
     pub level: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Avatar {
+    #[prost(uint32, tag = "1")]
+    pub exp: u32,
+    #[prost(uint32, repeated, tag = "2")]
+    pub has_taken_promotion_reward_list: ::prost::alloc::vec::Vec<u32>,
     #[prost(uint32, tag = "3")]
     pub cur_multi_path_avatar_type: u32,
-    #[prost(uint64, tag = "4")]
-    pub first_met_time_stamp: u64,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "4")]
     pub equipment_unique_id: u32,
     #[prost(uint32, tag = "6")]
     pub promotion: u32,
     #[prost(uint32, tag = "8")]
-    pub exp: u32,
-    #[prost(uint32, tag = "10")]
-    pub level: u32,
-    #[prost(uint32, repeated, tag = "12")]
-    pub has_taken_promotion_reward_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "13")]
     pub base_avatar_id: u32,
+    #[prost(uint64, tag = "10")]
+    pub first_met_time_stamp: u64,
+    #[prost(uint32, tag = "14")]
+    pub level: u32,
     #[prost(bool, tag = "15")]
     pub is_marked: bool,
 }
@@ -2890,595 +2881,582 @@ pub struct Avatar {
 pub struct AvatarPathData {
     #[prost(uint32, tag = "1")]
     pub avatar_id: u32,
-    #[prost(message, repeated, tag = "2")]
-    pub avatar_path_skill_tree: ::prost::alloc::vec::Vec<AvatarPathSkillTree>,
-    #[prost(message, repeated, tag = "4")]
-    pub equip_relic_list: ::prost::alloc::vec::Vec<EquipRelic>,
-    #[prost(uint32, tag = "5")]
-    pub unk_enhanced_id: u32,
-    #[prost(uint64, tag = "6")]
-    pub unlock_timestamp: u64,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "2")]
     pub path_equipment_id: u32,
-    #[prost(uint32, repeated, tag = "8")]
+    #[prost(uint32, repeated, tag = "5")]
     pub igdehgikfja: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "10")]
+    #[prost(message, repeated, tag = "6")]
+    pub avatar_path_skill_tree: ::prost::alloc::vec::Vec<AvatarPathSkillTree>,
+    #[prost(uint32, tag = "8")]
     pub rank: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint64, tag = "9")]
+    pub unlock_timestamp: u64,
+    #[prost(uint32, tag = "10")]
     pub dressed_skin_id: u32,
+    #[prost(uint32, tag = "11")]
+    pub unk_enhanced_id: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub equip_relic_list: ::prost::alloc::vec::Vec<EquipRelic>,
 }
-/// Obf: MNFBHFDNOKF
 #[derive(proto_derive::CmdID)]
-#[cmdid(319)]
+#[cmdid(354)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAvatarDataScRsp {
     #[prost(uint32, tag = "1")]
     pub jfaadmonjnf: u32,
     #[prost(uint32, repeated, tag = "2")]
     pub basic_type_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "3")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "6")]
-    pub outfit_list: ::core::option::Option<OutfitInfo>,
-    #[prost(message, repeated, tag = "7")]
-    pub avatar_path_data_info_list: ::prost::alloc::vec::Vec<AvatarPathData>,
-    #[prost(message, repeated, tag = "8")]
-    pub avatar_list: ::prost::alloc::vec::Vec<Avatar>,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "3")]
     pub jbfbeolohjn: ::prost::alloc::vec::Vec<Apamfckfhll>,
+    #[prost(message, optional, tag = "4")]
+    pub outfit_list: ::core::option::Option<OutfitInfo>,
+    #[prost(uint32, tag = "5")]
+    pub retcode: u32,
+    #[prost(uint32, repeated, tag = "6")]
+    pub skin_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(bool, tag = "7")]
+    pub is_get_all: bool,
     #[prost(enumeration = "Cfmdkncddal", repeated, tag = "11")]
     pub piloafimcgk: ::prost::alloc::vec::Vec<i32>,
-    #[prost(uint32, repeated, tag = "14")]
-    pub skin_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag = "15")]
-    pub is_get_all: bool,
+    #[prost(message, repeated, tag = "14")]
+    pub avatar_list: ::prost::alloc::vec::Vec<Avatar>,
+    #[prost(message, repeated, tag = "15")]
+    pub avatar_path_data_info_list: ::prost::alloc::vec::Vec<AvatarPathData>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(306)]
+#[cmdid(326)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DressAvatarCsReq {
-    #[prost(uint32, tag = "9")]
-    pub equipment_unique_id: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "2")]
     pub avatar_id: u32,
+    #[prost(uint32, tag = "10")]
+    pub equipment_unique_id: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(370)]
+#[cmdid(378)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DressAvatarScRsp {
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "7")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(327)]
+#[cmdid(308)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TakeOffEquipmentCsReq {
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "10")]
     pub avatar_id: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(352)]
+#[cmdid(381)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TakeOffEquipmentScRsp {
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "1")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(398)]
+#[cmdid(312)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RankUpAvatarCsReq {
-    #[prost(uint32, tag = "6")]
-    pub rank: u32,
-    #[prost(message, optional, tag = "12")]
-    pub cost_data: ::core::option::Option<ItemCostList>,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "1")]
     pub avatar_id: u32,
+    #[prost(uint32, tag = "5")]
+    pub rank: u32,
+    #[prost(message, optional, tag = "10")]
+    pub cost_data: ::core::option::Option<ItemCostList>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(347)]
+#[cmdid(369)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RankUpAvatarScRsp {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "3")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DressRelicParam {
-    #[prost(uint32, tag = "1")]
-    pub relic_type: u32,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "8")]
     pub relic_unique_id: u32,
-}
-#[derive(proto_derive::CmdID)]
-#[cmdid(348)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DressRelicAvatarCsReq {
-    #[prost(uint32, tag = "1")]
-    pub avatar_id: u32,
-    #[prost(message, repeated, tag = "13")]
-    pub switch_list: ::prost::alloc::vec::Vec<DressRelicParam>,
-}
-#[derive(proto_derive::CmdID)]
-#[cmdid(375)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DressRelicAvatarScRsp {
-    #[prost(uint32, tag = "13")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "14")]
-    pub avatar_id: u32,
-}
-#[derive(proto_derive::CmdID)]
-#[cmdid(308)]
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct TakeOffRelicCsReq {
-    #[prost(uint32, repeated, tag = "9")]
-    pub relic_type_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "12")]
-    pub avatar_id: u32,
-}
-#[derive(proto_derive::CmdID)]
-#[cmdid(392)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct TakeOffRelicScRsp {
-    #[prost(uint32, tag = "10")]
-    pub retcode: u32,
+    #[prost(uint32, tag = "15")]
+    pub relic_type: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[cmdid(304)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DressRelicAvatarCsReq {
+    #[prost(message, repeated, tag = "7")]
+    pub switch_list: ::prost::alloc::vec::Vec<DressRelicParam>,
+    #[prost(uint32, tag = "8")]
+    pub avatar_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(388)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DressRelicAvatarScRsp {
+    #[prost(uint32, tag = "2")]
+    pub avatar_id: u32,
+    #[prost(uint32, tag = "9")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(400)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TakeOffRelicCsReq {
+    #[prost(uint32, repeated, tag = "1")]
+    pub relic_type_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "15")]
+    pub avatar_id: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(322)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TakeOffRelicScRsp {
+    #[prost(uint32, tag = "6")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(353)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TakePromotionRewardCsReq {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "2")]
     pub base_avatar_id: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "3")]
     pub promotion: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(394)]
+#[cmdid(356)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TakePromotionRewardScRsp {
+    #[prost(uint32, tag = "1")]
+    pub retcode: u32,
     #[prost(message, optional, tag = "5")]
     pub reward_list: ::core::option::Option<ItemList>,
-    #[prost(uint32, tag = "11")]
-    pub retcode: u32,
 }
-/// Obf: FNEKPCPNKLO
 #[derive(proto_derive::CmdID)]
-#[cmdid(349)]
+#[cmdid(363)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPreAvatarActivityListCsReq {}
-/// Obf: CEAIGOBEACN
 #[derive(proto_derive::CmdID)]
-#[cmdid(366)]
+#[cmdid(301)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPreAvatarActivityListScRsp {
-    #[prost(uint32, repeated, tag = "6")]
+    #[prost(uint32, repeated, tag = "3")]
     pub ddmehpdhplm: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ogifjnighbo {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "11")]
     pub pelfcmahjga: u32,
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "10")]
     pub dlgcgjcklcb: u32,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "2")]
     pub jpgoackiffc: u32,
     #[prost(uint32, tag = "4")]
     pub pgjkalfdfma: u32,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "13")]
     pub iegolhhoanb: u32,
-    #[prost(uint32, tag = "6")]
-    pub oifpbocoall: u32,
     #[prost(uint32, tag = "7")]
+    pub oifpbocoall: u32,
+    #[prost(uint32, tag = "1")]
     pub dkebmgfmcbh: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "6")]
     pub bjfjhejgfpm: u32,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "15")]
     pub iicanchnibb: u32,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "3")]
     pub bfepbbliogp: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "8")]
     pub cahbpnlnkcc: u32,
     #[prost(uint32, tag = "12")]
     pub jobmejmfelf: u32,
-    #[prost(uint32, tag = "13")]
-    pub fdijafbcill: u32,
     #[prost(uint32, tag = "14")]
+    pub fdijafbcill: u32,
+    #[prost(uint32, tag = "5")]
     pub jhlpbjcaiif: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "9")]
     pub lnhkcmapmlm: u32,
-    #[prost(uint32, tag = "410")]
+    #[prost(uint32, tag = "1473")]
     pub r#type: u32,
-    #[prost(string, tag = "851")]
+    #[prost(string, tag = "2037")]
     pub ndjglmcpfhk: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "1048")]
+    #[prost(uint32, tag = "1025")]
     pub panel_id: u32,
-    #[prost(string, tag = "1240")]
+    #[prost(string, tag = "1902")]
     pub lacbkoccfhl: ::prost::alloc::string::String,
-    #[prost(string, tag = "1565")]
+    #[prost(string, tag = "129")]
     pub jemhfhjkben: ::prost::alloc::string::String,
-    #[prost(string, tag = "1794")]
+    #[prost(string, tag = "1819")]
     pub nocpijjbkcb: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "1807")]
+    #[prost(uint32, tag = "1343")]
     pub ppdagppkejd: u32,
 }
-/// Obf: KIBJDDNABII
 #[derive(proto_derive::CmdID)]
-#[cmdid(389)]
+#[cmdid(359)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPreAvatarGrowthInfoCsReq {}
-/// Obf: NMLGHIFLBNN
 #[derive(proto_derive::CmdID)]
-#[cmdid(350)]
+#[cmdid(382)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPreAvatarGrowthInfoScRsp {
-    #[prost(uint32, tag = "10")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag = "2")]
     pub jlmmcnimpoa: ::prost::alloc::vec::Vec<Ogifjnighbo>,
+    #[prost(uint32, tag = "8")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(381)]
+#[cmdid(313)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetAvatarEnhancedIdCsReq {
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "4")]
     pub avatar_id: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "5")]
     pub enhanced_id: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(322)]
+#[cmdid(337)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetAvatarEnhancedIdScRsp {
-    #[prost(uint32, tag = "3")]
-    pub growth_avatar_id: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "2")]
     pub unk_enhanced_id: u32,
+    #[prost(uint32, tag = "12")]
+    pub growth_avatar_id: u32,
     #[prost(uint32, tag = "15")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(360)]
+#[cmdid(397)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvatarPathChangedNotify {
-    #[prost(uint32, tag = "7")]
-    pub base_avatar_id: u32,
-    #[prost(enumeration = "MultiPathAvatarType", tag = "9")]
+    #[prost(enumeration = "MultiPathAvatarType", tag = "3")]
     pub cur_multi_path_avatar_type: i32,
+    #[prost(uint32, tag = "6")]
+    pub base_avatar_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hebiibbmnkg {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "12")]
     pub ggebflnkakn: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "10")]
     pub gjeaikiinml: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ilmhfeppkfe {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "14")]
     pub jkihiclopkm: u32,
-    #[prost(uint32, tag = "6")]
-    pub ipmhdpknjli: u32,
-    #[prost(uint64, tag = "11")]
-    pub ifepjhgncoi: u64,
     #[prost(uint32, tag = "13")]
+    pub ipmhdpknjli: u32,
+    #[prost(uint64, tag = "15")]
+    pub ifepjhgncoi: u64,
+    #[prost(uint32, tag = "10")]
     pub gnamnbdiekg: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Mkdhpogedop {
-    #[prost(uint32, repeated, tag = "7")]
+    #[prost(uint32, repeated, tag = "8")]
     pub jabkakdonea: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "7")]
     pub peoeneflmbk: u32,
-    #[prost(uint32, repeated, tag = "15")]
+    #[prost(uint32, repeated, tag = "3")]
     pub jccjokffill: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Jefcegfboaf {
-    #[prost(message, optional, tag = "2")]
-    pub cckeblbmbhh: ::core::option::Option<Mkdhpogedop>,
-    #[prost(uint32, tag = "11")]
-    pub gniflcbgaaa: u32,
     #[prost(message, optional, tag = "12")]
+    pub cckeblbmbhh: ::core::option::Option<Mkdhpogedop>,
+    #[prost(uint32, tag = "1")]
+    pub gniflcbgaaa: u32,
+    #[prost(message, optional, tag = "13")]
     pub ehinopgcaee: ::core::option::Option<Ilmhfeppkfe>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Clhijoakjce {
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub iamomgnbdoo: u32,
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "5")]
     pub dohofaolnge: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "14")]
+    #[prost(uint32, repeated, tag = "6")]
     pub ccgboiffdld: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hkgjbagohfh {
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag = "15")]
     pub lkhlohphaod: ::prost::alloc::vec::Vec<Apamfckfhll>,
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag = "10")]
     pub lejeecmjipd: ::prost::alloc::vec::Vec<Apamfckfhll>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pccgnfgflnj {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "8")]
     pub ipmhdpknjli: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "7")]
     pub gnamnbdiekg: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "1")]
     pub gniflcbgaaa: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Oadgbfhdcde {
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag = "11")]
     pub bfajdknfgjd: ::prost::alloc::vec::Vec<Pccgnfgflnj>,
-    #[prost(uint32, tag = "3")]
-    pub bnfdbmmleig: u32,
-    #[prost(uint32, tag = "5")]
-    pub dabecdokhll: u32,
     #[prost(uint32, tag = "6")]
-    pub jflaegmbmak: u32,
-    #[prost(message, optional, tag = "7")]
-    pub pfhkaclamfg: ::core::option::Option<Jefcegfboaf>,
-    #[prost(message, optional, tag = "9")]
-    pub iioaedegefe: ::core::option::Option<Hebiibbmnkg>,
-    #[prost(message, optional, tag = "11")]
-    pub ginlmpfaecn: ::core::option::Option<Hkgjbagohfh>,
-    #[prost(message, optional, tag = "14")]
-    pub kemimhmohie: ::core::option::Option<Clhijoakjce>,
+    pub bnfdbmmleig: u32,
     #[prost(uint32, tag = "15")]
+    pub dabecdokhll: u32,
+    #[prost(uint32, tag = "13")]
+    pub jflaegmbmak: u32,
+    #[prost(message, optional, tag = "4")]
+    pub pfhkaclamfg: ::core::option::Option<Jefcegfboaf>,
+    #[prost(message, optional, tag = "7")]
+    pub iioaedegefe: ::core::option::Option<Hebiibbmnkg>,
+    #[prost(message, optional, tag = "12")]
+    pub ginlmpfaecn: ::core::option::Option<Hkgjbagohfh>,
+    #[prost(message, optional, tag = "2")]
+    pub kemimhmohie: ::core::option::Option<Clhijoakjce>,
+    #[prost(uint32, tag = "1")]
     pub efbaedkadml: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Giiekghdhjp {
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "1")]
     pub dabecdokhll: u32,
     #[prost(uint32, repeated, tag = "6")]
     pub ccgboiffdld: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub ggebflnkakn: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "13")]
     pub gjeaikiinml: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(9995)]
+#[cmdid(9986)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct B51RacingGetDataCsReq {}
 #[derive(proto_derive::CmdID)]
-#[cmdid(9988)]
+#[cmdid(9999)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct B51RacingGetDataScRsp {
-    #[prost(message, optional, tag = "3")]
-    pub ocdlpddmclp: ::core::option::Option<Giihhkdloba>,
-    #[prost(uint32, tag = "8")]
-    pub mbfopklnedb: u32,
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag = "1")]
     pub alaakiadlbn: ::core::option::Option<Giiekghdhjp>,
-    #[prost(message, optional, tag = "12")]
+    #[prost(uint32, tag = "2")]
+    pub retcode: u32,
+    #[prost(uint32, repeated, tag = "3")]
+    pub bnobegbnfmj: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, optional, tag = "7")]
+    pub ocdlpddmclp: ::core::option::Option<Giihhkdloba>,
+    #[prost(message, optional, tag = "13")]
     pub fniaaeafgde: ::core::option::Option<Oadgbfhdcde>,
     #[prost(uint32, tag = "14")]
-    pub retcode: u32,
-    #[prost(uint32, repeated, tag = "15")]
-    pub bnobegbnfmj: ::prost::alloc::vec::Vec<u32>,
+    pub mbfopklnedb: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ihebjjkgboh {
-    #[prost(uint32, repeated, tag = "9")]
+    #[prost(uint32, repeated, tag = "4")]
     pub ccgboiffdld: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "1")]
     pub bnfdbmmleig: u32,
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag = "11")]
     pub iioaedegefe: ::core::option::Option<Hebiibbmnkg>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Giihhkdloba {
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag = "10")]
     pub labidbpbkpl: ::prost::alloc::vec::Vec<Apamfckfhll>,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "14")]
     pub dabecdokhll: u32,
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag = "1")]
     pub eeldjndkkml: ::core::option::Option<Ihebjjkgboh>,
 }
-/// Obf: CHIIPPKECEF
 #[derive(proto_derive::CmdID)]
-#[cmdid(174)]
+#[cmdid(183)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PveBattleResultCsReq {
-    #[prost(uint32, tag = "1")]
-    pub ljkmpimkomo: u32,
-    #[prost(bool, tag = "2")]
-    pub dkidhmaomjb: bool,
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag = "1")]
     pub nngdlohalcn: bool,
-    #[prost(string, tag = "4")]
-    pub debug_extra_info: ::prost::alloc::string::String,
-    #[prost(map = "string, uint32", tag = "5")]
-    pub ljjeoojceog: ::std::collections::HashMap<::prost::alloc::string::String, u32>,
-    #[prost(enumeration = "BattleEndStatus", tag = "6")]
-    pub end_status: i32,
-    #[prost(uint32, tag = "7")]
-    pub lgojdhlmgen: u32,
-    #[prost(message, optional, tag = "8")]
-    pub stt: ::core::option::Option<BattleStatistics>,
-    #[prost(uint32, tag = "9")]
-    pub battle_id: u32,
-    #[prost(uint32, tag = "10")]
-    pub stage_id: u32,
-    #[prost(bool, tag = "11")]
+    #[prost(bool, tag = "2")]
     pub lgjmmjefgnk: bool,
-    #[prost(uint32, tag = "12")]
+    #[prost(message, optional, tag = "3")]
+    pub stt: ::core::option::Option<BattleStatistics>,
+    #[prost(uint32, tag = "4")]
+    pub lgojdhlmgen: u32,
+    #[prost(uint32, tag = "5")]
     pub nibmfcfbhep: u32,
-    #[prost(bytes = "vec", tag = "13")]
+    #[prost(bool, tag = "6")]
+    pub dkidhmaomjb: bool,
+    #[prost(uint32, tag = "7")]
+    pub ljkmpimkomo: u32,
+    #[prost(bytes = "vec", tag = "8")]
     pub turn_snapshot_hash: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint32, tag = "14")]
-    pub cost_time: u32,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "9")]
     pub op_list: ::prost::alloc::vec::Vec<BattleOp>,
+    #[prost(string, tag = "10")]
+    pub debug_extra_info: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "11")]
+    pub cost_time: u32,
+    #[prost(map = "string, uint32", tag = "12")]
+    pub ljjeoojceog: ::std::collections::HashMap<::prost::alloc::string::String, u32>,
+    #[prost(uint32, tag = "13")]
+    pub battle_id: u32,
+    #[prost(uint32, tag = "14")]
+    pub stage_id: u32,
+    #[prost(enumeration = "BattleEndStatus", tag = "15")]
+    pub end_status: i32,
 }
-/// Obf: PPNMNDKILGL
 #[derive(proto_derive::CmdID)]
-#[cmdid(119)]
+#[cmdid(154)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PveBattleResultScRsp {
     #[prost(uint32, tag = "1")]
-    pub stage_id: u32,
-    #[prost(uint32, tag = "2")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "3")]
-    pub lemgiccokbk: u32,
-    #[prost(message, optional, tag = "4")]
-    pub item_list_unk2: ::core::option::Option<ItemList>,
-    #[prost(message, optional, tag = "5")]
-    pub multiple_drop_data: ::core::option::Option<ItemList>,
-    #[prost(bool, tag = "6")]
-    pub check_identical: bool,
-    #[prost(string, tag = "7")]
-    pub dpholbabaol: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "8")]
-    pub event_id: u32,
-    #[prost(enumeration = "BattleEndStatus", tag = "9")]
-    pub end_status: i32,
-    #[prost(uint32, tag = "10")]
     pub eahgeknlhpn: u32,
-    #[prost(uint32, tag = "11")]
-    pub akdgbbdfdha: u32,
-    #[prost(message, optional, tag = "12")]
-    pub drop_data: ::core::option::Option<ItemList>,
-    #[prost(string, tag = "13")]
-    pub dimhpkfppka: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "14")]
-    pub battle_id: u32,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(uint32, tag = "2")]
+    pub event_id: u32,
+    #[prost(uint32, tag = "3")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "4")]
+    pub multiple_drop_data: ::core::option::Option<ItemList>,
+    #[prost(message, repeated, tag = "5")]
     pub battle_avatar_list: ::prost::alloc::vec::Vec<BattleAvatar>,
-    #[prost(bool, tag = "135")]
-    pub opdkjbhlojm: bool,
-    #[prost(message, optional, tag = "849")]
-    pub item_list_unk1: ::core::option::Option<ItemList>,
-    #[prost(message, optional, tag = "1888")]
+    #[prost(uint32, tag = "6")]
+    pub akdgbbdfdha: u32,
+    #[prost(string, tag = "7")]
+    pub dimhpkfppka: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "8")]
+    pub lemgiccokbk: u32,
+    #[prost(string, tag = "9")]
+    pub dpholbabaol: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "10")]
+    pub stage_id: u32,
+    #[prost(bool, tag = "11")]
+    pub check_identical: bool,
+    #[prost(enumeration = "BattleEndStatus", tag = "12")]
+    pub end_status: i32,
+    #[prost(uint32, tag = "13")]
+    pub battle_id: u32,
+    #[prost(message, optional, tag = "14")]
+    pub item_list_unk2: ::core::option::Option<ItemList>,
+    #[prost(message, optional, tag = "15")]
+    pub drop_data: ::core::option::Option<ItemList>,
+    #[prost(message, optional, tag = "274")]
     pub abemlcjbief: ::core::option::Option<Lmdpkoelkfl>,
+    #[prost(message, optional, tag = "713")]
+    pub item_list_unk1: ::core::option::Option<ItemList>,
+    #[prost(bool, tag = "1963")]
+    pub opdkjbhlojm: bool,
 }
-/// Obf: FAMHHDBNNFD
 #[derive(proto_derive::CmdID)]
-#[cmdid(105)]
+#[cmdid(173)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCurBattleInfoCsReq {}
-/// Obf: LJJAAGCEBCK
 #[derive(proto_derive::CmdID)]
-#[cmdid(171)]
+#[cmdid(133)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurBattleInfoScRsp {
-    #[prost(message, optional, tag = "1")]
-    pub aether_battle_info: ::core::option::Option<AetherDivideBattleInfo>,
     #[prost(uint32, tag = "3")]
     pub kdjgdhkjage: u32,
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag = "5")]
     pub battle_info: ::core::option::Option<SceneBattleInfo>,
     #[prost(enumeration = "BattleEndStatus", tag = "10")]
     pub last_end_status: i32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "11")]
     pub retcode: u32,
+    #[prost(message, optional, tag = "12")]
+    pub aether_battle_info: ::core::option::Option<AetherDivideBattleInfo>,
 }
-/// Obf: ILIHCBAFEJH
 #[derive(proto_derive::CmdID)]
-#[cmdid(159)]
+#[cmdid(107)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SyncClientResVersionCsReq {
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "1")]
     pub ljkmpimkomo: u32,
 }
-/// Obf: KHENECNMFPI
 #[derive(proto_derive::CmdID)]
-#[cmdid(118)]
+#[cmdid(191)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SyncClientResVersionScRsp {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "6")]
     pub retcode: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "14")]
     pub ljkmpimkomo: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Challenge {
-    #[prost(uint32, tag = "1")]
-    pub taken_reward: u32,
-    #[prost(uint32, tag = "3")]
-    pub record_id: u32,
-    #[prost(message, optional, tag = "4")]
-    pub stage_info: ::core::option::Option<ChallengeStageInfo>,
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag = "4")]
     pub hgpkmhfpmbj: bool,
-    #[prost(uint32, tag = "8")]
-    pub score_id: u32,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "5")]
     pub challenge_id: u32,
-    #[prost(uint32, tag = "12")]
-    pub star: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "6")]
     pub score_two: u32,
+    #[prost(uint32, tag = "7")]
+    pub taken_reward: u32,
+    #[prost(uint32, tag = "8")]
+    pub star: u32,
+    #[prost(message, optional, tag = "10")]
+    pub stage_info: ::core::option::Option<ChallengeStageInfo>,
+    #[prost(uint32, tag = "12")]
+    pub record_id: u32,
+    #[prost(uint32, tag = "14")]
+    pub score_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeGroup {
-    #[prost(uint32, tag = "5")]
-    pub group_id: u32,
-    #[prost(uint64, tag = "13")]
+    #[prost(uint64, tag = "4")]
     pub taken_stars_count_reward: u64,
+    #[prost(uint32, tag = "10")]
+    pub group_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeHistoryMaxLevel {
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "7")]
     pub reward_display_type: u32,
-    #[prost(bool, tag = "9")]
-    pub hnhcfjjnjce: bool,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "8")]
     pub level: u32,
+    #[prost(bool, tag = "14")]
+    pub hnhcfjjnjce: bool,
 }
-/// Obf: FICNDNLJEED
 #[derive(proto_derive::CmdID)]
-#[cmdid(1774)]
+#[cmdid(1783)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChallengeCsReq {}
-/// Obf: KGPEJJNPLCG
 #[derive(proto_derive::CmdID)]
-#[cmdid(1719)]
+#[cmdid(1754)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChallengeScRsp {
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag = "1")]
     pub challenge_list: ::prost::alloc::vec::Vec<Challenge>,
-    #[prost(message, repeated, tag = "4")]
-    pub challenge_group_list: ::prost::alloc::vec::Vec<ChallengeGroup>,
-    #[prost(message, repeated, tag = "10")]
-    pub kkiafpfklge: ::prost::alloc::vec::Vec<Fmdaaiklaja>,
-    #[prost(uint32, tag = "11")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "3")]
     pub max_level_list: ::prost::alloc::vec::Vec<ChallengeHistoryMaxLevel>,
+    #[prost(message, repeated, tag = "10")]
+    pub challenge_group_list: ::prost::alloc::vec::Vec<ChallengeGroup>,
+    #[prost(uint32, tag = "13")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "14")]
+    pub kkiafpfklge: ::prost::alloc::vec::Vec<Fmdaaiklaja>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KillMonster {
-    #[prost(uint32, tag = "11")]
-    pub kill_num: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "1")]
     pub monster_id: u32,
+    #[prost(uint32, tag = "13")]
+    pub kill_num: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeStoryBuffList {
-    #[prost(uint32, repeated, tag = "6")]
+    #[prost(uint32, repeated, tag = "7")]
     pub buff_list: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
@@ -3486,13 +3464,13 @@ pub struct ChallengeStoryBuffList {
 pub struct ChallengeBossBuffList {
     #[prost(uint32, repeated, tag = "3")]
     pub buff_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "10")]
     pub challenge_boss_const: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeCurBuffInfo {
-    #[prost(oneof = "challenge_cur_buff_info::Kknboacncon", tags = "5, 10")]
+    #[prost(oneof = "challenge_cur_buff_info::Kknboacncon", tags = "8, 15")]
     pub kknboacncon: ::core::option::Option<challenge_cur_buff_info::Kknboacncon>,
 }
 /// Nested message and enum types in `ChallengeCurBuffInfo`.
@@ -3500,49 +3478,47 @@ pub mod challenge_cur_buff_info {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Kknboacncon {
-        #[prost(message, tag = "5")]
-        CurBossBuffs(super::ChallengeBossBuffList),
-        #[prost(message, tag = "10")]
+        #[prost(message, tag = "8")]
         CurStoryBuffs(super::ChallengeStoryBuffList),
+        #[prost(message, tag = "15")]
+        CurBossBuffs(super::ChallengeBossBuffList),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CurChallenge {
-    #[prost(enumeration = "ExtraLineupType", tag = "3")]
-    pub extra_lineup_type: i32,
-    #[prost(uint32, tag = "4")]
-    pub score_id: u32,
-    #[prost(enumeration = "ChallengeStatus", tag = "5")]
-    pub status: i32,
-    #[prost(message, optional, tag = "9")]
-    pub stage_info: ::core::option::Option<ChallengeCurBuffInfo>,
-    #[prost(message, repeated, tag = "10")]
-    pub kill_monster_list: ::prost::alloc::vec::Vec<KillMonster>,
-    #[prost(uint32, tag = "11")]
-    pub dead_avatar_num: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "1")]
     pub round_count: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(message, optional, tag = "2")]
+    pub stage_info: ::core::option::Option<ChallengeCurBuffInfo>,
+    #[prost(message, repeated, tag = "3")]
+    pub kill_monster_list: ::prost::alloc::vec::Vec<KillMonster>,
+    #[prost(enumeration = "ExtraLineupType", tag = "6")]
+    pub extra_lineup_type: i32,
+    #[prost(enumeration = "ChallengeStatus", tag = "8")]
+    pub status: i32,
+    #[prost(uint32, tag = "10")]
     pub score_two: u32,
+    #[prost(uint32, tag = "11")]
+    pub score_id: u32,
+    #[prost(uint32, tag = "13")]
+    pub dead_avatar_num: u32,
     #[prost(uint32, tag = "15")]
     pub challenge_id: u32,
 }
-/// Obf: NOHJGOCPPMF
 #[derive(proto_derive::CmdID)]
-#[cmdid(1770)]
+#[cmdid(1778)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCurChallengeCsReq {}
-/// Obf: JIOAKKLDCBB
 #[derive(proto_derive::CmdID)]
-#[cmdid(1727)]
+#[cmdid(1708)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurChallengeScRsp {
-    #[prost(message, optional, tag = "2")]
-    pub cur_challenge: ::core::option::Option<CurChallenge>,
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag = "8")]
     pub lineup_list: ::prost::alloc::vec::Vec<LineupInfo>,
-    #[prost(uint32, tag = "15")]
+    #[prost(message, optional, tag = "11")]
+    pub cur_challenge: ::core::option::Option<CurChallenge>,
+    #[prost(uint32, tag = "12")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
@@ -3579,7 +3555,6 @@ pub mod challenge_buff_info {
     }
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(1731)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartChallengeCsReq {
     #[prost(message, repeated, tag = "4")]
@@ -3596,7 +3571,6 @@ pub struct StartChallengeCsReq {
     pub avatar_lineup_second: ::prost::alloc::vec::Vec<AvatarLineup>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(1787)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartChallengeScRsp {
     #[prost(uint32, tag = "3")]
@@ -3631,7 +3605,6 @@ pub struct CurTierceChallenge {
     pub stage_index: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(8986)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartChallengeTierceCsReq {
     #[prost(bool, tag = "2")]
@@ -3644,7 +3617,6 @@ pub struct StartChallengeTierceCsReq {
     pub lineup_tierce_list: ::prost::alloc::vec::Vec<LineupTierce>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(8998)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartChallengeTierceScRsp {
     #[prost(uint32, tag = "3")]
@@ -3655,22 +3627,18 @@ pub struct StartChallengeTierceScRsp {
     pub cur_tierce_challenge: ::core::option::Option<CurTierceChallenge>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(8989)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LeaveChallengeTierceCsReq {}
 #[derive(proto_derive::CmdID)]
-#[cmdid(8983)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LeaveChallengeTierceScRsp {
     #[prost(uint32, tag = "13")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(1715)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnterChallengeNextPhaseCsReq {}
 #[derive(proto_derive::CmdID)]
-#[cmdid(1723)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnterChallengeNextPhaseScRsp {
     #[prost(uint32, tag = "9")]
@@ -3679,11 +3647,9 @@ pub struct EnterChallengeNextPhaseScRsp {
     pub scene: ::core::option::Option<SceneInfo>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(1705)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LeaveChallengeCsReq {}
 #[derive(proto_derive::CmdID)]
-#[cmdid(1771)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LeaveChallengeScRsp {
     #[prost(uint32, tag = "10")]
@@ -3692,105 +3658,91 @@ pub struct LeaveChallengeScRsp {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeBossSingleNodeInfo {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "8")]
     pub max_score: u32,
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag = "11")]
     pub mbhcjponjom: bool,
-    #[prost(bool, tag = "7")]
+    #[prost(bool, tag = "13")]
     pub is_win: bool,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "14")]
     pub buff_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChallengeBossInfo {
-    #[prost(map = "uint32, message", tag = "2")]
-    pub inmcionhjjn: ::std::collections::HashMap<u32, ChallengeBossEquipmentInfo>,
-    #[prost(message, optional, tag = "6")]
-    pub second_node: ::core::option::Option<ChallengeBossSingleNodeInfo>,
-    #[prost(map = "uint32, message", tag = "7")]
-    pub cfdcjjfhndi: ::std::collections::HashMap<u32, ChallengeBossAvatarRelicInfo>,
-    #[prost(bool, tag = "8")]
+    #[prost(bool, tag = "1")]
     pub unk1: bool,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "2")]
     pub avatar_lineup_second: ::prost::alloc::vec::Vec<AvatarLineup>,
-    #[prost(message, repeated, tag = "11")]
-    pub avatar_lineup_first: ::prost::alloc::vec::Vec<AvatarLineup>,
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "7")]
     pub first_node: ::core::option::Option<ChallengeBossSingleNodeInfo>,
+    #[prost(map = "uint32, message", tag = "9")]
+    pub cfdcjjfhndi: ::std::collections::HashMap<u32, ChallengeBossAvatarRelicInfo>,
+    #[prost(map = "uint32, message", tag = "11")]
+    pub inmcionhjjn: ::std::collections::HashMap<u32, ChallengeBossEquipmentInfo>,
+    #[prost(message, repeated, tag = "12")]
+    pub avatar_lineup_first: ::prost::alloc::vec::Vec<AvatarLineup>,
+    #[prost(message, optional, tag = "13")]
+    pub second_node: ::core::option::Option<ChallengeBossSingleNodeInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChallengeStageInfo {
-    #[prost(oneof = "challenge_stage_info::Kknboacncon", tags = "1")]
-    pub kknboacncon: ::core::option::Option<challenge_stage_info::Kknboacncon>,
+    #[prost(message, optional, tag = "6")]
+    pub boss_info: ::core::option::Option<ChallengeBossInfo>,
 }
-/// Nested message and enum types in `ChallengeStageInfo`.
-pub mod challenge_stage_info {
-    #[derive(proto_derive::CmdID)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Kknboacncon {
-        #[prost(message, tag = "1")]
-        BossInfo(super::ChallengeBossInfo),
-    }
-}
-/// Obf: PCLHDCHFKLP
 #[derive(proto_derive::CmdID)]
-#[cmdid(3974)]
+#[cmdid(3983)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendMsgCsReq {
-    #[prost(uint32, repeated, tag = "1")]
+    #[prost(uint32, repeated, tag = "3")]
     pub target_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, optional, tag = "4")]
-    pub message_datas: ::core::option::Option<MessageChatData>,
-    #[prost(enumeration = "ChatType", tag = "6")]
+    #[prost(enumeration = "ChatType", tag = "11")]
     pub chat_type: i32,
+    #[prost(message, optional, tag = "15")]
+    pub message_datas: ::core::option::Option<MessageChatData>,
 }
-/// Obf: MKFCCNOIDNB
 #[derive(proto_derive::CmdID)]
-#[cmdid(3919)]
+#[cmdid(3954)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendMsgScRsp {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "4")]
     pub retcode: u32,
-    #[prost(uint64, tag = "2")]
+    #[prost(uint64, tag = "12")]
     pub end_time: u64,
 }
-/// Obf: LLCBGMJAICJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(3931)]
+#[cmdid(3996)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevcMsgScNotify {
-    #[prost(enumeration = "ChatType", tag = "3")]
-    pub chat_type: i32,
-    #[prost(message, optional, tag = "5")]
-    pub recv_message_data: ::core::option::Option<ChatMessageData>,
     #[prost(uint32, tag = "6")]
     pub pffpfkoglpo: u32,
+    #[prost(message, optional, tag = "8")]
+    pub msg: ::core::option::Option<ChatMessageData>,
+    #[prost(enumeration = "ChatType", tag = "9")]
+    pub chat_type: i32,
 }
-/// Obf: PGADBBAECPD
 #[derive(proto_derive::CmdID)]
-#[cmdid(3905)]
+#[cmdid(3973)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPrivateChatHistoryCsReq {
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "1")]
     pub target_side: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "9")]
     pub contact_side: u32,
 }
-/// Obf: JLBGMJFLJEE
 #[derive(proto_derive::CmdID)]
-#[cmdid(3971)]
+#[cmdid(3933)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPrivateChatHistoryScRsp {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "6")]
     pub retcode: u32,
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag = "11")]
     pub chat_message_list: ::prost::alloc::vec::Vec<ChatMessageData>,
-    #[prost(uint32, tag = "9")]
-    pub target_side: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "12")]
     pub contact_side: u32,
+    #[prost(uint32, tag = "14")]
+    pub target_side: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3801,21 +3753,21 @@ pub struct Lhcbkdnhgcg {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Item {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "14")]
     pub level: u32,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "13")]
     pub main_affix_id: u32,
-    #[prost(uint32, tag = "6")]
-    pub promotion: u32,
-    #[prost(uint32, tag = "8")]
-    pub unique_id: u32,
     #[prost(uint32, tag = "10")]
+    pub promotion: u32,
+    #[prost(uint32, tag = "4")]
+    pub unique_id: u32,
+    #[prost(uint32, tag = "5")]
     pub num: u32,
-    #[prost(uint32, tag = "12")]
-    pub item_id: u32,
     #[prost(uint32, tag = "15")]
+    pub item_id: u32,
+    #[prost(uint32, tag = "11")]
     pub rank: u32,
-    #[prost(oneof = "item::ExtraInfo", tags = "666")]
+    #[prost(oneof = "item::ExtraInfo", tags = "1715")]
     pub extra_info: ::core::option::Option<item::ExtraInfo>,
 }
 /// Nested message and enum types in `Item`.
@@ -3823,28 +3775,28 @@ pub mod item {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ExtraInfo {
-        #[prost(message, tag = "666")]
+        #[prost(message, tag = "1715")]
         BlindBoxPetExtraInfo(super::Lhcbkdnhgcg),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ItemList {
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag = "10")]
     pub item_list: ::prost::alloc::vec::Vec<Item>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PileItem {
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "4")]
     pub item_id: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "1")]
     pub item_num: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ItemCost {
-    #[prost(oneof = "item_cost::Item", tags = "3, 5, 9, 11")]
+    #[prost(oneof = "item_cost::Item", tags = "12, 7, 3, 2")]
     pub item: ::core::option::Option<item_cost::Item>,
 }
 /// Nested message and enum types in `ItemCost`.
@@ -3852,13 +3804,13 @@ pub mod item_cost {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Item {
-        #[prost(message, tag = "3")]
+        #[prost(message, tag = "12")]
         PileItem(super::PileItem),
-        #[prost(uint64, tag = "5")]
+        #[prost(uint64, tag = "7")]
         BlindBoxPetUid(u64),
-        #[prost(uint32, tag = "9")]
+        #[prost(uint32, tag = "3")]
         EquipmentUniqueId(u32),
-        #[prost(uint32, tag = "11")]
+        #[prost(uint32, tag = "2")]
         RelicUniqueId(u32),
     }
 }
@@ -3871,81 +3823,81 @@ pub struct ItemCostList {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Relic {
-    #[prost(bool, tag = "1")]
-    pub is_discarded: bool,
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "1")]
     pub reforge_block_sub_affix_id: u32,
-    #[prost(message, repeated, tag = "3")]
-    pub hgnplibnhhg: ::prost::alloc::vec::Vec<RelicAffix>,
-    #[prost(message, repeated, tag = "5")]
-    pub reforge_sub_affix_list: ::prost::alloc::vec::Vec<RelicAffix>,
-    #[prost(uint32, tag = "6")]
-    pub level: u32,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "4")]
     pub dress_avatar_id: u32,
-    #[prost(bool, tag = "8")]
+    #[prost(bool, tag = "5")]
+    pub is_discarded: bool,
+    #[prost(bool, tag = "6")]
     pub is_protected: bool,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "8")]
     pub exp: u32,
-    #[prost(uint32, tag = "12")]
-    pub main_affix_id: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(message, repeated, tag = "9")]
+    pub reforge_sub_affix_list: ::prost::alloc::vec::Vec<RelicAffix>,
+    #[prost(uint32, tag = "10")]
     pub tid: u32,
+    #[prost(uint32, tag = "11")]
+    pub main_affix_id: u32,
+    #[prost(uint32, tag = "12")]
+    pub level: u32,
+    #[prost(uint32, tag = "13")]
+    pub unique_id: u32,
     #[prost(message, repeated, tag = "14")]
     pub sub_affix_list: ::prost::alloc::vec::Vec<RelicAffix>,
-    #[prost(uint32, tag = "15")]
-    pub unique_id: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub hgnplibnhhg: ::prost::alloc::vec::Vec<RelicAffix>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MotionInfo {
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "4")]
     pub pos: ::core::option::Option<Vector>,
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "10")]
     pub rot: ::core::option::Option<Vector>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vector4 {
-    #[prost(float, tag = "3")]
+    #[prost(float, tag = "2")]
     pub y: f32,
-    #[prost(float, tag = "4")]
-    pub x: f32,
-    #[prost(float, tag = "12")]
-    pub w: f32,
-    #[prost(float, tag = "14")]
+    #[prost(float, tag = "6")]
     pub z: f32,
+    #[prost(float, tag = "13")]
+    pub w: f32,
+    #[prost(float, tag = "15")]
+    pub x: f32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SceneMonsterWaveParam {
-    #[prost(uint32, tag = "3")]
-    pub elite_group: u32,
-    #[prost(uint32, tag = "4")]
-    pub iedebfccknl: u32,
-    #[prost(uint32, tag = "6")]
-    pub cphiinkideb: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "2")]
     pub level: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "5")]
+    pub cphiinkideb: u32,
+    #[prost(uint32, tag = "9")]
     pub hard_level_group: u32,
+    #[prost(uint32, tag = "14")]
+    pub elite_group: u32,
+    #[prost(uint32, tag = "15")]
+    pub iedebfccknl: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hnebodebelg {
-    #[prost(uint32, tag = "2")]
-    pub role_star: u32,
     #[prost(uint32, tag = "5")]
+    pub role_star: u32,
+    #[prost(uint32, tag = "14")]
     pub ininnfjhjcm: u32,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "12")]
     pub iebnogooemo: ::prost::alloc::vec::Vec<Bcconkjhdjl>,
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag = "6")]
     pub lngpejnadah: ::prost::alloc::vec::Vec<Bdnapddngfl>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mndmndklkie {
-    #[prost(oneof = "mndmndklkie::TeleportNigger", tags = "179")]
+    #[prost(oneof = "mndmndklkie::TeleportNigger", tags = "251")]
     pub teleport_nigger: ::core::option::Option<mndmndklkie::TeleportNigger>,
 }
 /// Nested message and enum types in `MNDMNDKLKIE`.
@@ -3953,255 +3905,248 @@ pub mod mndmndklkie {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TeleportNigger {
-        #[prost(message, tag = "179")]
+        #[prost(message, tag = "251")]
         Eigmkojoeei(super::Hnebodebelg),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneMonster {
-    #[prost(uint32, tag = "1")]
-    pub monster_id: u32,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "3")]
     pub cur_hp: u32,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "8")]
     pub max_hp: u32,
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "10")]
     pub extra_info: ::core::option::Option<Mndmndklkie>,
+    #[prost(uint32, tag = "14")]
+    pub monster_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneMonsterWave {
-    #[prost(message, repeated, tag = "5")]
-    pub monster_list: ::prost::alloc::vec::Vec<SceneMonster>,
-    #[prost(message, repeated, tag = "6")]
-    pub nmgiabhijjb: ::prost::alloc::vec::Vec<ItemList>,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "1")]
     pub battle_stage_id: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "7")]
     pub battle_wave_id: u32,
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, repeated, tag = "10")]
+    pub nmgiabhijjb: ::prost::alloc::vec::Vec<ItemList>,
+    #[prost(message, optional, tag = "13")]
     pub monster_param: ::core::option::Option<SceneMonsterWaveParam>,
+    #[prost(message, repeated, tag = "15")]
+    pub monster_list: ::prost::alloc::vec::Vec<SceneMonster>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneBattleInfo {
-    #[prost(message, repeated, tag = "3")]
-    pub monster_wave_list: ::prost::alloc::vec::Vec<SceneMonsterWave>,
-    #[prost(uint32, tag = "4")]
-    pub logic_random_seed: u32,
-    #[prost(uint32, tag = "5")]
-    pub battle_id: u32,
-    #[prost(uint32, tag = "7")]
-    pub jaoiokbbmfc: u32,
-    #[prost(message, repeated, tag = "8")]
+    #[prost(uint32, tag = "1")]
+    pub stage_id: u32,
+    #[prost(message, repeated, tag = "2")]
     pub battle_avatar_list: ::prost::alloc::vec::Vec<BattleAvatar>,
+    #[prost(uint32, tag = "3")]
+    pub jaoiokbbmfc: u32,
+    #[prost(uint32, tag = "5")]
+    pub logic_random_seed: u32,
+    #[prost(message, repeated, tag = "6")]
+    pub buff_list: ::prost::alloc::vec::Vec<BattleBuff>,
+    #[prost(uint32, tag = "8")]
+    pub battle_id: u32,
     #[prost(uint32, tag = "11")]
     pub world_level: u32,
-    #[prost(uint32, tag = "12")]
-    pub rounds_limit: u32,
-    #[prost(bool, tag = "13")]
+    #[prost(bool, tag = "12")]
     pub imekcmnfldi: bool,
+    #[prost(uint32, tag = "13")]
+    pub rounds_limit: u32,
     #[prost(message, repeated, tag = "14")]
-    pub buff_list: ::prost::alloc::vec::Vec<BattleBuff>,
-    #[prost(uint32, tag = "15")]
-    pub stage_id: u32,
-    #[prost(message, optional, tag = "32")]
-    pub eigmkojoeei: ::core::option::Option<Ojcbomccpdb>,
-    #[prost(message, optional, tag = "175")]
-    pub ldplaohnlap: ::core::option::Option<Pkpfahebjio>,
-    #[prost(map = "uint32, message", tag = "687")]
-    pub battle_target_info: ::std::collections::HashMap<u32, BattleTargetList>,
-    #[prost(message, repeated, tag = "736")]
-    pub battle_event: ::prost::alloc::vec::Vec<BattleEventBattleInfo>,
-    #[prost(message, optional, tag = "965")]
-    pub fgoakdcbioe: ::core::option::Option<Edcfkacpfnb>,
-    #[prost(message, optional, tag = "1330")]
+    pub monster_wave_list: ::prost::alloc::vec::Vec<SceneMonsterWave>,
+    #[prost(message, optional, tag = "35")]
     pub pjojcjnlaap: ::core::option::Option<Glibgkggejl>,
-    #[prost(message, repeated, tag = "1777")]
-    pub ffmmndgmkmo: ::prost::alloc::vec::Vec<BattleAvatar>,
-    #[prost(message, optional, tag = "1882")]
+    #[prost(map = "uint32, message", tag = "567")]
+    pub battle_target_info: ::std::collections::HashMap<u32, BattleTargetList>,
+    #[prost(message, optional, tag = "647")]
+    pub fgoakdcbioe: ::core::option::Option<Edcfkacpfnb>,
+    #[prost(message, optional, tag = "976")]
     pub pmcekilfbio: ::core::option::Option<BattleGridFightSpecialBattleInfo>,
-    #[prost(message, optional, tag = "1983")]
+    #[prost(message, optional, tag = "1380")]
     pub dfabbgkgdei: ::core::option::Option<Kiaicmelimm>,
-    #[prost(message, optional, tag = "2044")]
+    #[prost(message, repeated, tag = "1557")]
+    pub ffmmndgmkmo: ::prost::alloc::vec::Vec<BattleAvatar>,
+    #[prost(message, repeated, tag = "1601")]
+    pub battle_event: ::prost::alloc::vec::Vec<BattleEventBattleInfo>,
+    #[prost(message, optional, tag = "1651")]
+    pub eigmkojoeei: ::core::option::Option<Ojcbomccpdb>,
+    #[prost(message, optional, tag = "1789")]
     pub battle_rogue_magic_info: ::core::option::Option<BattleRogueMagicInfo>,
+    #[prost(message, optional, tag = "1805")]
+    pub ldplaohnlap: ::core::option::Option<Pkpfahebjio>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AetherDivideBattleInfo {
-    #[prost(uint32, tag = "1")]
-    pub logic_random_seed: u32,
-    #[prost(bool, tag = "2")]
-    pub imekcmnfldi: bool,
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag = "1")]
     pub buff_list: ::prost::alloc::vec::Vec<BattleBuff>,
-    #[prost(message, repeated, tag = "7")]
-    pub monster_wave_list: ::prost::alloc::vec::Vec<SceneMonsterWave>,
-    #[prost(uint32, tag = "8")]
-    pub battle_id: u32,
-    #[prost(uint32, tag = "11")]
-    pub stage_id: u32,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "3")]
     pub battle_avatar_list: ::prost::alloc::vec::Vec<AetherAvatarInfo>,
+    #[prost(uint32, tag = "5")]
+    pub battle_id: u32,
+    #[prost(uint32, tag = "9")]
+    pub stage_id: u32,
+    #[prost(bool, tag = "10")]
+    pub imekcmnfldi: bool,
+    #[prost(uint32, tag = "12")]
+    pub logic_random_seed: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub monster_wave_list: ::prost::alloc::vec::Vec<SceneMonsterWave>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvatarLineup {
-    #[prost(uint32, tag = "1")]
-    pub id: u32,
-    #[prost(enumeration = "AvatarType", tag = "4")]
+    #[prost(enumeration = "AvatarType", tag = "7")]
     pub avatar_type: i32,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "10")]
     pub assist_uid: u32,
+    #[prost(uint32, tag = "13")]
+    pub id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lmdpkoelkfl {
-    #[prost(uint32, repeated, tag = "7")]
-    pub relic_ids: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag = "11")]
+    #[prost(message, repeated, tag = "9")]
+    pub relic_ids: ::prost::alloc::vec::Vec<ItemList>,
+    #[prost(bool, tag = "15")]
     pub abfcdbocmcf: bool,
-    #[prost(message, optional, tag = "14")]
-    pub return_item_list: ::core::option::Option<ItemList>,
+    #[prost(uint32, repeated, tag = "12")]
+    pub return_item_list: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Apamfckfhll {
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "4")]
     pub value: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "10")]
     pub key: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EquipRelic {
+    #[prost(uint32, tag = "5")]
+    pub relic_unique_id: u32,
     #[prost(uint32, tag = "6")]
     pub r#type: u32,
-    #[prost(uint32, tag = "11")]
-    pub relic_unique_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContentPackageInfo {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "2")]
     pub content_id: u32,
-    #[prost(enumeration = "ContentPackageStatus", tag = "11")]
+    #[prost(enumeration = "ContentPackageStatus", tag = "14")]
     pub status: i32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentPackageData {
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "1")]
     pub cur_content_id: u32,
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "3")]
     pub content_package_list: ::prost::alloc::vec::Vec<ContentPackageInfo>,
 }
-/// Obf: GPDCBDHANON
 #[derive(proto_derive::CmdID)]
-#[cmdid(7548)]
+#[cmdid(7511)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentPackageSyncDataScNotify {
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag = "8")]
     pub data: ::core::option::Option<ContentPackageData>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DailyActivityInfo {
-    #[prost(uint32, tag = "4")]
-    pub level: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "3")]
     pub daily_active_point: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "5")]
+    pub level: u32,
+    #[prost(uint32, tag = "8")]
     pub world_level: u32,
     #[prost(bool, tag = "14")]
     pub is_has_taken: bool,
 }
-/// Obf: GFIIJKCCICO
 #[derive(proto_derive::CmdID)]
-#[cmdid(3331)]
+#[cmdid(3396)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDailyActiveInfoCsReq {}
-/// Obf: DIJHCMKKLBJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(3387)]
+#[cmdid(3342)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDailyActiveInfoScRsp {
-    #[prost(uint32, repeated, tag = "2")]
-    pub daily_active_quest_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "4")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "3")]
     pub daily_active_point: u32,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "5")]
     pub daily_active_level_list: ::prost::alloc::vec::Vec<DailyActivityInfo>,
+    #[prost(uint32, repeated, tag = "10")]
+    pub daily_active_quest_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpeditionInfo {
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "8")]
     pub id: u32,
 }
-/// Obf: DGHLOHPCFKP
 #[derive(proto_derive::CmdID)]
-#[cmdid(2542)]
+#[cmdid(2516)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExpeditionDataCsReq {}
-/// Obf: CNLOBEKDKGL
 #[derive(proto_derive::CmdID)]
-#[cmdid(2538)]
+#[cmdid(2501)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExpeditionDataScRsp {
-    #[prost(int64, tag = "4")]
-    pub bjmgdbchean: i64,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "2")]
     pub total_expedition_count: u32,
-    #[prost(message, repeated, tag = "11")]
-    pub expedition_info: ::prost::alloc::vec::Vec<ExpeditionInfo>,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "6")]
     pub retcode: u32,
+    #[prost(message, repeated, tag = "7")]
+    pub expedition_info: ::prost::alloc::vec::Vec<ExpeditionInfo>,
+    #[prost(int64, tag = "10")]
+    pub bjmgdbchean: i64,
     #[prost(uint32, repeated, tag = "14")]
     pub caalnnfjiah: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Cdabdppphbn {
-    #[prost(uint32, repeated, tag = "3")]
+    #[prost(uint32, repeated, tag = "2")]
     pub linomgedmhc: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "9")]
     pub group_id: u32,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "5")]
     pub cjpdgbplfig: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "8")]
     pub alalebdjgha: u32,
 }
-/// Obf: IIAOPKANEKJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(3674)]
+#[cmdid(3683)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFightActivityDataCsReq {}
-/// Obf: KDMLMIFIMHE
 #[derive(proto_derive::CmdID)]
-#[cmdid(3619)]
+#[cmdid(3654)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFightActivityDataScRsp {
-    #[prost(uint32, tag = "5")]
+    #[prost(map = "uint32, uint32", tag = "1")]
+    pub edgpaojeenn: ::std::collections::HashMap<u32, u32>,
+    #[prost(uint32, tag = "3")]
     pub retcode: u32,
-    #[prost(uint32, tag = "6")]
+    #[prost(bool, tag = "4")]
+    pub cfdbdgefjjn: bool,
+    #[prost(uint32, tag = "5")]
     pub world_level: u32,
     #[prost(message, repeated, tag = "9")]
     pub falbalfnoff: ::prost::alloc::vec::Vec<Cdabdppphbn>,
-    #[prost(map = "uint32, uint32", tag = "11")]
-    pub edgpaojeenn: ::std::collections::HashMap<u32, u32>,
-    #[prost(bool, tag = "12")]
-    pub cfdbdgefjjn: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hhjannigckm {
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag = "8")]
     pub egllmgllhdl: bool,
-    #[prost(uint32, repeated, tag = "11")]
+    #[prost(uint32, repeated, tag = "7")]
     pub finished_target_list: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
@@ -4209,51 +4154,51 @@ pub struct Hhjannigckm {
 pub struct Icmgdjbdfea {
     #[prost(uint32, tag = "1")]
     pub fbogdahndka: u32,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "9")]
     pub group_id: u32,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "13")]
     pub hcbaddhnidg: u32,
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag = "4")]
     pub nckjlaejndp: ::core::option::Option<Hhjannigckm>,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "7")]
     pub lmppdgofomf: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pibfidoepap {
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "7")]
     pub fffngbkhoea: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "12")]
     pub gnifodgcpaa: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Jmocdmhfejg {
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag = "9")]
     pub kgbhikkljmk: ::core::option::Option<Pibfidoepap>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ejakbkoeepc {
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag = "3")]
     pub bhdklajpmbj: ::core::option::Option<Jmocdmhfejg>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FriendGridFightRecord {
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "10")]
     pub division_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Paefdelfkjk {
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag = "11")]
     pub bamdehaicda: ::core::option::Option<FriendGridFightRecord>,
-    #[prost(enumeration = "Nleaflhjkmd", tag = "6")]
+    #[prost(enumeration = "Nleaflhjkmd", tag = "3")]
     pub bebeemkobnn: i32,
     #[prost(message, optional, tag = "9")]
     pub amldhbmigen: ::core::option::Option<Icmgdjbdfea>,
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "14")]
     pub kblklgdcomf: ::core::option::Option<Ejakbkoeepc>,
 }
 #[derive(proto_derive::CmdID)]
@@ -4261,219 +4206,208 @@ pub struct Paefdelfkjk {
 pub struct DisplayEquipmentInfo {
     #[prost(uint32, tag = "1")]
     pub level: u32,
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "5")]
     pub exp: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "6")]
     pub promotion: u32,
     #[prost(uint32, tag = "11")]
     pub tid: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "13")]
     pub rank: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Jieolmhjjgf {
     #[prost(uint32, tag = "1")]
     pub level: u32,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "7")]
     pub exp: u32,
-    #[prost(message, repeated, tag = "4")]
-    pub sub_affix_list: ::prost::alloc::vec::Vec<RelicAffix>,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, repeated, tag = "3")]
+    pub sub_affix_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "13")]
     pub tid: u32,
-    #[prost(uint32, tag = "12")]
-    pub main_affix_id: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, repeated, tag = "4")]
+    pub main_affix_id: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "10")]
     pub r#type: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayAvatarDetailInfo {
-    #[prost(uint32, tag = "1")]
-    pub enhanced_id: u32,
-    #[prost(message, repeated, tag = "2")]
-    pub skilltree_list: ::prost::alloc::vec::Vec<AvatarSkillTree>,
-    #[prost(uint32, tag = "3")]
-    pub dressed_skin_id: u32,
-    #[prost(uint32, repeated, tag = "4")]
-    pub ex_rank_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "5")]
-    pub relic_list: ::prost::alloc::vec::Vec<Jieolmhjjgf>,
-    #[prost(uint32, tag = "6")]
-    pub promotion: u32,
-    #[prost(uint32, tag = "7")]
-    pub pos: u32,
-    #[prost(message, optional, tag = "8")]
-    pub equipment: ::core::option::Option<DisplayEquipmentInfo>,
-    #[prost(uint32, tag = "9")]
-    pub rank: u32,
     #[prost(uint32, tag = "10")]
-    pub level: u32,
-    #[prost(uint32, tag = "12")]
-    pub avatar_type: u32,
-    #[prost(uint32, tag = "14")]
-    pub exp: u32,
+    pub enhanced_id: u32,
+    #[prost(message, repeated, tag = "14")]
+    pub skilltree_list: ::prost::alloc::vec::Vec<AvatarSkillTree>,
+    #[prost(uint32, tag = "6")]
+    pub dressed_skin_id: u32,
+    #[prost(uint32, repeated, tag = "11")]
+    pub ex_rank_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "9")]
+    pub relic_list: ::prost::alloc::vec::Vec<Jieolmhjjgf>,
+    #[prost(uint32, tag = "4")]
+    pub promotion: u32,
     #[prost(uint32, tag = "15")]
+    pub pos: u32,
+    #[prost(message, optional, tag = "1")]
+    pub equipment: ::core::option::Option<DisplayEquipmentInfo>,
+    #[prost(uint32, tag = "12")]
+    pub rank: u32,
+    #[prost(uint32, tag = "13")]
+    pub level: u32,
+    #[prost(uint32, tag = "7")]
+    pub avatar_type: u32,
+    #[prost(uint32, tag = "8")]
+    pub exp: u32,
+    #[prost(uint32, tag = "3")]
     pub avatar_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FriendSimpleInfo {
-    #[prost(bool, tag = "3")]
-    pub is_marked: bool,
-    #[prost(int64, tag = "7")]
+    #[prost(enumeration = "PlayingState", tag = "2")]
+    pub playing_state: i32,
+    #[prost(int64, tag = "4")]
     pub create_time: i64,
+    #[prost(string, tag = "7")]
+    pub remark_name: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "8")]
     pub mboihjlijdg: ::core::option::Option<Paefdelfkjk>,
-    #[prost(string, tag = "10")]
-    pub remark_name: ::prost::alloc::string::String,
-    #[prost(enumeration = "PlayingState", tag = "11")]
-    pub playing_state: i32,
-    #[prost(message, optional, tag = "15")]
+    #[prost(bool, tag = "10")]
+    pub is_marked: bool,
+    #[prost(message, optional, tag = "13")]
     pub player_info: ::core::option::Option<PlayerSimpleInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerAssistInfo {
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag = "5")]
     pub khbepngkkao: ::core::option::Option<DisplayAvatarDetailInfo>,
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag = "13")]
     pub player_info: ::core::option::Option<PlayerSimpleInfo>,
 }
-/// Obf: ADKDAKFNFMH
 #[derive(proto_derive::CmdID)]
-#[cmdid(2974)]
+#[cmdid(2983)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFriendListInfoCsReq {}
-/// Obf: JLHNEDPPFOO
 #[derive(proto_derive::CmdID)]
-#[cmdid(2919)]
+#[cmdid(2954)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFriendListInfoScRsp {
-    #[prost(uint32, tag = "3")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "5")]
-    pub black_list: ::prost::alloc::vec::Vec<PlayerSimpleInfo>,
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "3")]
     pub friend_list: ::prost::alloc::vec::Vec<FriendSimpleInfo>,
+    #[prost(message, repeated, tag = "4")]
+    pub black_list: ::prost::alloc::vec::Vec<PlayerSimpleInfo>,
+    #[prost(uint32, tag = "7")]
+    pub retcode: u32,
 }
-/// Obf: IEIMIFAEADO
 #[derive(proto_derive::CmdID)]
-#[cmdid(2962)]
+#[cmdid(2979)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssistListCsReq {
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag = "11")]
     pub lkbaenbkjce: bool,
-    #[prost(bool, tag = "15")]
+    #[prost(bool, tag = "13")]
     pub ddnkhdikael: bool,
 }
-/// Obf: KCKOECDINAF
 #[derive(proto_derive::CmdID)]
-#[cmdid(2980)]
+#[cmdid(2921)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssistListScRsp {
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag = "7")]
     pub assist_list: ::prost::alloc::vec::Vec<PlayerAssistInfo>,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "15")]
     pub retcode: u32,
 }
-/// Obf: HMMPDJAOMKJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(2989)]
+#[cmdid(2959)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCurAssistCsReq {}
-/// Obf: FBCPGPMNECG
 #[derive(proto_derive::CmdID)]
-#[cmdid(2950)]
+#[cmdid(2982)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurAssistScRsp {
-    #[prost(uint32, tag = "8")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "2")]
     pub odhmgpnecfo: ::core::option::Option<PlayerAssistInfo>,
+    #[prost(uint32, tag = "15")]
+    pub retcode: u32,
 }
-/// Obf: CNDFNIHMPKC
 #[derive(proto_derive::CmdID)]
-#[cmdid(2943)]
+#[cmdid(2938)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFriendLoginInfoCsReq {}
-/// Obf: NMAOECIJEBA
 #[derive(proto_derive::CmdID)]
-#[cmdid(2953)]
+#[cmdid(2998)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFriendLoginInfoScRsp {
-    #[prost(uint32, repeated, tag = "6")]
-    pub black_uid_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "6")]
     pub retcode: u32,
+    #[prost(bool, tag = "8")]
+    pub bheiccgpblg: bool,
+    #[prost(uint32, repeated, tag = "9")]
+    pub black_uid_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(bool, tag = "10")]
+    pub ehbjfgpdpjf: bool,
     #[prost(uint32, repeated, tag = "12")]
     pub friend_uid_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag = "13")]
-    pub ehbjfgpdpjf: bool,
-    #[prost(bool, tag = "14")]
-    pub bheiccgpblg: bool,
 }
-/// Obf: IILCDMAHMDN
 #[derive(proto_derive::CmdID)]
-#[cmdid(2978)]
+#[cmdid(2946)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFriendAssistListCsReq {
-    #[prost(uint32, repeated, tag = "4")]
-    pub hhfpjhmeijk: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag = "6")]
-    pub ddnkhdikael: bool,
-    #[prost(enumeration = "Pidahabflbl", tag = "7")]
-    pub hfolaoikolb: i32,
-    #[prost(uint32, repeated, tag = "10")]
+    #[prost(uint32, repeated, tag = "3")]
     pub eejgcfbjkak: ::prost::alloc::vec::Vec<u32>,
+    #[prost(bool, tag = "5")]
+    pub ddnkhdikael: bool,
+    #[prost(enumeration = "Pidahabflbl", tag = "10")]
+    pub hfolaoikolb: i32,
+    #[prost(uint32, repeated, tag = "11")]
+    pub hhfpjhmeijk: ::prost::alloc::vec::Vec<u32>,
     #[prost(uint32, tag = "15")]
     pub target_side: u32,
 }
-/// Obf: MEDJBBOGLNM
 #[derive(proto_derive::CmdID)]
-#[cmdid(2939)]
+#[cmdid(2980)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFriendAssistListScRsp {
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag = "7")]
     pub assist_list: ::prost::alloc::vec::Vec<PlayerAssistInfo>,
-    #[prost(uint32, tag = "12")]
-    pub target_side: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "10")]
     pub retcode: u32,
+    #[prost(uint32, tag = "15")]
+    pub target_side: u32,
 }
-/// Obf: JDKEAPHHLBM
 #[derive(proto_derive::CmdID)]
-#[cmdid(1974)]
+#[cmdid(1983)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGachaInfoCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GachaCeilingAvatar {
-    #[prost(uint32, tag = "11")]
-    pub repeated_cnt: u32,
     #[prost(uint32, tag = "12")]
+    pub repeated_cnt: u32,
+    #[prost(uint32, tag = "10")]
     pub avatar_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GachaCeiling {
-    #[prost(bool, tag = "5")]
+    #[prost(uint32, tag = "2")]
+    pub ceiling_num: u32,
+    #[prost(bool, tag = "4")]
     pub is_claimed: bool,
     #[prost(message, repeated, tag = "11")]
     pub avatar_list: ::prost::alloc::vec::Vec<GachaCeilingAvatar>,
-    #[prost(uint32, tag = "13")]
-    pub ceiling_num: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Neimlknmdbm {
-    #[prost(uint32, repeated, tag = "3")]
+    #[prost(uint32, repeated, tag = "15")]
     pub ojnefbjhcck: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "8")]
     pub gfanbhaekok: u32,
-    #[prost(uint32, repeated, tag = "12")]
+    #[prost(uint32, repeated, tag = "13")]
     pub ejgnmcamela: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "9")]
     pub mmelnchidnc: u32,
 }
 #[derive(proto_derive::CmdID)]
@@ -4481,459 +4415,438 @@ pub struct Neimlknmdbm {
 pub struct GachaInfo {
     #[prost(int64, tag = "1")]
     pub end_time: i64,
-    #[prost(uint32, tag = "2")]
-    pub gacha_id: u32,
-    #[prost(message, optional, tag = "3")]
-    pub gacha_ceiling: ::core::option::Option<GachaCeiling>,
-    #[prost(uint32, tag = "4")]
-    pub mmelnchidnc: u32,
-    #[prost(int64, tag = "5")]
-    pub begin_time: i64,
-    #[prost(uint32, tag = "6")]
-    pub nhbbhempjjm: u32,
-    #[prost(string, tag = "9")]
-    pub detail_url: ::prost::alloc::string::String,
-    #[prost(uint32, repeated, tag = "10")]
+    #[prost(uint32, repeated, tag = "2")]
     pub prize_item_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "11")]
-    pub item_detail_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "3")]
     pub onihomceljk: ::prost::alloc::vec::Vec<u32>,
-    #[prost(string, tag = "14")]
+    #[prost(string, tag = "4")]
     pub history_url: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
+    #[prost(message, optional, tag = "5")]
+    pub gacha_ceiling: ::core::option::Option<GachaCeiling>,
+    #[prost(uint32, tag = "6")]
     pub glljfpenlhd: u32,
+    #[prost(int64, tag = "7")]
+    pub begin_time: i64,
+    #[prost(uint32, tag = "8")]
+    pub nhbbhempjjm: u32,
+    #[prost(string, tag = "11")]
+    pub detail_url: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "12")]
+    pub mmelnchidnc: u32,
+    #[prost(uint32, repeated, tag = "13")]
+    pub item_detail_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "14")]
+    pub gacha_id: u32,
 }
-/// Obf: LDPGAPPKBBB
 #[derive(proto_derive::CmdID)]
-#[cmdid(1919)]
+#[cmdid(1954)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGachaInfoScRsp {
-    #[prost(uint32, tag = "1")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "7")]
-    pub gacha_random: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "3")]
     pub kkknjdbnjpm: u32,
-    #[prost(uint32, tag = "10")]
-    pub ogmpkdhkpaj: u32,
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "4")]
+    pub gacha_info_list: ::prost::alloc::vec::Vec<GachaInfo>,
+    #[prost(uint32, tag = "5")]
+    pub gacha_random: u32,
+    #[prost(message, repeated, tag = "7")]
     pub akmdbpnehde: ::prost::alloc::vec::Vec<Neimlknmdbm>,
+    #[prost(uint32, tag = "10")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "12")]
+    pub ogmpkdhkpaj: u32,
     #[prost(uint32, tag = "14")]
     pub gpnlddlbolm: u32,
-    #[prost(message, repeated, tag = "15")]
-    pub gacha_info_list: ::prost::alloc::vec::Vec<GachaInfo>,
 }
-/// Obf: JEADDEILJLE
 #[derive(proto_derive::CmdID)]
-#[cmdid(1931)]
+#[cmdid(1996)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DoGachaCsReq {
-    #[prost(uint32, tag = "4")]
-    pub gacha_id: u32,
-    #[prost(uint32, tag = "8")]
-    pub gacha_random: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "2")]
     pub simulate_magic: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "6")]
+    pub gacha_random: u32,
+    #[prost(uint32, tag = "7")]
     pub gacha_num: u32,
+    #[prost(uint32, tag = "13")]
+    pub gacha_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GachaItem {
-    #[prost(message, optional, tag = "5")]
-    pub transfer_item_list: ::core::option::Option<ItemList>,
-    #[prost(bool, tag = "7")]
-    pub is_new: bool,
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag = "8")]
     pub token_item: ::core::option::Option<ItemList>,
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "9")]
+    pub transfer_item_list: ::core::option::Option<ItemList>,
+    #[prost(bool, tag = "10")]
+    pub is_new: bool,
+    #[prost(message, optional, tag = "12")]
     pub gacha_item: ::core::option::Option<Item>,
 }
-/// Obf: IAOPGJEOHOM
 #[derive(proto_derive::CmdID)]
-#[cmdid(1987)]
+#[cmdid(1942)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DoGachaScRsp {
-    #[prost(uint32, tag = "1")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "2")]
-    pub gacha_item_list: ::prost::alloc::vec::Vec<GachaItem>,
+    #[prost(uint32, tag = "2")]
+    pub ldbckjipdhf: u32,
     #[prost(uint32, tag = "3")]
     pub gpnlddlbolm: u32,
-    #[prost(uint32, tag = "5")]
+    #[prost(message, repeated, tag = "4")]
+    pub gacha_item_list: ::prost::alloc::vec::Vec<GachaItem>,
+    #[prost(uint32, tag = "7")]
     pub nhbbhempjjm: u32,
-    #[prost(uint32, tag = "6")]
-    pub gacha_num: u32,
-    #[prost(uint32, tag = "9")]
-    pub ldbckjipdhf: u32,
-    #[prost(uint32, tag = "10")]
-    pub ceiling_num: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "8")]
     pub glljfpenlhd: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "9")]
     pub gacha_id: u32,
+    #[prost(uint32, tag = "12")]
+    pub ceiling_num: u32,
+    #[prost(uint32, tag = "13")]
+    pub gacha_num: u32,
+    #[prost(uint32, tag = "14")]
+    pub retcode: u32,
 }
-/// Obf: HGKLNOIKPPE
 #[derive(proto_derive::CmdID)]
-#[cmdid(574)]
+#[cmdid(583)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBagCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Equipment {
     #[prost(uint32, tag = "1")]
-    pub promotion: u32,
-    #[prost(uint32, tag = "2")]
-    pub tid: u32,
-    #[prost(uint32, tag = "3")]
-    pub level: u32,
-    #[prost(uint32, tag = "4")]
-    pub rank: u32,
-    #[prost(uint32, tag = "6")]
     pub unique_id: u32,
-    #[prost(bool, tag = "8")]
-    pub is_protected: bool,
-    #[prost(uint32, tag = "11")]
-    pub exp: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "3")]
     pub dress_avatar_id: u32,
+    #[prost(uint32, tag = "6")]
+    pub promotion: u32,
+    #[prost(uint32, tag = "7")]
+    pub tid: u32,
+    #[prost(uint32, tag = "8")]
+    pub rank: u32,
+    #[prost(uint32, tag = "9")]
+    pub exp: u32,
+    #[prost(bool, tag = "10")]
+    pub is_protected: bool,
+    #[prost(uint32, tag = "13")]
+    pub level: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Material {
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "2")]
     pub tid: u32,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub num: u32,
-    #[prost(uint64, tag = "13")]
+    #[prost(uint64, tag = "12")]
     pub expire_time: u64,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WaitDelResource {
-    #[prost(uint32, tag = "6")]
-    pub num: u32,
     #[prost(uint32, tag = "9")]
+    pub num: u32,
+    #[prost(uint32, tag = "14")]
     pub tid: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Bkgpjobnmkj {
-    #[prost(uint64, tag = "3")]
-    pub expire_time: u64,
-    #[prost(uint32, tag = "14")]
-    pub num: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "13")]
+    pub expire_time: u32,
+    #[prost(uint64, tag = "5")]
+    pub num: u64,
+    #[prost(uint32, tag = "10")]
     pub tid: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Nkdnfdcfncp {
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag = "4")]
     pub fmokfkbaeii: ::core::option::Option<PileItem>,
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag = "8")]
     pub hjlenjodamn: ::prost::alloc::vec::Vec<PileItem>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Ockchbdfgnl {
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag = "4")]
     pub hjmdnlbnpna: ::prost::alloc::vec::Vec<Nkdnfdcfncp>,
-    #[prost(uint64, tag = "11")]
+    #[prost(uint64, tag = "2")]
     pub time: u64,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Nlllaaejobp {
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "1")]
     pub tid: u32,
-    #[prost(uint32, repeated, tag = "14")]
+    #[prost(uint32, repeated, tag = "9")]
     pub dmnhpnapgnb: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: GJDACOJFAGG
 #[derive(proto_derive::CmdID)]
-#[cmdid(519)]
+#[cmdid(554)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBagScRsp {
-    #[prost(message, repeated, tag = "2")]
-    pub material_list: ::prost::alloc::vec::Vec<Material>,
-    #[prost(message, repeated, tag = "3")]
-    pub cndodpicghi: ::prost::alloc::vec::Vec<Bkgpjobnmkj>,
-    #[prost(message, repeated, tag = "4")]
-    pub plblhekeijo: ::prost::alloc::vec::Vec<PileItem>,
-    #[prost(message, repeated, tag = "5")]
-    pub wait_del_resource_list: ::prost::alloc::vec::Vec<WaitDelResource>,
-    #[prost(uint32, repeated, tag = "6")]
-    pub camegagkpgl: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "7")]
-    pub najfmiifiec: ::prost::alloc::vec::Vec<Bkgpjobnmkj>,
-    #[prost(enumeration = "Fhlekkndbbe", repeated, tag = "8")]
-    pub eojbflhbnmb: ::prost::alloc::vec::Vec<i32>,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "1")]
     pub equipment_list: ::prost::alloc::vec::Vec<Equipment>,
-    #[prost(message, repeated, tag = "11")]
-    pub relic_list: ::prost::alloc::vec::Vec<Relic>,
-    #[prost(uint32, tag = "12")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "2")]
+    pub camegagkpgl: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "3")]
     pub ffegbhjlbnh: ::prost::alloc::vec::Vec<Ockchbdfgnl>,
-    #[prost(uint32, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "5")]
+    pub plblhekeijo: ::prost::alloc::vec::Vec<PileItem>,
+    #[prost(message, repeated, tag = "7")]
+    pub wait_del_resource_list: ::prost::alloc::vec::Vec<WaitDelResource>,
+    #[prost(uint32, repeated, tag = "8")]
     pub kofnojcmefa: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "396")]
+    #[prost(message, repeated, tag = "9")]
+    pub najfmiifiec: ::prost::alloc::vec::Vec<Bkgpjobnmkj>,
+    #[prost(enumeration = "Fhlekkndbbe", repeated, tag = "10")]
+    pub eojbflhbnmb: ::prost::alloc::vec::Vec<i32>,
+    #[prost(message, repeated, tag = "11")]
+    pub material_list: ::prost::alloc::vec::Vec<Material>,
+    #[prost(message, repeated, tag = "12")]
+    pub relic_list: ::prost::alloc::vec::Vec<Relic>,
+    #[prost(uint32, tag = "14")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub cndodpicghi: ::prost::alloc::vec::Vec<Bkgpjobnmkj>,
+    #[prost(message, repeated, tag = "938")]
     pub gcnginpdeld: ::prost::alloc::vec::Vec<PileItem>,
-    #[prost(message, repeated, tag = "587")]
+    #[prost(message, repeated, tag = "941")]
     pub epbglfhefjj: ::prost::alloc::vec::Vec<Nlllaaejobp>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Lhhgcdlcjda {
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag = "4")]
     pub bimdknlmicg: bool,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "14")]
     pub id: u32,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "6")]
     pub group_id: u32,
 }
-/// Obf: DONHOEBBNNG
 #[derive(proto_derive::CmdID)]
-#[cmdid(3174)]
+#[cmdid(3183)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJukeboxDataCsReq {}
-/// Obf: KLIPBCNOPNO
 #[derive(proto_derive::CmdID)]
-#[cmdid(3119)]
+#[cmdid(3154)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJukeboxDataScRsp {
-    #[prost(message, repeated, tag = "3")]
-    pub iokajibhlmp: ::prost::alloc::vec::Vec<Lhhgcdlcjda>,
-    #[prost(uint32, tag = "5")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "10")]
     pub gffobaldbpm: ::core::option::Option<Mncbedbddhl>,
+    #[prost(message, repeated, tag = "11")]
+    pub iokajibhlmp: ::prost::alloc::vec::Vec<Lhhgcdlcjda>,
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LineupAvatar {
-    #[prost(enumeration = "AvatarType", tag = "1")]
-    pub avatar_type: i32,
-    #[prost(message, optional, tag = "2")]
-    pub sp_bar: ::core::option::Option<SpBarInfo>,
-    #[prost(uint32, tag = "6")]
-    pub hp: u32,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "5")]
     pub satiety: u32,
+    #[prost(message, optional, tag = "7")]
+    pub sp_bar: ::core::option::Option<SpBarInfo>,
     #[prost(uint32, tag = "8")]
+    pub hp: u32,
+    #[prost(uint32, tag = "9")]
     pub id: u32,
+    #[prost(enumeration = "AvatarType", tag = "12")]
+    pub avatar_type: i32,
     #[prost(uint32, tag = "14")]
     pub slot: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineupInfo {
-    #[prost(uint32, tag = "1")]
-    pub game_story_line_id: u32,
-    #[prost(uint32, tag = "2")]
-    pub mp: u32,
-    #[prost(bool, tag = "3")]
-    pub abhongjhicf: bool,
-    #[prost(enumeration = "ExtraLineupType", tag = "4")]
-    pub extra_lineup_type: i32,
-    #[prost(uint32, tag = "5")]
-    pub max_mp: u32,
-    #[prost(uint32, repeated, tag = "6")]
-    pub ncljllngdci: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "7")]
-    pub avatar_list: ::prost::alloc::vec::Vec<LineupAvatar>,
-    #[prost(string, tag = "8")]
-    pub name: ::prost::alloc::string::String,
-    #[prost(uint32, repeated, tag = "9")]
-    pub gofliggnhne: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag = "10")]
-    pub is_virtual: bool,
-    #[prost(bool, tag = "11")]
+    #[prost(bool, tag = "1")]
     pub ieckkchjmlp: bool,
+    #[prost(uint32, tag = "2")]
+    pub max_mp: u32,
+    #[prost(uint32, tag = "3")]
+    pub index: u32,
+    #[prost(message, repeated, tag = "4")]
+    pub avatar_list: ::prost::alloc::vec::Vec<LineupAvatar>,
+    #[prost(uint32, tag = "5")]
+    pub leader_slot: u32,
+    #[prost(string, tag = "6")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "7")]
+    pub game_story_line_id: u32,
+    #[prost(enumeration = "ExtraLineupType", tag = "8")]
+    pub extra_lineup_type: i32,
+    #[prost(bool, tag = "9")]
+    pub is_virtual: bool,
+    #[prost(uint32, tag = "10")]
+    pub mp: u32,
+    #[prost(uint32, repeated, tag = "11")]
+    pub ncljllngdci: ::prost::alloc::vec::Vec<u32>,
     #[prost(uint32, tag = "12")]
     pub plane_id: u32,
-    #[prost(uint32, tag = "13")]
-    pub leader_slot: u32,
-    #[prost(uint32, tag = "14")]
-    pub index: u32,
-    #[prost(uint32, repeated, tag = "15")]
+    #[prost(uint32, repeated, tag = "13")]
+    pub gofliggnhne: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "14")]
     pub story_line_avatar_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(bool, tag = "15")]
+    pub abhongjhicf: bool,
 }
-/// Obf: JIJPDHKHFML
 #[derive(proto_derive::CmdID)]
-#[cmdid(731)]
+#[cmdid(796)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCurLineupDataCsReq {}
-/// Obf: FNDNOHGCGIE
 #[derive(proto_derive::CmdID)]
-#[cmdid(787)]
+#[cmdid(742)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurLineupDataScRsp {
-    #[prost(uint32, tag = "7")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "9")]
     pub lineup: ::core::option::Option<LineupInfo>,
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
 }
-/// Obf: DHEOOPKAOFC
 #[derive(proto_derive::CmdID)]
-#[cmdid(705)]
+#[cmdid(773)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JoinLineupCsReq {
     #[prost(uint32, tag = "1")]
-    pub slot: u32,
-    #[prost(uint32, tag = "3")]
-    pub plane_id: u32,
-    #[prost(bool, tag = "6")]
+    pub base_avatar_id: u32,
+    #[prost(enumeration = "ExtraLineupType", tag = "7")]
+    pub extra_lineup_type: i32,
+    #[prost(bool, tag = "8")]
     pub is_virtual: bool,
-    #[prost(enumeration = "AvatarType", tag = "7")]
-    pub avatar_type: i32,
     #[prost(uint32, tag = "10")]
     pub index: u32,
-    #[prost(enumeration = "ExtraLineupType", tag = "12")]
-    pub extra_lineup_type: i32,
-    #[prost(uint32, tag = "14")]
-    pub base_avatar_id: u32,
-}
-/// Obf: HKNCBEOKDCK
-#[derive(proto_derive::CmdID)]
-#[cmdid(771)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct JoinLineupScRsp {
-    #[prost(uint32, tag = "14")]
-    pub retcode: u32,
-}
-/// Obf: FJDFDBIIGOE
-#[derive(proto_derive::CmdID)]
-#[cmdid(759)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct QuitLineupCsReq {
-    #[prost(bool, tag = "2")]
-    pub is_virtual: bool,
-    #[prost(enumeration = "ExtraLineupType", tag = "5")]
-    pub extra_lineup_type: i32,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "11")]
     pub plane_id: u32,
-    #[prost(enumeration = "AvatarType", tag = "10")]
+    #[prost(enumeration = "AvatarType", tag = "12")]
     pub avatar_type: i32,
-    #[prost(uint32, tag = "11")]
-    pub index: u32,
-    #[prost(uint32, tag = "13")]
-    pub base_avatar_id: u32,
-}
-/// Obf: AFOIFBMKMEJ
-#[derive(proto_derive::CmdID)]
-#[cmdid(718)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct QuitLineupScRsp {
-    #[prost(uint32, tag = "6")]
-    pub retcode: u32,
-    #[prost(bool, tag = "9")]
-    pub is_mainline: bool,
-    #[prost(bool, tag = "15")]
-    pub is_virtual: bool,
-}
-/// Obf: EOBONCLPPLM
-#[derive(proto_derive::CmdID)]
-#[cmdid(727)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SyncLineupNotify {
-    #[prost(message, optional, tag = "7")]
-    pub lineup: ::core::option::Option<LineupInfo>,
-    #[prost(enumeration = "SyncLineupReason", repeated, tag = "15")]
-    pub reason_list: ::prost::alloc::vec::Vec<i32>,
-}
-/// Obf: GOEIOJHFNOH
-#[derive(proto_derive::CmdID)]
-#[cmdid(798)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ChangeLineupLeaderCsReq {
-    #[prost(uint32, tag = "11")]
-    pub slot: u32,
-}
-/// Obf: GHHKJGJNKIK
-#[derive(proto_derive::CmdID)]
-#[cmdid(747)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ChangeLineupLeaderScRsp {
-    #[prost(uint32, tag = "2")]
-    pub retcode: u32,
     #[prost(uint32, tag = "15")]
     pub slot: u32,
 }
-/// Obf: AMIDBKDMELM
 #[derive(proto_derive::CmdID)]
-#[cmdid(704)]
+#[cmdid(733)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetAllLineupDataCsReq {}
-/// Obf: EPGDODNPPDO
-#[derive(proto_derive::CmdID)]
-#[cmdid(794)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAllLineupDataScRsp {
-    #[prost(message, repeated, tag = "4")]
-    pub lineup_list: ::prost::alloc::vec::Vec<LineupInfo>,
-    #[prost(uint32, tag = "9")]
-    pub cur_index: u32,
+pub struct JoinLineupScRsp {
     #[prost(uint32, tag = "11")]
     pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(707)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QuitLineupCsReq {
+    #[prost(enumeration = "AvatarType", tag = "1")]
+    pub avatar_type: i32,
+    #[prost(uint32, tag = "2")]
+    pub base_avatar_id: u32,
+    #[prost(enumeration = "ExtraLineupType", tag = "3")]
+    pub extra_lineup_type: i32,
+    #[prost(uint32, tag = "9")]
+    pub plane_id: u32,
+    #[prost(uint32, tag = "12")]
+    pub index: u32,
+    #[prost(bool, tag = "15")]
+    pub is_virtual: bool,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(791)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct QuitLineupScRsp {
+    #[prost(bool, tag = "3")]
+    pub is_mainline: bool,
+    #[prost(uint32, tag = "9")]
+    pub retcode: u32,
+    #[prost(bool, tag = "12")]
+    pub is_virtual: bool,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(708)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SyncLineupNotify {
+    #[prost(message, optional, tag = "6")]
+    pub lineup: ::core::option::Option<LineupInfo>,
+    #[prost(enumeration = "SyncLineupReason", repeated, tag = "9")]
+    pub reason_list: ::prost::alloc::vec::Vec<i32>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(712)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChangeLineupLeaderCsReq {
+    #[prost(uint32, tag = "15")]
+    pub slot: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(769)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ChangeLineupLeaderScRsp {
+    #[prost(uint32, tag = "7")]
+    pub slot: u32,
+    #[prost(uint32, tag = "10")]
+    pub retcode: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(753)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetAllLineupDataCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(756)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAllLineupDataScRsp {
+    #[prost(uint32, tag = "5")]
+    pub cur_index: u32,
+    #[prost(uint32, tag = "7")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "12")]
+    pub lineup_list: ::prost::alloc::vec::Vec<LineupInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LineupSlotData {
-    #[prost(enumeration = "AvatarType", tag = "2")]
-    pub avatar_type: i32,
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "1")]
     pub assist_uid: u32,
-    #[prost(uint32, tag = "8")]
-    pub id: u32,
-    #[prost(uint32, tag = "9")]
+    #[prost(enumeration = "AvatarType", tag = "10")]
+    pub avatar_type: i32,
+    #[prost(uint32, tag = "13")]
     pub slot: u32,
+    #[prost(uint32, tag = "15")]
+    pub id: u32,
 }
-/// Obf: BLIOAJGEJNN
 #[derive(proto_derive::CmdID)]
-#[cmdid(782)]
+#[cmdid(785)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceLineupCsReq {
     #[prost(uint32, tag = "1")]
-    pub game_story_line_id: u32,
-    #[prost(enumeration = "ExtraLineupType", tag = "2")]
-    pub extra_lineup_type: i32,
-    #[prost(uint32, tag = "3")]
-    pub index: u32,
-    #[prost(bool, tag = "4")]
-    pub is_virtual: bool,
-    #[prost(bool, tag = "6")]
-    pub mmmhkfeodjk: bool,
-    #[prost(uint32, tag = "8")]
     pub plane_id: u32,
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag = "2")]
     pub hiamajkdioo: bool,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "3")]
     pub leader_slot: u32,
-    #[prost(bool, tag = "14")]
-    pub plieoddeehg: bool,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(uint32, tag = "4")]
+    pub game_story_line_id: u32,
+    #[prost(message, repeated, tag = "7")]
     pub lineup_slot_list: ::prost::alloc::vec::Vec<LineupSlotData>,
+    #[prost(bool, tag = "8")]
+    pub plieoddeehg: bool,
+    #[prost(uint32, tag = "9")]
+    pub index: u32,
+    #[prost(enumeration = "ExtraLineupType", tag = "10")]
+    pub extra_lineup_type: i32,
+    #[prost(bool, tag = "11")]
+    pub mmmhkfeodjk: bool,
+    #[prost(bool, tag = "13")]
+    pub is_virtual: bool,
 }
-/// Obf: JHICJLAIPLD
 #[derive(proto_derive::CmdID)]
-#[cmdid(715)]
+#[cmdid(765)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReplaceLineupScRsp {
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "5")]
     pub retcode: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "11")]
     pub omdlcgembla: u32,
 }
-/// Obf: HOKKGKCCHHL
 #[derive(proto_derive::CmdID)]
-#[cmdid(874)]
+#[cmdid(883)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMailCsReq {
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "11")]
     pub hfkfnfkieon: u32,
     #[prost(uint32, tag = "13")]
     pub npafmebnfob: u32,
@@ -4941,139 +4854,135 @@ pub struct GetMailCsReq {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientMail {
-    #[prost(string, tag = "2")]
+    #[prost(string, tag = "15")]
     pub sender: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "13")]
     pub id: u32,
-    #[prost(string, tag = "5")]
+    #[prost(string, tag = "3")]
     pub content: ::prost::alloc::string::String,
-    #[prost(bool, tag = "6")]
+    #[prost(bool, tag = "12")]
     pub is_read: bool,
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag = "8")]
     pub time: i64,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "14")]
     pub template_id: u32,
     #[prost(int64, tag = "10")]
     pub expire_time: i64,
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag = "2")]
     pub attachment: ::core::option::Option<ItemList>,
-    #[prost(string, tag = "12")]
+    #[prost(string, tag = "9")]
     pub title: ::prost::alloc::string::String,
-    #[prost(enumeration = "Jnlnckdbolk", tag = "14")]
+    #[prost(enumeration = "Jnlnckdbolk", tag = "1")]
     pub mail_type: i32,
-    #[prost(string, repeated, tag = "15")]
+    #[prost(string, repeated, tag = "11")]
     pub para_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Obf: GetMailScRsp
 #[derive(proto_derive::CmdID)]
-#[cmdid(819)]
+#[cmdid(854)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMailScRsp {
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag = "8")]
     pub notice_mail_list: ::prost::alloc::vec::Vec<ClientMail>,
-    #[prost(bool, tag = "6")]
+    #[prost(bool, tag = "4")]
     pub is_end: bool,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "3")]
     pub total_num: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "10")]
     pub retcode: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "1")]
     pub start: u32,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "12")]
     pub mail_list: ::prost::alloc::vec::Vec<ClientMail>,
 }
-/// Obf: EMACPOEHODE
 #[derive(proto_derive::CmdID)]
-#[cmdid(2731)]
+#[cmdid(2796)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNpcStatusCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NpcStatus {
-    #[prost(uint32, tag = "3")]
-    pub npc_id: u32,
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag = "8")]
     pub is_finish: bool,
+    #[prost(uint32, tag = "15")]
+    pub npc_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupStatus {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "2")]
     pub group_id: u32,
-    #[prost(enumeration = "Bnbonmhgnnd", tag = "3")]
-    pub group_status: i32,
-    #[prost(int64, tag = "5")]
+    #[prost(int64, tag = "13")]
     pub refresh_time: i64,
+    #[prost(enumeration = "Bnbonmhgnnd", tag = "14")]
+    pub group_status: i32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SectionStatus {
-    #[prost(uint32, tag = "5")]
-    pub section_id: u32,
-    #[prost(enumeration = "Aopobbplhae", tag = "7")]
+    #[prost(enumeration = "Aopobbplhae", tag = "8")]
     pub section_status: i32,
+    #[prost(uint32, tag = "13")]
+    pub section_id: u32,
 }
-/// Obf: FOKMHCLKPGJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(2787)]
+#[cmdid(2742)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNpcStatusScRsp {
-    #[prost(uint32, repeated, tag = "2")]
+    #[prost(uint32, repeated, tag = "3")]
     pub igecekjicbo: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "6")]
     pub retcode: u32,
-    #[prost(uint32, repeated, tag = "7")]
-    pub bngbjpnolal: ::prost::alloc::vec::Vec<u32>,
     #[prost(message, repeated, tag = "9")]
     pub npc_status_list: ::prost::alloc::vec::Vec<NpcStatus>,
+    #[prost(uint32, repeated, tag = "13")]
+    pub bngbjpnolal: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: EMIFJNLDKDE
 #[derive(proto_derive::CmdID)]
-#[cmdid(1274)]
+#[cmdid(1283)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMissionDataCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Mission {
-    #[prost(uint32, tag = "2")]
-    pub id: u32,
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "5")]
     pub progress: u32,
-    #[prost(enumeration = "MissionStatus", tag = "14")]
+    #[prost(enumeration = "MissionStatus", tag = "7")]
     pub status: i32,
+    #[prost(uint32, tag = "15")]
+    pub id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MissionCustomValue {
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "2")]
     pub index: u32,
-    #[prost(string, tag = "13")]
-    pub bgdfhbaanlb: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "10")]
     pub custom_value: u32,
+    #[prost(string, tag = "12")]
+    pub bgdfhbaanlb: ::prost::alloc::string::String,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Onhkodafemh {
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "2")]
     pub custom_value_list: ::prost::alloc::vec::Vec<MissionCustomValue>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MainMission {
-    #[prost(enumeration = "MissionStatus", tag = "1")]
-    pub status: i32,
-    #[prost(uint32, tag = "4")]
-    pub id: u32,
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag = "8")]
     pub custom_value_list: ::prost::alloc::vec::Vec<MissionCustomValue>,
+    #[prost(uint32, tag = "10")]
+    pub id: u32,
+    #[prost(enumeration = "MissionStatus", tag = "15")]
+    pub status: i32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mjbanfppefh {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "10")]
     pub id: u32,
-    #[prost(oneof = "mjbanfppefh::Epiikekkmpj", tags = "1023")]
+    #[prost(oneof = "mjbanfppefh::Epiikekkmpj", tags = "462")]
     pub epiikekkmpj: ::core::option::Option<mjbanfppefh::Epiikekkmpj>,
 }
 /// Nested message and enum types in `MJBANFPPEFH`.
@@ -5081,729 +4990,698 @@ pub mod mjbanfppefh {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Epiikekkmpj {
-        #[prost(message, tag = "1023")]
+        #[prost(message, tag = "462")]
         CustomValueList(super::Onhkodafemh),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MainMissionCustomValue {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "2")]
     pub main_mission_id: u32,
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag = "6")]
     pub custom_value_list: ::core::option::Option<Onhkodafemh>,
 }
-/// Obf: KHKJONMCECE
 #[derive(proto_derive::CmdID)]
-#[cmdid(1219)]
+#[cmdid(1254)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMissionDataScRsp {
-    #[prost(uint32, tag = "3")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "6")]
-    pub track_mission_id: u32,
-    #[prost(message, repeated, tag = "7")]
-    pub main_mission_list: ::prost::alloc::vec::Vec<MainMission>,
-    #[prost(uint32, tag = "8")]
-    pub gkfpkbgjbgn: u32,
-    #[prost(message, repeated, tag = "11")]
-    pub mission_list: ::prost::alloc::vec::Vec<Mission>,
-    #[prost(uint32, repeated, tag = "12")]
+    #[prost(uint32, repeated, tag = "2")]
     pub olkalabedoa: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, tag = "3")]
+    pub gkfpkbgjbgn: u32,
+    #[prost(uint32, tag = "7")]
+    pub retcode: u32,
+    #[prost(message, repeated, tag = "9")]
+    pub mission_list: ::prost::alloc::vec::Vec<Mission>,
+    #[prost(uint32, repeated, tag = "10")]
     pub kbdgngmpfeh: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "14")]
+    #[prost(uint32, repeated, tag = "11")]
     pub finished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "13")]
+    pub track_mission_id: u32,
+    #[prost(message, repeated, tag = "15")]
+    pub main_mission_list: ::prost::alloc::vec::Vec<MainMission>,
 }
-/// Obf: MMJJKEOONKE
 #[derive(proto_derive::CmdID)]
-#[cmdid(1231)]
+#[cmdid(1296)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinishTalkMissionCsReq {
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag = "2")]
     pub custom_value_list: ::prost::alloc::vec::Vec<MissionCustomValue>,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub sub_mission_id: u32,
-    #[prost(string, tag = "11")]
+    #[prost(string, tag = "14")]
     pub talk_str: ::prost::alloc::string::String,
 }
-/// Obf: OKPLFBLIDFF
 #[derive(proto_derive::CmdID)]
-#[cmdid(1287)]
+#[cmdid(1242)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinishTalkMissionScRsp {
-    #[prost(message, repeated, tag = "1")]
-    pub custom_value_list: ::prost::alloc::vec::Vec<MissionCustomValue>,
-    #[prost(uint32, tag = "12")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "13")]
-    pub sub_mission_id: u32,
-    #[prost(string, tag = "15")]
+    #[prost(string, tag = "5")]
     pub talk_str: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "8")]
+    pub custom_value_list: ::prost::alloc::vec::Vec<MissionCustomValue>,
+    #[prost(uint32, tag = "13")]
+    pub retcode: u32,
+    #[prost(uint32, tag = "14")]
+    pub sub_mission_id: u32,
 }
-/// Obf: MEBIGMFKKFD
 #[derive(proto_derive::CmdID)]
-#[cmdid(1204)]
+#[cmdid(1253)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMissionStatusCsReq {
-    #[prost(uint32, repeated, tag = "2")]
+    #[prost(uint32, repeated, tag = "1")]
     pub sub_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "9")]
+    #[prost(uint32, repeated, tag = "13")]
     pub main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: GetMissionStatusScRsp
 #[derive(proto_derive::CmdID)]
-#[cmdid(1294)]
+#[cmdid(1256)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMissionStatusScRsp {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "8")]
     pub retcode: u32,
     #[prost(uint32, repeated, tag = "7")]
     pub finished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "9")]
+    #[prost(uint32, repeated, tag = "6")]
     pub disabled_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "11")]
+    #[prost(uint32, repeated, tag = "4")]
     pub unfinished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "13")]
     pub sub_mission_status_list: ::prost::alloc::vec::Vec<Mission>,
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "5")]
     pub curversion_finished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag = "3")]
     pub main_mission_mcv_list: ::prost::alloc::vec::Vec<MainMissionCustomValue>,
 }
-/// Obf: IJCGOCNMJIN
 #[derive(proto_derive::CmdID)]
-#[cmdid(5174)]
+#[cmdid(5183)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPhoneDataCsReq {}
-/// Obf: HNPKMPJPIPC
 #[derive(proto_derive::CmdID)]
-#[cmdid(5119)]
+#[cmdid(5154)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPhoneDataScRsp {
-    #[prost(uint32, repeated, tag = "1")]
-    pub owned_chat_bubbles: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "2")]
-    pub owned_phone_cases: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "4")]
-    pub cur_chat_bubble: u32,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "1")]
     pub retcode: u32,
-    #[prost(uint32, tag = "7")]
-    pub cur_phone_case: u32,
-    #[prost(uint32, repeated, tag = "10")]
-    pub owned_phone_themes: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "2")]
+    pub cur_chat_bubble: u32,
+    #[prost(uint32, tag = "5")]
     pub cur_phone_theme: u32,
+    #[prost(uint32, repeated, tag = "6")]
+    pub owned_phone_cases: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "7")]
+    pub owned_phone_themes: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "9")]
+    pub cur_phone_case: u32,
+    #[prost(uint32, repeated, tag = "15")]
+    pub owned_chat_bubbles: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: LEGAPPMEBBL
 #[derive(proto_derive::CmdID)]
-#[cmdid(74)]
+#[cmdid(83)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerLoginCsReq {
     #[prost(string, tag = "1")]
-    pub gdmjpjckbbe: ::prost::alloc::string::String,
-    #[prost(string, tag = "2")]
-    pub bdgdpmalnif: ::prost::alloc::string::String,
+    pub jhokmnlhbma: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "2")]
+    pub login_random: u64,
     #[prost(string, tag = "3")]
     pub lflcdngalme: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "4")]
-    pub ljkmpimkomo: u32,
-    #[prost(uint32, tag = "5")]
-    pub jmmhhfleepg: u32,
-    #[prost(string, tag = "6")]
-    pub signature: ::prost::alloc::string::String,
-    #[prost(string, tag = "7")]
-    pub ldcibphdaki: ::prost::alloc::string::String,
-    #[prost(uint64, tag = "8")]
-    pub login_random: u64,
-    #[prost(enumeration = "LanguageType", tag = "9")]
-    pub hofemnaiihb: i32,
-    #[prost(string, tag = "10")]
-    pub baogdofppln: ::prost::alloc::string::String,
-    #[prost(string, tag = "11")]
-    pub nibmfcfbhep: ::prost::alloc::string::String,
-    #[prost(string, tag = "12")]
+    #[prost(string, tag = "4")]
     pub bjcibnbgbmp: ::prost::alloc::string::String,
-    #[prost(string, tag = "13")]
+    #[prost(uint32, tag = "5")]
+    pub ljkmpimkomo: u32,
+    #[prost(string, tag = "6")]
+    pub baogdofppln: ::prost::alloc::string::String,
+    #[prost(string, tag = "7")]
     pub ihmjhllclde: ::prost::alloc::string::String,
-    #[prost(string, tag = "14")]
-    pub jhokmnlhbma: ::prost::alloc::string::String,
-    #[prost(enumeration = "PlatformType", tag = "15")]
+    #[prost(enumeration = "PlatformType", tag = "8")]
     pub platform: i32,
-    #[prost(string, tag = "42")]
-    pub lpbhjodecne: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "265")]
-    pub djcnhcgfhkf: u32,
-    #[prost(uint32, tag = "341")]
-    pub kpfgilofidi: u32,
-    #[prost(bool, tag = "403")]
-    pub acjkhhbjkhe: bool,
-    #[prost(string, tag = "821")]
+    #[prost(string, tag = "9")]
+    pub nibmfcfbhep: ::prost::alloc::string::String,
+    #[prost(string, tag = "10")]
+    pub bdgdpmalnif: ::prost::alloc::string::String,
+    #[prost(string, tag = "11")]
+    pub gdmjpjckbbe: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "12")]
+    pub jmmhhfleepg: u32,
+    #[prost(enumeration = "LanguageType", tag = "13")]
+    pub hofemnaiihb: i32,
+    #[prost(string, tag = "14")]
+    pub signature: ::prost::alloc::string::String,
+    #[prost(string, tag = "15")]
+    pub ldcibphdaki: ::prost::alloc::string::String,
+    #[prost(string, tag = "302")]
     pub ijkomikfkek: ::prost::alloc::string::String,
-    #[prost(string, tag = "1097")]
+    #[prost(string, tag = "314")]
     pub jkgakdalfpe: ::prost::alloc::string::String,
-    #[prost(string, tag = "1205")]
-    pub mgnligikkpp: ::prost::alloc::string::String,
-    #[prost(message, optional, tag = "1278")]
-    pub eondgecnaih: ::core::option::Option<Cmcjfjebbco>,
-    #[prost(string, tag = "1321")]
-    pub djonelmifee: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "1358")]
-    pub fkffbemeiep: u32,
-    #[prost(message, optional, tag = "1483")]
+    #[prost(message, optional, tag = "510")]
     pub hnpmediejfc: ::core::option::Option<Mephkjfajpp>,
-    #[prost(bool, tag = "1809")]
+    #[prost(string, tag = "881")]
+    pub djonelmifee: ::prost::alloc::string::String,
+    #[prost(string, tag = "1212")]
+    pub lpbhjodecne: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "1382")]
+    pub eondgecnaih: ::core::option::Option<Cmcjfjebbco>,
+    #[prost(bool, tag = "1421")]
+    pub acjkhhbjkhe: bool,
+    #[prost(uint32, tag = "1497")]
+    pub kpfgilofidi: u32,
+    #[prost(bool, tag = "1571")]
     pub menbljogjmh: bool,
-    #[prost(string, tag = "1895")]
+    #[prost(string, tag = "1900")]
+    pub mgnligikkpp: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1904")]
+    pub fkffbemeiep: u32,
+    #[prost(string, tag = "1978")]
     pub idifiepmlka: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "2000")]
+    pub djcnhcgfhkf: u32,
 }
-/// Obf: ADODOFNNPEO
 #[derive(proto_derive::CmdID)]
-#[cmdid(19)]
+#[cmdid(54)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerLoginScRsp {
-    #[prost(string, tag = "1")]
-    pub gioapokhaof: ::prost::alloc::string::String,
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag = "1")]
     pub cur_timezone: i32,
-    #[prost(uint32, tag = "4")]
-    pub retcode: u32,
-    #[prost(bool, tag = "7")]
+    #[prost(bool, tag = "2")]
     pub kdnppnhlnoa: bool,
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag = "5")]
     pub kcdahnnckpp: bool,
-    #[prost(message, optional, tag = "10")]
-    pub basic_info: ::core::option::Option<PlayerBasicInfo>,
-    #[prost(string, tag = "11")]
-    pub dkepkhpolhc: ::prost::alloc::string::String,
-    #[prost(uint64, tag = "12")]
-    pub server_timestamp_ms: u64,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "6")]
     pub stamina: u32,
-    #[prost(uint64, tag = "14")]
+    #[prost(string, tag = "8")]
+    pub gioapokhaof: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "9")]
+    pub basic_info: ::core::option::Option<PlayerBasicInfo>,
+    #[prost(string, tag = "12")]
+    pub dkepkhpolhc: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "13")]
     pub login_random: u64,
+    #[prost(uint64, tag = "14")]
+    pub server_timestamp_ms: u64,
+    #[prost(uint32, tag = "15")]
+    pub retcode: u32,
 }
-/// Obf: MLINFKJIAEL
 #[derive(proto_derive::CmdID)]
-#[cmdid(5)]
+#[cmdid(73)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerGetTokenCsReq {
-    #[prost(string, tag = "1")]
-    pub account_uid: ::prost::alloc::string::String,
-    #[prost(string, tag = "5")]
-    pub token: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "1")]
     pub djcnhcgfhkf: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "2")]
     pub account_ip_port: u32,
+    #[prost(string, tag = "4")]
+    pub eklogglelcg: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub account_uid: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "7")]
+    pub sign_type: u32,
+    #[prost(uint32, tag = "8")]
+    pub account_ip: u32,
     #[prost(uint32, tag = "10")]
     pub platform: u32,
-    #[prost(uint32, tag = "11")]
-    pub uid: u32,
-    #[prost(string, tag = "13")]
-    pub eklogglelcg: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "14")]
-    pub account_ip: u32,
+    #[prost(string, tag = "12")]
+    pub token: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
-    pub sign_type: u32,
+    pub uid: u32,
 }
-/// Obf: KJAFBEGOCHP
 #[derive(proto_derive::CmdID)]
-#[cmdid(71)]
+#[cmdid(33)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerGetTokenScRsp {
-    #[prost(string, tag = "5")]
-    pub authkey: ::prost::alloc::string::String,
-    #[prost(string, tag = "7")]
+    #[prost(uint32, tag = "1")]
+    pub uid: u32,
+    #[prost(string, tag = "2")]
     pub msg: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "5")]
+    pub retcode: u32,
     #[prost(message, optional, tag = "8")]
     pub black_info: ::core::option::Option<BlackInfo>,
-    #[prost(uint64, tag = "9")]
+    #[prost(string, tag = "10")]
+    pub authkey: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "14")]
     pub secret_key_seed: u64,
-    #[prost(uint32, tag = "10")]
-    pub uid: u32,
-    #[prost(uint32, tag = "11")]
-    pub retcode: u32,
 }
-/// Obf: DABIFJNADLI
 #[derive(proto_derive::CmdID)]
-#[cmdid(46)]
+#[cmdid(68)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBasicInfoCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pnolliakgdb {
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag = "9")]
     pub belkcbagmfc: bool,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "7")]
     pub jhjkcjkdhib: u32,
-    #[prost(bool, tag = "8")]
+    #[prost(bool, tag = "15")]
     pub mlpgdpgifcj: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ljfjogeegpj {
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag = "11")]
     pub mbiaimkhndb: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerSettingInfo {
     #[prost(bool, tag = "1")]
-    pub dcjecfmmibc: bool,
-    #[prost(bool, tag = "3")]
-    pub pfbhgahafmd: bool,
-    #[prost(bool, tag = "4")]
-    pub gnfddpemmfn: bool,
-    #[prost(bool, tag = "5")]
+    pub fdhepcklcam: bool,
+    #[prost(bool, tag = "2")]
     pub aacoehcfndb: bool,
-    #[prost(bool, tag = "8")]
-    pub iojeaocobbf: bool,
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag = "3")]
     pub dgcnhmihfjb: bool,
-    #[prost(bool, tag = "10")]
-    pub bomgnmdoglm: bool,
-    #[prost(bool, tag = "12")]
+    #[prost(bool, tag = "5")]
+    pub makolelflfh: bool,
+    #[prost(bool, tag = "6")]
     pub njakomdmfjd: bool,
+    #[prost(bool, tag = "7")]
+    pub iojeaocobbf: bool,
+    #[prost(bool, tag = "8")]
+    pub dcjecfmmibc: bool,
+    #[prost(bool, tag = "9")]
+    pub pfbhgahafmd: bool,
+    #[prost(bool, tag = "10")]
+    pub gnfddpemmfn: bool,
+    #[prost(bool, tag = "11")]
+    pub bomgnmdoglm: bool,
     #[prost(message, optional, tag = "13")]
     pub ojpaodihaje: ::core::option::Option<Pnolliakgdb>,
-    #[prost(bool, tag = "14")]
-    pub makolelflfh: bool,
-    #[prost(bool, tag = "15")]
-    pub fdhepcklcam: bool,
-    #[prost(bool, tag = "390")]
-    pub bbeebbidjhe: bool,
-    #[prost(message, optional, tag = "1171")]
-    pub ankidjjinei: ::core::option::Option<Ljfjogeegpj>,
-    #[prost(message, repeated, tag = "1207")]
-    pub okahmfoinpm: ::prost::alloc::vec::Vec<Apamfckfhll>,
-    #[prost(bool, tag = "1232")]
-    pub gokfngffmob: bool,
-    #[prost(message, optional, tag = "1552")]
-    pub cmfcooeeecb: ::core::option::Option<Jpgackplgcd>,
-    #[prost(bool, tag = "1873")]
+    #[prost(bool, tag = "517")]
     pub lnghijgfdkp: bool,
-    #[prost(bool, tag = "1893")]
+    #[prost(bool, tag = "652")]
+    pub bbeebbidjhe: bool,
+    #[prost(message, repeated, tag = "1053")]
+    pub okahmfoinpm: ::prost::alloc::vec::Vec<Apamfckfhll>,
+    #[prost(message, optional, tag = "1144")]
+    pub ankidjjinei: ::core::option::Option<Ljfjogeegpj>,
+    #[prost(bool, tag = "1305")]
     pub hgpffgknpfb: bool,
+    #[prost(message, optional, tag = "1405")]
+    pub cmfcooeeecb: ::core::option::Option<Jpgackplgcd>,
+    #[prost(bool, tag = "1805")]
+    pub gokfngffmob: bool,
 }
-/// Obf: GetBasicInfoScRsp
 #[derive(proto_derive::CmdID)]
-#[cmdid(20)]
+#[cmdid(14)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBasicInfoScRsp {
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag = "14")]
     pub player_setting_info: ::core::option::Option<PlayerSettingInfo>,
     #[prost(uint32, tag = "2")]
     pub gameplay_birthday: u32,
-    #[prost(uint32, tag = "3")]
-    pub week_cocoon_finished_count: u32,
-    #[prost(int64, tag = "4")]
-    pub last_set_nickname_time: i64,
-    #[prost(uint32, tag = "6")]
-    pub gender: u32,
-    #[prost(bool, tag = "7")]
-    pub is_gender_set: bool,
-    #[prost(uint32, tag = "9")]
-    pub cur_day: u32,
     #[prost(uint32, tag = "10")]
+    pub week_cocoon_finished_count: u32,
+    #[prost(int64, tag = "7")]
+    pub last_set_nickname_time: i64,
+    #[prost(uint32, tag = "8")]
+    pub gender: u32,
+    #[prost(bool, tag = "15")]
+    pub is_gender_set: bool,
+    #[prost(uint32, tag = "1")]
+    pub cur_day: u32,
+    #[prost(uint32, tag = "9")]
     pub exchange_times: u32,
     #[prost(uint32, tag = "12")]
     pub retcode: u32,
-    #[prost(int64, tag = "13")]
+    #[prost(int64, tag = "6")]
     pub next_recover_time: i64,
 }
-/// Obf: FMKFINNEDEG
 #[derive(proto_derive::CmdID)]
-#[cmdid(57)]
+#[cmdid(45)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLevelRewardTakenListCsReq {}
-/// Obf: GPONDAHEKJN
 #[derive(proto_derive::CmdID)]
-#[cmdid(82)]
+#[cmdid(85)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLevelRewardTakenListScRsp {
-    #[prost(uint32, tag = "2")]
-    pub retcode: u32,
-    #[prost(uint32, repeated, tag = "7")]
+    #[prost(uint32, repeated, tag = "1")]
     pub level_reward_taken_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GateServer {
-    #[prost(int64, tag = "1")]
-    pub stop_end_time: i64,
-    #[prost(int64, tag = "2")]
-    pub stop_begin_time: i64,
-    #[prost(string, tag = "3")]
-    pub ip: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "4")]
-    pub ipjkkkdpljj: u32,
-    #[prost(string, tag = "5")]
-    pub ex_resource_url: ::prost::alloc::string::String,
-    #[prost(string, tag = "6")]
-    pub asset_bundle_url: ::prost::alloc::string::String,
-    #[prost(string, tag = "7")]
-    pub lua_url: ::prost::alloc::string::String,
-    #[prost(string, tag = "8")]
-    pub hojalbfbfii: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "9")]
-    pub port: u32,
-    #[prost(bool, tag = "10")]
-    pub unk1: bool,
-    #[prost(uint32, tag = "11")]
-    pub liahkjgjeef: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "1")]
     pub retcode: u32,
-    #[prost(string, tag = "13")]
-    pub msg: ::prost::alloc::string::String,
-    #[prost(string, tag = "14")]
+    #[prost(uint32, tag = "3")]
+    pub ipjkkkdpljj: u32,
+    #[prost(uint32, tag = "5")]
+    pub port: u32,
+    #[prost(bool, tag = "6")]
+    pub unk1: bool,
+    #[prost(string, tag = "7")]
+    pub hojalbfbfii: ::prost::alloc::string::String,
+    #[prost(string, tag = "8")]
+    pub ex_resource_url: ::prost::alloc::string::String,
+    #[prost(string, tag = "9")]
+    pub lua_url: ::prost::alloc::string::String,
+    #[prost(string, tag = "10")]
     pub region_name: ::prost::alloc::string::String,
-    #[prost(bool, tag = "15")]
+    #[prost(string, tag = "11")]
+    pub msg: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "12")]
+    pub liahkjgjeef: u32,
+    #[prost(string, tag = "13")]
+    pub asset_bundle_url: ::prost::alloc::string::String,
+    #[prost(bool, tag = "14")]
     pub unk2: bool,
-    #[prost(string, tag = "31")]
-    pub khcjndnebdm: ::prost::alloc::string::String,
-    #[prost(string, tag = "32")]
-    pub pojllmoidje: ::prost::alloc::string::String,
-    #[prost(string, tag = "34")]
-    pub jdmjigdpdnb: ::prost::alloc::string::String,
-    #[prost(string, tag = "43")]
-    pub mapknoikblo: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "48")]
-    pub kpdikgkplia: u32,
-    #[prost(bool, tag = "77")]
-    pub unk7: bool,
-    #[prost(bool, tag = "85")]
-    pub mgabbjkfeng: bool,
-    #[prost(bool, tag = "134")]
-    pub dmdcfjgcmjm: bool,
-    #[prost(bool, tag = "139")]
-    pub nnflhcgdgjm: bool,
-    #[prost(string, tag = "199")]
-    pub obdjpcfddok: ::prost::alloc::string::String,
-    #[prost(string, tag = "207")]
-    pub kgmlmhckpdl: ::prost::alloc::string::String,
-    #[prost(string, tag = "220")]
-    pub ihhppjopbjd: ::prost::alloc::string::String,
-    #[prost(string, tag = "252")]
-    pub omapidphkfc: ::prost::alloc::string::String,
-    #[prost(string, tag = "279")]
-    pub epcfefagflj: ::prost::alloc::string::String,
-    #[prost(bool, tag = "325")]
-    pub gbkebjlfohg: bool,
-    #[prost(bool, tag = "328")]
-    pub najbbckmjph: bool,
-    #[prost(string, tag = "338")]
-    pub hmpdgceilbf: ::prost::alloc::string::String,
-    #[prost(string, tag = "341")]
-    pub cbnnbjihlpd: ::prost::alloc::string::String,
-    #[prost(string, tag = "343")]
-    pub ggegcahpkhb: ::prost::alloc::string::String,
-    #[prost(string, tag = "376")]
-    pub lednkggciid: ::prost::alloc::string::String,
-    #[prost(string, tag = "384")]
-    pub mndocfbimhn: ::prost::alloc::string::String,
-    #[prost(string, tag = "389")]
-    pub ihhkhhepadd: ::prost::alloc::string::String,
-    #[prost(string, tag = "403")]
-    pub client_secret_key: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "410")]
-    pub mfbnekdchpj: u32,
-    #[prost(string, tag = "434")]
-    pub hncebfmndll: ::prost::alloc::string::String,
-    #[prost(bool, tag = "454")]
-    pub unk6: bool,
-    #[prost(string, tag = "477")]
-    pub nfkkncgkkeh: ::prost::alloc::string::String,
-    #[prost(string, tag = "532")]
-    pub efjomconelm: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag = "533")]
-    pub olgohlgjfhi: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(string, tag = "612")]
-    pub naofjmafbcp: ::prost::alloc::string::String,
-    #[prost(string, tag = "620")]
-    pub dhijlkbkgpk: ::prost::alloc::string::String,
-    #[prost(string, tag = "667")]
-    pub lafpcfgghhm: ::prost::alloc::string::String,
-    #[prost(string, tag = "689")]
-    pub iekaginahgf: ::prost::alloc::string::String,
-    #[prost(string, tag = "694")]
-    pub ifix_url: ::prost::alloc::string::String,
-    #[prost(string, tag = "740")]
-    pub imdifjfieap: ::prost::alloc::string::String,
-    #[prost(bool, tag = "802")]
-    pub unk4: bool,
-    #[prost(string, tag = "867")]
-    pub koaoiodclpb: ::prost::alloc::string::String,
-    #[prost(bool, tag = "918")]
-    pub unk3: bool,
-    #[prost(string, tag = "1116")]
-    pub gdkpmiecplm: ::prost::alloc::string::String,
-    #[prost(string, tag = "1133")]
-    pub gdppcmgalol: ::prost::alloc::string::String,
-    #[prost(string, tag = "1140")]
-    pub ibjajcdgbgc: ::prost::alloc::string::String,
-    #[prost(string, tag = "1165")]
-    pub gnpjogcmbgn: ::prost::alloc::string::String,
-    #[prost(string, tag = "1179")]
-    pub cpapfkfbgfd: ::prost::alloc::string::String,
-    #[prost(string, tag = "1247")]
-    pub goabedbieff: ::prost::alloc::string::String,
-    #[prost(string, tag = "1258")]
-    pub gbjgdmlbmmb: ::prost::alloc::string::String,
-    #[prost(string, tag = "1280")]
-    pub fkbdggflgip: ::prost::alloc::string::String,
-    #[prost(string, tag = "1284")]
-    pub oockddcjgdn: ::prost::alloc::string::String,
-    #[prost(string, tag = "1286")]
-    pub ifix_version: ::prost::alloc::string::String,
-    #[prost(string, tag = "1290")]
-    pub jiogoemlnca: ::prost::alloc::string::String,
-    #[prost(bool, tag = "1337")]
-    pub habojcdodhi: bool,
-    #[prost(string, tag = "1363")]
-    pub onjealbkoge: ::prost::alloc::string::String,
-    #[prost(string, tag = "1379")]
-    pub asset_bundle_url_android: ::prost::alloc::string::String,
-    #[prost(string, tag = "1483")]
-    pub lelppkmoibd: ::prost::alloc::string::String,
-    #[prost(string, tag = "1516")]
-    pub mdk_res_version: ::prost::alloc::string::String,
-    #[prost(bool, tag = "1544")]
-    pub fmlpnnmjdic: bool,
-    #[prost(bool, tag = "1559")]
-    pub unk5: bool,
-    #[prost(string, tag = "1592")]
+    #[prost(string, tag = "15")]
+    pub ip: ::prost::alloc::string::String,
+    #[prost(string, tag = "52")]
     pub mfhlighojml: ::prost::alloc::string::String,
-    #[prost(string, tag = "1593")]
-    pub fajmnhdidfj: ::prost::alloc::string::String,
-    #[prost(string, tag = "1595")]
-    pub mogchakoejh: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "1666")]
-    pub bgbanblobda: u32,
-    #[prost(string, tag = "1692")]
-    pub lfgpaodnjjb: ::prost::alloc::string::String,
-    #[prost(string, tag = "1694")]
-    pub mdbjolfaohi: ::prost::alloc::string::String,
-    #[prost(string, tag = "1721")]
-    pub biipdjejamm: ::prost::alloc::string::String,
-    #[prost(string, tag = "1737")]
-    pub boakadaajgi: ::prost::alloc::string::String,
-    #[prost(string, tag = "1799")]
+    #[prost(string, tag = "90")]
+    pub onjealbkoge: ::prost::alloc::string::String,
+    #[prost(string, tag = "104")]
     pub omdpkpicclj: ::prost::alloc::string::String,
-    #[prost(bool, tag = "1825")]
+    #[prost(string, tag = "110")]
+    pub nfkkncgkkeh: ::prost::alloc::string::String,
+    #[prost(string, tag = "147")]
+    pub mapknoikblo: ::prost::alloc::string::String,
+    #[prost(string, tag = "161")]
+    pub obdjpcfddok: ::prost::alloc::string::String,
+    #[prost(string, tag = "176")]
+    pub gdppcmgalol: ::prost::alloc::string::String,
+    #[prost(string, tag = "193")]
+    pub lfgpaodnjjb: ::prost::alloc::string::String,
+    #[prost(bool, tag = "247")]
+    pub unk4: bool,
+    #[prost(uint32, tag = "278")]
+    pub kpdikgkplia: u32,
+    #[prost(bool, tag = "296")]
+    pub nnflhcgdgjm: bool,
+    #[prost(string, tag = "303")]
+    pub ihhppjopbjd: ::prost::alloc::string::String,
+    #[prost(bool, tag = "387")]
+    pub habojcdodhi: bool,
+    #[prost(bool, tag = "410")]
+    pub unk6: bool,
+    #[prost(bool, tag = "421")]
+    pub fmlpnnmjdic: bool,
+    #[prost(string, tag = "424")]
+    pub iekaginahgf: ::prost::alloc::string::String,
+    #[prost(string, tag = "426")]
+    pub jiogoemlnca: ::prost::alloc::string::String,
+    #[prost(bool, tag = "450")]
     pub lobigonhopj: bool,
-    #[prost(string, tag = "1854")]
-    pub iockacinnch: ::prost::alloc::string::String,
-    #[prost(string, tag = "1915")]
-    pub cilndlmkdjp: ::prost::alloc::string::String,
-    #[prost(string, tag = "1957")]
+    #[prost(bool, tag = "455")]
+    pub gbkebjlfohg: bool,
+    #[prost(string, tag = "481")]
+    pub lafpcfgghhm: ::prost::alloc::string::String,
+    #[prost(string, tag = "510")]
+    pub kgmlmhckpdl: ::prost::alloc::string::String,
+    #[prost(string, tag = "515")]
     pub cihcaikkpck: ::prost::alloc::string::String,
-    #[prost(string, tag = "1965")]
-    pub djodjcjlgdg: ::prost::alloc::string::String,
-    #[prost(bool, tag = "1975")]
-    pub kjgbibedkpd: bool,
-    #[prost(string, tag = "2002")]
-    pub akhgpdignkc: ::prost::alloc::string::String,
-    #[prost(string, tag = "2015")]
+    #[prost(string, tag = "555")]
+    pub client_secret_key: ::prost::alloc::string::String,
+    #[prost(bool, tag = "612")]
+    pub dmdcfjgcmjm: bool,
+    #[prost(string, tag = "659")]
+    pub goabedbieff: ::prost::alloc::string::String,
+    #[prost(string, tag = "710")]
+    pub biipdjejamm: ::prost::alloc::string::String,
+    #[prost(bool, tag = "738")]
+    pub najbbckmjph: bool,
+    #[prost(string, tag = "743")]
+    pub omapidphkfc: ::prost::alloc::string::String,
+    #[prost(bool, tag = "809")]
+    pub unk5: bool,
+    #[prost(string, tag = "810")]
+    pub ihhkhhepadd: ::prost::alloc::string::String,
+    #[prost(string, tag = "821")]
+    pub hmpdgceilbf: ::prost::alloc::string::String,
+    #[prost(string, tag = "839")]
+    pub efjomconelm: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "841")]
+    pub mfbnekdchpj: u32,
+    #[prost(string, tag = "847")]
+    pub khcjndnebdm: ::prost::alloc::string::String,
+    #[prost(string, tag = "876")]
     pub eapifpllhha: ::prost::alloc::string::String,
-    #[prost(string, tag = "2036")]
+    #[prost(string, tag = "878")]
+    pub akhgpdignkc: ::prost::alloc::string::String,
+    #[prost(string, tag = "894")]
+    pub mndocfbimhn: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag = "942")]
+    pub olgohlgjfhi: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, tag = "979")]
+    pub lednkggciid: ::prost::alloc::string::String,
+    #[prost(bool, tag = "984")]
+    pub unk7: bool,
+    #[prost(string, tag = "991")]
+    pub hncebfmndll: ::prost::alloc::string::String,
+    #[prost(string, tag = "1074")]
+    pub dhijlkbkgpk: ::prost::alloc::string::String,
+    #[prost(string, tag = "1122")]
+    pub naofjmafbcp: ::prost::alloc::string::String,
+    #[prost(bool, tag = "1140")]
+    pub kjgbibedkpd: bool,
+    #[prost(string, tag = "1246")]
+    pub cilndlmkdjp: ::prost::alloc::string::String,
+    #[prost(string, tag = "1277")]
+    pub imdifjfieap: ::prost::alloc::string::String,
+    #[prost(string, tag = "1284")]
+    pub ibjajcdgbgc: ::prost::alloc::string::String,
+    #[prost(bool, tag = "1293")]
+    pub unk3: bool,
+    #[prost(string, tag = "1296")]
+    pub mogchakoejh: ::prost::alloc::string::String,
+    #[prost(string, tag = "1323")]
+    pub epcfefagflj: ::prost::alloc::string::String,
+    #[prost(string, tag = "1338")]
+    pub gdkpmiecplm: ::prost::alloc::string::String,
+    #[prost(string, tag = "1369")]
+    pub lelppkmoibd: ::prost::alloc::string::String,
+    #[prost(string, tag = "1403")]
+    pub koaoiodclpb: ::prost::alloc::string::String,
+    #[prost(string, tag = "1422")]
+    pub djodjcjlgdg: ::prost::alloc::string::String,
+    #[prost(bool, tag = "1482")]
+    pub mgabbjkfeng: bool,
+    #[prost(string, tag = "1484")]
+    pub jdmjigdpdnb: ::prost::alloc::string::String,
+    #[prost(string, tag = "1491")]
+    pub fkbdggflgip: ::prost::alloc::string::String,
+    #[prost(string, tag = "1507")]
+    pub asset_bundle_url_android: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "1541")]
+    pub bgbanblobda: u32,
+    #[prost(string, tag = "1599")]
     pub gciegdjbghh: ::prost::alloc::string::String,
+    #[prost(string, tag = "1600")]
+    pub iockacinnch: ::prost::alloc::string::String,
+    #[prost(string, tag = "1635")]
+    pub fajmnhdidfj: ::prost::alloc::string::String,
+    #[prost(string, tag = "1703")]
+    pub oockddcjgdn: ::prost::alloc::string::String,
+    #[prost(string, tag = "1803")]
+    pub gnpjogcmbgn: ::prost::alloc::string::String,
+    #[prost(string, tag = "1811")]
+    pub boakadaajgi: ::prost::alloc::string::String,
+    #[prost(string, tag = "1814")]
+    pub cpapfkfbgfd: ::prost::alloc::string::String,
+    #[prost(string, tag = "1851")]
+    pub pojllmoidje: ::prost::alloc::string::String,
+    #[prost(string, tag = "1874")]
+    pub gbjgdmlbmmb: ::prost::alloc::string::String,
+    #[prost(string, tag = "1895")]
+    pub ifix_url: ::prost::alloc::string::String,
+    #[prost(string, tag = "1922")]
+    pub cbnnbjihlpd: ::prost::alloc::string::String,
+    #[prost(string, tag = "1962")]
+    pub mdbjolfaohi: ::prost::alloc::string::String,
+    #[prost(string, tag = "1988")]
+    pub ifix_version: ::prost::alloc::string::String,
+    #[prost(string, tag = "2011")]
+    pub mdk_res_version: ::prost::alloc::string::String,
 }
-/// Obf: FAICKIOJMDI
 #[derive(proto_derive::CmdID)]
-#[cmdid(43)]
+#[cmdid(38)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryProductInfoCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Product {
     #[prost(uint32, tag = "2")]
-    pub emihednkbca: u32,
-    #[prost(int64, tag = "4")]
-    pub begin_time: i64,
-    #[prost(int64, tag = "5")]
-    pub end_time: i64,
-    #[prost(uint32, tag = "6")]
-    pub encdabooikj: u32,
-    #[prost(enumeration = "ProductGiftType", tag = "9")]
-    pub gift_type: i32,
-    #[prost(uint32, tag = "10")]
     pub cldelmpnapb: u32,
-    #[prost(string, tag = "11")]
+    #[prost(uint32, tag = "3")]
+    pub emihednkbca: u32,
+    #[prost(string, tag = "4")]
     pub price_tier: ::prost::alloc::string::String,
+    #[prost(enumeration = "ProductGiftType", tag = "5")]
+    pub gift_type: i32,
+    #[prost(int64, tag = "7")]
+    pub begin_time: i64,
+    #[prost(string, tag = "8")]
+    pub lmddpomkcem: ::prost::alloc::string::String,
+    #[prost(int64, tag = "9")]
+    pub end_time: i64,
+    #[prost(uint32, tag = "10")]
+    pub encdabooikj: u32,
     #[prost(bool, tag = "12")]
     pub feedombfoig: bool,
-    #[prost(string, tag = "14")]
-    pub lmddpomkcem: ::prost::alloc::string::String,
 }
-/// Obf: GLCGPJLPPPD
 #[derive(proto_derive::CmdID)]
-#[cmdid(53)]
+#[cmdid(98)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryProductInfoScRsp {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "6")]
     pub bebfndigkfk: u32,
-    #[prost(uint32, tag = "3")]
-    pub bffhekcglma: u32,
-    #[prost(uint32, tag = "4")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag = "8")]
     pub product_list: ::prost::alloc::vec::Vec<Product>,
     #[prost(uint64, tag = "12")]
     pub month_card_out_date_time: u64,
+    #[prost(uint32, tag = "13")]
+    pub bffhekcglma: u32,
+    #[prost(uint32, tag = "14")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(60)]
+#[cmdid(97)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClientDownloadDataScNotify {
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag = "1")]
     pub download_data: ::core::option::Option<ClientDownloadData>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(45)]
+#[cmdid(84)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerHeartBeatCsReq {
-    #[prost(message, optional, tag = "1")]
-    pub sc_data: ::core::option::Option<Lfkkombkjip>,
-    #[prost(uint64, tag = "8")]
+    #[prost(uint64, tag = "3")]
     pub client_time_ms: u64,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "8")]
     pub eohfcodkkmd: u32,
+    #[prost(message, optional, tag = "10")]
+    pub sc_data: ::core::option::Option<Lfkkombkjip>,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(16)]
+#[cmdid(18)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerHeartBeatScRsp {
-    #[prost(uint64, tag = "3")]
+    #[prost(uint32, tag = "3")]
+    pub retcode: u32,
+    #[prost(uint64, tag = "6")]
     pub server_time_ms: u64,
     #[prost(uint64, tag = "9")]
     pub client_time_ms: u64,
-    #[prost(uint32, tag = "10")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag = "14")]
     pub download_data: ::core::option::Option<ClientDownloadData>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecretKeyInfo {
-    #[prost(string, tag = "11")]
-    pub secret_key: ::prost::alloc::string::String,
-    #[prost(enumeration = "SecretKeyType", tag = "14")]
+    #[prost(enumeration = "SecretKeyType", tag = "1")]
     pub r#type: i32,
+    #[prost(string, tag = "10")]
+    pub secret_key: ::prost::alloc::string::String,
 }
-/// Obf: JODCPJNHFDL
 #[derive(proto_derive::CmdID)]
-#[cmdid(30)]
+#[cmdid(62)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSecretKeyInfoCsReq {
-    #[prost(bytes = "vec", tag = "6")]
+    #[prost(bytes = "vec", tag = "1")]
     pub cilhepfkkni: ::prost::alloc::vec::Vec<u8>,
 }
-/// Obf: AHIEHELEMMN
 #[derive(proto_derive::CmdID)]
-#[cmdid(38)]
+#[cmdid(57)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretKeyInfoScRsp {
-    #[prost(uint32, tag = "1")]
-    pub retcode: u32,
-    #[prost(bytes = "vec", tag = "7")]
-    pub secret_rsp: ::prost::alloc::vec::Vec<u8>,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "5")]
     pub secret_info: ::prost::alloc::vec::Vec<SecretKeyInfo>,
+    #[prost(bytes = "vec", tag = "12")]
+    pub secret_rsp: ::prost::alloc::vec::Vec<u8>,
+    #[prost(uint32, tag = "13")]
+    pub retcode: u32,
 }
-/// Obf: HMFGBKIIHKB
 #[derive(proto_derive::CmdID)]
-#[cmdid(9)]
+#[cmdid(25)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerLoginFinishCsReq {}
-/// Obf: ELCNIAHOIMG
 #[derive(proto_derive::CmdID)]
-#[cmdid(13)]
+#[cmdid(48)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlayerLoginFinishScRsp {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "10")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoKeyInfo {
-    #[prost(uint32, tag = "3")]
-    pub id: u32,
-    #[prost(uint64, tag = "7")]
-    pub bogecohiinh: u64,
     #[prost(uint64, tag = "9")]
     pub ibdimhpopoj: u64,
     #[prost(uint64, tag = "10")]
     pub video_key: u64,
+    #[prost(uint64, tag = "12")]
+    pub bogecohiinh: u64,
+    #[prost(uint32, tag = "15")]
+    pub id: u32,
 }
-/// Obf: ICJJFFBPOGC
 #[derive(proto_derive::CmdID)]
-#[cmdid(17)]
+#[cmdid(29)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVideoVersionKeyCsReq {}
-/// Obf: KAHKFFDIHNN
 #[derive(proto_derive::CmdID)]
-#[cmdid(69)]
+#[cmdid(99)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVideoVersionKeyScRsp {
-    #[prost(uint32, tag = "10")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "12")]
-    pub video_key_info_list: ::prost::alloc::vec::Vec<VideoKeyInfo>,
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag = "2")]
     pub activity_video_key_info_list: ::prost::alloc::vec::Vec<VideoKeyInfo>,
+    #[prost(message, repeated, tag = "5")]
+    pub video_key_info_list: ::prost::alloc::vec::Vec<VideoKeyInfo>,
+    #[prost(uint32, tag = "14")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HeadIconData {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "14")]
     pub id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisplayAvatarData {
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "3")]
     pub avatar_id: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "13")]
     pub pos: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayAvatarVec {
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag = "2")]
     pub display_avatar_list: ::prost::alloc::vec::Vec<DisplayAvatarData>,
     #[prost(bool, tag = "11")]
     pub is_display: bool,
 }
-/// Obf: CDHHAGAANBG
 #[derive(proto_derive::CmdID)]
-#[cmdid(2874)]
+#[cmdid(2883)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPlayerBoardDataCsReq {}
-/// Obf: BHLJGGCMJAB
 #[derive(proto_derive::CmdID)]
-#[cmdid(2819)]
+#[cmdid(2854)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPlayerBoardDataScRsp {
-    #[prost(message, optional, tag = "2")]
-    pub head_frame_info: ::core::option::Option<HeadFrameInfo>,
-    #[prost(uint32, tag = "3")]
-    pub current_head_icon_id: u32,
-    #[prost(uint32, repeated, tag = "4")]
-    pub jjddekiaofc: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, optional, tag = "7")]
-    pub nbiejklenob: ::core::option::Option<DisplayAvatarVec>,
-    #[prost(message, repeated, tag = "8")]
-    pub kninldpflma: ::prost::alloc::vec::Vec<HeadIconData>,
-    #[prost(uint32, repeated, tag = "9")]
-    pub kjaabdabljj: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "12")]
-    pub retcode: u32,
-    #[prost(string, tag = "14")]
-    pub signature: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "2")]
     pub current_personal_card_id: u32,
+    #[prost(uint32, repeated, tag = "3")]
+    pub kjaabdabljj: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "5")]
+    pub kninldpflma: ::prost::alloc::vec::Vec<HeadIconData>,
+    #[prost(message, optional, tag = "8")]
+    pub nbiejklenob: ::core::option::Option<DisplayAvatarVec>,
+    #[prost(uint32, tag = "9")]
+    pub retcode: u32,
+    #[prost(string, tag = "10")]
+    pub signature: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "11")]
+    pub current_head_icon_id: u32,
+    #[prost(message, optional, tag = "13")]
+    pub head_frame_info: ::core::option::Option<HeadFrameInfo>,
+    #[prost(uint32, repeated, tag = "14")]
+    pub jjddekiaofc: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5823,7 +5701,7 @@ pub struct SetHeadIconScRsp {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Blphonlbnbo {
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub group_id: u32,
     #[prost(uint32, tag = "14")]
     pub pcccklnclhb: u32,
@@ -5831,188 +5709,181 @@ pub struct Blphonlbnbo {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ahclmagahpn {
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "1")]
     pub motion: ::core::option::Option<MotionInfo>,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "7")]
     pub entity_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Dghpidmdojm {
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "6")]
     pub gabodfdmpmm: u32,
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag = "12")]
     pub ppjfmbigigb: ::core::option::Option<Ahclmagahpn>,
-    #[prost(string, tag = "11")]
+    #[prost(string, tag = "15")]
     pub uuid: ::prost::alloc::string::String,
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "5")]
     pub oeibhlmdjka: ::core::option::Option<Blphonlbnbo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RotateMapInfo {
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag = "8")]
     pub elfdiefkcmh: ::core::option::Option<Vector>,
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag = "9")]
     pub miacnfdgkce: ::core::option::Option<Vector4>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChargerInfo {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "3")]
     pub group_id: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "13")]
     pub pcccklnclhb: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RotaterData {
-    #[prost(uint32, tag = "9")]
-    pub group_id: u32,
-    #[prost(float, tag = "13")]
-    pub bbfoleopppl: f32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "2")]
     pub pcccklnclhb: u32,
+    #[prost(uint32, tag = "4")]
+    pub group_id: u32,
+    #[prost(float, tag = "8")]
+    pub bbfoleopppl: f32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RotaterEnergyInfo {
-    #[prost(uint32, tag = "6")]
-    pub max_num: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "1")]
     pub cur_num: u32,
+    #[prost(uint32, tag = "2")]
+    pub max_num: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fhegnopnich {
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag = "14")]
     pub ljhknkflgde: i32,
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag = "6")]
     pub energy_info: ::core::option::Option<RotaterEnergyInfo>,
     #[prost(message, optional, tag = "9")]
     pub cooomdkgodf: ::core::option::Option<RotateMapInfo>,
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "7")]
     pub egagknadahj: ::prost::alloc::vec::Vec<ChargerInfo>,
-    #[prost(bool, tag = "12")]
+    #[prost(bool, tag = "11")]
     pub mjipojpbknb: bool,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "13")]
     pub jppmekjgjfd: u32,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "12")]
     pub cedggdfmilp: ::prost::alloc::vec::Vec<RotaterData>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Belnlojafcm {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "14")]
     pub dmanodgkmoh: u32,
-    #[prost(uint32, repeated, tag = "7")]
+    #[prost(uint32, repeated, tag = "4")]
     pub hlllikpgofg: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag = "10")]
     pub jhbaahglfcb: ::core::option::Option<Dghpidmdojm>,
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag = "5")]
     pub bgemgebehko: ::core::option::Option<Fhegnopnich>,
 }
-/// Obf: EMKAACCBCCB
 #[derive(proto_derive::CmdID)]
-#[cmdid(974)]
+#[cmdid(983)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuestDataCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Quest {
-    #[prost(enumeration = "QuestStatus", tag = "3")]
-    pub status: i32,
-    #[prost(uint32, repeated, tag = "7")]
-    pub ebbfioiopad: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "2")]
     pub progress: u32,
-    #[prost(int64, tag = "10")]
+    #[prost(int64, tag = "6")]
     pub finish_time: i64,
-    #[prost(uint32, tag = "11")]
+    #[prost(enumeration = "QuestStatus", tag = "9")]
+    pub status: i32,
+    #[prost(uint32, tag = "12")]
     pub id: u32,
+    #[prost(uint32, repeated, tag = "13")]
+    pub ebbfioiopad: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: BMENGFFDCNB
 #[derive(proto_derive::CmdID)]
-#[cmdid(919)]
+#[cmdid(954)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetQuestDataScRsp {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "5")]
     pub retcode: u32,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "11")]
     pub quest_list: ::prost::alloc::vec::Vec<Quest>,
 }
-/// Obf: NKOIPKDPHGF
 #[derive(proto_derive::CmdID)]
-#[cmdid(959)]
+#[cmdid(907)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuestRecordCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Eclgdfggofh {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "12")]
     pub mnlamkjiaoc: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "8")]
     pub progress: u32,
 }
-/// Obf: ABFPFFEJCBP
 #[derive(proto_derive::CmdID)]
-#[cmdid(918)]
+#[cmdid(991)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetQuestRecordScRsp {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "13")]
     pub retcode: u32,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "14")]
     pub aoofgcnfbpl: ::prost::alloc::vec::Vec<Eclgdfggofh>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Kbonopflpdj {
-    #[prost(uint32, tag = "9")]
-    pub max_score: u32,
     #[prost(uint32, tag = "12")]
+    pub max_score: u32,
+    #[prost(uint32, tag = "15")]
     pub gkjjgkadnle: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Chkkolcpboh {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "10")]
     pub gkjjgkadnle: u32,
-    #[prost(uint32, repeated, tag = "2")]
+    #[prost(uint32, repeated, tag = "15")]
     pub ngkbfpfoopk: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "3")]
     pub world_level: u32,
 }
-/// Obf: CELCIDNLPPO
 #[derive(proto_derive::CmdID)]
-#[cmdid(2245)]
+#[cmdid(2236)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRaidInfoCsReq {}
-/// Obf: GetRaidInfoScRsp
 #[derive(proto_derive::CmdID)]
-#[cmdid(2226)]
+#[cmdid(2230)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRaidInfoScRsp {
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag = "14")]
     pub challenge_raid_list: ::prost::alloc::vec::Vec<Kbonopflpdj>,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "13")]
     pub retcode: u32,
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag = "6")]
     pub finished_raid_info_list: ::prost::alloc::vec::Vec<Chkkolcpboh>,
-    #[prost(uint32, repeated, tag = "10")]
+    #[prost(uint32, repeated, tag = "5")]
     pub challenge_taken_reward_id_list: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: GFIIJCDEBDH
 #[derive(proto_derive::CmdID)]
-#[cmdid(8375)]
+#[cmdid(8366)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRechargeGiftInfoCsReq {}
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ijhpilbbhdi {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "14")]
     pub index: u32,
-    #[prost(enumeration = "ijhpilbbhdi::bbibcfckpjh::Egcfncblhjc", tag = "7")]
-    pub status: i32,
+    #[prost(uint32, tag = "11")]
+    pub status: u32,
 }
 /// Nested message and enum types in `IJHPILBBHDI`.
 pub mod ijhpilbbhdi {
@@ -6066,65 +5937,64 @@ pub mod ijhpilbbhdi {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Jbngcjjdlhl {
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag = "14")]
     pub cfnnmocbbfm: ::prost::alloc::vec::Vec<Ijhpilbbhdi>,
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag = "11")]
     pub ifepjhgncoi: i64,
-    #[prost(uint32, tag = "12")]
-    pub gift_type: u32,
-    #[prost(int64, tag = "15")]
-    pub end_time: i64,
+    #[prost(int64, tag = "3")]
+    pub gift_type: i64,
+    #[prost(uint32, tag = "2")]
+    pub end_time: u32,
 }
-/// Obf: JFEKFHLDLPK
 #[derive(proto_derive::CmdID)]
-#[cmdid(8368)]
+#[cmdid(8379)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRechargeGiftInfoScRsp {
-    #[prost(uint32, tag = "11")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "5")]
     pub ofihocchncn: ::prost::alloc::vec::Vec<Jbngcjjdlhl>,
+    #[prost(uint32, tag = "15")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ghajjbbehbe {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "6")]
     pub bbghafgmmnm: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "13")]
     pub oaopdhldfip: u32,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "3")]
     pub lmhdfofnfii: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelicRecommend {
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag = "11")]
     pub gmcnpkajmhc: ::prost::alloc::vec::Vec<Ghajjbbehbe>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecomendedAvatarInfo {
-    #[prost(uint32, tag = "2")]
-    pub relic_set_id: u32,
-    #[prost(uint32, tag = "3")]
-    pub recommend_avatar_id: u32,
-    #[prost(uint32, repeated, tag = "6")]
+    #[prost(uint32, repeated, tag = "1")]
     pub avatar_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "2")]
+    pub recommend_avatar_id: u32,
+    #[prost(uint32, tag = "7")]
+    pub relic_set_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigDataRecommendRelicAvatar {
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag = "1")]
     pub recommended_avatar_info_list: ::prost::alloc::vec::Vec<RecomendedAvatarInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Jbgplpccdbj {
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "1")]
     pub gbjpbahgbpo: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "8")]
     pub nmfgibmhnki: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "9")]
     pub minccilijnn: u32,
 }
 #[derive(proto_derive::CmdID)]
@@ -6132,26 +6002,26 @@ pub struct Jbgplpccdbj {
 pub struct Bpfdfojoemi {
     #[prost(uint32, tag = "11")]
     pub minccilijnn: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "6")]
     pub lbdlaacoccn: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigDataAvatarRelicRecommend {
-    #[prost(message, repeated, tag = "2")]
-    pub dgblllcnkbl: ::prost::alloc::vec::Vec<Jbgplpccdbj>,
-    #[prost(message, repeated, tag = "6")]
-    pub nbinkkofked: ::prost::alloc::vec::Vec<Bpfdfojoemi>,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "1")]
     pub klkadpnpnhi: ::prost::alloc::vec::Vec<Bpfdfojoemi>,
+    #[prost(message, repeated, tag = "2")]
+    pub nbinkkofked: ::prost::alloc::vec::Vec<Bpfdfojoemi>,
+    #[prost(uint32, tag = "7")]
+    pub avatar_id: u32,
+    #[prost(message, repeated, tag = "8")]
+    pub dgblllcnkbl: ::prost::alloc::vec::Vec<Jbgplpccdbj>,
     #[prost(message, repeated, tag = "10")]
-    pub jliceelheid: ::prost::alloc::vec::Vec<Jbgplpccdbj>,
+    pub pljejgcekgl: ::prost::alloc::vec::Vec<Bpfdfojoemi>,
     #[prost(message, repeated, tag = "11")]
     pub hblkpajppec: ::prost::alloc::vec::Vec<Bpfdfojoemi>,
-    #[prost(message, repeated, tag = "13")]
-    pub pljejgcekgl: ::prost::alloc::vec::Vec<Bpfdfojoemi>,
-    #[prost(uint32, tag = "14")]
-    pub avatar_id: u32,
+    #[prost(message, repeated, tag = "12")]
+    pub jliceelheid: ::prost::alloc::vec::Vec<Jbgplpccdbj>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6161,26 +6031,24 @@ pub struct BigDataRecommendAvatarRelic {
         BigDataAvatarRelicRecommend,
     >,
 }
-/// Obf: HGKBKMFJJCB
 #[derive(proto_derive::CmdID)]
-#[cmdid(2437)]
+#[cmdid(2422)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBigDataAllRecommendCsReq {
-    #[prost(enumeration = "BigDataRecommendType", tag = "13")]
+    #[prost(enumeration = "BigDataRecommendType", tag = "2")]
     pub big_data_recommend_type: i32,
 }
-/// Obf: EJEDKALMMNP
 #[derive(proto_derive::CmdID)]
-#[cmdid(2411)]
+#[cmdid(2404)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBigDataAllRecommendScRsp {
-    #[prost(enumeration = "BigDataRecommendType", tag = "8")]
+    #[prost(enumeration = "BigDataRecommendType", tag = "6")]
     pub big_data_recommend_type: i32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "15")]
     pub retcode: u32,
     #[prost(
         oneof = "get_big_data_all_recommend_sc_rsp::RecommendType",
-        tags = "1, 5, 13"
+        tags = "2, 12, 13"
     )]
     pub recommend_type: ::core::option::Option<
         get_big_data_all_recommend_sc_rsp::RecommendType,
@@ -6191,36 +6059,36 @@ pub mod get_big_data_all_recommend_sc_rsp {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RecommendType {
-        #[prost(message, tag = "1")]
-        RelicAvatar(super::BigDataRecommendRelicAvatar),
-        #[prost(message, tag = "5")]
+        #[prost(message, tag = "2")]
         AvatarRelic(super::BigDataRecommendAvatarRelic),
-        #[prost(message, tag = "13")]
+        #[prost(message, tag = "12")]
         Khcmlinmgen(super::Gnbbdmbnndj),
+        #[prost(message, tag = "13")]
+        RelicAvatar(super::BigDataRecommendRelicAvatar),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hjdcjnofbhh {
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "7")]
     pub ljceogpogbe: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fegkcmbhhjp {
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "6")]
     pub fgfflbhlkdf: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "14")]
     pub level: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Nejpagjbmda {
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag = "4")]
     pub ognbananfcc: bool,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "5")]
     pub fgfflbhlkdf: u32,
-    #[prost(oneof = "nejpagjbmda::Mokoadhebba", tags = "7, 14")]
+    #[prost(oneof = "nejpagjbmda::Mokoadhebba", tags = "15, 14")]
     pub mokoadhebba: ::core::option::Option<nejpagjbmda::Mokoadhebba>,
 }
 /// Nested message and enum types in `NEJPAGJBMDA`.
@@ -6228,7 +6096,7 @@ pub mod nejpagjbmda {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Mokoadhebba {
-        #[prost(message, tag = "7")]
+        #[prost(message, tag = "15")]
         Ngalcdkbgbk(super::Fegkcmbhhjp),
         #[prost(message, tag = "14")]
         Aolfpjfjpeo(super::Hjdcjnofbhh),
@@ -6237,11 +6105,11 @@ pub mod nejpagjbmda {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bhpbjombcad {
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag = "4")]
     pub noalgkcldhf: bool,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "9")]
     pub group_id: u32,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "5")]
     pub ijkibljegge: ::prost::alloc::vec::Vec<Nejpagjbmda>,
 }
 #[derive(proto_derive::CmdID)]
@@ -6249,85 +6117,76 @@ pub struct Bhpbjombcad {
 pub struct Hkoeaopneac {
     #[prost(uint32, tag = "1")]
     pub gpnjgmepmmd: u32,
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "10")]
     pub canjgjidkhk: ::core::option::Option<ItemCostList>,
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "12")]
     pub dggcfdkjdpo: u32,
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag = "15")]
     pub group_list: ::prost::alloc::vec::Vec<Bhpbjombcad>,
     #[prost(uint32, tag = "6")]
     pub kmndbepfmgn: u32,
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag = "2")]
     pub ceiigjeoiad: bool,
-    #[prost(uint32, tag = "12")]
+    #[prost(uint32, tag = "13")]
     pub jaedkhmmpih: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SceneActorInfo {
-    #[prost(uint32, tag = "1")]
-    pub map_layer: u32,
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "3")]
     pub base_avatar_id: u32,
-    #[prost(enumeration = "AvatarType", tag = "7")]
-    pub avatar_type: i32,
+    #[prost(uint32, tag = "4")]
+    pub map_layer: u32,
     #[prost(uint32, tag = "8")]
     pub uid: u32,
+    #[prost(enumeration = "AvatarType", tag = "10")]
+    pub avatar_type: i32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NpcMonsterRogueInfo {
-    #[prost(uint32, tag = "5")]
-    pub level: u32,
-    #[prost(uint32, tag = "8")]
-    pub hard_level_group: u32,
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "1")]
     pub rogue_monster_id: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "6")]
     pub elite_group: u32,
-    #[prost(enumeration = "Jnboifcnbch", tag = "14")]
+    #[prost(uint32, tag = "7")]
+    pub hard_level_group: u32,
+    #[prost(enumeration = "Jnboifcnbch", tag = "8")]
     pub dpcndaddcaj: i32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "12")]
     pub iedebfccknl: u32,
+    #[prost(uint32, tag = "13")]
+    pub level: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NpcMonsterExtraInfo {
-    #[prost(oneof = "npc_monster_extra_info::Kknboacncon", tags = "15")]
-    pub kknboacncon: ::core::option::Option<npc_monster_extra_info::Kknboacncon>,
-}
-/// Nested message and enum types in `NpcMonsterExtraInfo`.
-pub mod npc_monster_extra_info {
-    #[derive(proto_derive::CmdID)]
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
-    pub enum Kknboacncon {
-        #[prost(message, tag = "15")]
-        RogueGameInfo(super::NpcMonsterRogueInfo),
-    }
+    #[prost(message, optional, tag = "8")]
+    pub rogue_game_info: ::core::option::Option<NpcMonsterRogueInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Gilbmelhgcb {
-    #[prost(uint32, repeated, tag = "12")]
+    #[prost(uint32, repeated, tag = "1")]
     pub jmmbaaliojl: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "15")]
     pub stage_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SceneNpcMonsterInfo {
-    #[prost(uint32, tag = "1")]
-    pub world_level: u32,
-    #[prost(uint32, tag = "2")]
-    pub monster_id: u32,
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag = "1")]
     pub nhkjknjagmf: bool,
     #[prost(uint32, tag = "4")]
-    pub event_id: u32,
-    #[prost(message, optional, tag = "5")]
+    pub monster_id: u32,
+    #[prost(message, optional, tag = "7")]
     pub extra_info: ::core::option::Option<NpcMonsterExtraInfo>,
-    #[prost(bool, tag = "11")]
+    #[prost(uint32, tag = "8")]
+    pub world_level: u32,
+    #[prost(bool, tag = "10")]
     pub nmpeommhmpp: bool,
+    #[prost(uint32, tag = "12")]
+    pub event_id: u32,
     #[prost(message, optional, tag = "15")]
     pub bmijgbfjmcf: ::core::option::Option<Gilbmelhgcb>,
 }
@@ -6335,42 +6194,42 @@ pub struct SceneNpcMonsterInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NpcRogueGameInfo {
     #[prost(uint32, tag = "1")]
-    pub mjbknmjhogp: u32,
-    #[prost(bool, tag = "4")]
-    pub nlaflkplpfe: bool,
-    #[prost(uint32, tag = "7")]
     pub aiafekgbfif: u32,
-    #[prost(bool, tag = "11")]
+    #[prost(uint32, tag = "5")]
+    pub mjbknmjhogp: u32,
+    #[prost(bool, tag = "7")]
     pub djepgkbmicm: bool,
-    #[prost(bool, tag = "12")]
-    pub fkkmljnkhdh: bool,
-    #[prost(map = "uint32, uint32", tag = "14")]
+    #[prost(bool, tag = "8")]
+    pub nlaflkplpfe: bool,
+    #[prost(map = "uint32, uint32", tag = "9")]
     pub ldpajkiepip: ::std::collections::HashMap<u32, u32>,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "12")]
     pub oeanpihchhf: u32,
+    #[prost(bool, tag = "15")]
+    pub fkkmljnkhdh: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pagohcjgolc {
-    #[prost(uint32, tag = "3")]
-    pub ppfjgjncoki: u32,
     #[prost(uint32, tag = "11")]
+    pub ppfjgjncoki: u32,
+    #[prost(uint32, tag = "6")]
     pub dooacehopee: u32,
-    #[prost(bool, tag = "13")]
+    #[prost(bool, tag = "10")]
     pub is_meet: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Mhgaolcdonk {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "15")]
     pub nlmmkaejekh: u32,
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "11")]
     pub opeeifggmia: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NpcExtraInfo {
-    #[prost(oneof = "npc_extra_info::Kknboacncon", tags = "5, 8, 12")]
+    #[prost(oneof = "npc_extra_info::Kknboacncon", tags = "1, 7, 11")]
     pub kknboacncon: ::core::option::Option<npc_extra_info::Kknboacncon>,
 }
 /// Nested message and enum types in `NpcExtraInfo`.
@@ -6378,116 +6237,116 @@ pub mod npc_extra_info {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kknboacncon {
-        #[prost(message, tag = "5")]
+        #[prost(message, tag = "1")]
         Dkpfhlbffhi(super::Mhgaolcdonk),
-        #[prost(message, tag = "8")]
+        #[prost(message, tag = "7")]
         Mblffikgmop(super::Pagohcjgolc),
-        #[prost(message, tag = "12")]
+        #[prost(message, tag = "11")]
         RogueGameInfo(super::NpcRogueGameInfo),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneNpcInfo {
-    #[prost(message, optional, tag = "6")]
-    pub extra_info: ::core::option::Option<NpcExtraInfo>,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "3")]
     pub npc_id: u32,
+    #[prost(message, optional, tag = "15")]
+    pub extra_info: ::core::option::Option<NpcExtraInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropRogueInfo {
-    #[prost(uint32, tag = "2")]
-    pub majkfimpoof: u32,
-    #[prost(uint32, tag = "5")]
-    pub room_id: u32,
-    #[prost(uint32, tag = "7")]
-    pub kkmefdeflbi: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "4")]
     pub gecocmlbbpe: u32,
+    #[prost(uint32, tag = "9")]
+    pub kkmefdeflbi: u32,
+    #[prost(uint32, tag = "12")]
+    pub room_id: u32,
+    #[prost(uint32, tag = "15")]
+    pub majkfimpoof: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hlfakeobfab {
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "2")]
     pub hjmacpmoinc: u32,
-    #[prost(uint32, tag = "9")]
-    pub afemblfccch: u32,
     #[prost(uint32, tag = "12")]
+    pub afemblfccch: u32,
+    #[prost(uint32, tag = "8")]
     pub pbmahojbagg: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Bgflakmoigc {
-    #[prost(bool, tag = "8")]
+    #[prost(bool, tag = "12")]
     pub jjmkahibdbh: bool,
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag = "13")]
     pub amicpgoihll: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Ebbojacnhec {
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag = "3")]
     pub oeedpjhlphl: bool,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "12")]
     pub lhlkjidflin: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "9")]
     pub ghehgioagdg: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pgllfcmefkg {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "2")]
     pub lhlkjidflin: u32,
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag = "11")]
     pub oeedpjhlphl: bool,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "13")]
     pub ghehgioagdg: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Daakgedppjj {
-    #[prost(uint32, tag = "3")]
+    #[prost(uint32, tag = "14")]
     pub func_id: u32,
-    #[prost(bool, tag = "7")]
+    #[prost(bool, tag = "5")]
     pub kkkionidkfa: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Apkenkidmgc {
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag = "13")]
     pub gmgpfaionng: ::prost::alloc::vec::Vec<Daakgedppjj>,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "2")]
     pub pbjpeoededf: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Nbdkncjgomn {
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "1")]
     pub kobbmdfpnka: ::core::option::Option<Hkoeaopneac>,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "13")]
     pub fokppmbidid: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Onnejipghck {
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "11")]
     pub chest_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropTimelineInfo {
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag = "13")]
     pub timeline_bool_value: bool,
-    #[prost(bytes = "vec", tag = "5")]
+    #[prost(bytes = "vec", tag = "15")]
     pub timeline_byte_value: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropExtraInfo {
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "5")]
     pub timeline_info: ::core::option::Option<PropTimelineInfo>,
-    #[prost(oneof = "prop_extra_info::Kknboacncon", tags = "1, 2, 3, 5, 6, 7, 8, 10")]
+    #[prost(oneof = "prop_extra_info::Kknboacncon", tags = "1, 4, 7, 9, 10, 13, 14, 15")]
     pub kknboacncon: ::core::option::Option<prop_extra_info::Kknboacncon>,
 }
 /// Nested message and enum types in `PropExtraInfo`.
@@ -6496,67 +6355,67 @@ pub mod prop_extra_info {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kknboacncon {
         #[prost(message, tag = "1")]
-        Aefmmohkchj(super::Hlfakeobfab),
-        #[prost(message, tag = "2")]
-        Acjpmkhjldb(super::Apkenkidmgc),
-        #[prost(message, tag = "3")]
         Ogljiojbien(super::Bgflakmoigc),
-        #[prost(message, tag = "5")]
-        Adnhhaellnc(super::Ebbojacnhec),
-        #[prost(message, tag = "6")]
-        Idmaelpella(super::Pgllfcmefkg),
-        #[prost(message, tag = "7")]
-        RogueGameInfo(super::PropRogueInfo),
-        #[prost(message, tag = "8")]
-        Oemhokembkm(super::Nbdkncjgomn),
-        #[prost(message, tag = "10")]
+        #[prost(message, tag = "4")]
         Mfcplghhpnp(super::Onnejipghck),
+        #[prost(message, tag = "7")]
+        Idmaelpella(super::Pgllfcmefkg),
+        #[prost(message, tag = "9")]
+        Aefmmohkchj(super::Hlfakeobfab),
+        #[prost(message, tag = "10")]
+        Oemhokembkm(super::Nbdkncjgomn),
+        #[prost(message, tag = "13")]
+        RogueGameInfo(super::PropRogueInfo),
+        #[prost(message, tag = "14")]
+        Acjpmkhjldb(super::Apkenkidmgc),
+        #[prost(message, tag = "15")]
+        Adnhhaellnc(super::Ebbojacnhec),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScenePropInfo {
-    #[prost(uint32, tag = "2")]
+    #[prost(uint32, tag = "4")]
     pub prop_state: u32,
-    #[prost(uint64, tag = "4")]
+    #[prost(uint64, tag = "5")]
     pub create_time_ms: u64,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "7")]
     pub prop_id: u32,
-    #[prost(message, optional, tag = "7")]
-    pub extra_info: ::core::option::Option<PropExtraInfo>,
-    #[prost(string, repeated, tag = "13")]
+    #[prost(string, repeated, tag = "10")]
     pub trigger_name_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(uint32, tag = "14")]
+    #[prost(message, optional, tag = "11")]
+    pub extra_info: ::core::option::Option<PropExtraInfo>,
+    #[prost(uint32, tag = "12")]
     pub life_time_ms: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SceneSummonUnitInfo {
-    #[prost(uint32, tag = "2")]
-    pub caster_entity_id: u32,
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag = "2")]
     pub life_time_ms: i32,
-    #[prost(uint32, tag = "5")]
-    pub attach_entity_id: u32,
-    #[prost(string, repeated, tag = "6")]
-    pub trigger_name_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(uint32, tag = "13")]
-    pub summon_unit_id: u32,
-    #[prost(uint64, tag = "14")]
+    #[prost(uint32, tag = "7")]
+    pub caster_entity_id: u32,
+    #[prost(uint64, tag = "10")]
     pub create_time_ms: u64,
+    #[prost(uint32, tag = "11")]
+    pub attach_entity_id: u32,
+    #[prost(uint32, tag = "12")]
+    pub summon_unit_id: u32,
+    #[prost(string, repeated, tag = "13")]
+    pub trigger_name_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneEntityInfo {
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag = "13")]
     pub motion: ::core::option::Option<MotionInfo>,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "5")]
     pub group_id: u32,
-    #[prost(uint32, tag = "13")]
-    pub inst_id: u32,
     #[prost(uint32, tag = "14")]
+    pub inst_id: u32,
+    #[prost(uint32, tag = "1")]
     pub entity_id: u32,
-    #[prost(oneof = "scene_entity_info::Entity", tags = "5, 7, 8, 11, 12")]
+    #[prost(oneof = "scene_entity_info::Entity", tags = "4, 2, 9, 3, 11")]
     pub entity: ::core::option::Option<scene_entity_info::Entity>,
 }
 /// Nested message and enum types in `SceneEntityInfo`.
@@ -6564,50 +6423,50 @@ pub mod scene_entity_info {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Entity {
-        #[prost(message, tag = "5")]
+        #[prost(message, tag = "4")]
         Prop(super::ScenePropInfo),
-        #[prost(message, tag = "7")]
+        #[prost(message, tag = "2")]
         Actor(super::SceneActorInfo),
-        #[prost(message, tag = "8")]
+        #[prost(message, tag = "9")]
         SummonUnit(super::SceneSummonUnitInfo),
-        #[prost(message, tag = "11")]
+        #[prost(message, tag = "3")]
         Npc(super::SceneNpcInfo),
-        #[prost(message, tag = "12")]
+        #[prost(message, tag = "11")]
         NpcMonster(super::SceneNpcMonsterInfo),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuffInfo {
-    #[prost(map = "string, float", tag = "1")]
-    pub dynamic_values: ::std::collections::HashMap<::prost::alloc::string::String, f32>,
-    #[prost(float, tag = "2")]
-    pub life_time: f32,
-    #[prost(uint32, tag = "4")]
-    pub count: u32,
-    #[prost(uint32, tag = "5")]
-    pub buff_id: u32,
+    #[prost(uint32, tag = "1")]
+    pub base_avatar_id: u32,
     #[prost(uint32, tag = "6")]
     pub buff_summon_entity_id: u32,
-    #[prost(uint64, tag = "11")]
-    pub add_time_ms: u64,
-    #[prost(uint32, tag = "12")]
-    pub base_avatar_id: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "8")]
     pub level: u32,
+    #[prost(map = "string, float", tag = "9")]
+    pub dynamic_values: ::std::collections::HashMap<::prost::alloc::string::String, f32>,
+    #[prost(float, tag = "11")]
+    pub life_time: f32,
+    #[prost(uint64, tag = "13")]
+    pub add_time_ms: u64,
+    #[prost(uint32, tag = "14")]
+    pub count: u32,
+    #[prost(uint32, tag = "15")]
+    pub buff_id: u32,
 }
 #[derive(proto_derive::CmdID)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hgnbpanecal {
-    #[prost(message, repeated, tag = "5")]
-    pub buff_list: ::prost::alloc::vec::Vec<BuffInfo>,
-    #[prost(uint32, tag = "13")]
-    pub entity_id: u32,
+    #[prost(uint32, repeated, tag = "14")]
+    pub buff_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "5")]
+    pub entity_id: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomSaveData {
-    #[prost(string, tag = "6")]
+    #[prost(string, tag = "5")]
     pub save_data: ::prost::alloc::string::String,
     #[prost(uint32, tag = "15")]
     pub group_id: u32,
@@ -6617,7 +6476,7 @@ pub struct CustomSaveData {
 pub struct Hieklhpinhl {
     #[prost(uint32, tag = "5")]
     pub hocmhabklgj: u32,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "13")]
     pub ofbpkcncgfg: u32,
 }
 #[derive(proto_derive::CmdID)]
@@ -6625,117 +6484,113 @@ pub struct Hieklhpinhl {
 pub struct SceneEntityGroupInfo {
     #[prost(uint32, tag = "1")]
     pub group_id: u32,
-    #[prost(map = "string, int32", tag = "2")]
-    pub property_map: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
     #[prost(uint32, tag = "6")]
     pub state: u32,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(map = "string, int32", tag = "11")]
+    pub property_map: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    #[prost(message, repeated, tag = "13")]
     pub entity_list: ::prost::alloc::vec::Vec<SceneEntityInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MissionStatusBySceneInfo {
-    #[prost(uint32, repeated, tag = "3")]
-    pub disabled_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "7")]
-    pub sub_mission_status_list: ::prost::alloc::vec::Vec<Mission>,
-    #[prost(uint32, repeated, tag = "8")]
-    pub unfinished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "2")]
     pub finished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "4")]
     pub jlmgbadjbkn: ::prost::alloc::vec::Vec<MainMissionCustomValue>,
+    #[prost(uint32, repeated, tag = "7")]
+    pub disabled_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "8")]
+    pub sub_mission_status_list: ::prost::alloc::vec::Vec<Mission>,
+    #[prost(uint32, repeated, tag = "14")]
+    pub unfinished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneInfo {
-    #[prost(message, repeated, tag = "1")]
-    pub cpikfgpcoce: ::prost::alloc::vec::Vec<Hgnbpanecal>,
-    #[prost(uint32, tag = "2")]
-    pub floor_id: u32,
-    #[prost(uint32, tag = "3")]
-    pub client_pos_version: u32,
-    #[prost(uint32, tag = "5")]
-    pub plane_id: u32,
-    #[prost(uint32, tag = "6")]
-    pub leader_entity_id: u32,
-    #[prost(message, repeated, tag = "7")]
-    pub scene_buff_info_list: ::prost::alloc::vec::Vec<BuffInfo>,
-    #[prost(uint32, repeated, tag = "8")]
-    pub opened_chests_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "9")]
-    pub custom_data_list: ::prost::alloc::vec::Vec<CustomSaveData>,
-    #[prost(uint32, tag = "11")]
-    pub entry_id: u32,
-    #[prost(message, repeated, tag = "12")]
-    pub entity_list: ::prost::alloc::vec::Vec<SceneEntityInfo>,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "1")]
     pub world_id: u32,
-    #[prost(map = "uint32, message", tag = "14")]
-    pub bikbfgpfaac: ::std::collections::HashMap<u32, Hieklhpinhl>,
-    #[prost(uint32, tag = "15")]
+    #[prost(message, repeated, tag = "2")]
+    pub cpikfgpcoce: ::prost::alloc::vec::Vec<Hgnbpanecal>,
+    #[prost(uint32, tag = "3")]
+    pub entry_id: u32,
+    #[prost(message, repeated, tag = "4")]
+    pub custom_data_list: ::prost::alloc::vec::Vec<CustomSaveData>,
+    #[prost(uint32, tag = "6")]
+    pub plane_id: u32,
+    #[prost(uint32, tag = "7")]
+    pub leader_entity_id: u32,
+    #[prost(uint32, tag = "8")]
+    pub floor_id: u32,
+    #[prost(uint32, repeated, tag = "10")]
+    pub opened_chests_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "11")]
+    pub client_pos_version: u32,
+    #[prost(uint32, tag = "12")]
     pub game_mode_type: u32,
-    #[prost(uint32, tag = "148")]
-    pub dimension_id: u32,
-    #[prost(message, optional, tag = "218")]
-    pub scene_identifier: ::core::option::Option<SceneIdentifier>,
-    #[prost(message, optional, tag = "255")]
+    #[prost(map = "uint32, message", tag = "13")]
+    pub bikbfgpfaac: ::std::collections::HashMap<u32, Hieklhpinhl>,
+    #[prost(message, repeated, tag = "14")]
+    pub scene_buff_info_list: ::prost::alloc::vec::Vec<BuffInfo>,
+    #[prost(message, repeated, tag = "15")]
+    pub entity_list: ::prost::alloc::vec::Vec<SceneEntityInfo>,
+    #[prost(message, optional, tag = "187")]
     pub fojjgjpimbl: ::core::option::Option<Belnlojafcm>,
-    #[prost(uint32, repeated, tag = "268")]
-    pub lighten_section_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, optional, tag = "440")]
-    pub scene_mission_info: ::core::option::Option<MissionStatusBySceneInfo>,
-    #[prost(uint32, tag = "728")]
+    #[prost(uint32, tag = "466")]
+    pub content_id: u32,
+    #[prost(uint32, tag = "714")]
     pub game_story_line_id: u32,
-    #[prost(message, repeated, tag = "1329")]
+    #[prost(message, repeated, tag = "914")]
     pub entity_group_list: ::prost::alloc::vec::Vec<SceneEntityGroupInfo>,
-    #[prost(uint64, tag = "1473")]
+    #[prost(uint32, repeated, tag = "930")]
+    pub lighten_section_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint64, tag = "1196")]
     pub interact_id: u64,
-    #[prost(map = "string, int32", tag = "1805")]
-    pub floor_saved_data: ::std::collections::HashMap<
+    #[prost(message, optional, tag = "1481")]
+    pub scene_identifier: ::core::option::Option<SceneIdentifier>,
+    #[prost(message, optional, tag = "1607")]
+    pub scene_mission_info: ::core::option::Option<MissionStatusBySceneInfo>,
+    #[prost(map = "string, int32", tag = "1616")]
+    pub floor_saved_value_map: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         i32,
     >,
-    #[prost(uint32, tag = "1999")]
-    pub content_id: u32,
+    #[prost(uint32, tag = "1764")]
+    pub dimension_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EntityMotion {
-    #[prost(message, optional, tag = "5")]
-    pub motion: ::core::option::Option<MotionInfo>,
-    #[prost(bool, tag = "7")]
+    #[prost(bool, tag = "6")]
     pub fjoeoedlned: bool,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "7")]
     pub map_layer: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "9")]
     pub entity_id: u32,
+    #[prost(message, optional, tag = "13")]
+    pub motion: ::core::option::Option<MotionInfo>,
 }
-/// Obf: PAOMMOHKLCO
 #[derive(proto_derive::CmdID)]
-#[cmdid(1474)]
+#[cmdid(1483)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneEntityMoveCsReq {
-    #[prost(uint32, tag = "1")]
-    pub entry_id: u32,
-    #[prost(uint64, tag = "7")]
+    #[prost(uint64, tag = "4")]
     pub interact_id: u64,
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag = "6")]
     pub entity_motion_list: ::prost::alloc::vec::Vec<EntityMotion>,
+    #[prost(uint32, tag = "9")]
+    pub entry_id: u32,
 }
-/// Obf: DDNFEPNJEHM
 #[derive(proto_derive::CmdID)]
-#[cmdid(1419)]
+#[cmdid(1454)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneEntityMoveScRsp {
-    #[prost(message, repeated, tag = "10")]
-    pub entity_motion_list: ::prost::alloc::vec::Vec<EntityMotion>,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "1")]
     pub retcode: u32,
+    #[prost(message, repeated, tag = "4")]
+    pub entity_motion_list: ::prost::alloc::vec::Vec<EntityMotion>,
 }
-/// Obf: MNEPAIGBPGM
 #[derive(proto_derive::CmdID)]
-#[cmdid(1467)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnterSectionCsReq {
     #[prost(uint32, tag = "6")]
@@ -6744,363 +6599,338 @@ pub struct EnterSectionCsReq {
     pub interact_id: u64,
 }
 #[derive(proto_derive::CmdID)]
-#[cmdid(1463)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnterSectionScRsp {
     #[prost(uint32, tag = "3")]
     pub retcode: u32,
 }
-/// Obf: OBOAHKMABIJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(1431)]
+#[cmdid(1496)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InteractPropCsReq {
-    #[prost(uint32, tag = "5")]
-    pub prop_entity_id: u32,
-    #[prost(uint64, tag = "9")]
-    pub interact_id: u64,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "1")]
     pub interact_id2: u32,
+    #[prost(uint64, tag = "4")]
+    pub interact_id: u64,
+    #[prost(uint32, tag = "14")]
+    pub prop_entity_id: u32,
 }
-/// Obf: LBGHIJGFAFD
 #[derive(proto_derive::CmdID)]
-#[cmdid(1487)]
+#[cmdid(1442)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InteractPropScRsp {
-    #[prost(uint32, tag = "8")]
-    pub retcode: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "1")]
     pub prop_state: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "6")]
     pub prop_entity_id: u32,
+    #[prost(uint32, tag = "13")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HitMonsterBattleInfo {
-    #[prost(uint32, tag = "10")]
+    #[prost(uint32, tag = "2")]
     pub target_monster_entity_id: u32,
-    #[prost(enumeration = "MonsterBattleType", tag = "12")]
+    #[prost(enumeration = "MonsterBattleType", tag = "3")]
     pub monster_battle_type: i32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicValues {
-    #[prost(float, tag = "7")]
-    pub value: f32,
-    #[prost(string, tag = "15")]
+    #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
+    #[prost(float, tag = "8")]
+    pub value: f32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AssistMonsterEntityInfo {
-    #[prost(uint32, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "9")]
     pub entity_id_list: ::prost::alloc::vec::Vec<u32>,
 }
-/// Obf: INBDPGBJIFA
 #[derive(proto_derive::CmdID)]
-#[cmdid(1405)]
+#[cmdid(1473)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneCastSkillCsReq {
-    #[prost(uint32, tag = "1")]
-    pub skill_index: u32,
-    #[prost(uint32, repeated, tag = "2")]
-    pub hit_target_entity_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "4")]
-    pub dynamic_values: ::prost::alloc::vec::Vec<DynamicValues>,
-    #[prost(message, optional, tag = "6")]
-    pub target_motion: ::core::option::Option<MotionInfo>,
-    #[prost(string, tag = "7")]
-    pub maze_ability_str: ::prost::alloc::string::String,
-    #[prost(uint32, tag = "8")]
-    pub kcfabnfpopn: u32,
-    #[prost(enumeration = "SkillExtraTag", repeated, tag = "9")]
+    #[prost(enumeration = "SkillExtraTag", repeated, tag = "1")]
     pub skill_extra_tags: ::prost::alloc::vec::Vec<i32>,
-    #[prost(uint32, tag = "10")]
-    pub cast_entity_id: u32,
-    #[prost(uint32, tag = "11")]
-    pub attacked_by_entity_id: u32,
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag = "2")]
     pub assist_monster_entity_info: ::prost::alloc::vec::Vec<AssistMonsterEntityInfo>,
-    #[prost(uint32, repeated, tag = "15")]
+    #[prost(uint32, tag = "3")]
+    pub attacked_by_entity_id: u32,
+    #[prost(uint32, tag = "6")]
+    pub skill_index: u32,
+    #[prost(uint32, repeated, tag = "7")]
+    pub hit_target_entity_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, optional, tag = "8")]
+    pub target_motion: ::core::option::Option<MotionInfo>,
+    #[prost(uint32, repeated, tag = "9")]
     pub assist_monster_entity_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, tag = "10")]
+    pub kcfabnfpopn: u32,
+    #[prost(uint32, tag = "11")]
+    pub cast_entity_id: u32,
+    #[prost(message, repeated, tag = "13")]
+    pub dynamic_values: ::prost::alloc::vec::Vec<DynamicValues>,
+    #[prost(string, tag = "15")]
+    pub maze_ability_str: ::prost::alloc::string::String,
 }
-/// Obf: MAPFMHHMKIM
 #[derive(proto_derive::CmdID)]
-#[cmdid(1471)]
+#[cmdid(1433)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneCastSkillScRsp {
-    #[prost(message, optional, tag = "1")]
-    pub battle_info: ::core::option::Option<SceneBattleInfo>,
     #[prost(uint32, tag = "3")]
-    pub retcode: u32,
-    #[prost(message, repeated, tag = "7")]
-    pub monster_battle_info: ::prost::alloc::vec::Vec<HitMonsterBattleInfo>,
-    #[prost(uint32, tag = "13")]
     pub cast_entity_id: u32,
+    #[prost(message, repeated, tag = "9")]
+    pub monster_battle_info: ::prost::alloc::vec::Vec<HitMonsterBattleInfo>,
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
+    #[prost(message, optional, tag = "14")]
+    pub battle_info: ::core::option::Option<SceneBattleInfo>,
 }
-/// Obf: MMNONCLEIIH
 #[derive(proto_derive::CmdID)]
-#[cmdid(1482)]
+#[cmdid(1485)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SceneEnterStageCsReq {
     #[prost(uint32, tag = "12")]
     pub event_id: u32,
-    #[prost(enumeration = "RebattleType", tag = "14")]
+    #[prost(enumeration = "RebattleType", tag = "13")]
     pub nkdaaagpcdb: i32,
 }
-/// Obf: CCOCKCOOOKO
 #[derive(proto_derive::CmdID)]
-#[cmdid(1415)]
+#[cmdid(1465)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneEnterStageScRsp {
-    #[prost(uint32, tag = "3")]
-    pub retcode: u32,
-    #[prost(message, optional, tag = "5")]
-    pub battle_info: ::core::option::Option<SceneBattleInfo>,
-}
-/// Obf: GJEONNOCMPH
-#[derive(proto_derive::CmdID)]
-#[cmdid(1459)]
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct GetCurSceneInfoCsReq {}
-/// Obf: AGAAHIBNOBP
-#[derive(proto_derive::CmdID)]
-#[cmdid(1418)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetCurSceneInfoScRsp {
     #[prost(uint32, tag = "2")]
     pub retcode: u32,
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag = "3")]
+    pub battle_info: ::core::option::Option<SceneBattleInfo>,
+}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1407)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetCurSceneInfoCsReq {}
+#[derive(proto_derive::CmdID)]
+#[cmdid(1491)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCurSceneInfoScRsp {
+    #[prost(message, optional, tag = "11")]
     pub scene: ::core::option::Option<SceneInfo>,
+    #[prost(uint32, tag = "12")]
+    pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Najknjljpep {
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "1")]
     pub ldpbphbbfgf: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "7")]
     pub hfpljfbopeh: u32,
 }
-/// Obf: ANHIGPKMCNG
 #[derive(proto_derive::CmdID)]
-#[cmdid(1444)]
+#[cmdid(1424)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartCocoonStageCsReq {
-    #[prost(message, optional, tag = "1")]
-    pub cbjckeiggnl: ::core::option::Option<Najknjljpep>,
     #[prost(uint32, tag = "2")]
-    pub cocoon_id: u32,
-    #[prost(uint32, tag = "3")]
-    pub world_level: u32,
-    #[prost(uint32, tag = "5")]
-    pub prop_entity_id: u32,
-    #[prost(uint32, tag = "6")]
     pub heccobfbjfi: u32,
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "4")]
     pub wave: u32,
+    #[prost(uint32, tag = "9")]
+    pub world_level: u32,
+    #[prost(message, optional, tag = "10")]
+    pub cbjckeiggnl: ::core::option::Option<Najknjljpep>,
+    #[prost(uint32, tag = "12")]
+    pub prop_entity_id: u32,
+    #[prost(uint32, tag = "15")]
+    pub cocoon_id: u32,
 }
-/// Obf: StartCocoonStageScRsp
 #[derive(proto_derive::CmdID)]
-#[cmdid(1481)]
+#[cmdid(1413)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartCocoonStageScRsp {
-    #[prost(uint32, tag = "4")]
-    pub cocoon_id: u32,
-    #[prost(uint32, tag = "5")]
-    pub wave: u32,
-    #[prost(message, optional, tag = "7")]
-    pub battle_info: ::core::option::Option<SceneBattleInfo>,
-    #[prost(uint32, tag = "12")]
-    pub challenge_cnt: u32,
     #[prost(uint32, tag = "13")]
+    pub cocoon_id: u32,
+    #[prost(uint32, tag = "10")]
+    pub wave: u32,
+    #[prost(message, optional, tag = "4")]
+    pub battle_info: ::core::option::Option<SceneBattleInfo>,
+    #[prost(uint32, tag = "1")]
+    pub challenge_cnt: u32,
+    #[prost(uint32, tag = "2")]
     pub retcode: u32,
-    #[prost(uint32, tag = "14")]
+    #[prost(uint32, tag = "7")]
     pub prop_entity_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Oenpfhdkpnj {
-    #[prost(enumeration = "Cbpdacmbhgl", tag = "1")]
+    #[prost(enumeration = "Cbpdacmbhgl", tag = "7")]
     pub lhlkjidflin: i32,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "8")]
     pub reason: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "9")]
     pub plidnbmcijh: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SceneIdentifier {
-    #[prost(uint32, tag = "7")]
-    pub content_id: u32,
-    #[prost(uint32, tag = "11")]
-    pub game_story_line_id: u32,
-    #[prost(uint32, tag = "13")]
+    #[prost(uint32, tag = "6")]
     pub floor_id: u32,
-    #[prost(oneof = "scene_identifier::TeleportNigger", tags = "888")]
-    pub teleport_nigger: ::core::option::Option<scene_identifier::TeleportNigger>,
+    #[prost(uint32, tag = "10")]
+    pub game_story_line_id: u32,
+    #[prost(uint32, tag = "11")]
+    pub content_id: u32,
+    #[prost(message, optional, tag = "1029")]
+    pub mdaidppkopo: ::core::option::Option<Oenpfhdkpnj>,
 }
-/// Nested message and enum types in `SceneIdentifier`.
-pub mod scene_identifier {
-    #[derive(proto_derive::CmdID)]
-    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
-    pub enum TeleportNigger {
-        #[prost(message, tag = "888")]
-        Mdaidppkopo(super::Oenpfhdkpnj),
-    }
-}
-/// Obf: MEKDHGNOEIJ
 #[derive(proto_derive::CmdID)]
-#[cmdid(1413)]
+#[cmdid(1448)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnterSceneCsReq {
-    #[prost(uint32, tag = "4")]
-    pub entry_id: u32,
-    #[prost(bool, tag = "5")]
-    pub is_close_map: bool,
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag = "2")]
     pub scene_identifier: ::core::option::Option<SceneIdentifier>,
-    #[prost(uint32, tag = "9")]
-    pub entry_id2: u32,
-    #[prost(message, optional, tag = "11")]
+    #[prost(uint32, tag = "3")]
+    pub entry_id: u32,
+    #[prost(message, optional, tag = "7")]
     pub idabokljolg: ::core::option::Option<Vector>,
-    #[prost(bool, tag = "12")]
-    pub fbpkofoiolc: bool,
-    #[prost(uint64, tag = "15")]
+    #[prost(uint64, tag = "9")]
     pub interact_id: u64,
+    #[prost(uint32, tag = "12")]
+    pub entry_id2: u32,
+    #[prost(bool, tag = "13")]
+    pub fbpkofoiolc: bool,
+    #[prost(bool, tag = "15")]
+    pub is_close_map: bool,
 }
-/// Obf: JNKOPDPGDFF
 #[derive(proto_derive::CmdID)]
-#[cmdid(1417)]
+#[cmdid(1429)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnterSceneScRsp {
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag = "2")]
     pub is_over_map: bool,
-    #[prost(bool, tag = "6")]
-    pub is_close_map: bool,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "3")]
     pub retcode: u32,
-    #[prost(message, optional, tag = "13")]
+    #[prost(bool, tag = "7")]
+    pub is_close_map: bool,
+    #[prost(message, optional, tag = "11")]
     pub scene_identifier: ::core::option::Option<SceneIdentifier>,
 }
-/// Obf: FBJMJBLCGNI
 #[derive(proto_derive::CmdID)]
-#[cmdid(1469)]
+#[cmdid(1499)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnterSceneByServerScNotify {
-    #[prost(enumeration = "EnterSceneReason", tag = "4")]
+    #[prost(enumeration = "EnterSceneReason", tag = "8")]
     pub reason: i32,
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag = "13")]
     pub lineup: ::core::option::Option<LineupInfo>,
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag = "15")]
     pub scene: ::core::option::Option<SceneInfo>,
 }
-/// Obf: EJFJACCGDGA
 #[derive(proto_derive::CmdID)]
-#[cmdid(1461)]
+#[cmdid(1431)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSceneMapInfoCsReq {
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag = "9")]
     pub scene_identifiers: ::prost::alloc::vec::Vec<SceneIdentifier>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MazePropState {
-    #[prost(uint32, tag = "4")]
-    pub state: u32,
-    #[prost(uint32, tag = "10")]
-    pub group_id: u32,
-    #[prost(uint32, tag = "12")]
-    pub config_id: u32,
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "2")]
     pub extra_info: ::core::option::Option<PropExtraInfo>,
+    #[prost(uint32, tag = "3")]
+    pub config_id: u32,
+    #[prost(uint32, tag = "12")]
+    pub state: u32,
+    #[prost(uint32, tag = "15")]
+    pub group_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MapInfoGroup {
-    #[prost(uint32, tag = "2")]
-    pub group_id: u32,
-    #[prost(map = "string, int32", tag = "3")]
+    #[prost(map = "string, int32", tag = "2")]
     pub property_map: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
-    #[prost(int64, tag = "5")]
+    #[prost(uint32, tag = "7")]
+    pub group_id: u32,
+    #[prost(int64, tag = "8")]
     pub modify_time: i64,
-    #[prost(uint32, repeated, tag = "7")]
+    #[prost(uint32, repeated, tag = "14")]
     pub destory_monster_config_id_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag = "15")]
     pub is_need_refresh: bool,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChestInfo {
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "2")]
     pub opened_num: u32,
-    #[prost(enumeration = "ChestType", tag = "5")]
+    #[prost(enumeration = "ChestType", tag = "4")]
     pub chest_type: i32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "8")]
     pub exist_num: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fahfbejcklf {
-    #[prost(uint32, tag = "1")]
+    #[prost(uint32, tag = "7")]
     pub jbgifbgmlmf: u32,
-    #[prost(uint32, tag = "4")]
+    #[prost(uint32, tag = "15")]
     pub r#type: u32,
-    #[prost(uint32, tag = "6")]
+    #[prost(uint32, tag = "11")]
     pub pijbpdpeodg: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneMapInfo {
-    #[prost(uint32, repeated, tag = "1")]
-    pub unlock_teleport_list: ::prost::alloc::vec::Vec<u32>,
     #[prost(uint32, tag = "3")]
     pub retcode: u32,
-    #[prost(uint32, repeated, tag = "4")]
+    #[prost(uint32, tag = "4")]
+    pub dimension_id: u32,
+    #[prost(uint32, repeated, tag = "5")]
     pub opened_chests_list: ::prost::alloc::vec::Vec<u32>,
     #[prost(message, repeated, tag = "6")]
     pub map_info_prop_list: ::prost::alloc::vec::Vec<MazePropState>,
     #[prost(uint32, tag = "7")]
-    pub dimension_id: u32,
-    #[prost(uint32, tag = "9")]
-    pub entry_id: u32,
-    #[prost(uint32, tag = "10")]
     pub eejmjglnail: u32,
-    #[prost(uint32, tag = "11")]
-    pub floor_id: u32,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "8")]
     pub group_list: ::prost::alloc::vec::Vec<MapInfoGroup>,
-    #[prost(message, repeated, tag = "13")]
+    #[prost(uint32, repeated, tag = "9")]
+    pub unlock_teleport_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "10")]
     pub ljgocddblno: ::prost::alloc::vec::Vec<Fahfbejcklf>,
-    #[prost(map = "string, int32", tag = "14")]
+    #[prost(message, repeated, tag = "11")]
+    pub chest_list: ::prost::alloc::vec::Vec<ChestInfo>,
+    #[prost(map = "string, int32", tag = "12")]
     pub floor_saved_value_map: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         i32,
     >,
-    #[prost(message, repeated, tag = "15")]
-    pub chest_list: ::prost::alloc::vec::Vec<ChestInfo>,
-    #[prost(uint32, repeated, tag = "743")]
+    #[prost(uint32, tag = "13")]
+    pub entry_id: u32,
+    #[prost(uint32, tag = "14")]
+    pub floor_id: u32,
+    #[prost(uint32, repeated, tag = "530")]
     pub onjglmnenkh: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, optional, tag = "1429")]
-    pub scene_mission_info: ::core::option::Option<MissionStatusBySceneInfo>,
-    #[prost(message, optional, tag = "1562")]
+    #[prost(message, optional, tag = "1013")]
     pub scene_identifier: ::core::option::Option<SceneIdentifier>,
-    #[prost(uint32, repeated, tag = "1650")]
+    #[prost(uint32, repeated, tag = "1816")]
     pub lighten_section_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, optional, tag = "1975")]
+    pub scene_mission_info: ::core::option::Option<MissionStatusBySceneInfo>,
 }
-/// Obf: CNEBMLIJCEM
 #[derive(proto_derive::CmdID)]
-#[cmdid(1458)]
+#[cmdid(1447)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSceneMapInfoScRsp {
-    #[prost(message, repeated, tag = "2")]
-    pub scene_map_info_list: ::prost::alloc::vec::Vec<SceneMapInfo>,
-    #[prost(uint32, tag = "8")]
+    #[prost(uint32, tag = "2")]
     pub retcode: u32,
+    #[prost(message, repeated, tag = "14")]
+    pub scene_map_info_list: ::prost::alloc::vec::Vec<SceneMapInfo>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneEntityRefreshInfo {
-    #[prost(oneof = "scene_entity_refresh_info::RefreshType", tags = "4, 11, 13")]
+    #[prost(oneof = "scene_entity_refresh_info::RefreshType", tags = "2, 4, 5")]
     pub refresh_type: ::core::option::Option<scene_entity_refresh_info::RefreshType>,
 }
 /// Nested message and enum types in `SceneEntityRefreshInfo`.
@@ -7108,20 +6938,20 @@ pub mod scene_entity_refresh_info {
     #[derive(proto_derive::CmdID)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RefreshType {
+        #[prost(uint32, tag = "2")]
+        Beeanadahpl(u32),
         #[prost(uint32, tag = "4")]
         DeleteEntity(u32),
-        #[prost(uint32, tag = "11")]
-        Beeanadahpl(u32),
-        #[prost(message, tag = "13")]
+        #[prost(message, tag = "5")]
         AddEntity(super::SceneEntityInfo),
     }
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Akekckdihla {
-    #[prost(int32, tag = "10")]
+    #[prost(int32, tag = "6")]
     pub khbbndbjafk: i32,
-    #[prost(int32, tag = "12")]
+    #[prost(int32, tag = "5")]
     pub dhpdilnlipc: i32,
     #[prost(string, tag = "15")]
     pub hmelfpdpcfc: ::prost::alloc::string::String,
@@ -7129,165 +6959,167 @@ pub struct Akekckdihla {
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupRefreshInfo {
-    #[prost(uint32, tag = "3")]
-    pub group_id: u32,
-    #[prost(message, optional, tag = "5")]
-    pub unk1: ::core::option::Option<SceneEntityGroupInfo>,
-    #[prost(enumeration = "SceneGroupRefreshType", tag = "8")]
-    pub refresh_type: i32,
-    #[prost(message, repeated, tag = "9")]
-    pub cdmkbchlpab: ::prost::alloc::vec::Vec<Akekckdihla>,
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "1")]
     pub refresh_entity: ::prost::alloc::vec::Vec<SceneEntityRefreshInfo>,
-    #[prost(uint32, tag = "12")]
+    #[prost(message, repeated, tag = "3")]
+    pub cdmkbchlpab: ::prost::alloc::vec::Vec<Akekckdihla>,
+    #[prost(message, optional, tag = "6")]
+    pub unk1: ::core::option::Option<SceneEntityGroupInfo>,
+    #[prost(uint32, tag = "8")]
     pub state: u32,
+    #[prost(enumeration = "SceneGroupRefreshType", tag = "9")]
+    pub refresh_type: i32,
+    #[prost(uint32, tag = "12")]
+    pub group_id: u32,
 }
-/// Obf: EJJNPDFPIAP
 #[derive(proto_derive::CmdID)]
-#[cmdid(1434)]
+#[cmdid(1470)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SceneGroupRefreshScNotify {
-    #[prost(uint32, tag = "4")]
-    pub dimension_id: u32,
-    #[prost(uint32, tag = "9")]
-    pub floor_id: u32,
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag = "7")]
     pub group_refresh_list: ::prost::alloc::vec::Vec<GroupRefreshInfo>,
+    #[prost(uint32, tag = "8")]
+    pub dimension_id: u32,
+    #[prost(uint32, tag = "11")]
+    pub floor_id: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnteredSceneInfo {
-    #[prost(uint32, tag = "7")]
+    #[prost(uint32, tag = "6")]
     pub plane_id: u32,
-    #[prost(uint32, tag = "11")]
+    #[prost(uint32, tag = "7")]
     pub floor_id: u32,
 }
-/// Obf: FHLGAPIIKCA
 #[derive(proto_derive::CmdID)]
-#[cmdid(1442)]
+#[cmdid(1427)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEnteredSceneCsReq {}
-/// Obf: CGKHKICJKIA
 #[derive(proto_derive::CmdID)]
-#[cmdid(1497)]
+#[cmdid(1403)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnteredSceneScRsp {
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag = "7")]
     pub entered_scene_info_list: ::prost::alloc::vec::Vec<EnteredSceneInfo>,
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "11")]
     pub retcode: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BasicModuleSync {
-    #[prost(uint32, tag = "7")]
-    pub dlodakohfop: u32,
-    #[prost(uint32, tag = "15")]
+    #[prost(uint32, tag = "4")]
     pub stamina: u32,
+    #[prost(uint32, tag = "13")]
+    pub dlodakohfop: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerBoardModuleSync {
-    #[prost(uint32, repeated, tag = "2")]
-    pub ghnjnfkjedc: ::prost::alloc::vec::Vec<u32>,
-    #[prost(string, tag = "5")]
-    pub signature: ::prost::alloc::string::String,
-    #[prost(bool, tag = "6")]
-    pub mffgemklnbf: bool,
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag = "1")]
     pub head_frame_info: ::core::option::Option<HeadFrameInfo>,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(uint32, repeated, tag = "4")]
+    pub ghnjnfkjedc: ::prost::alloc::vec::Vec<u32>,
+    #[prost(bool, tag = "11")]
+    pub mffgemklnbf: bool,
+    #[prost(message, repeated, tag = "13")]
     pub kninldpflma: ::prost::alloc::vec::Vec<HeadIconData>,
+    #[prost(string, tag = "15")]
+    pub signature: ::prost::alloc::string::String,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvatarSync {
-    #[prost(message, repeated, tag = "6")]
-    pub avatar_path_data_info_list: ::prost::alloc::vec::Vec<AvatarPathData>,
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag = "2")]
     pub avatar_list: ::prost::alloc::vec::Vec<Avatar>,
+    #[prost(message, repeated, tag = "15")]
+    pub avatar_path_data_info_list: ::prost::alloc::vec::Vec<AvatarPathData>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MissionSync {
-    #[prost(message, repeated, tag = "1")]
-    pub nlpklndcmoc: ::prost::alloc::vec::Vec<Mjbanfppefh>,
-    #[prost(uint32, repeated, tag = "3")]
-    pub lebflakcjcm: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "5")]
-    pub obcblabecea: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag = "2")]
     pub mission_list: ::prost::alloc::vec::Vec<Mission>,
-    #[prost(uint32, repeated, tag = "13")]
-    pub depbonhelfd: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "15")]
+    #[prost(message, repeated, tag = "4")]
+    pub nlpklndcmoc: ::prost::alloc::vec::Vec<Mjbanfppefh>,
+    #[prost(uint32, repeated, tag = "7")]
+    pub obcblabecea: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "8")]
+    pub lebflakcjcm: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "9")]
     pub finished_main_mission_id_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(uint32, repeated, tag = "12")]
+    pub depbonhelfd: ::prost::alloc::vec::Vec<u32>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Ilamaonbodn {
-    #[prost(uint32, repeated, tag = "2")]
+    #[prost(uint32, repeated, tag = "7")]
     pub mdangieimif: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "5")]
+    #[prost(uint32, repeated, tag = "4")]
     pub bgpacbijdch: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag = "8")]
     pub jkdnioabdlm: ::prost::alloc::vec::Vec<GroupStatus>,
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag = "9")]
     pub bkkhgjpcgbc: ::prost::alloc::vec::Vec<SectionStatus>,
 }
-/// Obf: NIEBAAFIPDA
 #[derive(proto_derive::CmdID)]
-#[cmdid(674)]
+#[cmdid(683)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerSyncScNotify {
     #[prost(message, repeated, tag = "2")]
     pub relic_list: ::prost::alloc::vec::Vec<Relic>,
-    #[prost(message, repeated, tag = "3")]
-    pub equipment_list: ::prost::alloc::vec::Vec<Equipment>,
-    #[prost(message, optional, tag = "4")]
-    pub kgbielhadff: ::core::option::Option<MissionSync>,
-    #[prost(message, optional, tag = "6")]
-    pub avatar_sync: ::core::option::Option<AvatarSync>,
-    #[prost(message, repeated, tag = "7")]
-    pub wait_del_resource_list: ::prost::alloc::vec::Vec<WaitDelResource>,
-    #[prost(message, optional, tag = "8")]
-    pub basic_info: ::core::option::Option<PlayerBasicInfo>,
-    #[prost(message, repeated, tag = "9")]
-    pub quest_list: ::prost::alloc::vec::Vec<Quest>,
-    #[prost(uint32, repeated, tag = "10")]
-    pub del_relic_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(uint32, repeated, tag = "11")]
-    pub del_equipment_list: ::prost::alloc::vec::Vec<u32>,
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag = "5")]
     pub jhjnmofmpmo: ::core::option::Option<BasicModuleSync>,
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, optional, tag = "6")]
+    pub kgbielhadff: ::core::option::Option<MissionSync>,
+    #[prost(message, optional, tag = "7")]
+    pub avatar_sync: ::core::option::Option<AvatarSync>,
+    #[prost(uint32, repeated, tag = "8")]
+    pub del_equipment_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, optional, tag = "9")]
+    pub basic_info: ::core::option::Option<PlayerBasicInfo>,
+    #[prost(message, repeated, tag = "10")]
+    pub wait_del_resource_list: ::prost::alloc::vec::Vec<WaitDelResource>,
+    #[prost(message, repeated, tag = "12")]
+    pub equipment_list: ::prost::alloc::vec::Vec<Equipment>,
+    #[prost(message, repeated, tag = "13")]
     pub material_list: ::prost::alloc::vec::Vec<Material>,
-    #[prost(message, repeated, tag = "220")]
-    pub epbglfhefjj: ::prost::alloc::vec::Vec<Nlllaaejobp>,
-    #[prost(message, optional, tag = "305")]
-    pub fhhgdacmjed: ::core::option::Option<ItemList>,
-    #[prost(message, optional, tag = "425")]
-    pub cnoahdhdfag: ::core::option::Option<PlayerBoardModuleSync>,
-    #[prost(message, repeated, tag = "542")]
+    #[prost(message, repeated, tag = "14")]
+    pub quest_list: ::prost::alloc::vec::Vec<Quest>,
+    #[prost(uint32, repeated, tag = "15")]
+    pub del_relic_list: ::prost::alloc::vec::Vec<u32>,
+    #[prost(message, repeated, tag = "347")]
     pub najfmiifiec: ::prost::alloc::vec::Vec<Material>,
-    #[prost(message, optional, tag = "1084")]
-    pub lnjbjfcijca: ::core::option::Option<Ilamaonbodn>,
-    #[prost(message, optional, tag = "1533")]
-    pub outfit_list: ::core::option::Option<OutfitInfo>,
-    #[prost(message, repeated, tag = "1606")]
-    pub nmbafjgfoih: ::prost::alloc::vec::Vec<Nkdnfdcfncp>,
-    #[prost(message, repeated, tag = "2020")]
+    #[prost(message, repeated, tag = "472")]
     pub gcnginpdeld: ::prost::alloc::vec::Vec<PileItem>,
-    #[prost(message, repeated, tag = "2039")]
+    #[prost(message, repeated, tag = "635")]
+    pub epbglfhefjj: ::prost::alloc::vec::Vec<Nlllaaejobp>,
+    #[prost(message, optional, tag = "670")]
+    pub fhhgdacmjed: ::core::option::Option<ItemList>,
+    #[prost(message, repeated, tag = "1072")]
     pub jieohbbdjda: ::prost::alloc::vec::Vec<Cchmhoonegg>,
+    #[prost(message, repeated, tag = "1193")]
+    pub nmbafjgfoih: ::prost::alloc::vec::Vec<Nkdnfdcfncp>,
+    #[prost(message, optional, tag = "1261")]
+    pub lnjbjfcijca: ::core::option::Option<Ilamaonbodn>,
+    #[prost(message, optional, tag = "1330")]
+    pub outfit_list: ::core::option::Option<OutfitInfo>,
+    #[prost(message, optional, tag = "1880")]
+    pub cnoahdhdfag: ::core::option::Option<PlayerBoardModuleSync>,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Cchmhoonegg {
-    #[prost(uint32, tag = "5")]
+    #[prost(uint32, tag = "13")]
     pub num: u32,
-    #[prost(uint32, tag = "9")]
+    #[prost(uint32, tag = "5")]
     pub ocjlbkdckhl: u32,
+}
+#[derive(proto_derive::CmdID)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Cpnnacgjfhc {
+    #[prost(uint32, tag = "1")]
+    pub jhjjpiappho: u32,
 }
 #[derive(proto_derive::CmdID)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -10035,9 +9867,24 @@ pub enum Retcode {
     JcemkepnkehObclaogliac = 7711,
     JcemkepnkehLaadlaajaic = 7712,
     JcemkepnkehGdokfmgbilk = 7713,
+    JcemkepnkehIjmecjbomkp = 7721,
+    JcemkepnkehBompgbmopch = 7722,
+    JcemkepnkehGohenkjafjm = 7723,
+    JcemkepnkehBbphlcnknhn = 7724,
+    JcemkepnkehDedikgnjeng = 7725,
+    JcemkepnkehMglpabiceoe = 7731,
+    JcemkepnkehHimdfojlhbg = 7732,
+    JcemkepnkehIododhofbkf = 7733,
+    JcemkepnkehFfnihclldlm = 7734,
+    JcemkepnkehMbpbmnblogn = 7735,
     JcemkepnkehAcjmhkaaich = 7801,
     JcemkepnkehBpanpkhajpi = 7802,
     JcemkepnkehGhannbfcedi = 7803,
+    JcemkepnkehHoimfgfncbb = 7804,
+    JcemkepnkehNchpidofjfe = 7805,
+    JcemkepnkehHgiadkejmaa = 7806,
+    JcemkepnkehNmeoffngmnj = 7807,
+    JcemkepnkehAccnnbbeoff = 7808,
 }
 impl Retcode {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -12031,9 +11878,24 @@ impl Retcode {
             Self::JcemkepnkehObclaogliac => "JCEMKEPNKEH_OBCLAOGLIAC",
             Self::JcemkepnkehLaadlaajaic => "JCEMKEPNKEH_LAADLAAJAIC",
             Self::JcemkepnkehGdokfmgbilk => "JCEMKEPNKEH_GDOKFMGBILK",
+            Self::JcemkepnkehIjmecjbomkp => "JCEMKEPNKEH_IJMECJBOMKP",
+            Self::JcemkepnkehBompgbmopch => "JCEMKEPNKEH_BOMPGBMOPCH",
+            Self::JcemkepnkehGohenkjafjm => "JCEMKEPNKEH_GOHENKJAFJM",
+            Self::JcemkepnkehBbphlcnknhn => "JCEMKEPNKEH_BBPHLCNKNHN",
+            Self::JcemkepnkehDedikgnjeng => "JCEMKEPNKEH_DEDIKGNJENG",
+            Self::JcemkepnkehMglpabiceoe => "JCEMKEPNKEH_MGLPABICEOE",
+            Self::JcemkepnkehHimdfojlhbg => "JCEMKEPNKEH_HIMDFOJLHBG",
+            Self::JcemkepnkehIododhofbkf => "JCEMKEPNKEH_IODODHOFBKF",
+            Self::JcemkepnkehFfnihclldlm => "JCEMKEPNKEH_FFNIHCLLDLM",
+            Self::JcemkepnkehMbpbmnblogn => "JCEMKEPNKEH_MBPBMNBLOGN",
             Self::JcemkepnkehAcjmhkaaich => "JCEMKEPNKEH_ACJMHKAAICH",
             Self::JcemkepnkehBpanpkhajpi => "JCEMKEPNKEH_BPANPKHAJPI",
             Self::JcemkepnkehGhannbfcedi => "JCEMKEPNKEH_GHANNBFCEDI",
+            Self::JcemkepnkehHoimfgfncbb => "JCEMKEPNKEH_HOIMFGFNCBB",
+            Self::JcemkepnkehNchpidofjfe => "JCEMKEPNKEH_NCHPIDOFJFE",
+            Self::JcemkepnkehHgiadkejmaa => "JCEMKEPNKEH_HGIADKEJMAA",
+            Self::JcemkepnkehNmeoffngmnj => "JCEMKEPNKEH_NMEOFFNGMNJ",
+            Self::JcemkepnkehAccnnbbeoff => "JCEMKEPNKEH_ACCNNBBEOFF",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14348,9 +14210,24 @@ impl Retcode {
             "JCEMKEPNKEH_OBCLAOGLIAC" => Some(Self::JcemkepnkehObclaogliac),
             "JCEMKEPNKEH_LAADLAAJAIC" => Some(Self::JcemkepnkehLaadlaajaic),
             "JCEMKEPNKEH_GDOKFMGBILK" => Some(Self::JcemkepnkehGdokfmgbilk),
+            "JCEMKEPNKEH_IJMECJBOMKP" => Some(Self::JcemkepnkehIjmecjbomkp),
+            "JCEMKEPNKEH_BOMPGBMOPCH" => Some(Self::JcemkepnkehBompgbmopch),
+            "JCEMKEPNKEH_GOHENKJAFJM" => Some(Self::JcemkepnkehGohenkjafjm),
+            "JCEMKEPNKEH_BBPHLCNKNHN" => Some(Self::JcemkepnkehBbphlcnknhn),
+            "JCEMKEPNKEH_DEDIKGNJENG" => Some(Self::JcemkepnkehDedikgnjeng),
+            "JCEMKEPNKEH_MGLPABICEOE" => Some(Self::JcemkepnkehMglpabiceoe),
+            "JCEMKEPNKEH_HIMDFOJLHBG" => Some(Self::JcemkepnkehHimdfojlhbg),
+            "JCEMKEPNKEH_IODODHOFBKF" => Some(Self::JcemkepnkehIododhofbkf),
+            "JCEMKEPNKEH_FFNIHCLLDLM" => Some(Self::JcemkepnkehFfnihclldlm),
+            "JCEMKEPNKEH_MBPBMNBLOGN" => Some(Self::JcemkepnkehMbpbmnblogn),
             "JCEMKEPNKEH_ACJMHKAAICH" => Some(Self::JcemkepnkehAcjmhkaaich),
             "JCEMKEPNKEH_BPANPKHAJPI" => Some(Self::JcemkepnkehBpanpkhajpi),
             "JCEMKEPNKEH_GHANNBFCEDI" => Some(Self::JcemkepnkehGhannbfcedi),
+            "JCEMKEPNKEH_HOIMFGFNCBB" => Some(Self::JcemkepnkehHoimfgfncbb),
+            "JCEMKEPNKEH_NCHPIDOFJFE" => Some(Self::JcemkepnkehNchpidofjfe),
+            "JCEMKEPNKEH_HGIADKEJMAA" => Some(Self::JcemkepnkehHgiadkejmaa),
+            "JCEMKEPNKEH_NMEOFFNGMNJ" => Some(Self::JcemkepnkehNmeoffngmnj),
+            "JCEMKEPNKEH_ACCNNBBEOFF" => Some(Self::JcemkepnkehAccnnbbeoff),
             _ => None,
         }
     }
@@ -14852,73 +14729,73 @@ impl Jnlnckdbolk {
 #[repr(i32)]
 pub enum CmdPlayerType {
     Nlcdgipgfdj = 0,
-    Pjminbjdkcc = 23,
-    Abakfmhmhpd = 99,
-    Dhhmbigppfb = 29,
-    Gkdobokbgpk = 92,
-    Jiijiokaaoh = 80,
-    CmdPlayerLoginScRsp = 19,
-    CmdPlayerGetTokenScRsp = 71,
-    Echekpdippa = 86,
-    Hjaihjahmkn = 15,
-    CmdPlayerLoginFinishCsReq = 9,
-    Opfikllihbh = 43,
-    Clomoecmlph = 17,
-    Mkhnjmfnpbb = 90,
-    Mcflgbjenjd = 79,
-    Bbecffbpogg = 100,
-    CmdSetNicknameScRsp = 94,
-    Pfaaoodlapi = 96,
-    CmdGmTalkScRsp = 27,
-    Pbpjjfpbhhk = 6,
-    Honjdbcaceb = 39,
-    Kokcpopbbcd = 82,
-    Onnnlncmmgj = 87,
-    Ppbancpjphg = 98,
-    Poacpafbfkj = 1,
-    CmdSetNicknameCsReq = 4,
-    Fphmfipgano = 11,
-    CmdGetBasicInfoCsReq = 46,
-    Cedfkejbccj = 41,
-    Cfmgljjojdj = 85,
-    CmdPlayerGetTokenCsReq = 5,
-    Dopjengcoan = 26,
-    Doghfiajihp = 25,
-    CmdClientDownloadDataScNotify = 60,
-    Jglnkenaieb = 32,
-    Lhbkejcgncf = 78,
-    Hlkkhfgjeol = 57,
-    Kccmjkhjmab = 33,
-    CmdGmTalkCsReq = 70,
-    Hlaagbfpkph = 34,
-    CmdPlayerHeartBeatCsReq = 45,
-    CmdGetBasicInfoScRsp = 20,
-    Afkimickedm = 48,
-    Kpalkjhkped = 22,
-    Aghgbnpiogk = 47,
-    Dgkkankidlg = 18,
-    Clhghkaaeij = 49,
-    Cbpdmeeeojp = 53,
-    Ofiepopangh = 8,
-    Ldfpobppcih = 75,
-    Kgcpbeogmop = 63,
-    Eemjcdkijop = 69,
-    Llgmmapjdli = 3,
-    Ipdcejgofki = 24,
-    Mlgekijaibo = 77,
-    Pcmlahacmpo = 38,
-    CmdPlayerLogoutCsReq = 31,
-    Gnaoljnmafc = 76,
-    CmdPlayerLoginFinishScRsp = 13,
-    Bllkmjkmnig = 95,
-    Ikannbliacl = 21,
-    Mcokjklkhdl = 64,
-    Caeepleglck = 66,
-    Jflkfmhcfff = 30,
-    Bfmiamihied = 62,
-    Gonkeiblboi = 55,
-    CmdPlayerHeartBeatScRsp = 16,
-    CmdPlayerLoginCsReq = 74,
+    Bllkmjkmnig = 86,
+    Opfikllihbh = 38,
+    Pcmlahacmpo = 57,
+    Clhghkaaeij = 63,
+    Echekpdippa = 94,
+    CmdPlayerLogoutCsReq = 96,
+    Eemjcdkijop = 99,
+    CmdPlayerGetTokenCsReq = 73,
+    CmdSetNicknameScRsp = 56,
+    Ldfpobppcih = 88,
+    CmdPlayerLoginFinishScRsp = 48,
+    Afkimickedm = 4,
+    Honjdbcaceb = 80,
+    Pfaaoodlapi = 55,
+    Mcflgbjenjd = 93,
+    Jiijiokaaoh = 21,
+    Gonkeiblboi = 32,
+    Doghfiajihp = 39,
+    CmdGetBasicInfoScRsp = 14,
+    CmdPlayerLoginCsReq = 83,
+    CmdPlayerHeartBeatScRsp = 18,
+    Dgkkankidlg = 91,
+    CmdPlayerLoginScRsp = 54,
+    Abakfmhmhpd = 23,
+    Clomoecmlph = 29,
+    Cedfkejbccj = 95,
+    Llgmmapjdli = 5,
+    Pbpjjfpbhhk = 26,
+    Cbpdmeeeojp = 98,
+    CmdGetBasicInfoCsReq = 68,
+    CmdSetNicknameCsReq = 53,
+    Fphmfipgano = 72,
+    Hlaagbfpkph = 70,
+    Kgcpbeogmop = 36,
+    Jflkfmhcfff = 62,
+    Ppbancpjphg = 12,
+    Jglnkenaieb = 11,
+    Kokcpopbbcd = 85,
+    Caeepleglck = 1,
+    CmdClientDownloadDataScNotify = 97,
+    Lhbkejcgncf = 46,
+    Dhhmbigppfb = 6,
+    CmdPlayerHeartBeatCsReq = 84,
+    Gkdobokbgpk = 22,
+    Bfmiamihied = 79,
+    Kpalkjhkped = 37,
+    Kccmjkhjmab = 71,
+    Hjaihjahmkn = 65,
+    Pjminbjdkcc = 19,
+    Ikannbliacl = 66,
+    CmdGmTalkScRsp = 8,
+    Hlkkhfgjeol = 45,
+    CmdGmTalkCsReq = 78,
+    Poacpafbfkj = 60,
+    Onnnlncmmgj = 42,
+    Gnaoljnmafc = 92,
+    Aghgbnpiogk = 69,
+    CmdPlayerLoginFinishCsReq = 25,
+    Ipdcejgofki = 76,
+    Mlgekijaibo = 10,
+    Mcokjklkhdl = 67,
+    Mkhnjmfnpbb = 44,
+    Cfmgljjojdj = 87,
+    Ofiepopangh = 100,
+    Bbecffbpogg = 90,
+    CmdPlayerGetTokenScRsp = 33,
+    Dopjengcoan = 20,
 }
 impl CmdPlayerType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -14928,146 +14805,146 @@ impl CmdPlayerType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             Self::Nlcdgipgfdj => "CmdPlayerType_NLCDGIPGFDJ",
-            Self::Pjminbjdkcc => "CmdPlayerType_PJMINBJDKCC",
-            Self::Abakfmhmhpd => "CmdPlayerType_ABAKFMHMHPD",
-            Self::Dhhmbigppfb => "CmdPlayerType_DHHMBIGPPFB",
-            Self::Gkdobokbgpk => "CmdPlayerType_GKDOBOKBGPK",
-            Self::Jiijiokaaoh => "CmdPlayerType_JIIJIOKAAOH",
-            Self::CmdPlayerLoginScRsp => "CmdPlayerLoginScRsp",
-            Self::CmdPlayerGetTokenScRsp => "CmdPlayerGetTokenScRsp",
-            Self::Echekpdippa => "CmdPlayerType_ECHEKPDIPPA",
-            Self::Hjaihjahmkn => "CmdPlayerType_HJAIHJAHMKN",
-            Self::CmdPlayerLoginFinishCsReq => "CmdPlayerLoginFinishCsReq",
+            Self::Bllkmjkmnig => "CmdPlayerType_BLLKMJKMNIG",
             Self::Opfikllihbh => "CmdPlayerType_OPFIKLLIHBH",
-            Self::Clomoecmlph => "CmdPlayerType_CLOMOECMLPH",
-            Self::Mkhnjmfnpbb => "CmdPlayerType_MKHNJMFNPBB",
-            Self::Mcflgbjenjd => "CmdPlayerType_MCFLGBJENJD",
-            Self::Bbecffbpogg => "CmdPlayerType_BBECFFBPOGG",
+            Self::Pcmlahacmpo => "CmdPlayerType_PCMLAHACMPO",
+            Self::Clhghkaaeij => "CmdPlayerType_CLHGHKAAEIJ",
+            Self::Echekpdippa => "CmdPlayerType_ECHEKPDIPPA",
+            Self::CmdPlayerLogoutCsReq => "CmdPlayerLogoutCsReq",
+            Self::Eemjcdkijop => "CmdPlayerType_EEMJCDKIJOP",
+            Self::CmdPlayerGetTokenCsReq => "CmdPlayerGetTokenCsReq",
             Self::CmdSetNicknameScRsp => "CmdSetNicknameScRsp",
-            Self::Pfaaoodlapi => "CmdPlayerType_PFAAOODLAPI",
-            Self::CmdGmTalkScRsp => "CmdGmTalkScRsp",
-            Self::Pbpjjfpbhhk => "CmdPlayerType_PBPJJFPBHHK",
+            Self::Ldfpobppcih => "CmdPlayerType_LDFPOBPPCIH",
+            Self::CmdPlayerLoginFinishScRsp => "CmdPlayerLoginFinishScRsp",
+            Self::Afkimickedm => "CmdPlayerType_AFKIMICKEDM",
             Self::Honjdbcaceb => "CmdPlayerType_HONJDBCACEB",
-            Self::Kokcpopbbcd => "CmdPlayerType_KOKCPOPBBCD",
-            Self::Onnnlncmmgj => "CmdPlayerType_ONNNLNCMMGJ",
-            Self::Ppbancpjphg => "CmdPlayerType_PPBANCPJPHG",
-            Self::Poacpafbfkj => "CmdPlayerType_POACPAFBFKJ",
+            Self::Pfaaoodlapi => "CmdPlayerType_PFAAOODLAPI",
+            Self::Mcflgbjenjd => "CmdPlayerType_MCFLGBJENJD",
+            Self::Jiijiokaaoh => "CmdPlayerType_JIIJIOKAAOH",
+            Self::Gonkeiblboi => "CmdPlayerType_GONKEIBLBOI",
+            Self::Doghfiajihp => "CmdPlayerType_DOGHFIAJIHP",
+            Self::CmdGetBasicInfoScRsp => "CmdGetBasicInfoScRsp",
+            Self::CmdPlayerLoginCsReq => "CmdPlayerLoginCsReq",
+            Self::CmdPlayerHeartBeatScRsp => "CmdPlayerHeartBeatScRsp",
+            Self::Dgkkankidlg => "CmdPlayerType_DGKKANKIDLG",
+            Self::CmdPlayerLoginScRsp => "CmdPlayerLoginScRsp",
+            Self::Abakfmhmhpd => "CmdPlayerType_ABAKFMHMHPD",
+            Self::Clomoecmlph => "CmdPlayerType_CLOMOECMLPH",
+            Self::Cedfkejbccj => "CmdPlayerType_CEDFKEJBCCJ",
+            Self::Llgmmapjdli => "CmdPlayerType_LLGMMAPJDLI",
+            Self::Pbpjjfpbhhk => "CmdPlayerType_PBPJJFPBHHK",
+            Self::Cbpdmeeeojp => "CmdPlayerType_CBPDMEEEOJP",
+            Self::CmdGetBasicInfoCsReq => "CmdGetBasicInfoCsReq",
             Self::CmdSetNicknameCsReq => "CmdSetNicknameCsReq",
             Self::Fphmfipgano => "CmdPlayerType_FPHMFIPGANO",
-            Self::CmdGetBasicInfoCsReq => "CmdGetBasicInfoCsReq",
-            Self::Cedfkejbccj => "CmdPlayerType_CEDFKEJBCCJ",
-            Self::Cfmgljjojdj => "CmdPlayerType_CFMGLJJOJDJ",
-            Self::CmdPlayerGetTokenCsReq => "CmdPlayerGetTokenCsReq",
-            Self::Dopjengcoan => "CmdPlayerType_DOPJENGCOAN",
-            Self::Doghfiajihp => "CmdPlayerType_DOGHFIAJIHP",
-            Self::CmdClientDownloadDataScNotify => "CmdClientDownloadDataScNotify",
-            Self::Jglnkenaieb => "CmdPlayerType_JGLNKENAIEB",
-            Self::Lhbkejcgncf => "CmdPlayerType_LHBKEJCGNCF",
-            Self::Hlkkhfgjeol => "CmdPlayerType_HLKKHFGJEOL",
-            Self::Kccmjkhjmab => "CmdPlayerType_KCCMJKHJMAB",
-            Self::CmdGmTalkCsReq => "CmdGmTalkCsReq",
             Self::Hlaagbfpkph => "CmdPlayerType_HLAAGBFPKPH",
-            Self::CmdPlayerHeartBeatCsReq => "CmdPlayerHeartBeatCsReq",
-            Self::CmdGetBasicInfoScRsp => "CmdGetBasicInfoScRsp",
-            Self::Afkimickedm => "CmdPlayerType_AFKIMICKEDM",
-            Self::Kpalkjhkped => "CmdPlayerType_KPALKJHKPED",
-            Self::Aghgbnpiogk => "CmdPlayerType_AGHGBNPIOGK",
-            Self::Dgkkankidlg => "CmdPlayerType_DGKKANKIDLG",
-            Self::Clhghkaaeij => "CmdPlayerType_CLHGHKAAEIJ",
-            Self::Cbpdmeeeojp => "CmdPlayerType_CBPDMEEEOJP",
-            Self::Ofiepopangh => "CmdPlayerType_OFIEPOPANGH",
-            Self::Ldfpobppcih => "CmdPlayerType_LDFPOBPPCIH",
             Self::Kgcpbeogmop => "CmdPlayerType_KGCPBEOGMOP",
-            Self::Eemjcdkijop => "CmdPlayerType_EEMJCDKIJOP",
-            Self::Llgmmapjdli => "CmdPlayerType_LLGMMAPJDLI",
+            Self::Jflkfmhcfff => "CmdPlayerType_JFLKFMHCFFF",
+            Self::Ppbancpjphg => "CmdPlayerType_PPBANCPJPHG",
+            Self::Jglnkenaieb => "CmdPlayerType_JGLNKENAIEB",
+            Self::Kokcpopbbcd => "CmdPlayerType_KOKCPOPBBCD",
+            Self::Caeepleglck => "CmdPlayerType_CAEEPLEGLCK",
+            Self::CmdClientDownloadDataScNotify => "CmdClientDownloadDataScNotify",
+            Self::Lhbkejcgncf => "CmdPlayerType_LHBKEJCGNCF",
+            Self::Dhhmbigppfb => "CmdPlayerType_DHHMBIGPPFB",
+            Self::CmdPlayerHeartBeatCsReq => "CmdPlayerHeartBeatCsReq",
+            Self::Gkdobokbgpk => "CmdPlayerType_GKDOBOKBGPK",
+            Self::Bfmiamihied => "CmdPlayerType_BFMIAMIHIED",
+            Self::Kpalkjhkped => "CmdPlayerType_KPALKJHKPED",
+            Self::Kccmjkhjmab => "CmdPlayerType_KCCMJKHJMAB",
+            Self::Hjaihjahmkn => "CmdPlayerType_HJAIHJAHMKN",
+            Self::Pjminbjdkcc => "CmdPlayerType_PJMINBJDKCC",
+            Self::Ikannbliacl => "CmdPlayerType_IKANNBLIACL",
+            Self::CmdGmTalkScRsp => "CmdGmTalkScRsp",
+            Self::Hlkkhfgjeol => "CmdPlayerType_HLKKHFGJEOL",
+            Self::CmdGmTalkCsReq => "CmdGmTalkCsReq",
+            Self::Poacpafbfkj => "CmdPlayerType_POACPAFBFKJ",
+            Self::Onnnlncmmgj => "CmdPlayerType_ONNNLNCMMGJ",
+            Self::Gnaoljnmafc => "CmdPlayerType_GNAOLJNMAFC",
+            Self::Aghgbnpiogk => "CmdPlayerType_AGHGBNPIOGK",
+            Self::CmdPlayerLoginFinishCsReq => "CmdPlayerLoginFinishCsReq",
             Self::Ipdcejgofki => "CmdPlayerType_IPDCEJGOFKI",
             Self::Mlgekijaibo => "CmdPlayerType_MLGEKIJAIBO",
-            Self::Pcmlahacmpo => "CmdPlayerType_PCMLAHACMPO",
-            Self::CmdPlayerLogoutCsReq => "CmdPlayerLogoutCsReq",
-            Self::Gnaoljnmafc => "CmdPlayerType_GNAOLJNMAFC",
-            Self::CmdPlayerLoginFinishScRsp => "CmdPlayerLoginFinishScRsp",
-            Self::Bllkmjkmnig => "CmdPlayerType_BLLKMJKMNIG",
-            Self::Ikannbliacl => "CmdPlayerType_IKANNBLIACL",
             Self::Mcokjklkhdl => "CmdPlayerType_MCOKJKLKHDL",
-            Self::Caeepleglck => "CmdPlayerType_CAEEPLEGLCK",
-            Self::Jflkfmhcfff => "CmdPlayerType_JFLKFMHCFFF",
-            Self::Bfmiamihied => "CmdPlayerType_BFMIAMIHIED",
-            Self::Gonkeiblboi => "CmdPlayerType_GONKEIBLBOI",
-            Self::CmdPlayerHeartBeatScRsp => "CmdPlayerHeartBeatScRsp",
-            Self::CmdPlayerLoginCsReq => "CmdPlayerLoginCsReq",
+            Self::Mkhnjmfnpbb => "CmdPlayerType_MKHNJMFNPBB",
+            Self::Cfmgljjojdj => "CmdPlayerType_CFMGLJJOJDJ",
+            Self::Ofiepopangh => "CmdPlayerType_OFIEPOPANGH",
+            Self::Bbecffbpogg => "CmdPlayerType_BBECFFBPOGG",
+            Self::CmdPlayerGetTokenScRsp => "CmdPlayerGetTokenScRsp",
+            Self::Dopjengcoan => "CmdPlayerType_DOPJENGCOAN",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "CmdPlayerType_NLCDGIPGFDJ" => Some(Self::Nlcdgipgfdj),
-            "CmdPlayerType_PJMINBJDKCC" => Some(Self::Pjminbjdkcc),
-            "CmdPlayerType_ABAKFMHMHPD" => Some(Self::Abakfmhmhpd),
-            "CmdPlayerType_DHHMBIGPPFB" => Some(Self::Dhhmbigppfb),
-            "CmdPlayerType_GKDOBOKBGPK" => Some(Self::Gkdobokbgpk),
-            "CmdPlayerType_JIIJIOKAAOH" => Some(Self::Jiijiokaaoh),
-            "CmdPlayerLoginScRsp" => Some(Self::CmdPlayerLoginScRsp),
-            "CmdPlayerGetTokenScRsp" => Some(Self::CmdPlayerGetTokenScRsp),
-            "CmdPlayerType_ECHEKPDIPPA" => Some(Self::Echekpdippa),
-            "CmdPlayerType_HJAIHJAHMKN" => Some(Self::Hjaihjahmkn),
-            "CmdPlayerLoginFinishCsReq" => Some(Self::CmdPlayerLoginFinishCsReq),
+            "CmdPlayerType_BLLKMJKMNIG" => Some(Self::Bllkmjkmnig),
             "CmdPlayerType_OPFIKLLIHBH" => Some(Self::Opfikllihbh),
-            "CmdPlayerType_CLOMOECMLPH" => Some(Self::Clomoecmlph),
-            "CmdPlayerType_MKHNJMFNPBB" => Some(Self::Mkhnjmfnpbb),
-            "CmdPlayerType_MCFLGBJENJD" => Some(Self::Mcflgbjenjd),
-            "CmdPlayerType_BBECFFBPOGG" => Some(Self::Bbecffbpogg),
+            "CmdPlayerType_PCMLAHACMPO" => Some(Self::Pcmlahacmpo),
+            "CmdPlayerType_CLHGHKAAEIJ" => Some(Self::Clhghkaaeij),
+            "CmdPlayerType_ECHEKPDIPPA" => Some(Self::Echekpdippa),
+            "CmdPlayerLogoutCsReq" => Some(Self::CmdPlayerLogoutCsReq),
+            "CmdPlayerType_EEMJCDKIJOP" => Some(Self::Eemjcdkijop),
+            "CmdPlayerGetTokenCsReq" => Some(Self::CmdPlayerGetTokenCsReq),
             "CmdSetNicknameScRsp" => Some(Self::CmdSetNicknameScRsp),
-            "CmdPlayerType_PFAAOODLAPI" => Some(Self::Pfaaoodlapi),
-            "CmdGmTalkScRsp" => Some(Self::CmdGmTalkScRsp),
-            "CmdPlayerType_PBPJJFPBHHK" => Some(Self::Pbpjjfpbhhk),
+            "CmdPlayerType_LDFPOBPPCIH" => Some(Self::Ldfpobppcih),
+            "CmdPlayerLoginFinishScRsp" => Some(Self::CmdPlayerLoginFinishScRsp),
+            "CmdPlayerType_AFKIMICKEDM" => Some(Self::Afkimickedm),
             "CmdPlayerType_HONJDBCACEB" => Some(Self::Honjdbcaceb),
-            "CmdPlayerType_KOKCPOPBBCD" => Some(Self::Kokcpopbbcd),
-            "CmdPlayerType_ONNNLNCMMGJ" => Some(Self::Onnnlncmmgj),
-            "CmdPlayerType_PPBANCPJPHG" => Some(Self::Ppbancpjphg),
-            "CmdPlayerType_POACPAFBFKJ" => Some(Self::Poacpafbfkj),
+            "CmdPlayerType_PFAAOODLAPI" => Some(Self::Pfaaoodlapi),
+            "CmdPlayerType_MCFLGBJENJD" => Some(Self::Mcflgbjenjd),
+            "CmdPlayerType_JIIJIOKAAOH" => Some(Self::Jiijiokaaoh),
+            "CmdPlayerType_GONKEIBLBOI" => Some(Self::Gonkeiblboi),
+            "CmdPlayerType_DOGHFIAJIHP" => Some(Self::Doghfiajihp),
+            "CmdGetBasicInfoScRsp" => Some(Self::CmdGetBasicInfoScRsp),
+            "CmdPlayerLoginCsReq" => Some(Self::CmdPlayerLoginCsReq),
+            "CmdPlayerHeartBeatScRsp" => Some(Self::CmdPlayerHeartBeatScRsp),
+            "CmdPlayerType_DGKKANKIDLG" => Some(Self::Dgkkankidlg),
+            "CmdPlayerLoginScRsp" => Some(Self::CmdPlayerLoginScRsp),
+            "CmdPlayerType_ABAKFMHMHPD" => Some(Self::Abakfmhmhpd),
+            "CmdPlayerType_CLOMOECMLPH" => Some(Self::Clomoecmlph),
+            "CmdPlayerType_CEDFKEJBCCJ" => Some(Self::Cedfkejbccj),
+            "CmdPlayerType_LLGMMAPJDLI" => Some(Self::Llgmmapjdli),
+            "CmdPlayerType_PBPJJFPBHHK" => Some(Self::Pbpjjfpbhhk),
+            "CmdPlayerType_CBPDMEEEOJP" => Some(Self::Cbpdmeeeojp),
+            "CmdGetBasicInfoCsReq" => Some(Self::CmdGetBasicInfoCsReq),
             "CmdSetNicknameCsReq" => Some(Self::CmdSetNicknameCsReq),
             "CmdPlayerType_FPHMFIPGANO" => Some(Self::Fphmfipgano),
-            "CmdGetBasicInfoCsReq" => Some(Self::CmdGetBasicInfoCsReq),
-            "CmdPlayerType_CEDFKEJBCCJ" => Some(Self::Cedfkejbccj),
-            "CmdPlayerType_CFMGLJJOJDJ" => Some(Self::Cfmgljjojdj),
-            "CmdPlayerGetTokenCsReq" => Some(Self::CmdPlayerGetTokenCsReq),
-            "CmdPlayerType_DOPJENGCOAN" => Some(Self::Dopjengcoan),
-            "CmdPlayerType_DOGHFIAJIHP" => Some(Self::Doghfiajihp),
-            "CmdClientDownloadDataScNotify" => Some(Self::CmdClientDownloadDataScNotify),
-            "CmdPlayerType_JGLNKENAIEB" => Some(Self::Jglnkenaieb),
-            "CmdPlayerType_LHBKEJCGNCF" => Some(Self::Lhbkejcgncf),
-            "CmdPlayerType_HLKKHFGJEOL" => Some(Self::Hlkkhfgjeol),
-            "CmdPlayerType_KCCMJKHJMAB" => Some(Self::Kccmjkhjmab),
-            "CmdGmTalkCsReq" => Some(Self::CmdGmTalkCsReq),
             "CmdPlayerType_HLAAGBFPKPH" => Some(Self::Hlaagbfpkph),
-            "CmdPlayerHeartBeatCsReq" => Some(Self::CmdPlayerHeartBeatCsReq),
-            "CmdGetBasicInfoScRsp" => Some(Self::CmdGetBasicInfoScRsp),
-            "CmdPlayerType_AFKIMICKEDM" => Some(Self::Afkimickedm),
-            "CmdPlayerType_KPALKJHKPED" => Some(Self::Kpalkjhkped),
-            "CmdPlayerType_AGHGBNPIOGK" => Some(Self::Aghgbnpiogk),
-            "CmdPlayerType_DGKKANKIDLG" => Some(Self::Dgkkankidlg),
-            "CmdPlayerType_CLHGHKAAEIJ" => Some(Self::Clhghkaaeij),
-            "CmdPlayerType_CBPDMEEEOJP" => Some(Self::Cbpdmeeeojp),
-            "CmdPlayerType_OFIEPOPANGH" => Some(Self::Ofiepopangh),
-            "CmdPlayerType_LDFPOBPPCIH" => Some(Self::Ldfpobppcih),
             "CmdPlayerType_KGCPBEOGMOP" => Some(Self::Kgcpbeogmop),
-            "CmdPlayerType_EEMJCDKIJOP" => Some(Self::Eemjcdkijop),
-            "CmdPlayerType_LLGMMAPJDLI" => Some(Self::Llgmmapjdli),
+            "CmdPlayerType_JFLKFMHCFFF" => Some(Self::Jflkfmhcfff),
+            "CmdPlayerType_PPBANCPJPHG" => Some(Self::Ppbancpjphg),
+            "CmdPlayerType_JGLNKENAIEB" => Some(Self::Jglnkenaieb),
+            "CmdPlayerType_KOKCPOPBBCD" => Some(Self::Kokcpopbbcd),
+            "CmdPlayerType_CAEEPLEGLCK" => Some(Self::Caeepleglck),
+            "CmdClientDownloadDataScNotify" => Some(Self::CmdClientDownloadDataScNotify),
+            "CmdPlayerType_LHBKEJCGNCF" => Some(Self::Lhbkejcgncf),
+            "CmdPlayerType_DHHMBIGPPFB" => Some(Self::Dhhmbigppfb),
+            "CmdPlayerHeartBeatCsReq" => Some(Self::CmdPlayerHeartBeatCsReq),
+            "CmdPlayerType_GKDOBOKBGPK" => Some(Self::Gkdobokbgpk),
+            "CmdPlayerType_BFMIAMIHIED" => Some(Self::Bfmiamihied),
+            "CmdPlayerType_KPALKJHKPED" => Some(Self::Kpalkjhkped),
+            "CmdPlayerType_KCCMJKHJMAB" => Some(Self::Kccmjkhjmab),
+            "CmdPlayerType_HJAIHJAHMKN" => Some(Self::Hjaihjahmkn),
+            "CmdPlayerType_PJMINBJDKCC" => Some(Self::Pjminbjdkcc),
+            "CmdPlayerType_IKANNBLIACL" => Some(Self::Ikannbliacl),
+            "CmdGmTalkScRsp" => Some(Self::CmdGmTalkScRsp),
+            "CmdPlayerType_HLKKHFGJEOL" => Some(Self::Hlkkhfgjeol),
+            "CmdGmTalkCsReq" => Some(Self::CmdGmTalkCsReq),
+            "CmdPlayerType_POACPAFBFKJ" => Some(Self::Poacpafbfkj),
+            "CmdPlayerType_ONNNLNCMMGJ" => Some(Self::Onnnlncmmgj),
+            "CmdPlayerType_GNAOLJNMAFC" => Some(Self::Gnaoljnmafc),
+            "CmdPlayerType_AGHGBNPIOGK" => Some(Self::Aghgbnpiogk),
+            "CmdPlayerLoginFinishCsReq" => Some(Self::CmdPlayerLoginFinishCsReq),
             "CmdPlayerType_IPDCEJGOFKI" => Some(Self::Ipdcejgofki),
             "CmdPlayerType_MLGEKIJAIBO" => Some(Self::Mlgekijaibo),
-            "CmdPlayerType_PCMLAHACMPO" => Some(Self::Pcmlahacmpo),
-            "CmdPlayerLogoutCsReq" => Some(Self::CmdPlayerLogoutCsReq),
-            "CmdPlayerType_GNAOLJNMAFC" => Some(Self::Gnaoljnmafc),
-            "CmdPlayerLoginFinishScRsp" => Some(Self::CmdPlayerLoginFinishScRsp),
-            "CmdPlayerType_BLLKMJKMNIG" => Some(Self::Bllkmjkmnig),
-            "CmdPlayerType_IKANNBLIACL" => Some(Self::Ikannbliacl),
             "CmdPlayerType_MCOKJKLKHDL" => Some(Self::Mcokjklkhdl),
-            "CmdPlayerType_CAEEPLEGLCK" => Some(Self::Caeepleglck),
-            "CmdPlayerType_JFLKFMHCFFF" => Some(Self::Jflkfmhcfff),
-            "CmdPlayerType_BFMIAMIHIED" => Some(Self::Bfmiamihied),
-            "CmdPlayerType_GONKEIBLBOI" => Some(Self::Gonkeiblboi),
-            "CmdPlayerHeartBeatScRsp" => Some(Self::CmdPlayerHeartBeatScRsp),
-            "CmdPlayerLoginCsReq" => Some(Self::CmdPlayerLoginCsReq),
+            "CmdPlayerType_MKHNJMFNPBB" => Some(Self::Mkhnjmfnpbb),
+            "CmdPlayerType_CFMGLJJOJDJ" => Some(Self::Cfmgljjojdj),
+            "CmdPlayerType_OFIEPOPANGH" => Some(Self::Ofiepopangh),
+            "CmdPlayerType_BBECFFBPOGG" => Some(Self::Bbecffbpogg),
+            "CmdPlayerGetTokenScRsp" => Some(Self::CmdPlayerGetTokenScRsp),
+            "CmdPlayerType_DOPJENGCOAN" => Some(Self::Dopjengcoan),
             _ => None,
         }
     }

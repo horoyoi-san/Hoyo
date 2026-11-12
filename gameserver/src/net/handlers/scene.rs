@@ -460,7 +460,7 @@ pub(super) async fn load_scene(
                 .collect::<Vec<_>>(),
             ..Default::default()
         }),
-        floor_saved_data: scene.saved_values.clone(),
+        floor_saved_value_map: scene.saved_values.clone(),
         scene_identifier: Some(SceneIdentifier {
             floor_id,
             ..Default::default()
