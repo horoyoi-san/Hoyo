@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  exclude: properties;
+  themes: winter --default, night --prefersdark, cupcake, coffee;
+}
+
+@tailwind utilities;
+
+@plugin 'tailwind-scrollbar' {
+  nocompatible: true;
+}
+
+[data-theme] {
+  color-scheme: dark;
+  --color-base-100: oklch(0.18 0.035 264 / 0.88);
+  --color-base-200: oklch(0.23 0.04 262 / 0.84);
+  --color-base-300: oklch(0.3 0.04 260 / 0.78);
+  --color-base-content: oklch(0.94 0.025 250);
+}
+
+html, body {
+  height: 100%;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  background: #080e1f;
+}
+
+/* Smooth Modern Ultra-Sleek Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.28);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.55);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Custom UI Utilities for Gaming Companion Aesthetic */
+@layer utilities {
+  .glass-card {
+    background-color: color-mix(in srgb, var(--color-base-100) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-base-content) 18%, transparent);
+    box-shadow: 0 12px 32px -18px rgba(2, 8, 24, 0.9);
+    backdrop-filter: blur(14px);
+  }
+
+  .detail-glass-card {
+    background-color: color-mix(in srgb, var(--color-base-100) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-base-content) 8%, transparent);
+    box-shadow: none;
+    backdrop-filter: blur(3px);
+  }
+
+  .detail-page-layout {
+    @media (min-width: 64rem) {
+      grid-template-columns: minmax(0, 1fr) 13rem;
+    }
+
+    @media (min-width: 80rem) {
+      grid-template-columns: minmax(0, 1fr) 18rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    [data-page-scroll]:has(.detail-page-scroll-lock) {
+      overflow-y: hidden;
+      overscroll-behavior: none;
+    }
+  }
+
+  .detail-avatar-strip {
+    @media (min-width: 64rem) {
+      width: calc(100% - 15.5rem);
+    }
+
+    @media (min-width: 80rem) {
+      width: calc(100% - 21.5rem);
+    }
+  }
+
+  .avatar-strip-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .avatar-strip-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .glass-panel {
+    background-color: color-mix(in srgb, var(--color-base-100) 88%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-base-content) 18%, transparent);
+    backdrop-filter: blur(14px);
+  }
+
+  .hover-lift {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  .active-press {
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .active-press:active {
+    transform: scale(0.97);
+  }
+
+  /* Rarity Glow Effects */
+  .glow-5star {
+    box-shadow: 0 0 16px -2px rgba(245, 158, 11, 0.35);
+  }
+
+  .glow-4star {
+    box-shadow: 0 0 16px -2px rgba(168, 85, 247, 0.35);
+  }
+
+  /* Shared galaxy backdrop for every page. */
+  .bg-ambient-mesh {
+    background-color: #080e1f;
+    background-image:
+      linear-gradient(180deg, rgba(7, 12, 29, 0.28), rgba(7, 12, 29, 0.46)),
+      url("/theme/bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  /* EX Eidolon art is white line-art on transparent, so it always needs a
+     dark plate to be visible. These are intentionally theme-independent:
+     the plate stays dark in every theme so the art keeps its contrast. */
+  .ex-rank-plate {
+    background-image: radial-gradient(circle at 50% 45%,
+      color-mix(in srgb, var(--color-base-300) 55%, #14161f),
+      color-mix(in srgb, var(--color-base-300) 20%, #0b0d13) 78%);
+  }
+  .ex-rank-plate-active {
+    background-image: radial-gradient(circle at 50% 45%,
+      color-mix(in srgb, var(--color-primary) 22%, #221d33),
+      color-mix(in srgb, var(--color-primary) 8%, #101219) 78%);
+  }
+
+  /* The shared background is dark in every theme, so keep white game icons bright. */
+  .theme-path-icon {
+    filter: brightness(0.85) opacity(0.9);
+  }
+  .theme-path-icon-active {
+    filter: brightness(1) opacity(1);
+  }
+
+  /* HSR stat sprites are white and need no dark-theme conversion. */
+  .theme-stat-icon {
+    filter: brightness(0.95) opacity(1);
+  }
+
+  .lightcone-card-stage {
+    perspective: 1000px;
+    isolation: isolate;
+    touch-action: none;
+    user-select: none;
+  }
+  .lightcone-card-model {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 160ms ease-out;
+    cursor: grab;
+  }
+  .lightcone-card-model::before,
+  .lightcone-card-model::after {
+    position: absolute;
+    inset: 5%;
+    z-index: -1;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.8rem;
+    background: rgba(255, 255, 255, 0.025);
+    content: "";
+  }
+  .lightcone-card-model::before {
+    transform: translateZ(-12px) rotate(3deg) translateX(5px);
+  }
+  .lightcone-card-model::after {
+    transform: translateZ(-20px) rotate(-2deg) translateX(-4px);
+  }
+  .lightcone-card-stage.is-dragging .lightcone-card-model {
+    cursor: grabbing;
+    transition: none;
+  }
+  .lightcone-card-frame {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 0.8rem;
+    background: rgba(15, 23, 42, 0.38);
+    box-shadow: 0 22px 34px rgba(0, 0, 0, 0.5);
+    transform-style: preserve-3d;
+  }
+  .lightcone-card-art {
+    position: absolute;
+    inset: 5px;
+    overflow: hidden;
+    border-radius: 0.6rem;
+  }
+}
+
+/* Ensure toast notifications always render on top of all modals & dialogs */
+.Toastify__toast-container {
+  z-index: 99999999 !important;
+}
+
+.Toastify__toast {
+  z-index: 99999999 !important;
+}
+
+
+
+/* Entrance animations. The codebase uses `animate-in fade-in zoom-in-95 duration-*`
+   (tailwindcss-animate naming) but no plugin defines them, so define the few used. */
+@keyframes enter {
+  from {
+    opacity: var(--enter-opacity, 1);
+    transform: scale(var(--enter-scale, 1));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@utility animate-in {
+  /* `backwards`, not `both`: once finished the element must carry no transform at
+     all, because a transformed ancestor becomes the containing block of every
+     fixed-position modal inside it and clips them. */
+  animation: enter var(--tw-duration, 150ms) ease-out backwards;
+}
+@utility fade-in {
+  --enter-opacity: 0;
+}
+@utility zoom-in-95 {
+  --enter-scale: 0.95;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-in {
+    animation: none;
+  }
+}

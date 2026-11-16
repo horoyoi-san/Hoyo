@@ -1,0 +1,15 @@
+name: Gitea Auto Deploy
+run-name: ${{ gitea.actor }} pushed code 🚀
+
+on: [push]
+
+jobs:
+  Deploy-Container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Deploy to Container
+        run: |
+          docker compose up -d --build --remove-orphans
