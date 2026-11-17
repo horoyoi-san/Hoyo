@@ -39,9 +39,13 @@ export default function LightconePickerPage() {
     );
     const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isPathFilterOpen, setIsPathFilterOpen] = useState(false);
     const [search, setSearch] = useState("");
     const [inventoryRarityFilter, setInventoryRarityFilter] = useState<number | null>(null);
     const [addRarityFilter, setAddRarityFilter] = useState<number | null>(null);
+    const [draftAddRarityFilter, setDraftAddRarityFilter] = useState<number | null>(null);
+    const [addPathFilters, setAddPathFilters] = useState<string[]>([]);
+    const [draftAddPathFilters, setDraftAddPathFilters] = useState<string[]>([]);
     const [newLightconeId, setNewLightconeId] = useState<number | null>(null);
     const [sortNewestFirst, setSortNewestFirst] = useState(true);
 
@@ -86,9 +90,10 @@ export default function LightconePickerPage() {
         return Object.values(mapLightCone)
             .filter((item) => item.Name && (item.Image?.ThumbnailPath || item.Image?.ImagePath))
             .filter((item) => !addRarityFilter || calcRarity(item.Rarity) === addRarityFilter)
+            .filter((item) => addPathFilters.length === 0 || addPathFilters.includes(item.BaseType))
             .filter((item) => getLocaleName(locale, item.Name).toLowerCase().includes(search.trim().toLowerCase()))
             .sort((a, b) => calcRarity(b.Rarity) - calcRarity(a.Rarity) || b.ID - a.ID);
-    }, [addRarityFilter, locale, mapLightCone, search]);
+    }, [addPathFilters, addRarityFilter, locale, mapLightCone, search]);
 
     const addSelectedLightcone = () => {
         if (newLightconeId === null || !mapLightCone[String(newLightconeId)]) return;
@@ -102,7 +107,29 @@ export default function LightconePickerPage() {
         setNewLightconeId(null);
         setSearch("");
         setAddRarityFilter(null);
+        setAddPathFilters([]);
+        setIsPathFilterOpen(false);
         setIsAddModalOpen(false);
+    };
+
+    const openPathFilter = () => {
+        setDraftAddPathFilters(addPathFilters);
+        setDraftAddRarityFilter(addRarityFilter);
+        setIsPathFilterOpen(true);
+    };
+
+    const applyPathFilter = () => {
+        setAddPathFilters(draftAddPathFilters);
+        setAddRarityFilter(draftAddRarityFilter);
+        setNewLightconeId((current) => {
+            if (current === null) return current;
+            const lightcone = mapLightCone[String(current)];
+            if (!lightcone) return null;
+            const matchesPath = draftAddPathFilters.length === 0 || draftAddPathFilters.includes(lightcone.BaseType);
+            const matchesRarity = draftAddRarityFilter === null || calcRarity(lightcone.Rarity) === draftAddRarityFilter;
+            return matchesPath && matchesRarity ? current : null;
+        });
+        setIsPathFilterOpen(false);
     };
 
     const equipSelectedLightcone = () => {
@@ -288,7 +315,10 @@ export default function LightconePickerPage() {
                 </button>
                 <button
                     type="button"
-                    onClick={() => setIsAddModalOpen(true)}
+                    onClick={() => {
+                        setIsPathFilterOpen(false);
+                        setIsAddModalOpen(true);
+                    }}
                     className="flex h-7 items-center gap-1.5 rounded-full border border-white/80 bg-white/90 px-4 text-[11px] font-semibold text-black shadow-sm transition-colors hover:bg-white"
                 >
                     <Plus className="h-3.5 w-3.5" />
@@ -313,7 +343,10 @@ export default function LightconePickerPage() {
                             <button
                                 type="button"
                                 aria-label={transI18n("cancel")}
-                                onClick={() => setIsAddModalOpen(false)}
+                                onClick={() => {
+                                    setIsPathFilterOpen(false);
+                                    setIsAddModalOpen(false);
+                                }}
                                 className="flex h-7 w-7 items-center justify-center text-xl leading-none hover:text-primary"
                             >
                                 ×
@@ -338,26 +371,78 @@ export default function LightconePickerPage() {
                                 <button
                                     type="button"
                                     aria-label={transI18n("filter")}
-                                    title={transI18n("rarity")}
-                                    onClick={() => setAddRarityFilter((current) => nextRarityFilter(current))}
-                                    className="flex h-5 w-5 shrink-0 items-center justify-center"
+                                    title={transI18n("path")}
+                                    onClick={openPathFilter}
+                                    className={`flex h-5 w-5 shrink-0 items-center justify-center ${addPathFilters.length > 0 ? "text-primary" : ""}`}
                                 >
                                     <Image
                                         src="/theme/icon/icon-filter.png"
                                         alt=""
                                         width={16}
                                         height={16}
-                                        className="h-4 w-4 object-contain"
+                                        className="h-4 w-4 object-contain brightness-0"
                                     />
                                 </button>
                             </div>
-                            {addRarityFilter !== null && (
-                                <p className="mt-1 text-[10px] text-black/60">{transI18n("rarity")}: {addRarityFilter}★</p>
+                            {(addPathFilters.length > 0 || addRarityFilter !== null) && (
+                                <p className="mt-1 text-[10px] text-black/60">
+                                    {addPathFilters.length > 0 && (
+                                        <span>{transI18n("path")}: {addPathFilters.map((path) => transI18n(path.toLowerCase())).join(", ")}</span>
+                                    )}
+                                    {addPathFilters.length > 0 && addRarityFilter !== null && " · "}
+                                    {addRarityFilter !== null && <span>{transI18n("rarity")}: {addRarityFilter}★</span>}
+                                </p>
                             )}
                         </div>
 
                         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
-                            {availableLightcones.length > 0 ? (
+                            {isPathFilterOpen ? (
+                                <div className="space-y-3">
+                                    <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                                        {Object.entries(baseType).map(([key, path]) => (
+                                            <button
+                                                key={key}
+                                                type="button"
+                                                aria-pressed={draftAddPathFilters.includes(key)}
+                                                onClick={() => setDraftAddPathFilters((current) => (
+                                                    current.includes(key)
+                                                        ? current.filter((value) => value !== key)
+                                                        : [...current, key]
+                                                ))}
+                                                className={`flex h-8 items-center gap-2 border px-2 text-left text-xs font-semibold transition-colors ${
+                                                    draftAddPathFilters.includes(key)
+                                                        ? "border-amber-400 bg-amber-100"
+                                                        : "border-black/10 bg-white hover:bg-[#f5f5f5]"
+                                                }`}
+                                            >
+                                                {path?.Icon && (
+                                                    <Image
+                                                        src={`${process.env.CDN_URL}/${path.Icon}`}
+                                                        alt=""
+                                                        width={20}
+                                                        height={20}
+                                                        unoptimized
+                                                        className="h-5 w-5 object-contain brightness-0 opacity-60"
+                                                    />
+                                                )}
+                                                <span className="flex-1">{transI18n(key.toLowerCase())}</span>
+                                                <span className={`flex h-4 w-4 items-center justify-center border border-black/35 text-[10px] ${
+                                                    draftAddPathFilters.includes(key) ? "bg-amber-400 text-black" : "bg-white"
+                                                }`}>
+                                                    {draftAddPathFilters.includes(key) ? "✓" : ""}
+                                                </span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setDraftAddRarityFilter((current) => nextRarityFilter(current))}
+                                        className="h-7 rounded-full border border-black/15 bg-white px-3 text-[11px] font-semibold hover:bg-[#f5f5f5]"
+                                    >
+                                        {transI18n("rarity")}: {draftAddRarityFilter === null ? transI18n("all") : `${draftAddRarityFilter}★`}
+                                    </button>
+                                </div>
+                            ) : availableLightcones.length > 0 ? (
                                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-5">
                                     {availableLightcones.map((item) => {
                                         const active = newLightconeId === item.ID;
@@ -408,15 +493,23 @@ export default function LightconePickerPage() {
                         <footer className="flex shrink-0 justify-center gap-4 bg-[#252525] px-4 py-3">
                             <button
                                 type="button"
-                                onClick={() => setIsAddModalOpen(false)}
+                                onClick={() => {
+                                    if (isPathFilterOpen) {
+                                        setDraftAddPathFilters(addPathFilters);
+                                        setDraftAddRarityFilter(addRarityFilter);
+                                        setIsPathFilterOpen(false);
+                                    } else {
+                                        setIsAddModalOpen(false);
+                                    }
+                                }}
                                 className="h-7 min-w-[150px] rounded-full bg-white px-5 text-[11px] font-semibold text-black hover:bg-gray-100"
                             >
                                 {transI18n("cancel")}
                             </button>
                             <button
                                 type="button"
-                                disabled={newLightconeId === null}
-                                onClick={addSelectedLightcone}
+                                disabled={!isPathFilterOpen && newLightconeId === null}
+                                onClick={isPathFilterOpen ? applyPathFilter : addSelectedLightcone}
                                 className="h-7 min-w-[150px] rounded-full bg-white px-5 text-[11px] font-semibold text-black hover:bg-gray-100 disabled:opacity-50"
                             >
                                 {transI18n("save")}

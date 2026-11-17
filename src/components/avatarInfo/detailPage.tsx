@@ -4,8 +4,9 @@ import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Image as ImageIcon, Maximize2, Plus, Sparkles, User, X, Zap } from "lucide-react"
+import { Image as ImageIcon, Maximize2, Plus, Sparkles, Star, User, X, Zap } from "lucide-react"
 import ParseText from "../parseText"
+import AbilityGrid from "./abilityGrid"
 import useCurrentDataStore from "@/stores/currentDataStore"
 import useDetailDataStore from "@/stores/detailDataStore"
 import useLocaleStore from "@/stores/localeStore"
@@ -63,6 +64,7 @@ export default function DetailPage() {
     const [artType, setArtType] = useState<ArtType>("gacha")
     const [detailTab, setDetailTab] = useState<DetailTab>("stats")
     const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
+    const [showCharacterSettings, setShowCharacterSettings] = useState(false)
 
     const userAvatar = avatars[avatarSelected?.ID ?? ""]
     const avatarProfile = useMemo(() => {
@@ -95,7 +97,13 @@ export default function DetailPage() {
         mapRelicSet,
         transI18n,
     ])
-    const abilityList = useMemo(() => Object.values(avatarSelected?.Skills ?? {}), [avatarSelected])
+    const abilityList = useMemo(() => {
+        if (!avatarSelected) return []
+        const skills = userAvatar?.enhanced
+            ? avatarSelected.Enhanced?.[userAvatar.enhanced]?.Skills ?? avatarSelected.Skills
+            : avatarSelected.Skills
+        return Object.values(skills ?? {})
+    }, [avatarSelected, userAvatar])
 
     const formatStatValue = (stat: CalculatedStat) =>
         stat.unit === "%"
@@ -158,7 +166,7 @@ export default function DetailPage() {
         <div className="w-full">
             <div className="detail-page-layout grid min-h-[560px] w-full grid-cols-1 gap-10 lg:h-[calc(100dvh-13rem)] lg:min-h-[420px]">
                 <section
-                    className="group relative flex min-h-[440px] items-center justify-center overflow-x-clip overflow-y-visible lg:h-full lg:min-h-0"
+                    className="group relative flex min-h-[440px] items-center justify-center overflow-x-clip overflow-y-visible lg:h-full lg:min-h-0 lg:overflow-x-visible"
                     aria-label={getNameChar(locale, transI18n, avatarSelected)}
                 >
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(63,91,157,0.2),transparent_68%)]" />
@@ -206,13 +214,14 @@ export default function DetailPage() {
 
                 <aside className="flex min-w-0 flex-col gap-4 lg:h-full lg:min-h-0">
                     <section className="flex min-h-0 flex-1 flex-col overflow-y-auto bg-transparent p-1">
-                        <div className="order-1 mb-2 border-b border-base-content/10 pb-2">
+                        <div className="mb-2 border-b border-base-content/10 pb-2">
                             <div className="flex items-start justify-between gap-2">
-                                <div className="min-w-0">
-                                    <h2 className="truncate text-lg font-bold text-base-content">
+                                <div className="min-w-0 flex-1">
+                                    <h2 className="flex items-center gap-2 truncate text-lg font-bold text-base-content">
+                                        <Star aria-hidden="true" className="h-4 w-4 shrink-0" />
                                         <ParseText locale={locale} text={getNameChar(locale, transI18n, avatarSelected)} />
                                     </h2>
-                                    <div className="mt-1 flex items-center gap-1.5 text-[11px]">
+                                    <div className="mt-1 flex items-center gap-1.5 rounded-sm border border-white/10 bg-white/10 px-1.5 py-0.5 text-[11px]">
                                         {baseType?.[avatarSelected.BaseType]?.Icon && (
                                             <Image
                                                 src={`${process.env.CDN_URL}/${baseType[avatarSelected.BaseType].Icon}`}
@@ -226,10 +235,27 @@ export default function DetailPage() {
                                         <span className="font-medium text-base-content/70">
                                             {transI18n(avatarSelected.BaseType.toLowerCase())}
                                         </span>
-                                        <span className="ml-1 text-[10px] tracking-[0.25em] text-amber-400">
-                                            {"◆".repeat(calcRarity(avatarSelected.Rarity))}
-                                        </span>
                                     </div>
+                                    <span
+                                        className="mt-1.5 flex items-center gap-[3px]"
+                                        role="img"
+                                        aria-label={`${calcRarity(avatarSelected.Rarity)} stars`}
+                                    >
+                                        {Array.from({ length: calcRarity(avatarSelected.Rarity) }, (_, index) => (
+                                            <Image
+                                                key={index}
+                                                src="/theme/icon/misc/PromotionLvStepFrame.webp"
+                                                alt=""
+                                                width={9}
+                                                height={16}
+                                                unoptimized
+                                                className="h-4 w-[9px] object-fill"
+                                                style={{
+                                                    filter: "brightness(0) saturate(100%) invert(77%) sepia(65%) saturate(630%) hue-rotate(2deg) brightness(103%) contrast(101%)",
+                                                }}
+                                            />
+                                        ))}
+                                    </span>
                                 </div>
                                 {damageType?.[avatarSelected.DamageType]?.Icon && (
                                     <Image
@@ -242,168 +268,159 @@ export default function DetailPage() {
                                     />
                                 )}
                             </div>
-                            <div className="mt-2 flex items-center gap-2">
-                                <span className="shrink-0 text-[10px] font-semibold text-base-content/60">
-                                    Lv. {userAvatar.level} / 80
-                                </span>
-                                <input
-                                    type="range"
-                                    min="1"
-                                    max="80"
-                                    aria-label={transI18n("characterLevel")}
-                                    value={userAvatar.level}
-                                    onChange={(event) => {
-                                        const level = Math.min(80, Math.max(1, Number.parseInt(event.target.value, 10) || 1))
-                                        setAvatar({ ...userAvatar, level, promotion: calcPromotion(level) })
-                                    }}
-                                    className="range range-primary range-xs flex-1"
-                                />
+                            <div className="mt-1 border-b border-base-content/30 pb-1 text-[11px] font-semibold text-base-content/80">
+                                Lv. {userAvatar.level} / 80
                             </div>
                         </div>
 
-                        <div className="order-2 mb-2 grid grid-cols-2 rounded-full bg-base-100/10 p-1 text-[11px] font-semibold">
-                            {(["stats", "ability"] as const).map((tab) => (
-                                <button
-                                    key={tab}
-                                    type="button"
-                                    aria-pressed={detailTab === tab}
-                                    onClick={() => setDetailTab(tab)}
-                                    className={`rounded-full px-3 py-1.5 transition-colors ${
-                                        detailTab === tab
-                                            ? "bg-base-100/40 text-base-content"
-                                            : "text-base-content/55 hover:text-base-content"
-                                    }`}
-                                >
-                                    {transI18n(tab)}
-                                </button>
-                            ))}
-                        </div>
-
-                        <div className="order-4 mt-2 space-y-3 border-t border-base-content/10 pt-2">
-
-                            <div className="space-y-1">
-                                <div className="flex items-center justify-between text-[11px] font-semibold">
-                                    <span>{transI18n("ultimateEnergy")}</span>
-                                    <span className="font-mono text-amber-500">
-                                        {Math.round(userAvatar.sp_value)} / {userAvatar.sp_max}
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-2">
+                        {showCharacterSettings ? (
+                            <div className="mt-2 flex flex-col gap-4 rounded-xl border border-base-content/10 bg-base-100/10 p-3">
+                                <h3 className="text-xs font-bold">{transI18n("characterSettings")}</h3>
+                                <div className="space-y-1 border-t border-base-content/10 pt-3">
+                                    <div className="flex items-center justify-between text-[11px] font-semibold">
+                                        <span>{transI18n("characterLevel")}</span>
+                                        <span className="font-mono text-primary">Lv. {userAvatar.level} / 80</span>
+                                    </div>
                                     <input
                                         type="range"
-                                        min="0"
-                                        max={userAvatar.sp_max}
-                                        aria-label={transI18n("ultimateEnergy")}
-                                        value={userAvatar.sp_value}
-                                        disabled={!userAvatar.can_change_sp}
+                                        min="1"
+                                        max="80"
+                                        aria-label={transI18n("characterLevel")}
+                                        value={userAvatar.level}
                                         onChange={(event) => {
-                                            if (!userAvatar.can_change_sp) return
-                                            const value = Math.min(userAvatar.sp_max, Math.max(0, Number.parseInt(event.target.value, 10) || 0))
-                                            setAvatar({ ...userAvatar, sp_value: value })
+                                            const level = Math.min(80, Math.max(1, Number.parseInt(event.target.value, 10) || 1))
+                                            setAvatar({ ...userAvatar, level, promotion: calcPromotion(level) })
                                         }}
-                                        className="range range-warning range-xs flex-1"
+                                        className="range range-primary range-xs w-full"
                                     />
-                                    <button
-                                        type="button"
-                                        disabled={!userAvatar.can_change_sp}
-                                        onClick={() => setAvatar({ ...userAvatar, sp_value: Math.ceil(userAvatar.sp_max / 2) })}
-                                        className="btn btn-xs btn-warning btn-outline h-6 min-h-6 whitespace-nowrap rounded-md px-2"
-                                    >
-                                        {transI18n("setTo50")}
-                                    </button>
                                 </div>
-                            </div>
-
-                            <div className="flex items-center justify-between border-t border-base-content/10 pt-2">
-                                <span className="flex items-center gap-1.5 text-[11px] font-semibold">
-                                    <Zap className="h-3.5 w-3.5 text-secondary" />
-                                    {transI18n("useTechnique")}
-                                </span>
-                                <input
-                                    type="checkbox"
-                                    checked={userAvatar.techniques?.length > 0}
-                                    aria-label={transI18n("useTechnique")}
-                                    onChange={(event) => {
-                                        if (!avatarSelected.MazeBuff?.length) return
-                                        setAvatar({ ...userAvatar, techniques: event.target.checked ? avatarSelected.MazeBuff : [] })
-                                    }}
-                                    className="toggle toggle-primary toggle-xs"
-                                />
-                            </div>
-
-                            {avatarSelected.Enhanced && (
-                                <div className="flex items-center justify-between gap-2 border-t border-base-content/10 pt-2">
-                                    <span className="flex items-center gap-1.5 text-[11px] font-semibold">
-                                        <Sparkles className="h-3.5 w-3.5 text-accent" />
-                                        {transI18n("enhancement")}
-                                    </span>
-                                    <select
-                                        value={userAvatar.enhanced || ""}
-                                        onChange={(event) => {
-                                            const skillTree = getSkillTree(avatarSelected, event.target.value)
-                                            setAvatar({
-                                                ...userAvatar,
-                                                enhanced: event.target.value,
-                                                data: {
-                                                    ...userAvatar.data,
-                                                    skills: skillTree || userAvatar.data.skills
-                                                }
-                                            })
-                                        }}
-                                        className="select select-xs select-bordered max-w-36 rounded-lg bg-base-200/50"
-                                    >
-                                        <option value="">{transI18n("origin")}</option>
-                                        {Object.keys(avatarSelected.Enhanced).map((key) => (
-                                            <option key={key} value={key}>{key}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-                        </div>
-                        <div className="order-3">
-                            {detailTab === "stats" ? (
-                                <>
-                                    <div className="space-y-0.5">
-                                        {summaryStatKeys.map(renderStatRow)}
+                                <div className="space-y-1 border-t border-base-content/10 pt-3">
+                                    <div className="flex items-center justify-between text-[11px] font-semibold">
+                                        <span>{transI18n("ultimateEnergy")}</span>
+                                        <span className="font-mono text-amber-500">
+                                            {Math.round(userAvatar.sp_value)} / {userAvatar.sp_max}
+                                        </span>
                                     </div>
-                                    <div className="flex justify-end pt-1">
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max={userAvatar.sp_max}
+                                            aria-label={transI18n("ultimateEnergy")}
+                                            value={userAvatar.sp_value}
+                                            disabled={!userAvatar.can_change_sp}
+                                            onChange={(event) => {
+                                                if (!userAvatar.can_change_sp) return
+                                                const value = Math.min(userAvatar.sp_max, Math.max(0, Number.parseInt(event.target.value, 10) || 0))
+                                                setAvatar({ ...userAvatar, sp_value: value })
+                                            }}
+                                            className="range range-warning range-xs flex-1"
+                                        />
                                         <button
                                             type="button"
-                                            onClick={() => setIsStatsModalOpen(true)}
-                                            className="rounded-full border border-base-content/20 px-3 py-1 text-[10px] font-semibold text-base-content/80 transition hover:bg-base-100/20"
+                                            disabled={!userAvatar.can_change_sp}
+                                            onClick={() => setAvatar({ ...userAvatar, sp_value: Math.ceil(userAvatar.sp_max / 2) })}
+                                            className="btn btn-xs btn-warning btn-outline h-6 min-h-6 whitespace-nowrap rounded-md px-2"
                                         >
-                                            {transI18n("detailStats")}
+                                            {transI18n("setTo50")}
                                         </button>
                                     </div>
-                                </>
-                            ) : (
-                                <div className="space-y-1.5">
-                                    {abilityList.map((skill) => {
-                                        const skillLevel = Math.max(
-                                            0,
-                                            ...skill.RatedSkillTreeID.map((pointId) => userAvatar.data.skills[pointId] ?? 0)
-                                        )
-                                        return (
-                                            <div key={skill.ID} className="flex items-center gap-2 border-b border-base-content/10 py-1.5">
-                                                <Image
-                                                    src={`${process.env.CDN_URL}/${skill.Icon}`}
-                                                    alt=""
-                                                    width={28}
-                                                    height={28}
-                                                    unoptimized
-                                                    className="h-7 w-7 shrink-0 object-contain"
-                                                />
-                                                <div className="min-w-0 flex-1">
-                                                    <p className="truncate text-xs font-semibold">{getLocaleName(locale, skill.Name)}</p>
-                                                    <p className="truncate text-[10px] text-base-content/60">{getLocaleName(locale, skill.TypeDesc)}</p>
-                                                </div>
-                                                <span className="shrink-0 font-mono text-[10px] text-primary">Lv. {skillLevel}</span>
-                                            </div>
-                                        )
-                                    })}
                                 </div>
-                            )}
-                        </div>
+
+                                <div className="flex items-center justify-between border-t border-base-content/10 pt-3">
+                                    <span className="flex items-center gap-1.5 text-[11px] font-semibold">
+                                        <Zap className="h-3.5 w-3.5 text-secondary" />
+                                        {transI18n("useTechnique")}
+                                    </span>
+                                    <input
+                                        type="checkbox"
+                                        checked={userAvatar.techniques?.length > 0}
+                                        aria-label={transI18n("useTechnique")}
+                                        disabled={!avatarSelected.MazeBuff?.length}
+                                        onChange={(event) => {
+                                            if (!avatarSelected.MazeBuff?.length) return
+                                            setAvatar({ ...userAvatar, techniques: event.target.checked ? avatarSelected.MazeBuff : [] })
+                                        }}
+                                        className="toggle toggle-primary toggle-xs"
+                                    />
+                                </div>
+
+                            </div>
+                        ) : (
+                            <>
+                                <div className="mb-2 mt-1 grid grid-cols-2 rounded-full bg-base-100/10 p-1 text-[11px] font-semibold">
+                                    {(["stats", "ability"] as const).map((tab) => (
+                                        <button
+                                            key={tab}
+                                            type="button"
+                                            aria-pressed={detailTab === tab}
+                                            onClick={() => setDetailTab(tab)}
+                                            className={`rounded-full px-3 py-1.5 transition-colors ${
+                                                detailTab === tab
+                                                    ? "bg-base-100/40 text-base-content"
+                                                    : "text-base-content/55 hover:text-base-content"
+                                            }`}
+                                        >
+                                            {transI18n(tab)}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="mt-2 space-y-3 border-t border-base-content/10 pt-2">
+                                    {avatarSelected.Enhanced && (
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="flex items-center gap-1.5 text-[11px] font-semibold">
+                                                <Sparkles className="h-3.5 w-3.5 text-accent" />
+                                                {transI18n("enhancement")}
+                                            </span>
+                                            <select
+                                                value={userAvatar.enhanced || ""}
+                                                onChange={(event) => {
+                                                    const skillTree = getSkillTree(avatarSelected, event.target.value)
+                                                    setAvatar({
+                                                        ...userAvatar,
+                                                        enhanced: event.target.value,
+                                                        data: {
+                                                            ...userAvatar.data,
+                                                            skills: skillTree || userAvatar.data.skills
+                                                        }
+                                                    })
+                                                }}
+                                                className="select select-xs select-bordered max-w-36 rounded-lg bg-base-200/50"
+                                            >
+                                                <option value="">{transI18n("origin")}</option>
+                                                {Object.keys(avatarSelected.Enhanced).map((key) => (
+                                                    <option key={key} value={key}>{key}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )}
+                                    {detailTab === "stats" ? (
+                                        <>
+                                            <div className="space-y-0.5">
+                                                {summaryStatKeys.map(renderStatRow)}
+                                            </div>
+                                            <div className="flex justify-end pt-1">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsStatsModalOpen(true)}
+                                                    className="rounded-full border border-base-content/20 px-3 py-1 text-[10px] font-semibold text-base-content/80 transition hover:bg-base-100/20"
+                                                >
+                                                    {transI18n("detailStats")}
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <AbilityGrid
+                                            skills={abilityList}
+                                            skillLevels={userAvatar.data.skills}
+                                            locale={locale}
+                                            ultimateCost={avatarSelected.SPNeed}
+                                            pathIcon={baseType?.[avatarSelected.BaseType]?.Icon}
+                                        />
+                                    )}
+                                </div>
+                            </>
+                        )}
                     </section>
 
                     <section className="relative h-24 shrink-0 overflow-hidden rounded-xl border border-base-content/15 bg-base-100/10">
@@ -455,6 +472,14 @@ export default function DetailPage() {
                             )}
                         </button>
                     </section>
+                    <button
+                        type="button"
+                        aria-pressed={showCharacterSettings}
+                        onClick={() => setShowCharacterSettings((show) => !show)}
+                        className="btn btn-sm h-7 min-h-0 shrink-0 justify-center rounded-full border border-white/80 bg-white px-3 text-[10px] font-bold text-black shadow-sm hover:bg-white"
+                    >
+                        {transI18n(showCharacterSettings ? "characterDetails" : "characterSettings")}
+                    </button>
                 </aside>
             </div>
 

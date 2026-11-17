@@ -200,7 +200,7 @@ export default function RelicsInfo() {
 
   return (
     <div className="relative h-[calc(100dvh-10rem)] min-h-[520px] w-full">
-      <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_13rem]">
+      <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_13rem] xl:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="relative flex min-h-0 items-center justify-center">
           <div className="relative aspect-square w-full max-w-[500px] select-none">
             <div
@@ -272,27 +272,27 @@ export default function RelicsInfo() {
           </div>
         </div>
 
-        <aside className="hidden overflow-y-auto pt-6 text-right text-xs text-white lg:block">
+        <aside className="hidden overflow-y-auto pt-6 text-right text-sm text-white lg:block">
           {(["HP", "ATK", "DEF"] as const).map((key) => {
             const stat = relicStats?.[key];
             return stat ? (
-              <div key={key} className="flex h-6 items-center justify-between border-b border-white/15">
+              <div key={key} className="flex h-7 items-center justify-between border-b border-white/15">
                 <span className="flex items-center gap-1.5">
-                  <Image src={`${process.env.CDN_URL}/${stat.icon}`} alt="" width={14} height={14} unoptimized className="h-3.5 w-3.5 object-contain" />
+                  <Image src={`${process.env.CDN_URL}/${stat.icon}`} alt="" width={16} height={16} unoptimized className="h-4 w-4 object-contain" />
                   {stat.name}
                 </span>
                 <span className="font-mono">{Math.round(stat.value)}</span>
               </div>
             ) : null;
           })}
-          <p className="mt-2 border-b border-white/20 pb-1 text-left font-semibold">{transI18n("setEffects")}</p>
+          <p className="mt-3 border-b border-white/20 pb-1 text-left font-semibold">{transI18n("setEffects")}</p>
           <div className="max-h-[55vh] overflow-y-auto text-left">
             {relicEffects.map((setEffect) => {
               const relicInfo = mapRelicSet[setEffect.key];
               if (!relicInfo) return null;
               return (
                 <div key={setEffect.key} className="py-2">
-                  <p className="font-bold text-amber-300">
+                  <p className="font-bold leading-snug text-amber-300">
                     {getLocaleName(locale, relicInfo.Name)} ({setEffect.count})
                   </p>
                   {Object.entries(relicInfo.Skills).map(([requireNum, value]) => {

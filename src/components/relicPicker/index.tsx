@@ -322,10 +322,10 @@ export default function RelicPickerPage() {
                         </div>
                     </section>
 
-                    <section className="absolute bottom-16 left-5 right-5 top-[calc(56%+1rem)] overflow-y-auto text-[11px] sm:bottom-16 sm:left-auto sm:right-8 sm:top-16 sm:w-[205px]">
-                    <h2 className="text-sm font-bold">{getLocaleName(locale, selectedPart.Name)}</h2>
-                    <p className="text-white/70">+{selectedItem.level} · {transI18n(slotIconMap[activeSlot].key)}</p>
-                    <div className="mt-1 flex items-center gap-3">
+                    <section className="absolute bottom-16 left-5 right-5 top-[calc(56%+1rem)] overflow-y-auto text-sm sm:bottom-16 sm:left-auto sm:right-8 sm:top-16 sm:w-[13rem] xl:w-[18rem]">
+                    <h2 className="text-base font-bold">{getLocaleName(locale, selectedPart.Name)}</h2>
+                    <p className="text-xs text-white/70">+{selectedItem.level} · {transI18n(slotIconMap[activeSlot].key)}</p>
+                    <div className="mt-2 flex items-center gap-4">
                         <button
                             type="button"
                             aria-label={transI18n("copy")}
@@ -333,7 +333,7 @@ export default function RelicPickerPage() {
                             onClick={copySelectedRelic}
                             className="text-white/75 transition-colors hover:text-white"
                         >
-                            <Copy className="h-3.5 w-3.5" />
+                            <Copy className="h-4 w-4" />
                         </button>
                         <button
                             type="button"
@@ -342,7 +342,7 @@ export default function RelicPickerPage() {
                             onClick={editSelectedRelic}
                             className="text-white/75 transition-colors hover:text-white"
                         >
-                            <Pencil className="h-3.5 w-3.5" />
+                            <Pencil className="h-4 w-4" />
                         </button>
                         <button
                             type="button"
@@ -351,23 +351,23 @@ export default function RelicPickerPage() {
                             onClick={deleteSelectedRelic}
                             className="text-rose-400 transition-colors hover:text-rose-300"
                         >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-4 w-4" />
                         </button>
                     </div>
 
                     <div className="mt-3 border-y border-white/35">
                         {statRows.map((stat, index) => (
-                            <div key={`${stat.name}-${index}`} className="grid min-h-5 grid-cols-[14px_minmax(0,1fr)_auto] items-center gap-1 border-b border-white/10 py-0.5 last:border-0">
-                                <Image src={`${process.env.CDN_URL}/${stat.icon}`} alt="" width={12} height={12} unoptimized className="h-3 w-3 object-contain" />
+                            <div key={`${stat.name}-${index}`} className="grid min-h-7 grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-1.5 border-b border-white/10 py-1 last:border-0">
+                                <Image src={`${process.env.CDN_URL}/${stat.icon}`} alt="" width={14} height={14} unoptimized className="h-3.5 w-3.5 object-contain" />
                                 <span className="truncate">{stat.name}</span>
                                 <span className="font-mono">{stat.value}</span>
                             </div>
                         ))}
                     </div>
 
-                    <p className="mt-2 text-[10px] font-semibold text-white/80">{transI18n("setEffects")}</p>
-                    <p className="mt-0.5 font-bold text-amber-300">{getLocaleName(locale, selectedSet.Name)}</p>
-                    <div className="mt-1 space-y-1 leading-[1.4] text-white/90">
+                    <p className="mt-3 text-xs font-semibold text-white/80">{transI18n("setEffects")}</p>
+                    <p className="mt-1 text-sm font-bold text-amber-300">{getLocaleName(locale, selectedSet.Name)}</p>
+                    <div className="mt-1.5 space-y-1.5 leading-relaxed text-white/90">
                         {Object.entries(selectedSet.Skills).map(([threshold, skill]) => (
                             <p key={threshold}>
                                 <span className="font-semibold text-emerald-300">{transI18n("pieceBonus", { count: threshold })}: </span>

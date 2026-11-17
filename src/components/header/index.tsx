@@ -22,10 +22,8 @@ import { useShallow } from "zustand/react/shallow";
 import { createPortal } from "react-dom";
 
 import ModalLoading from "../modalLoading";
-import BrandLogo from "@/components/brandLogo";
 import { NeedChangelog, NeedLightcone, NeedLightconeAndRelic, NeedRelic } from "../requireData";
 import { connectToPS, syncDataToPS } from "@/helper";
-import Link from "next/link";
 
 const MonsterBar = dynamic(() => import("../monsterBar"), {
     ssr: false,
@@ -450,13 +448,6 @@ export default function Header() {
                         </ul>
                     </div>
 
-                    <Link
-                        href="/"
-                        aria-label="Kafka SrTools"
-                        className="fixed right-3 top-3 z-[70] hidden items-center rounded-2xl border border-white/10 bg-[#071120]/70 px-3 py-2 shadow-xl shadow-fuchsia-950/20 backdrop-blur-xl transition-all hover:border-fuchsia-200/30 hover:bg-[#071120]/90 sm:flex"
-                    >
-                        <BrandLogo />
-                    </Link>
                 </div>
 
                 <div className="navbar-center fixed bottom-3 left-28 z-[70] hidden lg:flex rounded-xl border border-base-content/10 bg-base-100/15 px-2 py-1 shadow-sm backdrop-blur-md">
