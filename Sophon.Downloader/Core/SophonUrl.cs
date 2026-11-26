@@ -106,7 +106,7 @@ namespace Core
                 case Region.OSREL:
                     apiBase = "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches";
                     sophonBase = "https://sg-public-api.hoyoverse.com/downloader/sophon_chunk/api/getBuild";
-                    launcherIds = new List<string> { "VYTpXlbWo8", "dYgxEMpG3U" }; //hyg 0.95.2
+                    launcherIds = new List<string> { "VYTpXlbWo8", "dYgxEMpG3U", "JMNdqmbl9I" }; //hyg 0.95.2 abc 0.97.2
                     platApp = "ddxf6vlr1reo";
                     break;
 
