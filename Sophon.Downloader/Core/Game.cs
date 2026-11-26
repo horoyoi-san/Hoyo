@@ -31,7 +31,7 @@ namespace Core
             {(Region.CNREL, GameType.hk4e), new[] { "1Z8W5NHUQb" }},
             {(Region.OSREL, GameType.bh3), new[] { "5TIVvvcwtM", "g0mMIvshDb", "uxB4MC7nzC", "bxPTXSET5t", "wkE5P5WsIf" }}, // Europe & Americas Servers, JP Server, KR Server, SEA Server, Asia (Traditional Chinese)
             {(Region.CNREL, GameType.bh3), new[] { "osvnlOc0S8" }},
-            {(Region.OSREL, GameType.abc), new[] { "yneO4yGc4x", "3qXq1I0N6o" }}, // abc 0.97.2
+            {(Region.OSREL, GameType.abc), new[] { "yneO4yGc4x", "3qXq1I0N6o" }}, // abc 0.75.2
             {(Region.CNREL, GameType.abc), new[] { "m8TGERqknS" }},
             {(Region.OSREL, GameType.hyg), new[] { "viiywh5G2H", "a26PNg1Mgk" }}, // hyg 0.95.2 
             {(Region.CNREL, GameType.hyg), new[] { "ERYDdvf0w8" }},
